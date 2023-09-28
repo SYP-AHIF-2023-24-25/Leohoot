@@ -20,12 +20,13 @@ Für mehr Infos siehe [Userstories](https://github.com/orgs/SYP-AHIF-2023-24-25/
 
 ## 3. SWOT-Analyse
 
-| **Strengths**       | **Weaknesses** |
+| | |
 |---------------|-----------|
+| **STRENGTHS**       | **WEAKNESSES** |
 | Kahoot-Erfahrungen            | fehlendes Zeitmanagement          |
 | Motiviertes Team | fehlende Angular Kenntnisse |
 | Genaue Vorstellung vom Zieldesign||
-| **Opportunities** | **Threads**   |
+| **OPPORTUNITIES** | **THREADS**   |
 | Erweiterbar auf andere Schulen              | Schlechte Aufteilung der Arbeit bei einzelnen Sprints|
 | Erfahrungen sammeln im Scrum-Projektleben| evtl. fehlende Absprache|
 ||Mergeconflicts|
