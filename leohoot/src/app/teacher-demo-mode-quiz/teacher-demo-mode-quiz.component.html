@@ -1,30 +1,24 @@
 <div class="container mx-auto">
   <h1 class="text-lg font-medium">{{ demoQuiz.title }}</h1>
   <h4>{{ demoQuiz.description }}</h4>
-  <div>
+  <div id="question">
     {{ demoQuiz.questions[currentQuestionIndex].question }}
-    <div>
+    <!--div>
       <div *ngFor="let answer of demoQuiz.questions[currentQuestionIndex].answers">
         <button>{{ answer.answer }}</button>
-        <!--<input type="radio" name="answer" value="{{ answer.id }}" (click)="selectAnswer(answer.id)">-->
+        <<input type="radio" name="answer" value="{{ answer.id }}" (click)="selectAnswer(answer.id)">>
       </div>
-    </div>
+    </div-->
   </div>
 </div>
 <div class="bg-white py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="-mx-6 grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:rounded-2xl md:grid-cols-2">
-      <div class="bg-gray-400/5 p-8 sm:p-10">
-        <img class="max-h-12 w-full object-contain" src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg" alt="Transistor" width="158" height="48">
-      </div>
-      <div class="bg-gray-400/5 p-6 sm:p-10">
-        <img class="max-h-12 w-full object-contain" src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg" alt="Reform" width="158" height="48">
-      </div>
-      <div class="bg-gray-400/5 p-6 sm:p-10">
-        <img class="max-h-12 w-full object-contain" src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg" alt="Tuple" width="158" height="48">
-      </div>
-      <div class="bg-gray-400/5 p-6 sm:p-10">
-        <img class="max-h-12 w-full object-contain" src="https://tailwindui.com/img/logos/158x48/laravel-logo-gray-900.svg" alt="Laravel" width="158" height="48">
+          <div *ngFor="let answer of demoQuiz.questions[currentQuestionIndex].answers">
+            <div class="bg-gray-400/20 p-6 sm:p-10">
+            <button width="158" height="48">{{ answer.answer}}</button>
+            </div>
+            <!--<input type="radio" name="answer" value="{{ answer.id }}" (click)="selectAnswer(answer.id)">-->
       </div>
     </div>
   </div>
