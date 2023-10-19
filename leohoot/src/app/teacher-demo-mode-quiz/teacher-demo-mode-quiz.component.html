@@ -2,26 +2,70 @@
   <div class="text-center">
     <h1 class="text-lg font-medium">{{ demoQuiz.title }}</h1>
     <h4>{{ demoQuiz.description }}</h4>
-    <div class="font-bold text-3xl mt-8">{{ demoQuiz.questions[currentQuestionIndex].question }}</div>
-  </div>
-
-  <div class="w-12 h-12 rounded-full inline-flex items-center justify-center bg-hooti-beige text-xl font-bold my-5">
-    {{demoQuiz.questions[currentQuestionIndex].answerTimeInSeconds - currTime}}
-  </div>
-
-  <div *ngIf="demoQuiz.questions[currentQuestionIndex].imageName" class="flex justify-center items-center">
-    <img class="max-h-48" src="{{demoQuiz.questions[currentQuestionIndex].imageName}}" alt="{{demoQuiz.questions[currentQuestionIndex].imageName}}">
-  </div>
-  <div *ngIf="!demoQuiz.questions[currentQuestionIndex].imageName" class="my-20"></div>
-
-  <div class="grid grid-cols-2 gap-2 sm:mx-0 mt-5">
-    <div *ngFor="let answer of demoQuiz.questions[currentQuestionIndex].answers; index as i">
-      <div *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)" class="{{colors[i]}} p-3 sm:p-10 rounded-sm">{{answer.answer}}</div>
-      <div *ngIf="questionIsFinished && !answer.isCorrect" class="bg-hooti-grey p-3 sm:p-10 rounded-sm">{{answer.answer}}</div>
+    <div class="mt-8 text-3xl font-bold">
+      {{ demoQuiz.questions[currentQuestionIndex].question }}
     </div>
   </div>
 
-  <button *ngIf="!questionIsFinished" class="bg-hooti-beige rounded-md my-10 p-2 w-56" (click)="showCorrectAnswer()">Skip</button>
-  <button *ngIf="questionIsFinished" class="bg-hooti-beige rounded-md my-10 p-2 w-56" (click)="nextQuestion()">Next</button>
-</div>
+  <div
+    class="my-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-hooti-beige text-xl font-bold"
+  >
+    {{
+      demoQuiz.questions[currentQuestionIndex].answerTimeInSeconds - currTime
+    }}
+  </div>
 
+  <div
+    *ngIf="demoQuiz.questions[currentQuestionIndex].imageName"
+    class="flex items-center justify-center"
+  >
+    <img
+      class="max-h-48"
+      src="{{ demoQuiz.questions[currentQuestionIndex].imageName }}"
+      alt="{{ demoQuiz.questions[currentQuestionIndex].imageName }}"
+    />
+  </div>
+  <div
+    *ngIf="!demoQuiz.questions[currentQuestionIndex].imageName"
+    class="my-20"
+  ></div>
+
+  <div
+    class="md:text-md mt-5 grid grid-cols-2 gap-2 text-sm font-extrabold text-white sm:mx-0 lg:text-lg"
+  >
+    <div
+      *ngFor="
+        let answer of demoQuiz.questions[currentQuestionIndex].answers;
+        index as i
+      "
+    >
+      <div
+        *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)"
+        class="{{ colors[i] }} p-3 sm:p-10 rounded-sm"
+      >
+        {{ answer.answer.toUpperCase() }}
+      </div>
+      <div
+        *ngIf="questionIsFinished && !answer.isCorrect"
+        class="rounded-sm bg-hooti-grey p-3 sm:p-10"
+      >
+        {{ answer.answer.toUpperCase() }}
+      </div>
+    </div>
+  </div>
+
+  <button
+    *ngIf="!questionIsFinished"
+    class="my-10 w-56 rounded-md bg-hooti-beige p-2"
+    (click)="showCorrectAnswer()"
+  >
+    Skip
+  </button>
+  <button
+    *ngIf="questionIsFinished"
+    class="my-10 w-56 rounded-md bg-hooti-beige p-2"
+    (click)="nextQuestion()"
+  >
+    Next
+  </button>
+</div>
