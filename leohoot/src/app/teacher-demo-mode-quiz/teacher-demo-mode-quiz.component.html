@@ -16,8 +16,8 @@
 
   <div class="grid grid-cols-2 gap-2 sm:mx-0 mt-5">
     <div *ngFor="let answer of demoQuiz.questions[currentQuestionIndex].answers; index as i">
-      <div *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)" class="{{colors[i]}} p-3 sm:p-10 rounded-sm">{{answer.answer}}</div>
-      <div *ngIf="questionIsFinished && !answer.isCorrect" class="bg-hooti-grey p-3 sm:p-10 rounded-sm">{{answer.answer}}</div>
+      <div *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)" class="{{colors[i]}} p-3 sm:p-10 rounded-sm text-white">{{answer.answer}}</div>
+      <div *ngIf="questionIsFinished && !answer.isCorrect" class="bg-hooti-grey p-3 sm:p-10 rounded-sm text-white">{{answer.answer}}</div>
     </div>
   </div>
 
