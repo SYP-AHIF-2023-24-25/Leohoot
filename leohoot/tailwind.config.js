@@ -10,6 +10,10 @@ module.exports = {
         'hooti-green': '#ccc24b',
         'hooti-beige': '#ffecca',
         'hooti-grey': '#9b9c9f',
+        'button-purple': '#c084fc',
+        'button-orange': '#f59e0b',
+        'button-yellow': '#fcd34d',
+        'button-blue': '#38bdf8'
       },
     },
   },
