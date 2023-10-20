@@ -12,7 +12,12 @@ import { Subscription, timer } from 'rxjs';
 export class TeacherDemoModeQuizComponent {
   currentQuestionIndex = 0;
   demoQuiz: DemoQuiz;
-  colors = [ "bg-button-yellow","bg-button-orange", "bg-button-purple", "bg-button-blue"];
+  colors = [
+    'bg-button-yellow',
+    'bg-button-orange',
+    'bg-button-purple',
+    'bg-button-blue',
+  ];
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
   questionIsFinished: boolean = false;
