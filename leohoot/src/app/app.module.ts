@@ -6,15 +6,9 @@ import { AppComponent } from './app.component';
 import { TeacherDemoModeQuizComponent } from './teacher-demo-mode-quiz/teacher-demo-mode-quiz.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TeacherDemoModeQuizComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  declarations: [AppComponent, TeacherDemoModeQuizComponent],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

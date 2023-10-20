@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { TeacherDemoModeQuizComponent } from './teacher-demo-mode-quiz/teacher-demo-mode-quiz.component';
 
 const routes: Routes = [
-  {path: '',  redirectTo: '/teacherDemoModeQuiz', pathMatch: 'full'},
-  {path: 'teacherDemoModeQuiz', component: TeacherDemoModeQuizComponent}
+  { path: '', redirectTo: '/teacherDemoModeQuiz', pathMatch: 'full' },
+  { path: 'teacherDemoModeQuiz', component: TeacherDemoModeQuizComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,4 +1,4 @@
-import { Question } from "./question";
+import { Question } from './question';
 
 export class DemoQuiz {
   private _title: string;
@@ -8,7 +8,12 @@ export class DemoQuiz {
 
   //TODO: tags
 
-  constructor(title: string, description: string, questions: Question[], creator: string) {
+  constructor(
+    title: string,
+    description: string,
+    questions: Question[],
+    creator: string,
+  ) {
     this._title = title;
     this._description = description;
     this._questions = questions;

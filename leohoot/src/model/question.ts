@@ -1,4 +1,4 @@
-import { Answer } from "./answer";
+import { Answer } from './answer';
 
 export class Question {
   private _question: string;
@@ -6,11 +6,16 @@ export class Question {
   private _answers: Answer[];
   private _imageName?: string;
 
-  constructor(question: string, answerTimeInSeconds: number, answers: Answer[], imageName?: string) {
+  constructor(
+    question: string,
+    answerTimeInSeconds: number,
+    answers: Answer[],
+    imageName?: string,
+  ) {
     this._question = question;
     this._answerTimeInSeconds = answerTimeInSeconds;
     this._answers = answers;
-    if (imageName){
+    if (imageName) {
       this._imageName = imageName;
     }
   }
