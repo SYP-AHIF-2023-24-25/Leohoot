@@ -10,6 +10,8 @@ import { Subscription, timer } from 'rxjs';
   styleUrls: ['./teacher-demo-mode-quiz.component.css'],
 })
 export class TeacherDemoModeQuizComponent {
+  @ViewChild('autoplay') audio!: ElementRef<HTMLAudioElement>;
+
   currentQuestionIndex = 0;
   demoQuiz: DemoQuiz;
   colors = [
@@ -21,7 +23,6 @@ export class TeacherDemoModeQuizComponent {
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
   questionIsFinished: boolean = false;
-  audio = new Audio('assets/audio/quiz-background-sound.mp3')
 
   constructor() {
     this.demoQuiz = new DemoQuiz(
@@ -83,19 +84,27 @@ export class TeacherDemoModeQuizComponent {
   }
 
   ngOnInit() {
-    this.audio.loop = true;
+     /*this.audio.addEventListener("canplaythrough", () => {
+      this.audio.play().catch(e => {
+         window.addEventListener('click', () => {
+            this.audio.play()
+         }, { once: true })
+      })
+   });*/
+   this.audio.nativeElement.loop = true;
+
     this.startTimer();
   }
 
   startTimer() {
     this.obsTimer = timer(0, 1000).subscribe((currTime) => {
-      this.audio.play();
+      this.audio.nativeElement.play();
       if (
         currTime ==
         this.demoQuiz.questions[this.currentQuestionIndex].answerTimeInSeconds
       ) {
         this.obsTimer.unsubscribe();
-        this.audio.pause();
+        this.audio.nativeElement.pause();
         this.questionIsFinished = true;
       }
       this.currTime = currTime;
@@ -105,7 +114,7 @@ export class TeacherDemoModeQuizComponent {
   showCorrectAnswer() {
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
-    this.audio.pause();
+    this.audio.nativeElement.pause();
   }
 
   nextQuestion() {
