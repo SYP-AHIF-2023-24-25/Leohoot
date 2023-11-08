@@ -21,6 +21,7 @@ export class TeacherDemoModeQuizComponent {
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
   questionIsFinished: boolean = false;
+  audio = new Audio('assets/audio/quiz-background-sound.mp3');
 
   constructor() {
     this.demoQuiz = new DemoQuiz(
@@ -82,17 +83,20 @@ export class TeacherDemoModeQuizComponent {
   }
 
   ngOnInit() {
+    this.audio.loop = true;
     this.startTimer();
   }
 
   startTimer() {
     this.obsTimer = timer(0, 1000).subscribe((currTime) => {
+      this.audio.play();
       if (
         currTime ==
         this.demoQuiz.questions[this.currentQuestionIndex].answerTimeInSeconds
       ) {
         this.obsTimer.unsubscribe();
         this.questionIsFinished = true;
+        this.audio.pause();
       }
       this.currTime = currTime;
     });
@@ -101,6 +105,7 @@ export class TeacherDemoModeQuizComponent {
   showCorrectAnswer() {
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
+    this.audio.pause();
   }
 
   nextQuestion() {
