@@ -10,8 +10,6 @@ import { Subscription, timer } from 'rxjs';
   styleUrls: ['./teacher-demo-mode-quiz.component.css'],
 })
 export class TeacherDemoModeQuizComponent {
-  @ViewChild('autoplay') autoplay!: ElementRef<HTMLButtonElement>;
-
   currentQuestionIndex = 0;
   demoQuiz: DemoQuiz;
   colors = [
@@ -85,14 +83,6 @@ export class TeacherDemoModeQuizComponent {
   }
 
   ngOnInit() {
-    /*this.audio.addEventListener("canplaythrough", () => {
-      this.audio.play().catch(e => {
-         window.addEventListener('click', () => {
-            this.audio.play()
-         }, { once: true })
-      })
-   });*/
-
     this.audio.loop = true;
     this.startTimer();
   }
