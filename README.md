@@ -33,3 +33,6 @@ Für mehr Infos siehe [Userstories](https://github.com/orgs/SYP-AHIF-2023-24-25/
 
 ## 4. Meilensteine
 Siehe [Sprints](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4)
+
+- Sprint 2 (Endet am 14.12.2023):
+    - [#2](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4/views/1?pane=issue&itemId=44128536)
