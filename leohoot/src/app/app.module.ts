@@ -4,9 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TeacherDemoModeQuizComponent } from './teacher-demo-mode-quiz/teacher-demo-mode-quiz.component';
+import { StudentsMobileViewComponent } from './students-mobile-view/students-mobile-view.component';
 
 @NgModule({
-  declarations: [AppComponent, TeacherDemoModeQuizComponent],
+  declarations: [AppComponent, TeacherDemoModeQuizComponent, StudentsMobileViewComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],

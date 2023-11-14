@@ -15,6 +15,9 @@ module.exports = {
         "button-yellow": "#fcd34d",
         "button-blue": "#38bdf8",
       },
+      spacing: {
+        '128': '32rem',
+      }
     },
   },
   plugins: [],
