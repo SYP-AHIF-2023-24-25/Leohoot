@@ -29,7 +29,13 @@ export class QuestionComponent {
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getParams();
+    this.audio.loop = true;
+    this.startTimer();
+  }
+
+  getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['currentQuestionId'] !== 'undefined') {
         this.currentQuestionId = params['currentQuestionId'];
@@ -37,15 +43,17 @@ export class QuestionComponent {
       if (typeof params['mode'] !== 'undefined') {
         this.mode = params['mode'];
       }
-      const response: Question | undefined = this.restservice.getQuestionById(this.currentQuestionId);
-      if (typeof response === 'undefined') {
-        this.router.navigate(['/teacherDemoModeQuiz']);
-      } else {
-        this.currentQuestion = response;
-      }
-      this.audio.loop = true;
-      this.startTimer();
+      this.getQuestion();
     });
+  }
+
+  getQuestion() {
+    const response: Question | undefined = this.restservice.getQuestionById(this.currentQuestionId);
+    if (typeof response === 'undefined') {
+      this.router.navigate(['/teacherDemoModeQuiz']);
+    } else {
+      this.currentQuestion = response;
+    }
   }
 
   startTimer() {
@@ -71,15 +79,16 @@ export class QuestionComponent {
   nextQuestion() {
     if (this.mode == Mode.TEACHER_DEMO_MODE) {
       const queryParams = {
-        currentQuestionId: ++this.currentQuestionId,
+        currentQuestionId: this.currentQuestion.nextQuestionId,
         mode: Mode.TEACHER_DEMO_MODE
       };
       this.router.navigate(['/question'], { queryParams });
       this.questionIsFinished = false;
+
     } else if (this.mode == Mode.GAME_MODE) {
       const queryParams = {
-        currentQuestionId: ++this.currentQuestionId,
-        mode: Mode.TEACHER_DEMO_MODE
+        currentQuestionId: this.currentQuestion.nextQuestionId,
+        mode: Mode.GAME_MODE
       };
       this.router.navigate(['/ranking'], { queryParams });
     }

@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as signalR from "@microsoft/signalr";
+import { Mode } from 'src/model/mode';
+import { User } from 'src/model/user';
 
 @Component({
   selector: 'app-ranking',
@@ -7,21 +10,48 @@ import * as signalR from "@microsoft/signalr";
   styleUrls: ['./ranking.component.css']
 })
 export class RankingComponent {
+  currentQuestionId: number = 0;
+  mode: number = 1;
   connection!: signalR.HubConnection;
-  ngOnInit() {
+  ranking: User[] = [];
+
+  constructor(private router: Router, private route: ActivatedRoute) { 
+    this.getParams();
+    this.buildConnection();
+  }
+
+  buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
     .withUrl("http://localhost:5134/hub")
     .build();
 
     this.connection.start()
     .then(() => {
-      console.log('Connection started!');
-      this.connection.send("sendMessage", "Hello")
-     } )
+      this.connection.send("sendRanking");
+      this.connection.send("sendQuestionIsFinished");
+      this.connection.on("rankingReceived", (ranking) => {
+        this.ranking = ranking as User[];
+      });
+    })
     .catch(err => console.log('Error while establishing connection :('));
+  }
 
-    this.connection.on("messageReceived", (message) => {
-      console.log(message);
+  getParams() {
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['currentQuestionId'] !== 'undefined') {
+        this.currentQuestionId = params['currentQuestionId'];
+      }
+      if (typeof params['mode'] !== 'undefined') {
+        this.mode = params['mode'];
+      }
     });
+  }
+
+  nextQuestion() {
+    const queryParams = {
+      currentQuestionId: this.currentQuestionId,
+      mode: Mode.GAME_MODE
+    };
+    this.router.navigate(['/question'], { queryParams });
   }
 }
