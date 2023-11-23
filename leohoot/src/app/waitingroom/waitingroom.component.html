@@ -1,4 +1,33 @@
 <div class="bg-hooti-yellow h-screen w-screen">
-  <qrcode [qrdata]="qrCodeQuiz" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-</div>
+  <div class="pt-5 mx-40 md:mx-40 lg:mx-52 xl:mx-72">
+    <div class="grid grid-cols-12 row-auto col-auto">
+      <div class="col-span-8 bg-white rounded-lg">
+        <div>
+          <div class="grid grid-cols-12 row-auto col-auto">
+            <div class="col-span-3 row-span-2 md:w-40">
+              <img src="/assets/images/hooti.ico">
+            </div>
+            <div class="col-span-9 pt-4 xl:pl-4 lg:pl-6 md:pl-12">
+              <h1 class="lg:text-lg">Join with <b>QR-Code</b> or <b>Game PIN</b></h1>
+            </div>
+            <div class="md:text-base lg:text-lg xl:text-xl col-span-5 xl:pl-4 lg:pl-6 md:pl-12">
+              <h3><i>Game PIN:</i></h3>
+              <h3 class="md:text-3xl lg:text-5xl xl:text-7xl"><b>{{ gamePin }}</b></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-1">
+      </div>
+      <div class="col-span-2">
+        <qrcode [cssClass]="'center'" [scale]="5" [elementType]="'canvas'" [margin]="3"  [qrdata]="qrCodeData" [errorCorrectionLevel]="'Q'"></qrcode>
+      </div>
+    </div>
+  </div>
 
+  <div class="m-5">
+    <div>
+      
+    </div>
+  </div>
+</div>

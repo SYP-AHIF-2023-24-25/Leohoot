@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "i9Weldbegjz85CN3ffOoiecn/842kC1SlEIcT4qT48M=",
+  "Hash": "dUjKu4vhH5Laq92lbdSQwibsLM9RqhFPR1r5q2hhxWg=",
   "Source": "leohoot-backend",
   "BasePath": "_content/leohoot-backend",
   "Mode": "Default",
@@ -8,19 +8,19 @@
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
-      "Name": "leohoot-backend/wwwroot",
+      "Name": "leohoot-backend\\wwwroot",
       "Source": "leohoot-backend",
-      "ContentRoot": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/wwwroot/",
+      "ContentRoot": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
       "BasePath": "_content/leohoot-backend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/wwwroot/js/signalr/dist/browser/signalr.js",
+      "Identity": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js",
       "SourceId": "leohoot-backend",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/wwwroot/",
+      "ContentRoot": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
       "BasePath": "_content/leohoot-backend",
       "RelativePath": "js/signalr/dist/browser/signalr.js",
       "AssetKind": "All",
@@ -31,7 +31,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/js/signalr/dist/browser/signalr.js"
+      "OriginalItemSpec": "wwwroot\\js\\signalr\\dist\\browser\\signalr.js"
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { DemoQuiz } from 'src/model/demo-quiz';
+import { Quiz } from 'src/model/quiz';
 import { Mode } from 'src/model/mode';
 
 @Component({

@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/leohoot-backend.csproj": {}
+    "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\leohoot-backend.csproj": {}
   },
   "projects": {
-    "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/leohoot-backend.csproj": {
+    "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\leohoot-backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/leohoot-backend.csproj",
+        "projectUniqueName": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\leohoot-backend.csproj",
         "projectName": "leohoot-backend",
-        "projectPath": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/leohoot-backend.csproj",
-        "packagesPath": "/home/sophiehaider/.nuget/packages/",
-        "outputPath": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/obj/",
+        "projectPath": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\leohoot-backend.csproj",
+        "packagesPath": "C:\\Users\\Victoria\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/sophiehaider/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Victoria\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -56,6 +63,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -64,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.112/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

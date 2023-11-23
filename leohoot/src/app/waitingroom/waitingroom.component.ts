@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RestService } from '../services/rest.service';
+import { Quiz } from 'src/model/quiz';
 
 @Component({
   selector: 'app-waitingroom',
@@ -6,9 +8,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./waitingroom.component.css']
 })
 export class WaitingroomComponent {
-  qrCodeQuiz: string;
+  qrCodeData: string;
+  gamePin: number;
+  quiz!: Quiz;
 
-  constructor() {
-    this.qrCodeQuiz = 'Quiz Name' + Date.now().toString();
+  constructor(restService: RestService) {
+    this.quiz = restService.getQuiz();
+    this.qrCodeData = this.quiz.title + Date.now().toString() + this.quiz.creator;
+    this.gamePin = 12345678;
   }
+
+  //TODO:
+  // AUDIO
+  // QR CODE
+  // WEBSOCKETS
+  // unique code - speichern im backend? schauen ob er schon existiert!!
+  // start button
 }

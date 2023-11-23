@@ -7,6 +7,7 @@ namespace SignalRWebpack.Hubs;
 public class ChatHub : Hub
 {
     List<User> users = new List<User>();
+    
 
     public ChatHub() {
         users.Add(new User("Leo", 100));
@@ -24,7 +25,6 @@ public class ChatHub : Hub
         users.Add(new User("Clarisse", 650));
         users.Add(new User("Silena", 700));
         users.Add(new User("Charles", 750));
-
     }
 
     public async Task SendRanking() => await Clients.Caller.SendAsync("rankingReceived", users.OrderByDescending(user => user.Score).Take(5).ToList());

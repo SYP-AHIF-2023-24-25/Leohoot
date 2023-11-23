@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { DemoQuiz } from 'src/model/demo-quiz';
+import { Quiz } from 'src/model/quiz';
 import { Question } from 'src/model/question';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
-  demoQuiz: DemoQuiz = {
+  demoQuiz: Quiz = {
     title: 'Demo Quiz',
     description: 'This is a demo quiz',
     creator: 'Hooti',
@@ -122,5 +122,9 @@ export class RestService {
 
   getQuestionById(id: number): Question | undefined {
     return this.demoQuiz.questions.find(question => question.id == id);
+  }
+
+  getQuiz(): Quiz {
+    return this.demoQuiz;
   }
 }

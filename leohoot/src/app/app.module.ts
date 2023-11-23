@@ -9,10 +9,11 @@ import { RankingComponent } from './ranking/ranking.component';
 import { QuestionComponent } from './question/question.component';
 import { FormsModule } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
+import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 
 @NgModule({
   declarations: [AppComponent, TeacherDemoModeQuizComponent, WaitingroomComponent, RankingComponent, QuestionComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule],
   providers: [],
   bootstrap: [AppComponent],
 })

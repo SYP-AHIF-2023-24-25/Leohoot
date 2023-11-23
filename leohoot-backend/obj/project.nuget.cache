@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "QBwNlMr2omqcYGQ3Cn72meal5MKApW1nCryojXWQ6BS1KxSKqnAxF0tZYotr91xRFwreGbZjdKOTvELf4p4Afw==",
+  "dgSpecHash": "a/A7xW+yRdgANMz1xsPU7cGhDAPyLgY2cRRMtELGjJi/RwjcyGDNXiSMXpFoI6LmTaMl8SUVrIRzYNHVkBAwYg==",
   "success": true,
-  "projectFilePath": "/home/sophiehaider/Documents/HTL-Leonding-4/SYP/Leohoot/leohoot-backend/leohoot-backend.csproj",
+  "projectFilePath": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\leohoot-backend.csproj",
   "expectedPackageFiles": [
-    "/home/sophiehaider/.nuget/packages/microsoft.typescript.msbuild/5.2.2/microsoft.typescript.msbuild.5.2.2.nupkg.sha512"
+    "C:\\Users\\Victoria\\.nuget\\packages\\microsoft.typescript.msbuild\\5.2.2\\microsoft.typescript.msbuild.5.2.2.nupkg.sha512",
+    "C:\\Users\\Victoria\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Victoria\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Victoria\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Victoria\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }
