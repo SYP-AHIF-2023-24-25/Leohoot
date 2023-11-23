@@ -48,6 +48,7 @@ export class RankingComponent {
   }
 
   nextQuestion() {
+    this.connection.send("sendToNextQuestion");
     const queryParams = {
       currentQuestionId: this.currentQuestionId,
       mode: Mode.GAME_MODE
