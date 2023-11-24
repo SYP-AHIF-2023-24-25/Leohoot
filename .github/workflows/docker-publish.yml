@@ -13,7 +13,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: syp-ahif-2023-24-25/leohoot
+  IMAGE_NAME: haidersophie/leohoot
 
 jobs:
   build:
