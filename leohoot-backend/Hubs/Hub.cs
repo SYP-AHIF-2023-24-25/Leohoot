@@ -30,4 +30,6 @@ public class ChatHub : Hub
     public async Task SendRanking() => await Clients.Caller.SendAsync("rankingReceived", users.OrderByDescending(user => user.Score).Take(5).ToList());
 
     public async Task SendQuestionIsFinished() => await Clients.All.SendAsync("questionIsFinished");
+
+    public async Task SendQuestionIsStarted(string username) => await Clients.Caller.SendAsync("registerUser", username);
 }

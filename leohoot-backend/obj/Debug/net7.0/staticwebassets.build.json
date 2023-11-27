@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dUjKu4vhH5Laq92lbdSQwibsLM9RqhFPR1r5q2hhxWg=",
+  "Hash": "3+2S6Ap4LAiI215Ia8kkmdQXhiQXe1Bd2rMxN8fmNoU=",
   "Source": "leohoot-backend",
   "BasePath": "_content/leohoot-backend",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "leohoot-backend\\wwwroot",
       "Source": "leohoot-backend",
-      "ContentRoot": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
       "BasePath": "_content/leohoot-backend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js",
+      "Identity": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js",
       "SourceId": "leohoot-backend",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\edv\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\wwwroot\\",
       "BasePath": "_content/leohoot-backend",
       "RelativePath": "js/signalr/dist/browser/signalr.js",
       "AssetKind": "All",
