@@ -3,6 +3,7 @@ import { RestService } from '../services/rest.service';
 import { Quiz } from 'src/model/quiz';
 import { Player } from 'src/model/player';
 import * as signalR from '@microsoft/signalr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-waitingroom',
@@ -17,7 +18,7 @@ export class WaitingroomComponent {
   connection!: signalR.HubConnection;
   users: Player[] = [];
 
-  constructor(restService: RestService) {
+  constructor(restService: RestService, private router: Router, private route: ActivatedRoute) {
     this.buildConnection();
 
     this.quiz = restService.getQuiz();
@@ -38,7 +39,7 @@ export class WaitingroomComponent {
     this.users.push({username: "Lisa", score: 0});
     this.users.push({username: "Rosi", score: 0});
     this.users.push({username: "Tanya", score: 0});
-    this.users.push({username: "Fernando", score: 0});
+    this.users.push({username: "Fernando", score: 0});     
   }
 
   titleTo8Digits(){
@@ -60,12 +61,16 @@ export class WaitingroomComponent {
     
     this.connection.on("registerUser", (username) => {
         this.users.push({username: username, score: 0});
+        this.router.navigate([this.router.url])
     });
   }  
 
-  //TODO:
+  startGame(){
+    this.connection.invoke("startGame", this.gamePin);
+  }
+
+  // TODO:
   // AUDIO
   // QR CODE
   // unique code - speichern im backend? schauen ob er schon existiert!!
-  // start button
 }
