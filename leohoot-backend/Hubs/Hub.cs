@@ -37,6 +37,9 @@ public class ChatHub : Hub
 
     public async Task SendRanking() => await Clients.Caller.SendAsync("rankingReceived", users.OrderByDescending(user => user.Score).Take(5).ToList());
 
+    public async Task SendCurrentQuestionId(int currentQuestionId) => await Clients.All.SendAsync("currentQuestionIdReceived", currentQuestionId);
+    /*public async Task SendShowRanking() => await Clients.All.SendAsync("showRanking");
+
     public async Task SendQuestionIsFinished() => await Clients.All.SendAsync("questionIsFinished");
     public async Task SendToNextQuestion() => await Clients.All.SendAsync("nextQuestion");
     public async Task AddAnswer(string username){
@@ -48,5 +51,5 @@ public class ChatHub : Hub
     }
     public async Task SendPoints(string username, int timeInMilliseconds) {
         await Clients.Caller.SendAsync("pointsReceived", GetPoints(timeInMilliseconds), users.Find(user => user.Username == username)!.Score);
-    }
+    }*/
 }

@@ -28,7 +28,6 @@ export class RankingComponent {
     this.connection.start()
     .then(() => {
       this.connection.send("sendRanking");
-      this.connection.send("sendQuestionIsFinished");
       this.connection.on("rankingReceived", (ranking) => {
         this.ranking = ranking as User[];
       });

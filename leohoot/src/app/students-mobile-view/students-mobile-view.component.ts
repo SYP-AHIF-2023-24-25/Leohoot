@@ -13,10 +13,10 @@ import {Answer} from "../../model/answer";
 export class StudentsMobileViewComponent {
   connection!: signalR.HubConnection;
   questionIsFinished: boolean = false;
-  @Input() currentQuestionId: number = 1;
-  @Input() mode: number = 0;
   quizLength = this.restservice.getQuizLength();
-  currentQuestion: Question = this.restservice.getQuestionById(1)!;
+  currentQuestionId: number = 1;
+  currentQuestionCount: number = 0;
+  buttonsSet: boolean[] = [false, false, false, false];
   colors = [
     'bg-button-yellow',
     'bg-red-500',
@@ -42,54 +42,34 @@ export class StudentsMobileViewComponent {
 
     this.connection.start()
       .then(() => {
-        console.log('Connection started!');
-        this.connection.send("sendMessage", "Hello")
-      } )
+        this.connection.on("currentQuestionIdReceived", (currentQuestionId: number) => {
+          this.currentQuestionId = currentQuestionId;
+          this.loadQuestion();
+        });
+      })
       .catch(err => console.log('Error while establishing connection :('));
+  }
 
-    this.connection.on("questionIsFinished", () => {
-      this.questionIsFinished = true;
-    });
-
-    this.route.queryParams.subscribe(params => {
-      if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.currentQuestionId = params['currentQuestionId'];
-      }
-      if (typeof params['mode'] !== 'undefined') {
-        this.mode = params['mode'];
-      }
-      const response: Question | undefined = this.restservice.getQuestionById(this.currentQuestionId);
+  loadQuestion() {
+    const response: number | undefined = this.restservice.getAnswerCountOfQuestion(this.currentQuestionId);
       if (typeof response === 'undefined') {
-        this.router.navigate(['/studentMobileView']);
+        this.router.navigate(['/studentMobileRanking']);
       } else {
-        this.currentQuestion = response;
+        this.currentQuestionCount = response;
+        this.buttonsSet = [];
+        for (let i = 0; i < this.currentQuestionCount; i++) {
+          this.buttonsSet.push(false);
+        }
       }
-    });
   }
 
-  answerQuestion(answer: string) {
-    this.connection.send("answerQuestion", answer);
-    this.questionIsFinished = true;
+  addToAnswer(indexOfAnswer: number) {
+    this.buttonsSet[indexOfAnswer] = !this.buttonsSet[indexOfAnswer];
   }
 
-  showCorrectAnswer() {
-    this.connection.send("showCorrectAnswer");
+  confirmAnswers() {
+    this.connection.send("sendAnswer", this.buttonsSet);
   }
 
-  addToAnswer(answer: Answer) {
-    this.pickedAnswer.push(answer);
-  }
 
-  nextQuestion() {
-    this.connection.send("nextQuestion");
-    this.questionIsFinished = false;
-    this.pickedAnswer = [];
-    this.router.navigate(['/studentMobileRanking'], {queryParams: {currentQuestionId: this.currentQuestionId, mode: this.mode}});
-    //window.location.href = '/studentMobileView?currentQuestionId=' + (this.currentQuestionId) + '&mode=' + this.mode;
-  }
-
-  viewRanking() {
-    //this.connection.send("viewRanking");
-    //window.location.href = '/ranking?currentQuestionId=' + (this.currentQuestionId) + '&mode=' + this.mode;
-  }
 }

@@ -4,6 +4,7 @@ import { Subscription, timer } from 'rxjs';
 import { Mode } from 'src/model/mode';
 import { Question } from 'src/model/question';
 import { RestService } from '../services/rest.service';
+import * as signalR from '@microsoft/signalr';
 
 @Component({
   selector: 'app-question',
@@ -33,24 +34,38 @@ export class QuestionComponent {
   questionIsFinished: boolean = false;
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: Question;
+  connection!: signalR.HubConnection;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService) {
   }
 
   ngOnInit(): void {
     this.getParams();
-    this.audio.loop = true;
-    this.startTimer();
+    //this.audio.loop = true;
+    //this.startTimer();
+  }
+
+  buildConnection() {
+    this.connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://localhost:5134/hub")
+    .build();
+
+    this.connection.start()
+    .then(() => {
+      this.connection.send("sendCurrentQuestionId", this.currentQuestionId);
+    })
+    .catch(err => console.log('Error while establishing connection :('));
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.currentQuestionId = params['currentQuestionId'];
+        this.currentQuestionId = parseInt(params['currentQuestionId']);
       }
       if (typeof params['mode'] !== 'undefined') {
         this.mode = params['mode'];
       }
+      this.buildConnection()
       this.getQuestion();
     });
   }
@@ -79,9 +94,10 @@ export class QuestionComponent {
   }
 
   showCorrectAnswer() {
+    //this.connection.send("sendQuestionIsFinished");
     this.questionIsFinished = true;
-    this.obsTimer.unsubscribe();
-    this.audio.pause();
+    //this.obsTimer.unsubscribe();
+    //this.audio.pause();
   }
 
   nextQuestion() {
@@ -98,6 +114,7 @@ export class QuestionComponent {
         currentQuestionId: this.currentQuestion.nextQuestionId,
         mode: Mode.GAME_MODE
       };
+      //this.connection.send("sendShowRanking");
       this.router.navigate(['/ranking'], { queryParams });
     }
   }

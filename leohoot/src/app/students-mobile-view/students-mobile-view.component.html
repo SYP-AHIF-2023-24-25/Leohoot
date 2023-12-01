@@ -7,8 +7,8 @@
   </div>
 </div>
  <div class="container mx-auto max-w-128 p-2 text-center bg-hooti-beige max-w-screen-sm">
-   <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-20 flex grid-cols-2 grid-rows-1 gap-3 text-xl mt-3 grid grid-cols-3 gap-2 mx-auto">
-       <p class="text-center justify-start">{{currentQuestionId}}/{{quizLength}}</p>
+   <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-20 grid-rows-1 text-xl mt-3 grid grid-cols-3 gap-2 mx-auto">
+       <p class="text-center justify-start">0/{{quizLength}}</p>
        <p class="text-center">Name</p>
        <p class="text-center justify-end">Ranking: 1</p>
    </div>
@@ -16,44 +16,30 @@
      <div class="container mx-auto p-2" >
        <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
          <div *ngFor="
-          let answer of currentQuestion.answers;
+          let buttonClicked of buttonsSet; 
           index as i">
            <div
-             *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)" (click)="addToAnswer(answer)"
+             *ngIf="!buttonClicked" (click)="addToAnswer(i)"
              class="{{colors[i]}} flex items-center w-full h-40 rounded-lg md:text-2xl text-base
              font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-50 align-middle">
              <img src="{{icons[i]}}" class="h-20 w-20">
            </div>
            <div
-             *ngIf="questionIsFinished && !answer.isCorrect"
-             class="flex items-center w-full h-40 rounded-lg bg-hooti-grey px-4 align-middle text-base font-bold text-white shadow-lg shadow-gray-300 md:h-50 md:text-2xl"
-           >
+            *ngIf="buttonClicked" (click)="addToAnswer(i)"
+             class="{{colors[i]}} flex items-center w-full h-40 rounded-lg border-8 border-hooti-grey md:text-2xl text-base
+             font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-50 align-middle">
              <img src="{{icons[i]}}" class="h-20 w-20">
-           </div>
+          </div>
+           
          </div>
        </div>
        <div class="col-auto row-auto mt-4 grid grid-cols-1 grid-rows-1 gap-3">
          <div class="justify-self-end">
            <button
-             *ngIf="!questionIsFinished"
-             class="sm:w-15 my-1 rounded-md bg-hooti-yellow p-5 text-white md:w-20 font-bold"
-             (click)="answerQuestion('0')"
+             class="sm:w-50 my-1 rounded-md bg-hooti-yellow p-5 text-white md:w-50 font-bold"
+             (click)="confirmAnswers()"
            >
-             Done
-           </button>
-           <!--button                                                                   <=== Ranking connection
-             *ngIf="questionIsFinished"
-             class="sm:w-15 my-10 rounded-md bg-hooti-yellow p-2 text-white md:w-20"
-             (click)="viewRanking()"
-           >
-             Ranking
-           </button-->
-           <button
-             *ngIf="questionIsFinished"
-             class="sm:w-15 my-1 rounded-md bg-hooti-yellow p-5 text-white md:w-20 font-bold"
-             (click)="nextQuestion()"
-           >
-             Next
+             Confirm Answers
            </button>
          </div>
        </div>

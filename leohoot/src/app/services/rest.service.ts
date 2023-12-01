@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { get } from 'jquery';
 import { DemoQuiz } from 'src/model/demo-quiz';
 import { Question } from 'src/model/question';
 
@@ -131,5 +132,9 @@ export class RestService {
 
   getQuizLength(): number {
     return this.demoQuiz.questions.length;
+  }
+
+  getAnswerCountOfQuestion(id: number): number {
+    return this.getQuestionById(id)!.answers.length;
   }
 }
