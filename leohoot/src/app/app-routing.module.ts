@@ -4,11 +4,13 @@ import { TeacherDemoModeQuizComponent } from './teacher-demo-mode-quiz/teacher-d
 import {StudentsMobileViewComponent} from "./students-mobile-view/students-mobile-view.component";
 import { RankingComponent } from './ranking/ranking.component';
 import { QuestionComponent } from './question/question.component';
+import {StudentsMobileRankingComponent} from "./students-mobile-ranking/students-mobile-ranking.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/teacherDemoModeQuiz', pathMatch: 'full' },
   { path: 'teacherDemoModeQuiz', component: TeacherDemoModeQuizComponent },
   {path: 'studentMobileView', component: StudentsMobileViewComponent},
+  {path: 'studentMobileRanking', component: StudentsMobileRankingComponent},
   { path: 'ranking', component: RankingComponent },
   { path: 'question', component: QuestionComponent },
 ];

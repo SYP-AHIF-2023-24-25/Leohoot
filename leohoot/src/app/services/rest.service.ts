@@ -123,4 +123,8 @@ export class RestService {
   getQuestionById(id: number): Question | undefined {
     return this.demoQuiz.questions.find(question => question.id == id);
   }
+
+  getQuizLength(): number {
+    return this.demoQuiz.questions.length;
+  }
 }

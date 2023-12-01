@@ -14,7 +14,7 @@
           currentQuestion.answerTimeInSeconds - currTime
         }}
       </div>
-  
+
       <div class="col-span-3 self-center justify-self-stretch">
         <div
           *ngIf="currentQuestion.imageName"
@@ -31,7 +31,7 @@
           class="my-20"
         ></div>
       </div>
-  
+
       <div class="justify-self-end">
         <button
           *ngIf="!questionIsFinished"
@@ -49,7 +49,7 @@
         </button>
       </div>
     </div>
-  
+
     <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
       <div
         *ngFor="
@@ -60,18 +60,17 @@
         <div
           *ngIf="!questionIsFinished || (questionIsFinished && answer.isCorrect)"
           class="{{
-            colors[i]
-          }} flex items-center h-28 rounded-lg md:text-2xl text-base font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-24"
+            colors[i]          }} flex items-center h-28 rounded-lg md:text-2xl text-base font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-24"
         >
-          {{ answer.answer }}
+          <img src="{{icons[i]}}" class="h-10 w-10 m-2">{{ answer.answer }}
         </div>
         <div
           *ngIf="questionIsFinished && !answer.isCorrect"
           class="flex h-28 items-center rounded-lg bg-hooti-grey px-4 align-middle text-base font-bold text-white shadow-lg shadow-gray-300 md:h-24 md:text-2xl"
         >
-          {{ answer.answer }}
+          <img src="{{icons[i]}}" class="h-10 w-10 m-2">{{ answer.answer }}
         </div>
       </div>
     </div>
   </div>
-  
+

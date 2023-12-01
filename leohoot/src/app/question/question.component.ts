@@ -16,10 +16,18 @@ export class QuestionComponent {
 
   colors = [
     'bg-button-yellow',
-    'bg-button-orange',
-    'bg-button-purple',
+    'bg-red-500',
+    'bg-green-400',
     'bg-button-blue',
   ];
+
+  icons = [
+    'assets/images/cat.png',
+    'assets/images/crab.png',
+    'assets/images/frog.png',
+    'assets/images/bird.png'
+    ]
+
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
   questionIsFinished: boolean = false;
