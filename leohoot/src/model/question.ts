@@ -6,4 +6,5 @@ export interface Question {
   answerTimeInSeconds: number;
   answers: Answer[];
   imageName?: string;
+  nextQuestionId: number | null;
 }

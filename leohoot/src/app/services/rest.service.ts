@@ -34,6 +34,7 @@ export class RestService {
           },
         ],
         imageName: 'assets/images/panorama.jpg',
+        nextQuestionId: 2,
       },
       {
         id: 2,
@@ -49,6 +50,7 @@ export class RestService {
             isCorrect: false,
           },
         ],
+        nextQuestionId: 3,
       },
       {
         id: 3,
@@ -72,6 +74,7 @@ export class RestService {
             isCorrect: true,
           },
         ],
+        nextQuestionId: 4,
       },
       {
         id: 4,
@@ -95,6 +98,7 @@ export class RestService {
             isCorrect: false,
           },
         ],
+        nextQuestionId: 5,
       },
       {
         id: 5,
@@ -113,7 +117,8 @@ export class RestService {
             answer: 'Herr Nilsson',
             isCorrect: true,
           },
-        ]
+        ],
+        nextQuestionId: null
       },
     ]
   };

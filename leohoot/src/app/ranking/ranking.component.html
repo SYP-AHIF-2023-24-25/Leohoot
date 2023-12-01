@@ -1,1 +1,40 @@
-<p>ranking works!</p>
+<div class="bg-hooti-yellow pb-2 text-center" id="questiontext">
+    <div class="container mx-auto p-2">
+      <div class="mt-8 text-2xl font-bold md:text-4xl">
+        Ranking
+      </div>
+    </div>
+</div>
+
+<div class="container mx-auto flex flex-col items-end p-2">
+  <button class="sm:w-15 rounded-md bg-hooti-yellow p-2 text-white md:w-20 my-5" (click)="nextQuestion()">
+    Next
+  </button>
+  <ul class="w-full space-y-4">
+    <li *ngFor="let user of ranking; index as i">
+      <div class="grid grid-cols-12 gap-3 items-center bg-gray-100 p-4 rounded-lg">
+        <div class="col-span-1 flex items-center">
+          <div class="h-8 w-8 md:h-12 md:w-12 bg-hooti-yellow text-white font-bold text-lg md:text-xl flex items-center justify-center rounded-lg">
+            {{i+1}}
+          </div>
+        </div>
+        <div class="col-span-10">
+          <div class="flex text-lg font-semibold text-gray-800 items-center">
+            {{user.username}}
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="text-md leading-6 text-gray-800 text-right">
+            {{user.score}}
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+
+
+  
+

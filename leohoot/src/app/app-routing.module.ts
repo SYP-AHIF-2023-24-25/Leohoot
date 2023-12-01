@@ -5,6 +5,7 @@ import {StudentsMobileViewComponent} from "./students-mobile-view/students-mobil
 import { RankingComponent } from './ranking/ranking.component';
 import { QuestionComponent } from './question/question.component';
 import {StudentsMobileRankingComponent} from "./students-mobile-ranking/students-mobile-ranking.component";
+import { GameTeacherViewComponent } from './game-teacher-view/game-teacher-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/teacherDemoModeQuiz', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'studentMobileRanking', component: StudentsMobileRankingComponent},
   { path: 'ranking', component: RankingComponent },
   { path: 'question', component: QuestionComponent },
+  { path: 'game', component: GameTeacherViewComponent}
 ];
 
 @NgModule({
