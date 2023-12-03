@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../services/rest.service";
 import {Answer} from "../../model/answer";
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { SignalRService } from '../services/signalr.service';
 
 @Component({
   selector: 'app-students-mobile-view',
@@ -13,7 +14,6 @@ import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 })
 export class StudentsMobileViewComponent {
   username: string = 'Sophie'
-  connection!: signalR.HubConnection;
   questionIsFinished: boolean = false;
   quizLength = this.restservice.getQuizLength();
   currentQuestionId: number = 1;
@@ -33,42 +33,27 @@ export class StudentsMobileViewComponent {
     'assets/images/bird.png'
   ]
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService) {
+  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
 
   ngOnInit() {
     this.getParams();
+    this.signalRService.connection.on("endLoading", () => {
+      this.router.navigate(['/studentMobileRanking'], { queryParams: { currentQuestionId: this.currentQuestionId } });
+    });
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['currentQuestionId'] !== 'undefined') {
-        console.log(params['currentQuestionId']);
         this.currentQuestionId = parseInt(params['currentQuestionId']);
       }
-      this.buildConnection()
       this.getAnswerCountOfQuestion();
     });
   }
 
-  buildConnection() {
-    this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5134/hub")
-      .build();
-
-    this.connection.start()
-      .then(() => {
-        this.connection.on("endLoading", () => {
-          console.log("endLoading");
-          this.router.navigate(['/studentMobileRanking'], { queryParams: { currentQuestionId: this.currentQuestionId } });
-        });
-      })
-      .catch(err => console.log('Error while establishing connection :('));
-  }
-
   getAnswerCountOfQuestion() {
     const response: number | undefined = this.restservice.getAnswerCountOfQuestion(this.currentQuestionId);
-    console.log(response);
     if (typeof response === 'undefined') {
       this.router.navigate(['/studentMobileRanking'], { queryParams: { currentQuestionId: this.currentQuestionId } });
     } else {
@@ -91,7 +76,7 @@ export class StudentsMobileViewComponent {
   confirmAnswers() {
     const areAnswersCorrect: boolean = this.restservice.areAnswersCorrect(this.currentQuestionId, this.buttons);
     if (areAnswersCorrect) {
-      this.connection.send("confirmAnswer", this.username);
+      this.signalRService.connection.send("confirmAnswer", this.username);
     }
     this.router.navigate(['/studentLoadingScreen'], { queryParams: { currentQuestionId: this.currentQuestionId } });
   }

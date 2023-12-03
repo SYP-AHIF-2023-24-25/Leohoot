@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as signalR from "@microsoft/signalr";
 import { Mode } from 'src/model/mode';
 import { User } from 'src/model/user';
+import { SignalRService } from '../services/signalr.service';
 
 @Component({
   selector: 'app-ranking',
@@ -12,27 +13,14 @@ import { User } from 'src/model/user';
 export class RankingComponent {
   currentQuestionId: number = 0;
   mode: number = 1;
-  connection!: signalR.HubConnection;
   ranking: User[] = [];
 
-  constructor(private router: Router, private route: ActivatedRoute) { 
+  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) { 
     this.getParams();
-    this.buildConnection();
-  }
-
-  buildConnection() {
-    this.connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5134/hub")
-    .build();
-
-    this.connection.start()
-    .then(() => {
-      this.connection.send("sendRanking");
-      this.connection.on("rankingReceived", (ranking) => {
-        this.ranking = ranking as User[];
-      });
-    })
-    .catch(err => console.log('Error while establishing connection :('));
+    this.signalRService.connection.send("sendRanking");
+    this.signalRService.connection.on("rankingReceived", (ranking) => {
+      this.ranking = ranking as User[];
+    });
   }
 
   getParams() {
@@ -47,8 +35,7 @@ export class RankingComponent {
   }
 
   nextQuestion() {
-    console.log("nextQuestion");
-    this.connection.send("sendToNextQuestion");
+    this.signalRService.connection.send("sendToNextQuestion");
     const queryParams = {
       currentQuestionId: this.currentQuestionId,
       mode: Mode.GAME_MODE
