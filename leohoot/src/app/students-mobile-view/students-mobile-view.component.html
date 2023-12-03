@@ -16,7 +16,7 @@
      <div class="container mx-auto p-2" >
        <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
          <div *ngFor="
-          let buttonClicked of buttonsSet; 
+          let buttonClicked of buttons; 
           index as i">
            <div
              *ngIf="!buttonClicked" (click)="addToAnswer(i)"

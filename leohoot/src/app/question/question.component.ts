@@ -52,7 +52,7 @@ export class QuestionComponent {
 
     this.connection.start()
     .then(() => {
-      this.connection.send("sendCurrentQuestionId", this.currentQuestionId);
+      
     })
     .catch(err => console.log('Error while establishing connection :('));
   }
@@ -94,7 +94,7 @@ export class QuestionComponent {
   }
 
   showCorrectAnswer() {
-    //this.connection.send("sendQuestionIsFinished");
+    this.connection.send("sendEndLoading");
     this.questionIsFinished = true;
     //this.obsTimer.unsubscribe();
     //this.audio.pause();
@@ -114,7 +114,6 @@ export class QuestionComponent {
         currentQuestionId: this.currentQuestion.nextQuestionId,
         mode: Mode.GAME_MODE
       };
-      //this.connection.send("sendShowRanking");
       this.router.navigate(['/ranking'], { queryParams });
     }
   }

@@ -9,9 +9,10 @@ import { RankingComponent } from './ranking/ranking.component';
 import { QuestionComponent } from './question/question.component';
 import { StudentsMobileRankingComponent } from './students-mobile-ranking/students-mobile-ranking.component';
 import { GameTeacherViewComponent } from './game-teacher-view/game-teacher-view.component';
+import { StudentsLoadingScreenComponent } from './students-loading-screen/students-loading-screen.component';
 
 @NgModule({
-  declarations: [AppComponent, TeacherDemoModeQuizComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, GameTeacherViewComponent],
+  declarations: [AppComponent, TeacherDemoModeQuizComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, GameTeacherViewComponent, StudentsLoadingScreenComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { get } from 'jquery';
 import { DemoQuiz } from 'src/model/demo-quiz';
 import { Question } from 'src/model/question';
+import { QuestionComponent } from '../question/question.component';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,8 @@ export class RestService {
     ]
   };
 
+  currentQuestionId: number = 1;
+
   constructor() { }
 
   getQuestionById(id: number): Question | undefined {
@@ -136,5 +139,31 @@ export class RestService {
 
   getAnswerCountOfQuestion(id: number): number {
     return this.getQuestionById(id)!.answers.length;
+  }
+
+  areAnswersCorrect(questionId: number, buttons: boolean[]): boolean {
+    let areAnswersCorrect: boolean = true;
+    const question: Question | undefined = this.getQuestionById(questionId);
+    if (typeof question === 'undefined') {
+      areAnswersCorrect =  false;
+    } else {
+      for (let i = 0; i < question.answers.length && areAnswersCorrect; i++) {
+        if (!(question.answers[i].isCorrect && buttons[i])) {
+          areAnswersCorrect =  false;
+        }
+      }
+    }
+    return areAnswersCorrect;
+  }
+
+  getNextQuestionId(currentQuestionId: number): number | undefined | null {
+    console.log('CurrentQuestionId: ' + currentQuestionId);
+    const question: Question | undefined = this.getQuestionById(currentQuestionId);
+    console.log('Question: ' + question);
+    if (typeof question === 'undefined') {
+      return undefined;
+    } else {
+      return question.nextQuestionId;
+    }
   }
 }

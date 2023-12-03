@@ -28,6 +28,8 @@ public class ChatHub : Hub
 
     }
 
+    List<User> currentAnswers = new List<User>();
+
     public int GetPoints(double timeInMilliseconds) {
         int maxTimePoints = 1000;
         double timePercentage = 1 / maxTimePoints * timeInMilliseconds;
@@ -37,7 +39,21 @@ public class ChatHub : Hub
 
     public async Task SendRanking() => await Clients.Caller.SendAsync("rankingReceived", users.OrderByDescending(user => user.Score).Take(5).ToList());
 
-    public async Task SendCurrentQuestionId(int currentQuestionId) => await Clients.All.SendAsync("currentQuestionIdReceived", currentQuestionId);
+    public async Task ConfirmAnswer(string username) {
+        DateTime currentTime = DateTime.UtcNow;
+        double milliseconds = currentTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+        int score = GetPoints(milliseconds);
+        currentAnswers.Add(new User(username, score));
+        
+        await Clients.All.SendAsync("answerReceived", username, milliseconds);
+    }
+
+    //this.connection.on("endLoading")
+    public async Task SendEndLoading() => await Clients.All.SendAsync("endLoading");
+
+    // this.connection.send("sendToNextQuestion");
+    public async Task SendToNextQuestion() => await Clients.All.SendAsync("nextQuestion");
+
     /*public async Task SendShowRanking() => await Clients.All.SendAsync("showRanking");
 
     public async Task SendQuestionIsFinished() => await Clients.All.SendAsync("questionIsFinished");

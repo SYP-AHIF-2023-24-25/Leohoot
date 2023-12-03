@@ -47,6 +47,7 @@ export class RankingComponent {
   }
 
   nextQuestion() {
+    console.log("nextQuestion");
     this.connection.send("sendToNextQuestion");
     const queryParams = {
       currentQuestionId: this.currentQuestionId,
