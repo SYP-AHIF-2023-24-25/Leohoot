@@ -40,8 +40,8 @@ export class QuestionComponent {
 
   ngOnInit(): void {
     this.getParams();
-    //this.audio.loop = true;
-    //this.startTimer();
+    this.audio.loop = true;
+    this.startTimer();
   }
 
   getParams() {
@@ -73,6 +73,7 @@ export class QuestionComponent {
       ) {
         this.obsTimer.unsubscribe();
         this.questionIsFinished = true;
+        this.signalRService.connection.send("sendEndLoading");
         this.audio.pause();
       }
       this.currTime = currTime;
@@ -82,8 +83,8 @@ export class QuestionComponent {
   showCorrectAnswer() {
     this.signalRService.connection.send("sendEndLoading");
     this.questionIsFinished = true;
-    //this.obsTimer.unsubscribe();
-    //this.audio.pause();
+    this.obsTimer.unsubscribe();
+    this.audio.pause();
   }
 
   nextQuestion() {

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as signalR from '@microsoft/signalr';
 import { RestService } from '../services/rest.service';
 import { SignalRService } from '../services/signalr.service';
 
@@ -16,7 +15,7 @@ export class StudentsLoadingScreenComponent {
       this.getParams();
       this.signalRService.connection.on("endLoading", () => {
         const queryParams = {
-          currentQuestionId: this.restservice.getNextQuestionId(this.currentQuestionId)
+          currentQuestionId: this.currentQuestionId
         };
         this.router.navigate(['/studentMobileRanking'], { queryParams });
       });

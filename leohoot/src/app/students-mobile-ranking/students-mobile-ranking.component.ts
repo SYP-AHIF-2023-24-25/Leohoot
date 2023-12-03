@@ -1,7 +1,4 @@
 import {Component, Input} from '@angular/core';
-import * as signalR from "@microsoft/signalr";
-import {Question} from "../../model/question";
-import {Answer} from "../../model/answer";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../services/rest.service";
 import { SignalRService } from '../services/signalr.service';
@@ -14,6 +11,10 @@ import { SignalRService } from '../services/signalr.service';
 export class StudentsMobileRankingComponent {
   quizLength = this.restservice.getQuizLength();
   currentQuestionId: number = 0;
+  username: string = "Sophie";
+  points: number = 0;
+  currentPoints: number = 0;
+  
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
 
@@ -21,6 +22,12 @@ export class StudentsMobileRankingComponent {
 
   ngOnInit() {
     this.getParams();
+
+    this.signalRService.connection.send("sendPoints", this.username);
+    this.signalRService.connection.on("pointsReceived", (points: number, currentPoints: number) => {
+      this.points = points;
+      this.currentPoints = currentPoints;
+    });
 
     this.signalRService.connection.on("nextQuestion", () => {
       const queryParams = {

@@ -148,7 +148,7 @@ export class RestService {
       areAnswersCorrect =  false;
     } else {
       for (let i = 0; i < question.answers.length && areAnswersCorrect; i++) {
-        if (!(question.answers[i].isCorrect && buttons[i])) {
+        if (question.answers[i].isCorrect != buttons[i]) {
           areAnswersCorrect =  false;
         }
       }
@@ -157,9 +157,7 @@ export class RestService {
   }
 
   getNextQuestionId(currentQuestionId: number): number | undefined | null {
-    console.log('CurrentQuestionId: ' + currentQuestionId);
     const question: Question | undefined = this.getQuestionById(currentQuestionId);
-    console.log('Question: ' + question);
     if (typeof question === 'undefined') {
       return undefined;
     } else {
