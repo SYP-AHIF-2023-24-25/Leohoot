@@ -8,7 +8,7 @@ import { SignalRService } from '../services/signalr.service';
 @Component({
   selector: 'app-ranking',
   templateUrl: './ranking.component.html',
-  styleUrls: ['./ranking.component.css']
+  styleUrls: []
 })
 export class RankingComponent {
   currentQuestionId: number = 0;

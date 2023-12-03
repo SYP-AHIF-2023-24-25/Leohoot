@@ -10,7 +10,7 @@ import { SignalRService } from '../services/signalr.service';
 @Component({
   selector: 'app-students-mobile-view',
   templateUrl: './students-mobile-view.component.html',
-  styleUrls: ['./students-mobile-view.component.css']
+  styleUrls: []
 })
 export class StudentsMobileViewComponent {
   username: string = 'Sophie'

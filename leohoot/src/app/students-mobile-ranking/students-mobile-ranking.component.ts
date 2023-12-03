@@ -9,7 +9,7 @@ import { SignalRService } from '../services/signalr.service';
 @Component({
   selector: 'app-students-mobile-ranking',
   templateUrl: './students-mobile-ranking.component.html',
-  styleUrls: ['./students-mobile-ranking.component.css']
+  styleUrls: []
 })
 export class StudentsMobileRankingComponent {
   quizLength = this.restservice.getQuizLength();

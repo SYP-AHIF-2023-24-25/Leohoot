@@ -7,7 +7,7 @@ import { SignalRService } from '../services/signalr.service';
 @Component({
   selector: 'app-students-loading-screen',
   templateUrl: './students-loading-screen.component.html',
-  styleUrls: ['./students-loading-screen.component.css']
+  styleUrls: []
 })
 export class StudentsLoadingScreenComponent {
     currentQuestionId: number = 0;
