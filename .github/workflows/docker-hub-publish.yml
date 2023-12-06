@@ -13,7 +13,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: haidersophie/leohoot
+  IMAGE_NAME: if200127/leohoot
 
 jobs:
     build-and-push:
