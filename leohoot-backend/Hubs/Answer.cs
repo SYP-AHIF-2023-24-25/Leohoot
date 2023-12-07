@@ -1,5 +1,3 @@
-using System;
-
 public class Answer{
         public string AnswerText { get; }
         public bool IsCorrect { get; }

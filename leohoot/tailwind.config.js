@@ -17,6 +17,9 @@ module.exports = {
         "user-orange": "#fcb30a",
         "background-blue": "#0788b0",
       },
+      spacing: {
+        '128': '32rem',
+      }
     },
   },
   plugins: [],

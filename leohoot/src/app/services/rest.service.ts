@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from 'src/model/quiz';
+import { get } from 'jquery';
 import { Question } from 'src/model/question';
+import { QuestionComponent } from '../question/question.component';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,7 @@ export class RestService {
           },
         ],
         imageName: 'assets/images/panorama.jpg',
+        nextQuestionId: 2,
       },
       {
         id: 2,
@@ -49,6 +52,7 @@ export class RestService {
             isCorrect: false,
           },
         ],
+        nextQuestionId: 3,
       },
       {
         id: 3,
@@ -72,6 +76,7 @@ export class RestService {
             isCorrect: true,
           },
         ],
+        nextQuestionId: 4,
       },
       {
         id: 4,
@@ -95,6 +100,7 @@ export class RestService {
             isCorrect: false,
           },
         ],
+        nextQuestionId: 5,
       },
       {
         id: 5,
@@ -113,10 +119,13 @@ export class RestService {
             answer: 'Herr Nilsson',
             isCorrect: true,
           },
-        ]
+        ],
+        nextQuestionId: null
       },
     ]
   };
+
+  currentQuestionId: number = 1;
 
   constructor() { }
 
@@ -126,5 +135,37 @@ export class RestService {
 
   getQuiz(): Quiz {
     return this.demoQuiz;
+  }
+  
+  getQuizLength(): number {
+    return this.demoQuiz.questions.length;
+  }
+
+  getAnswerCountOfQuestion(id: number): number {
+    return this.getQuestionById(id)!.answers.length;
+  }
+
+  areAnswersCorrect(questionId: number, buttons: boolean[]): boolean {
+    let areAnswersCorrect: boolean = true;
+    const question: Question | undefined = this.getQuestionById(questionId);
+    if (typeof question === 'undefined') {
+      areAnswersCorrect =  false;
+    } else {
+      for (let i = 0; i < question.answers.length && areAnswersCorrect; i++) {
+        if (question.answers[i].isCorrect != buttons[i]) {
+          areAnswersCorrect =  false;
+        }
+      }
+    }
+    return areAnswersCorrect;
+  }
+
+  getNextQuestionId(currentQuestionId: number): number | undefined | null {
+    const question: Question | undefined = this.getQuestionById(currentQuestionId);
+    if (typeof question === 'undefined') {
+      return undefined;
+    } else {
+      return question.nextQuestionId;
+    }
   }
 }
