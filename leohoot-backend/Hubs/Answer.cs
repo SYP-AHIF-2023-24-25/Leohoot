@@ -1,10 +1,9 @@
-public class Answer {
-    public string Username { get; }
-    public DateTime Time { get; }
+public class Answer{
+        public string AnswerText { get; }
+        public bool IsCorrect { get; }
 
-    public Answer(string username, DateTime time)
-    {
-        Username = username;
-        Time = time;
-    }
+        public Answer(string answer, bool isCorrect) {
+            this.AnswerText = answer;
+            this.IsCorrect = isCorrect;
+        }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Quiz } from 'src/model/quiz';
 import { get } from 'jquery';
-import { DemoQuiz } from 'src/model/demo-quiz';
 import { Question } from 'src/model/question';
 import { QuestionComponent } from '../question/question.component';
 
@@ -8,7 +8,7 @@ import { QuestionComponent } from '../question/question.component';
   providedIn: 'root'
 })
 export class RestService {
-  demoQuiz: DemoQuiz = {
+  demoQuiz: Quiz = {
     title: 'Demo Quiz',
     description: 'This is a demo quiz',
     creator: 'Hooti',
@@ -133,6 +133,10 @@ export class RestService {
     return this.demoQuiz.questions.find(question => question.id == id);
   }
 
+  getQuiz(): Quiz {
+    return this.demoQuiz;
+  }
+  
   getQuizLength(): number {
     return this.demoQuiz.questions.length;
   }
