@@ -26,17 +26,24 @@ public class ChatHub : Hub
         new User("Sophie", 800)
     };
 
+    
+    static List<string> gamePins = new List<string>();
+
     public ChatHub() {
     }
 
     static List<User> currentAnswers = new List<User>();
 
+
     public async Task RegisterUser(string username) {
         if (users.Find(user => user.Username == username) == null)
         {
             users.Add(new User(username, 0));
-        }
-        await Clients.All.SendAsync("registeredUser", username);
+            await Clients.All.SendAsync("registeredUser", username);
+            await Clients.Caller.SendAsync("registeredUserSuccess", username);
+        } else{
+            await Clients.Caller.SendAsync("registeredUserFailed", username);
+        }       
     }
 
     public async Task StartGame(int gamePin) => await Clients.All.SendAsync("startedGame", gamePin);

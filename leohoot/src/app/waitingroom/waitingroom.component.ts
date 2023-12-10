@@ -20,8 +20,8 @@ export class WaitingroomComponent {
   constructor(restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
     this.quiz = restService.getQuiz();
 
-    //TODO: anhand von dem title die login page kreaiieren und dann hier verlinken (TRICKY)
-    this.qrCodeData = "http://140.238.173.82:81/teacherDemoModeQuiz";  //TODO: Mias Page verlinken    
+    //TODO
+    this.qrCodeData = "http://140.238.173.82:81/teacherDemoModeQuiz";    
     this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator;
     this.gamePin = this.titleTo8Digits(); 
 

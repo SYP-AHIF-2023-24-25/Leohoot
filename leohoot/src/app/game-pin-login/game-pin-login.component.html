@@ -7,7 +7,7 @@
        
         <form #gamePinForm="ngForm" class="space-y-6 bg-white mx-4 py-5 px-5 rounded">
             <div>
-                <input id="gamePin" name="gamePin" type="gamePin" placeholder="Game PIN" [(ngModel)]="gamePin" required minlength="8" class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-12 md:text-2xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center md:placeholder:text-lg focus:ring-2 focus:ring-inset">
+                <input id="gamePin" name="gamePin" type="gamePin" placeholder="Game PIN" [(ngModel)]="gamePin" required minlength="8" maxlength="8" class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-12 md:text-2xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center md:placeholder:text-lg focus:ring-2 focus:ring-inset">
             </div>  
             <div>
                 <div *ngIf="gamePinForm.form.valid === false; then disableButton else button">

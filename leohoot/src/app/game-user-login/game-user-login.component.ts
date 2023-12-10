@@ -12,14 +12,20 @@ export class GameUserLoginComponent {
   constructor(restService: RestService, private router: Router, private signalRService: SignalRService){
     
   }
+  ngOnInit() {
+    this.signalRService.connection.on("registeredUserFailed", (name) => {
+      alert(`Username ${name} is already taken`);
+    });
+
+    this.signalRService.connection.on("registeredUserSuccess", (name) => {
+      const queryParams = {
+        username: name
+      };
+      this.router.navigate(['/studentWaitingPage'], { queryParams });
+    });
+  }
 
   addUser(){
     this.signalRService.connection.send("registerUser", this.username);
-    const queryParams = {
-      username: this.username
-    };
-
-    //TODO: hier später richtige page verlinken
-    this.router.navigate(['/studentWaitingPage'], { queryParams });
   }
 }
