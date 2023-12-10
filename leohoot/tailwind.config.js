@@ -7,6 +7,7 @@ module.exports = {
         "hooti-orange": "#f88d30",
         "hooti-blue": "#5ea9ea",
         "hooti-yellow": "#fccb0a",
+        "hooti-yellow-disabled": "#FDDF6C",
         "hooti-green": "#ccc24b",
         "hooti-beige": "#ffecca",
         "hooti-grey": "#9b9c9f",

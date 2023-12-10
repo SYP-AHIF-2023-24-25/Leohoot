@@ -14,9 +14,12 @@ import { StudentsMobileViewComponent } from './students-mobile-view/students-mob
 import { StudentsMobileRankingComponent } from './students-mobile-ranking/students-mobile-ranking.component';
 import { GameTeacherViewComponent } from './game-teacher-view/game-teacher-view.component';
 import { StudentsLoadingScreenComponent } from './students-loading-screen/students-loading-screen.component';
+import { GameLoginComponent } from './game-pin-login/game-pin-login.component';
+import { GameUserLoginComponent } from './game-user-login/game-user-login.component';
+import { StudentWaitingPageComponent } from './students-waiting-page/students-waiting-page.component';
 
 @NgModule({
-  declarations: [AppComponent, TeacherDemoModeQuizComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, GameTeacherViewComponent, StudentsLoadingScreenComponent],
+  declarations: [AppComponent, TeacherDemoModeQuizComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, GameTeacherViewComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule],
   providers: [],
   bootstrap: [AppComponent],
