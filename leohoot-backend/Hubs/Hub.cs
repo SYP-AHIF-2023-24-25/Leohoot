@@ -46,22 +46,13 @@ public class ChatHub : Hub
 
     public async Task StartGame(int gamePin) => await Clients.All.SendAsync("startedGame", gamePin);
 
-    public int GetPoints(double timeInMilliseconds) {
-        int maxTimePoints = 1000;
-        double timePercentage = 1 / maxTimePoints * timeInMilliseconds;
-        double points = (1 - timePercentage)*maxTimePoints;
-        return Convert.ToInt32(points);
-    }
-
     public async Task SendRanking() => await Clients.Caller.SendAsync("rankingReceived", users.OrderByDescending(u => u.Score).Take(5).ToList());
 
     public async Task ConfirmAnswer(string username) {
-        DateTime currentTime = DateTime.UtcNow;
-        double milliseconds = currentTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-        int score = GetPoints(milliseconds);
+        int score = 1000 - 1000/users.Count*currentAnswers.Count;
         currentAnswers.Add(new User(username, score));
         
-        await Clients.All.SendAsync("answerReceived", username, milliseconds);
+        await Clients.All.SendAsync("answerReceived", username);
     }
 
     public async Task SendEndLoading()
