@@ -74,7 +74,7 @@ public class ChatHub : Hub
         {
             currentPoints = currentAnswer.Score;
         }
-        await Clients.All.SendAsync("pointsReceived", points, currentPoints);
+        await Clients.Caller.SendAsync("pointsReceived", points, currentPoints);
     }
 
     public async Task SendToNextQuestion(){
