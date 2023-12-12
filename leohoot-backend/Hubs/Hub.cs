@@ -8,7 +8,7 @@ namespace SignalRWebpack.Hubs;
 public class ChatHub : Hub
 {
     static List<User> users = new List<User>{
-        new User("Leo", 100),
+       /* new User("Leo", 100),
         new User("Jason", 200),
         new User("Piper", 50),
         new User("Percy", 500),
@@ -23,11 +23,9 @@ public class ChatHub : Hub
         new User("Clarisse", 650),
         new User("Silena", 700),
         new User("Charles", 750),
-        new User("Sophie", 800)
+        new User("Sophie", 800)*/
     };
 
-    
-    static List<string> gamePins = new List<string>();
 
     public ChatHub() {
     }

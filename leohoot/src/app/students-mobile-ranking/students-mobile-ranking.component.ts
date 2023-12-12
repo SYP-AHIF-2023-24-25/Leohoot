@@ -11,7 +11,7 @@ import { SignalRService } from '../services/signalr.service';
 export class StudentsMobileRankingComponent {
   quizLength = this.restservice.getQuizLength();
   currentQuestionId: number = 0;
-  username: string = "Sophie";
+  username: string = sessionStorage.getItem("username") || "test";
   points: number = 0;
   currentPoints: number = 0;
   

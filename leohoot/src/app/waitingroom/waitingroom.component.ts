@@ -22,10 +22,8 @@ export class WaitingroomComponent {
 
     //TODO
     this.qrCodeData = "http://140.238.173.82:81/teacherDemoModeQuiz";    
-    this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator;
+    this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
     this.gamePin = this.titleTo8Digits(); 
-
-    //gamePin checken und schauen ob er im backend schon existiert
   }
 
   ngOnInit() {
@@ -37,9 +35,10 @@ export class WaitingroomComponent {
   }
 
   titleTo8Digits(){
+    let title = this.quiz.title + Date.now().toString() + this.quiz.creator;
     let numericValue = 0;
-    for (let i = 0; i < this.qrCodeTitle.length; i++) {
-      numericValue = numericValue * 10 + this.qrCodeTitle.charCodeAt(i);
+    for (let i = 0; i < title.length; i++) {
+      numericValue = numericValue * 10 + title.charCodeAt(i);
     }
     numericValue = numericValue % 100000000;
   

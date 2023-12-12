@@ -13,7 +13,7 @@ import { SignalRService } from '../services/signalr.service';
   styleUrls: []
 })
 export class StudentsMobileViewComponent {
-  username: string = 'Sophie'
+  username: string = sessionStorage.getItem("username") || "test";
   questionIsFinished: boolean = false;
   quizLength = this.restservice.getQuizLength();
   currentQuestionId: number = 1;

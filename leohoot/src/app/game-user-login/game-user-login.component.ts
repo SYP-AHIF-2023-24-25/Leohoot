@@ -21,6 +21,7 @@ export class GameUserLoginComponent {
       const queryParams = {
         username: name
       };
+      sessionStorage.setItem("username", name);
       this.router.navigate(['/studentWaitingPage'], { queryParams });
     });
   }

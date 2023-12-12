@@ -3,6 +3,7 @@ import { Quiz } from 'src/model/quiz';
 import { get } from 'jquery';
 import { Question } from 'src/model/question';
 import { QuestionComponent } from '../question/question.component';
+import { type } from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -125,6 +126,8 @@ export class RestService {
     ]
   };
 
+  static gamePins: number[] = [];
+
   currentQuestionId: number = 1;
 
   constructor() { }
@@ -167,5 +170,15 @@ export class RestService {
     } else {
       return question.nextQuestionId;
     }
+  }
+
+  addGamePin(gamePin: number): void {
+    RestService.gamePins.push(gamePin);
+    console.log(RestService.gamePins);
+  }
+
+  gamePinExists(gamePin: number): boolean {
+    const exists: number | undefined = RestService.gamePins.find(gamePin => gamePin == gamePin);
+    return typeof exists !== 'undefined';
   }
 }
