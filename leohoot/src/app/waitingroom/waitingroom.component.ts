@@ -17,13 +17,18 @@ export class WaitingroomComponent {
   quiz!: Quiz;
   users: Player[] = [];
 
-  constructor(restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
+  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
     this.quiz = restService.getQuiz();
 
     //TODO
     this.qrCodeData = "http://140.238.173.82:81/teacherDemoModeQuiz";    
     this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
-    this.gamePin = this.titleTo8Digits(); 
+    
+    do{
+      this.gamePin = this.generateGamePin();
+    } while (this.gamePin < 10000000 || this.gamePin > 99999999);
+
+    //restService.addGamePin(this.gamePin);
   }
 
   ngOnInit() {
@@ -34,16 +39,27 @@ export class WaitingroomComponent {
     });
   }
 
-  titleTo8Digits(){
-    let title = this.quiz.title + Date.now().toString() + this.quiz.creator;
-    let numericValue = 0;
-    for (let i = 0; i < title.length; i++) {
-      numericValue = numericValue * 10 + title.charCodeAt(i);
+  hashString(str: string): number {
+    let hash = 0;
+
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
     }
-    numericValue = numericValue % 100000000;
-  
-    return numericValue;
+
+    return hash;
   }
+
+  generateGamePin(): number {
+    const currentDateWithTime = new Date();
+    const uniqueString = this.qrCodeTitle + currentDateWithTime.toISOString() + this.quiz.creator;
+      const hashedValue = this.hashString(uniqueString);
+      
+      const gamePin = (hashedValue % 90000000) + 10000000;
+
+      return gamePin;
+  }
+
 
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
