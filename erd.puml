@@ -13,6 +13,8 @@ entity Question {
     * question_id: number <<PK>>
     * question_text: text
     * answer_time: number
+    * preview_time: number
+    optional prieview_time: text
     optional image
     --
     * next_question_id: number <<FK>>

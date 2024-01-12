@@ -13,8 +13,8 @@ export class SignalRService {
 
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
-      //.withUrl("http://140.238.173.82:5000/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
-      .withUrl("http://localhost:5000/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
+      .withUrl("ws://140.238.173.82:8001/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
+      //.withUrl("http://localhost:5000/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
       .build();
 
     this.connection.start()

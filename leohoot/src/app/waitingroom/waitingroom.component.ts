@@ -21,7 +21,7 @@ export class WaitingroomComponent {
     this.quiz = restService.getQuiz();
 
     //TODO
-    this.qrCodeData = "http://140.238.173.82:81/teacherDemoModeQuiz";    
+    this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
     this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
     
     do{

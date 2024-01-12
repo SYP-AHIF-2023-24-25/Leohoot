@@ -16,7 +16,9 @@
 - Zusammenarbeit beim Erstellen/Bearbeiten
 
 ## Sprint:
-- Backend:
+- Backend: Minimal API-Example
+- Configuration:
+- 1.2.2024
 
 ## MVP:
 - Liste von Quizzes
@@ -24,4 +26,3 @@
     - Ansicht mit Fragen umsortieren (drag and drop oder button up down)
     - Shufflen der Antworten
     - Host auf OracleVM: ping pong rest endpoint
-    - 
