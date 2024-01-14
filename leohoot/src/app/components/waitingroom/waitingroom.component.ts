@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { RestService } from '../services/rest.service';
-import { Quiz } from 'src/model/quiz';
-import { Player } from 'src/model/player';
-import * as signalR from '@microsoft/signalr';
+import { RestService } from '../../services/rest.service';
+import { Quiz } from '../../model/quiz';
+import { Player } from '../../model/player';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SignalRService } from '../services/signalr.service';
+import { SignalRService } from '../../services/signalr.service';
 
 @Component({
   selector: 'app-waitingroom',

@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as signalR from "@microsoft/signalr";
-import { Mode } from 'src/model/mode';
-import { User } from 'src/model/user';
-import { SignalRService } from '../services/signalr.service';
+import { Mode } from '../../model/mode';
+import { User } from '../../model/user';
+import { SignalRService } from '../../services/signalr.service';
 
 @Component({
   selector: 'app-ranking',

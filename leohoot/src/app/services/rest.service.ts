@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Quiz } from 'src/model/quiz';
-import { get } from 'jquery';
-import { Question } from 'src/model/question';
-import { QuestionComponent } from '../question/question.component';
-import { type } from 'os';
+import { Quiz } from '../model/quiz';
+import { Question } from '../model/question';
 
 @Injectable({
   providedIn: 'root'

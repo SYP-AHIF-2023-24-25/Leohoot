@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
-import { Mode } from 'src/model/mode';
-import { Question } from 'src/model/question';
-import { RestService } from '../services/rest.service';
-import { SignalRService } from '../services/signalr.service';
+import { Mode } from '../../model/mode';
+import { Question } from '../../model/question';
+import { RestService } from '../../services/rest.service';
+import { SignalRService } from '../../services/signalr.service';
 
 @Component({
   selector: 'app-question',
