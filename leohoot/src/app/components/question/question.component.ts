@@ -17,15 +17,15 @@ export class QuestionComponent {
 
   colors = [
     'bg-button-yellow',
-    'bg-red-500',
     'bg-green-400',
-    'bg-button-blue',
+    'bg-rose-400',
+    'bg-blue-400',
   ];
 
   icons = [
     'assets/images/cat.png',
-    'assets/images/crab.png',
     'assets/images/frog.png',
+    'assets/images/crab.png',
     'assets/images/bird.png'
     ]
 

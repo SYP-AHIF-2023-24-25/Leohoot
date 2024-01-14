@@ -75,6 +75,7 @@ export class RestService {
           },
         ],
         nextQuestionId: 4,
+        imageName: 'assets/images/hooti.png'
       },
       {
         id: 4,
@@ -118,7 +119,8 @@ export class RestService {
             isCorrect: true,
           },
         ],
-        nextQuestionId: null
+        nextQuestionId: null,
+        imageName: 'assets/images/herr-nilsson.jpg'
       },
     ]
   };
