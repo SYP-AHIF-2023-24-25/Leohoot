@@ -1,13 +1,13 @@
 using System.ComponentModel;
 using System.Net.Security;
 using Microsoft.AspNetCore.SignalR;
+using LeohootBackend.Model;
 
-
-namespace SignalRWebpack.Hubs;
+namespace LeohootBackend.Hubs;
 
 public class ChatHub : Hub
 {
-    static List<User> users = new List<User>{
+    static List<Player> users = new List<Player>{
        /* new User("Leo", 100),
         new User("Jason", 200),
         new User("Piper", 50),
@@ -30,13 +30,13 @@ public class ChatHub : Hub
     public ChatHub() {
     }
 
-    static List<User> currentAnswers = new List<User>();
+    static List<Player> currentAnswers = new List<Player>();
 
 
     public async Task RegisterUser(string username) {
         if (users.Find(user => user.Username == username) == null)
         {
-            users.Add(new User(username, 0));
+            users.Add(new Player(username, 0));
             await Clients.All.SendAsync("registeredUser", username);
             await Clients.Caller.SendAsync("registeredUserSuccess", username);
         } else{
@@ -50,16 +50,16 @@ public class ChatHub : Hub
 
     public async Task ConfirmAnswer(string username) {
         int score = 1000 - 1000/users.Count*currentAnswers.Count;
-        currentAnswers.Add(new User(username, score));
+        currentAnswers.Add(new Player(username, score));
         
         await Clients.All.SendAsync("answerReceived", username);
     }
 
     public async Task SendEndLoading()
     {
-        foreach (User user in currentAnswers)
+        foreach (Player user in currentAnswers)
         {
-            User userToUpdate = users.Find(userToUpdate => userToUpdate.Username == user.Username)!;
+            Player userToUpdate = users.Find(userToUpdate => userToUpdate.Username == user.Username)!;
             userToUpdate.Score += user.Score;
         }
         await Clients.All.SendAsync("endLoading");
@@ -68,7 +68,7 @@ public class ChatHub : Hub
     public async Task SendPoints(string username)
     {
         int points = users.Find(user => user.Username == username)!.Score;
-        User? currentAnswer = currentAnswers.Find(user => user.Username == username);
+        Player? currentAnswer = currentAnswers.Find(user => user.Username == username);
         int currentPoints = 0;
         if (currentAnswer != null)
         {
