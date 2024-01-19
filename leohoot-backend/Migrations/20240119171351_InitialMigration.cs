@@ -5,7 +5,7 @@
 namespace leohoot_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,32 +14,34 @@ namespace leohoot_backend.Migrations
                 name: "Users",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Username);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Quizzes",
                 columns: table => new
                 {
-                    QuizId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    UsernameCreator = table.Column<string>(type: "TEXT", nullable: false)
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Quizzes", x => x.QuizId);
+                    table.PrimaryKey("PK_Quizzes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Quizzes_Users_UsernameCreator",
-                        column: x => x.UsernameCreator,
+                        name: "FK_Quizzes_Users_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "Users",
-                        principalColumn: "Username",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -47,58 +49,60 @@ namespace leohoot_backend.Migrations
                 name: "Questions",
                 columns: table => new
                 {
-                    QuestionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    QuestionNumber = table.Column<int>(type: "INTEGER", nullable: false),
                     QuestionText = table.Column<string>(type: "TEXT", nullable: false),
                     AnswerTimeInSeconds = table.Column<int>(type: "INTEGER", nullable: false),
                     ImageName = table.Column<string>(type: "TEXT", nullable: true),
                     PreviewTime = table.Column<int>(type: "INTEGER", nullable: false),
-                    NextQuestionQuestionId = table.Column<int>(type: "INTEGER", nullable: true)
+                    QuizId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
+                    table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questions_Questions_NextQuestionQuestionId",
-                        column: x => x.NextQuestionQuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "QuestionId");
-                    table.ForeignKey(
-                        name: "FK_Questions_Quizzes_QuestionId",
-                        column: x => x.QuestionId,
+                        name: "FK_Questions_Quizzes_QuizId",
+                        column: x => x.QuizId,
                         principalTable: "Quizzes",
-                        principalColumn: "QuizId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
                 {
-                    AnswerId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AnswerText = table.Column<string>(type: "TEXT", nullable: false),
-                    IsCorrect = table.Column<bool>(type: "INTEGER", nullable: false)
+                    IsCorrect = table.Column<bool>(type: "INTEGER", nullable: false),
+                    QuestionId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Answers", x => x.AnswerId);
+                    table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answers_Questions_AnswerId",
-                        column: x => x.AnswerId,
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
                         principalTable: "Questions",
-                        principalColumn: "QuestionId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_NextQuestionQuestionId",
-                table: "Questions",
-                column: "NextQuestionQuestionId");
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quizzes_UsernameCreator",
+                name: "IX_Questions_QuizId",
+                table: "Questions",
+                column: "QuizId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_CreatorId",
                 table: "Quizzes",
-                column: "UsernameCreator");
+                column: "CreatorId");
         }
 
         /// <inheritdoc />

@@ -4,7 +4,7 @@ using System.Formats.Asn1;
 
 namespace LeohootBackend;
 
-public sealed class DataContext(IConfiguration configuration): DbContext
+public sealed class DataContext(IConfiguration configuration) : DbContext
 {
     public required DbSet<Quiz> Quizzes { get; init; }
     public required DbSet<Question> Questions { get; init; }
@@ -15,31 +15,31 @@ public sealed class DataContext(IConfiguration configuration): DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        var user = modelBuilder.Entity<User>();
-        user.HasKey(p => p.Username);
+        // var user = modelBuilder.Entity<User>();
+        // user.HasKey(p => p.Username);
 
-        var quiz = modelBuilder.Entity<Quiz>();
-        quiz.HasKey(q => q.QuizId);
-        quiz.HasOne(q => q.Creator)
-            .WithMany()
-            .HasForeignKey(q => q.UsernameCreator)
-            .OnDelete(DeleteBehavior.Cascade);
-        quiz.HasMany(q => q.Questions)
-            .WithOne()
-            .HasForeignKey(q => q.QuestionId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        var question = modelBuilder.Entity<Question>();
-        question.HasKey(q => q.QuestionId);
-        question
-            .HasMany(q => q.Answers)
-            .WithOne()
-            .HasForeignKey(a => a.AnswerId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        var answer = modelBuilder.Entity<Answer>();
-        answer.HasKey(a => a.AnswerId);
-        answer.Property(a => a.AnswerId).ValueGeneratedOnAdd();
+        // var quiz = modelBuilder.Entity<Quiz>();
+        // quiz.HasKey(q => q.QuizId);
+        // quiz.HasOne(q => q.Creator)
+        //     .WithMany()
+        //     .HasForeignKey(q => q.UsernameCreator)
+        //     .OnDelete(DeleteBehavior.Cascade);
+        // quiz.HasMany(q => q.Questions)
+        //     .WithOne()
+        //     .HasForeignKey(q => q.QuestionId)
+        //     .OnDelete(DeleteBehavior.Cascade);
+
+        // var question = modelBuilder.Entity<Question>();
+        // question.HasKey(q => q.QuestionId);
+        // question
+        //     .HasMany(q => q.Answers)
+        //     .WithOne()
+        //     .HasForeignKey(a => a.AnswerId)
+        //     .OnDelete(DeleteBehavior.Cascade);
+
+        // var answer = modelBuilder.Entity<Answer>();
+        // answer.HasKey(a => a.AnswerId);
+        // answer.Property(a => a.AnswerId).ValueGeneratedOnAdd();
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -55,15 +55,14 @@ internal static class SampleData
     {
         User user = new()
         {
-            Username = "test",
-            Password = "test"
+            Username = "sampleUser",
+            Password = "samplePassword"
         };
-        ctx.Users.Add(user);
-        
+
         Question question2 = new Question()
         {
-            QuestionId = 2,
             QuestionText = "Is Syp cool?",
+            QuestionNumber = 2,
             PreviewTime = 0,
             AnswerTimeInSeconds = 10,
             Answers =
@@ -73,62 +72,54 @@ internal static class SampleData
                     AnswerText = "true",
                     IsCorrect = true
                 },
-                /*new()
+                new()
                 {
                     AnswerText = "false",
                     IsCorrect = false
-                }*/
-            ],
-            NextQuestion = null
+                }
+            ]
         };
 
-        /*Question question1 = new()
+        Question question1 = new()
         {
-            QuestionId = 1,
             QuestionText = "What is the capital of France?",
+            QuestionNumber = 1,
             PreviewTime = 19,
             AnswerTimeInSeconds = 15,
             Answers =
             [
                 new()
                 {
-                    AnswerId = 3,
                     AnswerText = "Lyon",
                     IsCorrect = false
                 },
                 new()
                 {
-                    AnswerId = 4,
                     AnswerText = "Paris",
                     IsCorrect = true
                 },
                 new()
                 {
-                    AnswerId = 5,
                     AnswerText = "Marseille",
                     IsCorrect = false
                 },
                 new()
                 {
-                    AnswerId = 6,
                     AnswerText = "St. Tropez",
                     IsCorrect = false
                 }
             ],
             ImageName = "assets/images/panorama.jpg",
-            NextQuestion = question2
-        };*/
+        };
 
         Quiz quiz = new()
         {
-            QuizId = 1,
             Title = "Demo Quiz",
             Description = "This is a demo quiz",
-            UsernameCreator = user.Username,
             Creator = user,
             Questions =
             [
-                //question1,
+                question1,
                 question2
             ]
         };

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace leohoot_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240118134205_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240119172144_SeedDatabaseMigration")]
+    partial class SeedDatabaseMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace leohoot_backend.Migrations
 
             modelBuilder.Entity("LeohootBackend.Model.Answer", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -33,14 +33,20 @@ namespace leohoot_backend.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("AnswerId");
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("LeohootBackend.Model.Question", b =>
                 {
-                    b.Property<int>("QuestionId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AnswerTimeInSeconds")
@@ -49,27 +55,33 @@ namespace leohoot_backend.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("NextQuestionQuestionId")
+                    b.Property<int>("PreviewTime")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PreviewTime")
+                    b.Property<int>("QuestionNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("QuestionId");
+                    b.Property<int?>("QuizId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("NextQuestionQuestionId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("LeohootBackend.Model.Quiz", b =>
                 {
-                    b.Property<int>("QuizId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CreatorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -80,60 +92,55 @@ namespace leohoot_backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UsernameCreator")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.HasKey("Id");
 
-                    b.HasKey("QuizId");
-
-                    b.HasIndex("UsernameCreator");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("LeohootBackend.Model.User", b =>
                 {
-                    b.Property<string>("Username")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Username");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LeohootBackend.Model.Answer", b =>
                 {
-                    b.HasOne("LeohootBackend.Model.Question", null)
+                    b.HasOne("LeohootBackend.Model.Question", "Question")
                         .WithMany("Answers")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LeohootBackend.Model.Question", b =>
-                {
-                    b.HasOne("LeohootBackend.Model.Question", "NextQuestion")
-                        .WithMany()
-                        .HasForeignKey("NextQuestionQuestionId");
-
-                    b.HasOne("LeohootBackend.Model.Quiz", null)
-                        .WithMany("Questions")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("NextQuestion");
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("LeohootBackend.Model.Question", b =>
+                {
+                    b.HasOne("LeohootBackend.Model.Quiz", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId");
                 });
 
             modelBuilder.Entity("LeohootBackend.Model.Quiz", b =>
                 {
                     b.HasOne("LeohootBackend.Model.User", "Creator")
                         .WithMany()
-                        .HasForeignKey("UsernameCreator")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

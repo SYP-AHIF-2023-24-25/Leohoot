@@ -3,14 +3,18 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using LeohootBackend;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<DataContext>();
-builder.Services.Configure<JsonOptions>(o => o.SerializerOptions.Converters
-    .Add(new JsonStringEnumConverter()));
+builder.Services.Configure<JsonOptions>(o => {
+    o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    o.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
 builder.Services.AddCors(options =>
 {

@@ -14,6 +14,7 @@ public static class Endpoints
         ConfigureQuestionEndpoints(app);
     }
 
+    public record UserPostDto(string Username, string Password);
     private static void ConfigureUserEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/api/users", async (DataContext ctx)=>
@@ -26,9 +27,16 @@ public static class Endpoints
             return await ctx.Users.Where(u => u.Username == username).FirstOrDefaultAsync();
         });
         
-        endpoints.MapPost("/api/users", (DataContext ctx, User user)=>
+        endpoints.MapPost("/api/users", async (DataContext ctx, UserPostDto userDto)=>
         {
-            return StatusCodes.Status400BadRequest;
+            var user = new User
+            {
+                Username = userDto.Username,
+                Password = userDto.Password
+            };
+            ctx.Users.Add(user);
+            await ctx.SaveChangesAsync();
+            return Results.Created($"/api/users/{user.Username}", user);
         });
 
         endpoints.MapPut("/api/users/{username}", (DataContext ctx, string username, User user)=>
@@ -44,14 +52,12 @@ public static class Endpoints
             return await ctx.Quizzes
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Answers)
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.NextQuestion)
                 .ToListAsync();
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
         {
-            return await ctx.Quizzes.Where(q => q.QuizId == quizId).FirstOrDefaultAsync();
+            return await ctx.Quizzes.Where(q => q.Id == quizId).SingleOrDefaultAsync();
         });
         
         endpoints.MapPost("/api/quizzes", (DataContext ctx, Quiz quiz)=>

@@ -2,6 +2,7 @@ namespace LeohootBackend.Model;
 
 public class User
 {
-    public required string Username { get; set; }
-    public required string Password { get; set; }
+    public int Id { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }
