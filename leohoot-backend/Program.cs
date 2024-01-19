@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<DataContext>();
 builder.Services.Configure<JsonOptions>(o => {
     o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    o.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    //o.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
 });
 
 builder.Services.AddCors(options =>

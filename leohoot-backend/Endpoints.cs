@@ -50,9 +50,33 @@ public static class Endpoints
         endpoints.MapGet("/api/quizzes", async (DataContext ctx)=>
         {
             return await ctx.Quizzes
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .ToListAsync();
+                .Select(q => new
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    Description = q.Description,
+                    CreatorName = q.Creator!.Username,
+                    QuestionCount = q.Questions.Count,
+                    Questions = q.Questions.Select(question => new
+                    {
+                        Id = question.Id,
+                        Text = question.QuestionText,
+                        Number = question.QuestionNumber,
+                        AnswerCount = question.Answers.Count,
+                        Answers = question.Answers.Select(answer => new
+                        {
+                            Id = answer.Id,
+                            Text = answer.AnswerText,
+                            IsCorrect = answer.IsCorrect
+                        }).ToList()
+                    }).ToList()
+
+                })
+            .ToListAsync();
+            //return await ctx.Quizzes
+            //    .Include(q => q.Questions)
+            //    //.ThenInclude(q => q.Answers)
+            //    .ToListAsync();
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
