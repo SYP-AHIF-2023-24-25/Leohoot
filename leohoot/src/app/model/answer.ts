@@ -1,4 +1,4 @@
 export interface Answer {
-  answer: string;
+  answerText: string;
   isCorrect: boolean;
 }

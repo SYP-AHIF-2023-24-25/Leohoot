@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { Mode } from '../../model/mode';
@@ -12,9 +12,6 @@ import { SignalRService } from '../../services/signalr.service';
   styleUrls: []
 })
 export class QuestionComponent {
-  @Input() currentQuestionId: number = 0;
-  @Input() mode: number = 0;
-
   colors = [
     'bg-button-yellow',
     'bg-green-400',
@@ -27,8 +24,10 @@ export class QuestionComponent {
     'assets/images/frog.png',
     'assets/images/crab.png',
     'assets/images/bird.png'
-    ]
+    ];
 
+  currentQuestionId: number = 1;
+  mode: Mode = Mode.TEACHER_DEMO_MODE;
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
   questionIsFinished: boolean = false;
@@ -41,7 +40,7 @@ export class QuestionComponent {
   ngOnInit(): void {
     this.getParams();
     this.audio.loop = true;
-    this.startTimer();
+    console.log("ngInit")
   }
 
   getParams() {
@@ -57,12 +56,15 @@ export class QuestionComponent {
   }
 
   getQuestion() {
-    const response: Question | undefined = this.restservice.getQuestionById(this.currentQuestionId);
-    if (typeof response === 'undefined') {
-      this.router.navigate(['/teacherDemoModeQuiz']);
-    } else {
-      this.currentQuestion = response;
-    }
+    this.restservice.getQuestionByIdAllInfo(this.currentQuestionId).subscribe(response => {
+      console.log(response)
+      if (typeof response === 'undefined') {
+        this.router.navigate(['/teacherDemoModeQuiz']);
+      } else {
+        this.currentQuestion = response;
+      }
+      this.startTimer();
+    });
   }
 
   startTimer() {

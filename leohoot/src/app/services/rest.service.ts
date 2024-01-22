@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { Question } from '../model/question';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { QuestionComponent } from '../components/question/question.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
+  public static url: string = 'http://localhost:5000/api/';
   demoQuiz: Quiz = {
     title: 'Demo Quiz',
     description: 'This is a demo quiz',
@@ -13,23 +17,25 @@ export class RestService {
     questions: [
       {
         id: 1,
-        question: 'What is the capital of France?',
+        questionNumber: 1,
+        questionText: 'What is the capital of France?',
+        previewTime: 5,
         answerTimeInSeconds: 15,
         answers: [
           {
-            answer: 'Lyon',
+            answerText: 'Lyon',
             isCorrect: false,
           },
           {
-            answer: 'Paris',
+            answerText: 'Paris',
             isCorrect: true,
           },
           {
-            answer: 'Marseille',
+            answerText: 'Marseille',
             isCorrect: false,
           },
           {
-            answer: 'St. Tropez',
+            answerText: 'St. Tropez',
             isCorrect: false,
           },
         ],
@@ -38,15 +44,17 @@ export class RestService {
       },
       {
         id: 2,
-        question: 'Is Syp cool?',
+        questionNumber: 2,
+        questionText: 'Is Syp cool?',
+        previewTime: 5,
         answerTimeInSeconds: 10,
         answers: [
           {
-            answer: 'true',
+            answerText: 'true',
             isCorrect: true,
           },
           {
-            answer: 'false',
+            answerText: 'false',
             isCorrect: false,
           },
         ],
@@ -54,23 +62,25 @@ export class RestService {
       },
       {
         id: 3,
-        question: 'Which animals are in our mascot?',
+        questionNumber: 3,
+        questionText: 'Which animals are in our mascot?',
+        previewTime: 5,
         answerTimeInSeconds: 20,
         answers: [
           {
-            answer: 'Lion',
+            answerText: 'Lion',
             isCorrect: true,
           },
           {
-            answer: 'Chicken',
+            answerText: 'Chicken',
             isCorrect: false,
           },
           {
-            answer: 'Cat',
+            answerText: 'Cat',
             isCorrect: false,
           },
           {
-            answer: 'Owl',
+            answerText: 'Owl',
             isCorrect: true,
           },
         ],
@@ -79,43 +89,47 @@ export class RestService {
       },
       {
         id: 4,
-        question: 'Du bist Busfahrer. An der 1. Haltestelle steigen 5 Gäste ein. An der 2. Haltestelle steigen 3 Leute zu und 2 aus. An der 3. Haltestelle steigen 4 ein und 5 aus. Wie alt ist der Busfahrer?',
+        questionNumber: 4,
+        questionText: 'Du bist Busfahrer. An der 1. Haltestelle steigen 5 Gäste ein. An der 2. Haltestelle steigen 3 Leute zu und 2 aus. An der 3. Haltestelle steigen 4 ein und 5 aus. Wie alt ist der Busfahrer?',
+        previewTime: 5,
         answerTimeInSeconds: 30,
         answers: [
           {
-            answer: '18, er ist Fahranfänger',
+            answerText: '18, er ist Fahranfänger',
             isCorrect: false,
           },
           {
-            answer: 'Der Busfahrer existiert gar nicht',
+            answerText: 'Der Busfahrer existiert gar nicht',
             isCorrect: false,
           },
           {
-            answer: 'Du bist der Busfahrer',
+            answerText: 'Du bist der Busfahrer',
             isCorrect: true,
           },
           {
-            answer: 'über 90, er hat den Führerschein in seinen jungen Jahren gemacht',
-            isCorrect: false,
+            answerText: 'über 90, er hat den Führerschein in seinen jungen Jahren gemacht',
+            isCorrect: false
           },
         ],
         nextQuestionId: 5,
       },
       {
         id: 5,
-        question: 'Wie heißt Pippi Langstrumpfs Affe?',
+        questionNumber: 5,
+        questionText: 'Wie heißt Pippi Langstrumpfs Affe?',
+        previewTime: 5,
         answerTimeInSeconds: 15,
         answers: [
           {
-            answer: 'Herr Peterson',
+            answerText: 'Herr Peterson',
             isCorrect: false,
           },
           {
-            answer: 'Nils Holgerson',
+            answerText: 'Nils Holgerson',
             isCorrect: false,
           },
           {
-            answer: 'Herr Nilsson',
+            answerText: 'Herr Nilsson',
             isCorrect: true,
           },
         ],
@@ -129,7 +143,11 @@ export class RestService {
 
   currentQuestionId: number = 1;
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
+
+  getQuestionByIdAllInfo(id: number): Observable<Question> {
+    return this.httpClient.get<Question>(`${RestService.url}questions/${id}`);
+  }
 
   getQuestionById(id: number): Question | undefined {
     return this.demoQuiz.questions.find(question => question.id == id);

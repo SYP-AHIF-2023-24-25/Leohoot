@@ -62,11 +62,10 @@ public static class Endpoints
                         Id = question.Id,
                         Text = question.QuestionText,
                         Number = question.QuestionNumber,
-                        AnswerCount = question.Answers.Count,
                         Answers = question.Answers.Select(answer => new
                         {
                             Id = answer.Id,
-                            Text = answer.AnswerText,
+                            AnswerText = answer.AnswerText,
                             IsCorrect = answer.IsCorrect
                         }).ToList()
                     }).ToList()
@@ -104,9 +103,23 @@ public static class Endpoints
 
         //Teacher gets all information about the question
         //Student gets only the question text, count of answer choices
-        endpoints.MapGet("/api/questions/{questionId}", (DataContext ctx, int questionId, string username)=>
+        endpoints.MapGet("/api/questions/{questionId}", async (DataContext ctx, int questionId)=>
         {
-            return StatusCodes.Status400BadRequest;
+            return await ctx.Questions
+                .Where(q => q.Id == questionId)
+                .Select(q => new
+                {
+                    Id = q.Id,
+                    QuestionText = q.QuestionText,
+                    QuestionNumber = q.QuestionNumber,
+                    AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                    Answers = q.Answers.Select(answer => new
+                    {
+                        Id = answer.Id,
+                        AnswerText = answer.AnswerText,
+                        IsCorrect = answer.IsCorrect
+                    }).ToList()
+                }).FirstOrDefaultAsync();
         });
     }
 }
