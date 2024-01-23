@@ -1,49 +1,53 @@
-<div class="min-h-screen bg-hooti-beige">
-  <div class="bg-hooti-yellow pb-2 text-center">
+<div class="flex flex-col bg-background-blue min-h-screen">
+  <div class="bg-white pb-1 drop-shadow-lg text-center">
     <div class="container mx-auto p-2">
       <div class="text-2xl font-bold md:text-4xl">
-        Student View
+        <p class="text-center justify-start">Question {{currentQuestionId}} of {{quizLength}}</p>
       </div>
     </div>
   </div>
-   <div class="container mx-auto max-w-128 p-2 text-center bg-hooti-beige max-w-screen-sm">
-     <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-20 grid-rows-1 text-xl mt-3 grid grid-cols-3 gap-2 mx-auto">
-         <p class="text-center justify-start">{{currentQuestionId}}/{{quizLength}}</p>
-         <p class="text-center">{{username}}</p>
-     </div>
-     <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-10  flex justify-center items-center grid-cols-2 grid-rows-2 gap-3">
-       <div class="container mx-auto p-2" >
+   <div class="container mx-auto p-2 text-center max-w-screen-2xl max-h-screen flex-1">
+     <div class="col-auto flex justify-center items-center">
+       <div class="container p-2" >
          <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
            <div *ngFor="
-            let buttonClicked of buttons; 
+            let buttonClicked of buttons;
             index as i">
              <div
                *ngIf="!buttonClicked" (click)="addToAnswer(i)"
-               class="{{colors[i]}} flex items-center w-full h-40 rounded-lg md:text-2xl text-base
-               font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-50 align-middle">
-               <img src="{{icons[i]}}" class="h-20 w-20">
+               class="{{colors[i]}} flex justify-center items-center w-full h-40 rounded-lg md:text-2xl text-base
+               font-bold px-4 text-white drop-shadow-lg lg:h-80 md:h-56 align-middle">
+               <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40">
              </div>
              <div
               *ngIf="buttonClicked" (click)="addToAnswer(i)"
-               class="{{colors[i]}} flex items-center w-full h-40 rounded-lg border-8 border-hooti-grey md:text-2xl text-base
-               font-bold px-4 text-white shadow-lg shadow-gray-300 md:h-50 align-middle">
-               <img src="{{icons[i]}}" class="h-20 w-20">
+               class="{{colors[i]}} flex justify-center items-center w-full h-40 rounded-lg border-8 border-white md:text-2xl text-base
+               font-bold px-4 text-white drop-shadow-lg lg:h-80 md:h-56 align-middle">
+               <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40">
             </div>
-             
            </div>
          </div>
-         <div class="col-auto row-auto mt-4 grid grid-cols-1 grid-rows-1 gap-3">
-           <div class="justify-self-end">
+         <div class="col-auto row-span-1 mt-4 grid grid-cols-1">
+           <div class="md:justify-self-end justify-self-auto">
              <button
-               class="sm:w-50 my-1 rounded-md bg-hooti-yellow p-5 text-white md:w-50 font-bold"
+               class="sm:items-stretch my-1 rounded-md bg-button-yellow w-full p-5 drop-shadow-lg text-white text-3xl md:w-70 md:justify-end font-bold"
                (click)="confirmAnswers()"
              >
-               Confirm Answers
+               <p class="drop-shadow-[2px_2px_5px_var(--tw-shadow-color)] shadow-black">
+                 Confirm Answers
+               </p>
              </button>
            </div>
          </div>
        </div>
     </div>
    </div>
-  
+  <div id="footer" class="grid grid-cols-2 bg-white p-3 shadow-md font-bold ">
+    <p class="text-start text-2xl">{{username}}</p>
+    <p class="text-end text-2xl">
+      <button class="bg-button-yellow text-white rounded-md pl-5 pr-5 pt-1 pb-1">
+        <p class="drop-shadow-[2px_2px_3px_var(--tw-shadow-color)] shadow-black">{{points}}</p>
+      </button>
+    </p>
+  </div>
 </div>
