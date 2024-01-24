@@ -33,6 +33,7 @@ export class QuestionComponent {
   questionIsFinished: boolean = false;
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: Question;
+  quizLength: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
@@ -52,6 +53,9 @@ export class QuestionComponent {
         this.mode = params['mode'];
       }
       this.getQuestion();
+      this.restservice.getQuizLengthById(1).subscribe((data) => {
+        this.quizLength = data;
+      });
     });
   }
 
