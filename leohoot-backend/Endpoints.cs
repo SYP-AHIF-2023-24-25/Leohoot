@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using LeohootBackend.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using LeohootBackend.Hubs;
 
 namespace LeohootBackend;
 
@@ -38,11 +39,6 @@ public static class Endpoints
             await ctx.SaveChangesAsync();
             return Results.Created($"/api/users/{user.Username}", user);
         });
-
-        endpoints.MapPut("/api/users/{username}", (DataContext ctx, string username, User user)=>
-        {
-            return StatusCodes.Status400BadRequest;
-        });
     }
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
@@ -72,10 +68,6 @@ public static class Endpoints
 
                 })
             .ToListAsync();
-            //return await ctx.Quizzes
-            //    .Include(q => q.Questions)
-            //    //.ThenInclude(q => q.Answers)
-            //    .ToListAsync();
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
@@ -83,30 +75,10 @@ public static class Endpoints
             return await ctx.Quizzes.Where(q => q.Id == quizId).SingleOrDefaultAsync();
         });
         
-        endpoints.MapPost("/api/quizzes", (DataContext ctx, Quiz quiz)=>
-        {
-            return StatusCodes.Status400BadRequest;
-        });
-
-        endpoints.MapPut("/api/quizzes/{quizId}", (DataContext ctx, int quizId, Quiz quiz)=>
-        {
-            return StatusCodes.Status400BadRequest;
-        });
-    }
-
-    private static void ConfigureQuestionEndpoints(IEndpointRouteBuilder endpoints)
-    {
-        endpoints.MapGet("/api/questions", async (DataContext ctx)=>
-        {
-            return await ctx.Questions.ToListAsync();
-        });
-
-        //Teacher gets all information about the question
-        //Student gets only the question text, count of answer choices
-        endpoints.MapGet("/api/questions/{questionId}", async (DataContext ctx, int questionId)=>
+        endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}", async (DataContext ctx, int quizId, int questionNumber)=>
         {
             return await ctx.Questions
-                .Where(q => q.Id == questionId)
+                .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
                 .Select(q => new
                 {
                     Id = q.Id,
@@ -120,6 +92,56 @@ public static class Endpoints
                         IsCorrect = answer.IsCorrect
                     }).ToList()
                 }).FirstOrDefaultAsync();
+        });
+
+        endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}/mobile", async (DataContext ctx, int quizId, int questionNumber, string username)=>
+        {
+            var question =  await ctx.Questions
+                .Where(q => q.Id == questionNumber)
+                .Select(q => new
+                {
+                    QuestionNumber = q.QuestionNumber,
+                    QuestionText = q.QuestionText,
+                    AnswerCount = q.Answers.Count
+                }).FirstOrDefaultAsync();
+
+            return new
+            {
+                Question = question,
+                Points = 100
+            };
+        });
+
+        endpoints.MapPost("/api/quizzes/{quizId}/questions/{questionNumber}/correct", async (DataContext ctx, int quizId, int questionNumber, bool[] answers)=>
+        {
+            var question =  await ctx.Questions
+                .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
+                .Select(q => new
+                {
+                    Answers = q.Answers.Select(answer => new
+                    {
+                        answer.IsCorrect
+                    }).ToList()
+                }).FirstOrDefaultAsync();
+            
+            for (int i = 0; i < answers.Length; i++)
+            {
+                var answer = answers[i];
+                var correctAnswer = question!.Answers[i];
+                if (answer != correctAnswer.IsCorrect)
+                {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    private static void ConfigureQuestionEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapGet("/api/questions", async (DataContext ctx)=>
+        {
+            return await ctx.Questions.ToListAsync();
         });
     }
 }

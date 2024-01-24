@@ -32,6 +32,7 @@ public class ChatHub : Hub
 
     static List<Player> currentAnswers = new List<Player>();
 
+    public static int GetPoints(string username) => users.Find(user => user.Username == username)!.Score;
 
     public async Task RegisterUser(string username) {
         if (users.Find(user => user.Username == username) == null)

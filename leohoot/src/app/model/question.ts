@@ -9,4 +9,5 @@ export interface Question {
   answers: Answer[];
   imageName?: string;
   nextQuestionId: number | null;
+  answerCount?: number;
 }

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../services/rest.service";
 import { SignalRService } from '../../services/signalr.service';
+import { Question } from 'src/app/model/question';
 
 @Component({
   selector: 'app-students-mobile-view',
@@ -13,7 +14,8 @@ export class StudentsMobileViewComponent {
   questionIsFinished: boolean = false;
   quizLength = this.restservice.getQuizLength();
   currentQuestionId: number = 1;
-  currentQuestionCount: number = 0;
+  question: Question | undefined;
+  currentPoints: number = 0;
   buttons: boolean[] = [false, false, false, false];
   colors = [
     'bg-button-yellow',
@@ -44,23 +46,21 @@ export class StudentsMobileViewComponent {
       if (typeof params['currentQuestionId'] !== 'undefined') {
         this.currentQuestionId = parseInt(params['currentQuestionId']);
       }
-      this.getAnswerCountOfQuestion();
+      this.getInformationAboutQuestion();
     });
   }
 
-  getAnswerCountOfQuestion() {
-    const response: number | undefined = this.restservice.getAnswerCountOfQuestion(this.currentQuestionId);
-    if (typeof response === 'undefined') {
-      this.router.navigate(['/studentMobileRanking'], { queryParams: { currentQuestionId: this.currentQuestionId } });
-    } else {
-      this.currentQuestionCount = response;
+  getInformationAboutQuestion() {
+    this.restservice.getQuestionByQuestionNumber(this.currentQuestionId, this.username).subscribe((data) => {
+      this.question = data.question;
+      this.currentPoints = data.points;
       this.generateButtons();
-    }
+    });
   }
 
   generateButtons() {
     this.buttons = [];
-    for (let i = 0; i < this.currentQuestionCount; i++) {
+    for (let i = 0; i < this.question!.answerCount!; i++) {
       this.buttons.push(false);
     }
   }
@@ -70,10 +70,11 @@ export class StudentsMobileViewComponent {
   }
 
   confirmAnswers() {
-    const areAnswersCorrect: boolean = this.restservice.areAnswersCorrect(this.currentQuestionId, this.buttons);
-    if (areAnswersCorrect) {
-      this.signalRService.connection.send("confirmAnswer", this.username);
-    }
-    this.router.navigate(['/studentLoadingScreen'], { queryParams: { currentQuestionId: this.currentQuestionId } });
+    this.restservice.areAnswersCorrect(this.currentQuestionId, this.buttons).subscribe((response) => {
+      if (response) {
+        this.signalRService.connection.send("confirmAnswer", this.username);
+      }
+      this.router.navigate(['/studentLoadingScreen'], { queryParams: { currentQuestionId: this.currentQuestionId } });
+    });
   }
 }

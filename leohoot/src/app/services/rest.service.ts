@@ -4,6 +4,7 @@ import { Question } from '../model/question';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QuestionComponent } from '../components/question/question.component';
+import { StudentViewData } from '../model/student-view-data';
 
 @Injectable({
   providedIn: 'root'
@@ -141,18 +142,19 @@ export class RestService {
 
   static gamePins: number[] = [];
 
-  currentQuestionId: number = 1;
-
   constructor(private httpClient: HttpClient) { }
 
   getQuestionByIdAllInfo(id: number): Observable<Question> {
-    return this.httpClient.get<Question>(`${RestService.url}questions/${id}`);
+    return this.httpClient.get<Question>(`${RestService.url}quizzes/1/questions/${id}`);
   }
 
   getQuestionById(id: number): Question | undefined {
     return this.demoQuiz.questions.find(question => question.id == id);
   }
 
+  getQuestionByQuestionNumber(questionNumber: number, username: string): Observable<StudentViewData> {
+    return this.httpClient.get<StudentViewData>(`${RestService.url}quizzes/1/questions/${questionNumber}/mobile?username=${username}`);
+  };
   getQuiz(): Quiz {
     return this.demoQuiz;
   }
@@ -165,19 +167,8 @@ export class RestService {
     return this.getQuestionById(id)!.answers.length;
   }
 
-  areAnswersCorrect(questionId: number, buttons: boolean[]): boolean {
-    let areAnswersCorrect: boolean = true;
-    const question: Question | undefined = this.getQuestionById(questionId);
-    if (typeof question === 'undefined') {
-      areAnswersCorrect =  false;
-    } else {
-      for (let i = 0; i < question.answers.length && areAnswersCorrect; i++) {
-        if (question.answers[i].isCorrect != buttons[i]) {
-          areAnswersCorrect =  false;
-        }
-      }
-    }
-    return areAnswersCorrect;
+  areAnswersCorrect(questionNumber: number, buttons: boolean[]): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${RestService.url}quizzes/1/questions/${questionNumber}/correct`, buttons);  
   }
 
   getNextQuestionId(currentQuestionId: number): number | undefined | null {
@@ -191,7 +182,6 @@ export class RestService {
 
   addGamePin(gamePin: number): void {
     RestService.gamePins.push(gamePin);
-    console.log(RestService.gamePins);
   }
 
   gamePinExists(gamePin: number): boolean {
