@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Mode } from '../../model/mode';
 import { User } from '../../model/user';
 import { SignalRService } from '../../services/signalr.service';
+import { Player } from 'src/app/model/player';
 
 @Component({
   selector: 'app-ranking',
@@ -12,13 +13,13 @@ import { SignalRService } from '../../services/signalr.service';
 export class RankingComponent {
   currentQuestionId: number = 0;
   mode: number = 1;
-  ranking: User[] = [];
+  ranking: Player[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) { 
     this.getParams();
     this.signalRService.connection.send("sendRanking");
     this.signalRService.connection.on("rankingReceived", (ranking) => {
-      this.ranking = ranking as User[];
+      this.ranking = ranking as Player[];
     });
   }
 

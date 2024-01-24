@@ -9,8 +9,8 @@ import { SignalRService } from '../../services/signalr.service';
   styleUrls: []
 })
 export class StudentsMobileRankingComponent {
-  quizLength = this.restservice.getQuizLength();
-  currentQuestionId: number = 0;
+  quizLength: number = 0;
+  questionNumber: number = 0;
   username: string = sessionStorage.getItem("username") || "test";
   points: number = 0;
   currentPoints: number = 0;
@@ -31,16 +31,19 @@ export class StudentsMobileRankingComponent {
 
     this.signalRService.connection.on("nextQuestion", () => {
       const queryParams = {
-        currentQuestionId: this.restservice.getNextQuestionId(this.currentQuestionId)
+        currentQuestionId: this.questionNumber + 1 
       };
       this.router.navigate(['/studentMobileView'], { queryParams });
+    });
+    this.restservice.getQuizLengthById(1).subscribe((data) => {
+      this.quizLength = data;
     });
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.currentQuestionId = parseInt(params['currentQuestionId']);
+        this.questionNumber = parseInt(params['currentQuestionId']);
       }
     });
   }

@@ -10,24 +10,26 @@ import { SignalRService } from '../../services/signalr.service';
   templateUrl: './waitingroom.component.html',
 })
 export class WaitingroomComponent {
-  qrCodeData: string;
-  qrCodeTitle: string;
-  gamePin: number;
+  qrCodeData!: string;
+  qrCodeTitle!: string;
+  gamePin!: number;
   quiz!: Quiz;
   users: Player[] = [];
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
-    this.quiz = restService.getQuiz();
+    restService.getQuizById(1).subscribe((data) => {;
+      this.quiz = data;
+      
+      //TODO
+      this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
+      this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
+      
+      do{
+        this.gamePin = this.generateGamePin();
+      } while (this.gamePin < 10000000 || this.gamePin > 99999999);
 
-    //TODO
-    this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
-    this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
-    
-    do{
-      this.gamePin = this.generateGamePin();
-    } while (this.gamePin < 10000000 || this.gamePin > 99999999);
-
-    //restService.addGamePin(this.gamePin);
+      //restService.addGamePin(this.gamePin);
+    });
   }
 
   ngOnInit() {
@@ -62,6 +64,6 @@ export class WaitingroomComponent {
 
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/game'], { queryParams: { gamePin: this.gamePin } });
+    this.router.navigate(['/question'], { queryParams: { currentQuestionId: 1 } });
   }
 }

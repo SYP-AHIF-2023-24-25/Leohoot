@@ -12,7 +12,6 @@ public static class Endpoints
     {
         ConfigureUserEndpoints(app);
         ConfigureQuizEndpoints(app);
-        ConfigureQuestionEndpoints(app);
     }
 
     public record UserPostDto(string Username, string Password);
@@ -72,7 +71,15 @@ public static class Endpoints
 
         endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
         {
-            return await ctx.Quizzes.Where(q => q.Id == quizId).SingleOrDefaultAsync();
+            return await ctx.Quizzes
+                .Where(q => q.Id == quizId)
+                .Select(q => new
+                {
+                    Id = q.Id,
+                    Title = q.Title,
+                    Creator = q.Creator!.Username
+                })
+                .SingleOrDefaultAsync();
         });
         
         endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}", async (DataContext ctx, int quizId, int questionNumber)=>
@@ -84,6 +91,7 @@ public static class Endpoints
                     Id = q.Id,
                     QuestionText = q.QuestionText,
                     QuestionNumber = q.QuestionNumber,
+                    ImageName = q.ImageName,
                     AnswerTimeInSeconds = q.AnswerTimeInSeconds,
                     Answers = q.Answers.Select(answer => new
                     {
@@ -102,7 +110,8 @@ public static class Endpoints
                 {
                     QuestionNumber = q.QuestionNumber,
                     QuestionText = q.QuestionText,
-                    AnswerCount = q.Answers.Count
+                    AnswerCount = q.Answers.Count,
+                    QuizLength = q.Quiz!.Questions.Count,
                 }).FirstOrDefaultAsync();
 
             return new
@@ -110,6 +119,15 @@ public static class Endpoints
                 Question = question,
                 Points = 100
             };
+        });
+
+        endpoints.MapGet("/api/quizzes/{quizId}/length", async (DataContext ctx, int quizId)=>
+        {
+            var question =  await ctx.Quizzes.Where(q => q.Id == quizId).Select(q => new
+            {
+                Length = q.Questions.Count
+            }).FirstOrDefaultAsync();
+            return question!.Length;
         });
 
         endpoints.MapPost("/api/quizzes/{quizId}/questions/{questionNumber}/correct", async (DataContext ctx, int quizId, int questionNumber, bool[] answers)=>
@@ -134,14 +152,6 @@ public static class Endpoints
                 }
             }
             return true;
-        });
-    }
-
-    private static void ConfigureQuestionEndpoints(IEndpointRouteBuilder endpoints)
-    {
-        endpoints.MapGet("/api/questions", async (DataContext ctx)=>
-        {
-            return await ctx.Questions.ToListAsync();
         });
     }
 }

@@ -12,7 +12,7 @@ import { Question } from 'src/app/model/question';
 export class StudentsMobileViewComponent {
   username: string = sessionStorage.getItem("username") || "test";
   questionIsFinished: boolean = false;
-  quizLength = this.restservice.getQuizLength();
+  quizLength: number = 0;
   currentQuestionId: number = 1;
   question: Question | undefined;
   currentPoints: number = 0;
@@ -54,6 +54,7 @@ export class StudentsMobileViewComponent {
     this.restservice.getQuestionByQuestionNumber(this.currentQuestionId, this.username).subscribe((data) => {
       this.question = data.question;
       this.currentPoints = data.points;
+      this.quizLength = data.quizLength;
       this.generateButtons();
     });
   }

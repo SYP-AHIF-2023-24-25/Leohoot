@@ -2,5 +2,6 @@ import { Question } from "./question";
 
 export interface StudentViewData{
     question: Question,
-    points: number
+    points: number,
+    quizLength: number,
 }
