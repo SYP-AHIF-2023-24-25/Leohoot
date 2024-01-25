@@ -9,6 +9,7 @@ import { StudentsLoadingScreenComponent } from './components/students-loading-sc
 import { GameLoginComponent } from './components/game-pin-login/game-pin-login.component';
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
+import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/question', pathMatch: 'full' },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'studentLoadingScreen', component: StudentsLoadingScreenComponent},
   { path: 'gameLogin', component: GameLoginComponent},
   { path: 'gameUserLogin', component: GameUserLoginComponent},
-  { path: 'studentWaitingPage', component: StudentWaitingPageComponent}
+  { path: 'studentWaitingPage', component: StudentWaitingPageComponent},
+  { path: 'statistics', component: EndStatisticsComponent}
 ];
 
 @NgModule({

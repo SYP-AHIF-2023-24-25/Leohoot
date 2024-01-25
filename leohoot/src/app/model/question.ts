@@ -10,4 +10,5 @@ export interface Question {
   imageName?: string;
   nextQuestionId: number | null;
   answerCount?: number;
+  quizLength?: number;
 }

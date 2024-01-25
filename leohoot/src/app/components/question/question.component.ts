@@ -61,12 +61,7 @@ export class QuestionComponent {
 
   getQuestion() {
     this.restservice.getQuestionByIdAllInfo(this.currentQuestionId).subscribe(response => {
-      console.log(response)
-      if (typeof response === 'undefined') {
-        this.router.navigate(['/teacherDemoModeQuiz']);
-      } else {
-        this.currentQuestion = response;
-      }
+      this.currentQuestion = response;
       this.startTimer();
     });
   }

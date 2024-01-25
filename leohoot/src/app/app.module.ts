@@ -16,9 +16,10 @@ import { StudentsLoadingScreenComponent } from './components/students-loading-sc
 import { GameLoginComponent } from './components/game-pin-login/game-pin-login.component';
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
+import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
 
 @NgModule({
-  declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent],
+  declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],

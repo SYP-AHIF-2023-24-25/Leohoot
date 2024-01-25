@@ -3,6 +3,7 @@ using LeohootBackend.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using LeohootBackend.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LeohootBackend;
 
@@ -117,7 +118,7 @@ public static class Endpoints
             return new
             {
                 Question = question,
-                Points = 100
+                Points = ChatHub.GetPoints(username)
             };
         });
 

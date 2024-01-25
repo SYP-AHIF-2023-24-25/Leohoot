@@ -55,6 +55,7 @@ export class StudentsMobileViewComponent {
       this.question = data.question;
       this.currentPoints = data.points;
       this.quizLength = data.quizLength;
+      console.log(this.question);
       this.generateButtons();
     });
   }

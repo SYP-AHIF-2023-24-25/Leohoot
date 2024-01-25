@@ -64,6 +64,6 @@ export class WaitingroomComponent {
 
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/question'], { queryParams: { currentQuestionId: 1 } });
+    this.router.navigate(['/question'], { queryParams: { currentQuestionId: 1 , mode: 1} });
   }
 }
