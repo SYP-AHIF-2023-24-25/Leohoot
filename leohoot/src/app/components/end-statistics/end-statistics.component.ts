@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: []
 })
 export class EndStatisticsComponent {
+  displayStatistics: boolean = false;
+
+  showStatistics() {
+    this.displayStatistics = !this.displayStatistics;
+  }
 
 }
