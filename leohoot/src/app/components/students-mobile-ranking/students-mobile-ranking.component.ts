@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../services/rest.service";
 import { SignalRService } from '../../services/signalr.service';
+import { Question } from 'src/app/model/question';
 
 @Component({
   selector: 'app-students-mobile-ranking',
@@ -14,6 +15,7 @@ export class StudentsMobileRankingComponent {
   username: string = sessionStorage.getItem("username") || "test";
   points: number = 0;
   currentPoints: number = 0;
+  question!: Question;
   
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
@@ -23,21 +25,18 @@ export class StudentsMobileRankingComponent {
   ngOnInit() {
     this.getParams();
 
-    this.signalRService.connection.send("sendPoints", this.username);
-    this.signalRService.connection.on("pointsReceived", (points: number, currentPoints: number) => {
-      this.points = points;
-      this.currentPoints = currentPoints;
-    });
-
     this.signalRService.connection.on("nextQuestion", () => {
       const queryParams = {
         currentQuestionId: this.questionNumber + 1 
       };
       this.router.navigate(['/studentMobileView'], { queryParams });
     });
-    this.restservice.getQuizLengthById(1).subscribe((data) => {
-      this.quizLength = data;
-    });
+    this.restservice.getQuestionByQuestionNumber(1, this.questionNumber, this.username).subscribe((data) => {
+      this.question = data.question;
+      this.points = data.points;
+      this.quizLength = data.quizLength;
+      this.currentPoints = data.currentPoints;
+   } );
   }
 
   getParams() {

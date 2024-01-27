@@ -34,6 +34,7 @@ export class QuestionComponent {
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: Question;
   quizLength: number = 0;
+  answerCount: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
@@ -41,7 +42,11 @@ export class QuestionComponent {
   ngOnInit(): void {
     this.getParams();
     this.audio.loop = true;
-    console.log("ngInit")
+
+    this.signalRService.connection.on("updateAnswerCount", (answerCount: number) => {
+      console.log("updateAnswerCount " + answerCount);
+      this.answerCount = answerCount;
+    });
   }
 
   getParams() {
@@ -60,7 +65,7 @@ export class QuestionComponent {
   }
 
   getQuestion() {
-    this.restservice.getQuestionByIdAllInfo(this.currentQuestionId).subscribe(response => {
+    this.restservice.getQuestionByIdAllInfo(1,this.currentQuestionId).subscribe(response => {
       this.currentQuestion = response;
       this.startTimer();
     });
