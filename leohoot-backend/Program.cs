@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using LeohootBackend;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
@@ -35,6 +36,8 @@ using (var scope = app.Services.CreateScope())
     await context.Database.MigrateAsync();
     await context.InsertSampleData();
 }
+
+Endpoints.HubContext = app.Services.GetRequiredService<IHubContext<ChatHub>>();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

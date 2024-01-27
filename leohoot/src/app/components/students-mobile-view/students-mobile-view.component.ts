@@ -51,11 +51,10 @@ export class StudentsMobileViewComponent {
   }
 
   getInformationAboutQuestion() {
-    this.restservice.getQuestionByQuestionNumber(this.currentQuestionId, this.username).subscribe((data) => {
+    this.restservice.getQuestionByQuestionNumber(1, this.currentQuestionId, this.username).subscribe((data) => {
       this.question = data.question;
       this.currentPoints = data.points;
       this.quizLength = data.quizLength;
-      console.log(this.question);
       this.generateButtons();
     });
   }
@@ -72,10 +71,7 @@ export class StudentsMobileViewComponent {
   }
 
   confirmAnswers() {
-    this.restservice.areAnswersCorrect(this.currentQuestionId, this.buttons).subscribe((response) => {
-      if (response) {
-        this.signalRService.connection.send("confirmAnswer", this.username);
-      }
+    this.restservice.addAnswer(1, this.currentQuestionId, this.buttons, this.username).subscribe((response) => {
       this.router.navigate(['/studentLoadingScreen'], { queryParams: { currentQuestionId: this.currentQuestionId } });
     });
   }

@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using LeohootBackend.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Text.Json;
+using System.Net.WebSockets;
 
 namespace LeohootBackend;
 
 public static class Endpoints
 {
+    public static IHubContext<ChatHub>? HubContext { get; set; }
+
     public static void ConfigureEndpoints(this WebApplication app)
     {
         ConfigureUserEndpoints(app);
@@ -45,114 +49,49 @@ public static class Endpoints
     {
         endpoints.MapGet("/api/quizzes", async (DataContext ctx)=>
         {
-            return await ctx.Quizzes
-                .Select(q => new
-                {
-                    Id = q.Id,
-                    Title = q.Title,
-                    Description = q.Description,
-                    CreatorName = q.Creator!.Username,
-                    QuestionCount = q.Questions.Count,
-                    Questions = q.Questions.Select(question => new
-                    {
-                        Id = question.Id,
-                        Text = question.QuestionText,
-                        Number = question.QuestionNumber,
-                        Answers = question.Answers.Select(answer => new
-                        {
-                            Id = answer.Id,
-                            AnswerText = answer.AnswerText,
-                            IsCorrect = answer.IsCorrect
-                        }).ToList()
-                    }).ToList()
-
-                })
-            .ToListAsync();
+            return await ctx.GetAllQuizzes();
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
         {
-            return await ctx.Quizzes
-                .Where(q => q.Id == quizId)
-                .Select(q => new
-                {
-                    Id = q.Id,
-                    Title = q.Title,
-                    Creator = q.Creator!.Username
-                })
-                .SingleOrDefaultAsync();
+            return await ctx.GetQuiz(quizId);
         });
         
         endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}", async (DataContext ctx, int quizId, int questionNumber)=>
         {
-            return await ctx.Questions
-                .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
-                .Select(q => new
-                {
-                    Id = q.Id,
-                    QuestionText = q.QuestionText,
-                    QuestionNumber = q.QuestionNumber,
-                    ImageName = q.ImageName,
-                    AnswerTimeInSeconds = q.AnswerTimeInSeconds,
-                    Answers = q.Answers.Select(answer => new
-                    {
-                        Id = answer.Id,
-                        AnswerText = answer.AnswerText,
-                        IsCorrect = answer.IsCorrect
-                    }).ToList()
-                }).FirstOrDefaultAsync();
+            return await ctx.GetQuestion(quizId, questionNumber);
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}/mobile", async (DataContext ctx, int quizId, int questionNumber, string username)=>
         {
-            var question =  await ctx.Questions
-                .Where(q => q.Id == questionNumber)
-                .Select(q => new
-                {
-                    QuestionNumber = q.QuestionNumber,
-                    QuestionText = q.QuestionText,
-                    AnswerCount = q.Answers.Count,
-                    QuizLength = q.Quiz!.Questions.Count,
-                }).FirstOrDefaultAsync();
-
-            return new
-            {
-                Question = question,
-                Points = ChatHub.GetPoints(username)
-            };
+            var question = await ctx.GetQuestionStudent(quizId, questionNumber, username);
+            int points = Repository.GetInstance().GetPoints(username);
+            int currentPoints = Repository.GetInstance().GetCurrentPoints(username);
+            return new { Question = question, Points = points, CurrentPoints = currentPoints };
         });
 
         endpoints.MapGet("/api/quizzes/{quizId}/length", async (DataContext ctx, int quizId)=>
         {
-            var question =  await ctx.Quizzes.Where(q => q.Id == quizId).Select(q => new
-            {
-                Length = q.Questions.Count
-            }).FirstOrDefaultAsync();
-            return question!.Length;
+            return await ctx.GetQuizLength(quizId);
         });
 
-        endpoints.MapPost("/api/quizzes/{quizId}/questions/{questionNumber}/correct", async (DataContext ctx, int quizId, int questionNumber, bool[] answers)=>
+        endpoints.MapPost("/api/quizzes/{quizId}/questions/{questionNumber}", async (HttpContext context)=>
         {
-            var question =  await ctx.Questions
-                .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
-                .Select(q => new
-                {
-                    Answers = q.Answers.Select(answer => new
-                    {
-                        answer.IsCorrect
-                    }).ToList()
-                }).FirstOrDefaultAsync();
-            
-            for (int i = 0; i < answers.Length; i++)
-            {
-                var answer = answers[i];
-                var correctAnswer = question!.Answers[i];
-                if (answer != correctAnswer.IsCorrect)
-                {
-                    return false;
-                }
-            }
-            return true;
+            int quizId = int.Parse(context.Request.RouteValues["quizId"] as string ?? "");
+            int questionNumber = int.Parse(context.Request.RouteValues["questionNumber"] as string ?? "");
+            bool[]? answers = await JsonSerializer.DeserializeAsync<bool[]>(context.Request.Body);
+            Console.WriteLine(answers);
+            string? username = context.Request.Query["username"];
+
+            DataContext ctx = context.RequestServices.GetService(typeof(DataContext)) as DataContext ?? throw new Exception("DataContext not found");
+            await Repository.GetInstance().AddAnswer(ctx, quizId, questionNumber, answers!, username!);
+
+            await HubContext!.Clients.All.SendAsync("updateAnswerCount", Repository.GetInstance().GetAnswerCount());
+        });
+
+        endpoints.MapGet("/api/quizzes/ranking", (DataContext context)=>
+        {
+            return Repository.GetInstance().GetRanking();
         });
     }
 }

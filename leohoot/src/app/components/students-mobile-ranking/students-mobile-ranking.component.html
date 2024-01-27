@@ -1,4 +1,4 @@
-<div class="bg-hooti-beige min-h-screen">
+<div class="bg-hooti-beige min-h-screen" *ngIf="question">
 <div class="bg-hooti-yellow pb-2 text-center">
   <div class="container mx-auto p-2">
     <div class="text-2xl font-bold md:text-4xl">
@@ -9,7 +9,7 @@
 <div class="container mx-auto max-w-128 p-2 text-center bg-hooti-beige max-w-screen-sm">
   <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-20  grid-rows-3 text-xl mt-3 grid grid-cols-1 gap-2 mx-auto">
     <p></p>
-    <p class="text-center justify-start">{{questionNumber}}/{{quizLength}}</p>
+    <p class="text-center justify-start">{{questionNumber}}/{{question.quizLength}}</p>
   </div>
   <div class="bg-white border-2 border-yellow-400 rounded-md col-auto row-auto mb-10  flex justify-center items-center grid-cols-1 grid-rows-3 gap-3">
     <div class="container mx-auto" >

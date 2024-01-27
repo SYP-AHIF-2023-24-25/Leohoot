@@ -14,32 +14,6 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        // var user = modelBuilder.Entity<User>();
-        // user.HasKey(p => p.Username);
-
-        // var quiz = modelBuilder.Entity<Quiz>();
-        // quiz.HasKey(q => q.QuizId);
-        // quiz.HasOne(q => q.Creator)
-        //     .WithMany()
-        //     .HasForeignKey(q => q.UsernameCreator)
-        //     .OnDelete(DeleteBehavior.Cascade);
-        // quiz.HasMany(q => q.Questions)
-        //     .WithOne()
-        //     .HasForeignKey(q => q.QuestionId)
-        //     .OnDelete(DeleteBehavior.Cascade);
-
-        // var question = modelBuilder.Entity<Question>();
-        // question.HasKey(q => q.QuestionId);
-        // question
-        //     .HasMany(q => q.Answers)
-        //     .WithOne()
-        //     .HasForeignKey(a => a.AnswerId)
-        //     .OnDelete(DeleteBehavior.Cascade);
-
-        // var answer = modelBuilder.Entity<Answer>();
-        // answer.HasKey(a => a.AnswerId);
-        // answer.Property(a => a.AnswerId).ValueGeneratedOnAdd();
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -47,6 +21,112 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
     }
+
+    public async Task<object> GetAllQuizzes()
+    {
+        return await Quizzes
+            .Select(q => new
+            {
+                Id = q.Id,
+                Title = q.Title,
+                Description = q.Description,
+                CreatorName = q.Creator!.Username,
+                QuestionCount = q.Questions.Count,
+                Questions = q.Questions.Select(question => new
+                {
+                    Id = question.Id,
+                    Text = question.QuestionText,
+                    Number = question.QuestionNumber,
+                    Answers = question.Answers.Select(answer => new
+                    {
+                        Id = answer.Id,
+                        AnswerText = answer.AnswerText,
+                        IsCorrect = answer.IsCorrect
+                    }).ToList()
+                }).ToList()
+            })
+            .ToListAsync();
+    }
+
+    public async Task<object?> GetQuiz(int quizId)
+    {
+        return await Quizzes
+            .Where(q => q.Id == quizId)
+            .Select(q => new
+            {
+                Id = q.Id,
+                Title = q.Title,
+                Creator = q.Creator!.Username
+            })
+            .SingleOrDefaultAsync();
+    }
+
+    public async Task<object?> GetQuestion(int quizId, int questionNumber)
+    {
+        return await Questions
+            .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
+            .Select(q => new
+            {
+                Id = q.Id,
+                QuestionText = q.QuestionText,
+                QuestionNumber = q.QuestionNumber,
+                ImageName = q.ImageName,
+                AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                Answers = q.Answers.Select(answer => new
+                {
+                    Id = answer.Id,
+                    AnswerText = answer.AnswerText,
+                    IsCorrect = answer.IsCorrect
+                }).ToList()
+            }).FirstOrDefaultAsync();
+    }
+
+    public async Task<object?> GetQuestionStudent(int quizId, int questionNumber, string username)
+    {
+        return await Questions
+            .Where(q => q.Id == questionNumber && q.QuizId == quizId)
+            .Select(q => new
+            {
+                QuestionNumber = q.QuestionNumber,
+                QuestionText = q.QuestionText,
+                AnswerCount = q.Answers.Count,
+                QuizLength = q.Quiz!.Questions.Count,
+            }).FirstOrDefaultAsync();
+    }
+
+    public async Task<int?> GetQuizLength(int quizId)
+    {
+        var question =  await Quizzes.Where(q => q.Id == quizId).Select(q => new
+        {
+            Length = q.Questions.Count
+        }).FirstOrDefaultAsync();
+        return question!.Length;
+    }
+
+    public async Task<bool> IsAnswerCorrect(int quizId, int questionNumber, bool[] answers)
+    {
+        var question =  await Questions
+            .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
+            .Select(q => new
+            {
+                Answers = q.Answers.Select(answer => new
+                {
+                    answer.IsCorrect
+                }).ToList()
+            }).FirstOrDefaultAsync();
+        
+        for (int i = 0; i < answers.Length; i++)
+        {
+            var answer = answers[i];
+            var correctAnswer = question!.Answers[i];
+            if (answer != correctAnswer.IsCorrect)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 
 internal static class SampleData

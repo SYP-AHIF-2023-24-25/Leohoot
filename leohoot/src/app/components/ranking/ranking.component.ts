@@ -19,9 +19,8 @@ export class RankingComponent {
 
   constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) { 
     this.getParams();
-    this.signalRService.connection.send("sendRanking");
-    this.signalRService.connection.on("rankingReceived", (ranking) => {
-      this.ranking = ranking as Player[];
+    this.restservice.getRanking(1, this.questionNumber).subscribe((data) => {
+      this.ranking = data;
     });
   }
 

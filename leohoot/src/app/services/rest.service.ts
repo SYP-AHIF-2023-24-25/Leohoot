@@ -5,6 +5,7 @@ import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QuestionComponent } from '../components/question/question.component';
 import { StudentViewData } from '../model/student-view-data';
+import { Player } from '../model/player';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,12 @@ export class RestService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getQuestionByIdAllInfo(id: number): Observable<Question> {
-    return this.httpClient.get<Question>(`${RestService.url}quizzes/1/questions/${id}`);
+  getQuestionByIdAllInfo(quizId: number, questionNumber: number): Observable<Question> {
+    return this.httpClient.get<Question>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}`);
   }
 
-  getQuestionByQuestionNumber(questionNumber: number, username: string): Observable<StudentViewData> {
-    return this.httpClient.get<StudentViewData>(`${RestService.url}quizzes/1/questions/${questionNumber}/mobile?username=${username}`);
+  getQuestionByQuestionNumber(quizId: number, questionNumber: number, username: string): Observable<StudentViewData> {
+    return this.httpClient.get<StudentViewData>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}/mobile?username=${username}`);
   };
 
   getQuizLengthById(id: number): Observable<number> {
@@ -30,7 +31,11 @@ export class RestService {
     return this.httpClient.get<Quiz>(`${RestService.url}quizzes/${quizId}`);
   }
 
-  areAnswersCorrect(questionNumber: number, buttons: boolean[]): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${RestService.url}quizzes/1/questions/${questionNumber}/correct`, buttons);  
+  addAnswer(quizId: number, questionNumber: number, buttons: boolean[], username: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}?username=${username}`, buttons);  
+  }
+
+  getRanking(quizId: number, questionNumber: number): Observable<Player[]> {
+    return this.httpClient.get<Player[]>(`${RestService.url}quizzes/ranking`);
   }
 }
