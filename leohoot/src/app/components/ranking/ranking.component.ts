@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Mode } from '../../model/mode';
 import { User } from '../../model/user';
 import { SignalRService } from '../../services/signalr.service';
+import {RestService} from "../../services/rest.service";
 
 @Component({
   selector: 'app-ranking',
@@ -13,8 +14,9 @@ export class RankingComponent {
   currentQuestionId: number = 0;
   mode: number = 1;
   ranking: User[] = [];
+  quizLength = this.restservice.getQuizLength();
 
-  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) { 
+  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) {
     this.getParams();
     this.signalRService.connection.send("sendRanking");
     this.signalRService.connection.on("rankingReceived", (ranking) => {
