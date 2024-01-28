@@ -3,7 +3,7 @@
         <div class="container mx-auto p-2">
           <div
             class="mt-8 text-2xl font-bold md:text-4xl">
-            TODO
+            {{ quizTitle }}
           </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
                                 Questions
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                correct/incorrect
+                                correct / answers
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
                                 statistic
@@ -60,21 +60,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
-                            <tr *ngFor="let question of questions; let i = index" class="bg-white border-b hover:bg-gray-100">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                  <span class="font-semibold text-black pr-4">{{ question.id }}</span>
-                                  
-                                  <span>{{ truncateText(question.questionText, 130) }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                  <span>20/24</span>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                  <span>70%</span>
-                                </td>
-                              </tr>
-                        
+                        <tr *ngFor="let question of questions" class="bg-white border-b hover:bg-gray-100">
+                            {{ calculateResults(question.id) }}
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-semibold text-black pr-4">{{ question.id }}</span>
+
+                                <span>{{ truncateText(question.questionText, 130) }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span> {{ correctAnswers }} / {{ totalAnswers }} </span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span> {{ this.resultInPercentage }}</span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
