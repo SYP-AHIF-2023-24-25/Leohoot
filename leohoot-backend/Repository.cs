@@ -50,20 +50,22 @@ public class Repository
 
     public int GetCurrentPoints(string username)
     {
-        Console.WriteLine($"Count: {_currentAnswers.Count}");
         Player? answer = _currentAnswers.Find(user => user.Username == username);
-        Console.WriteLine($"Answer: {answer}");
         if (answer == null)
         {
             return 0;
         }
-        Console.WriteLine($"Score: {answer.Score}");
         return answer.Score;
     }
 
     public int GetAnswerCount()
     {
         return _currentAnswers.Count;
+    }
+
+    public int GetPlayerCount()
+    {
+        return _users.Count;
     }
 
     public void UpdatePoints()
@@ -85,9 +87,10 @@ public class Repository
     {
         int score = 0;
         bool isCorrect = await ctx.IsAnswerCorrect(quizId, questionNumber, answers);
+        var currentCorrectAnswers = _currentAnswers.FindAll(answer => answer.Score > 0).ToList();
         if (isCorrect)
         {
-            score = 1000 - 1000/_users.Count*_currentAnswers.Count;
+            score = 1000 - 1000/_users.Count*currentCorrectAnswers.Count;
         }
 
         if (_statistic.QuestionAnswers.ContainsKey(questionNumber))
@@ -100,7 +103,6 @@ public class Repository
         }
 
         _currentAnswers.Add(new Player(username, score));
-        Console.WriteLine(_currentAnswers.Count);
     }
 
     public Statistic GetStatistic()

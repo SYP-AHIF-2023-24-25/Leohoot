@@ -18,6 +18,8 @@ module.exports = {
         "user-orange": "#fcb30a",
         "background-blue": "#0788b0",
         "pastel-lila": "#D4B0F9",
+        "background-blue-light": "#cde7ef",
+        "ranking-blue": "#9CCFDF",
       },
       spacing: {
         '128': '32rem',
