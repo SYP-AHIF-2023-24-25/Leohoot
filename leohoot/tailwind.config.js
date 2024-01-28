@@ -17,6 +17,8 @@ module.exports = {
         "button-blue": "#38bdf8",
         "user-orange": "#fcb30a",
         "background-blue": "#0788b0",
+        "background-blue-light": "#cde7ef",
+        "ranking-blue": "#9CCFDF",
       },
       spacing: {
         '128': '32rem',

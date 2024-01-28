@@ -18,6 +18,18 @@ export class StudentsMobileRankingComponent {
   question!: Question;
   
 
+  trueOrFalse = [
+    'assets/images/true.png',
+    'assets/images/false.png'
+  ]
+
+  isRightAnswer(currentPoints: number) {
+    if(currentPoints > 0) {
+      return this.trueOrFalse.at(0);
+    }
+    return this.trueOrFalse.at(1);
+  }
+
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
 
   }

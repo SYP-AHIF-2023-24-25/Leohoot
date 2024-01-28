@@ -19,17 +19,18 @@ export class StudentsMobileViewComponent {
   buttons: boolean[] = [false, false, false, false];
   colors = [
     'bg-button-yellow',
-    'bg-red-500',
     'bg-green-400',
-    'bg-button-blue',
+    'bg-rose-400',
+    'bg-blue-400',
   ];
 
   icons = [
     'assets/images/cat.png',
-    'assets/images/crab.png',
     'assets/images/frog.png',
+    'assets/images/crab.png',
     'assets/images/bird.png'
   ]
+  points: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
@@ -47,6 +48,11 @@ export class StudentsMobileViewComponent {
         this.currentQuestionId = parseInt(params['currentQuestionId']);
       }
       this.getInformationAboutQuestion();
+    });
+
+    this.signalRService.connection.send("sendPoints", this.username);
+    this.signalRService.connection.on("pointsReceived", (points: number, currentPoints: number) => {
+      this.points = points;
     });
   }
 
