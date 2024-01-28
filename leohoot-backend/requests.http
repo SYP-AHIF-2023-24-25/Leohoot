@@ -14,3 +14,6 @@ Content-Type: application/json
 
 ###
 GET {{apiUrl}}/quizzes
+
+###
+GET {{apiUrl}}/quizzes/1/statistics

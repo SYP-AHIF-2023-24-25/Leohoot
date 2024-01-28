@@ -61,6 +61,14 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
             .SingleOrDefaultAsync();
     }
 
+    public async Task<object?> GetQuestions(int quizId)
+    {
+        return await Quizzes
+            .Where(q => q.Id == quizId)
+            .Select(q => q.Questions)
+            .SingleOrDefaultAsync();
+    }
+
     public async Task<object?> GetQuestion(int quizId, int questionNumber)
     {
         return await Questions
@@ -124,9 +132,9 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                 return false;
             }
         }
+
         return true;
     }
-
 }
 
 internal static class SampleData

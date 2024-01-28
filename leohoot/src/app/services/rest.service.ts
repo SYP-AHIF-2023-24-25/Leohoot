@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { QuestionComponent } from '../components/question/question.component';
 import { StudentViewData } from '../model/student-view-data';
 import { Player } from '../model/player';
+import { Statistic } from '../model/statistic';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,9 @@ export class RestService {
 
   getRanking(quizId: number, questionNumber: number): Observable<Player[]> {
     return this.httpClient.get<Player[]>(`${RestService.url}quizzes/ranking`);
+  }
+
+  getGameStatistics(quizId: number): Observable<Statistic> {
+    return this.httpClient.get<Statistic>(`${RestService.url}quizzes/${quizId}/statistic`);
   }
 }

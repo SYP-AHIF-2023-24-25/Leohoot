@@ -93,5 +93,13 @@ public static class Endpoints
         {
             return Repository.GetInstance().GetRanking();
         });
+
+        endpoints.MapGet("/api/quizzes/{quizId}/statistic", async (DataContext ctx, int quizId) => {
+            var statistic = Repository.GetInstance().GetStatistic();
+            var questions = await ctx.GetQuestions(quizId);
+
+            return new { QuestionAnswers = statistic.QuestionAnswers, Questions = questions };
+        });
+
     }
 }

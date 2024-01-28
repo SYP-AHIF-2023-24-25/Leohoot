@@ -12,6 +12,8 @@ public class Repository
 
     private List<Player> _users = [];
 
+    private static Statistic _statistic = new Statistic();
+
     private Repository()
     {
     }
@@ -87,8 +89,23 @@ public class Repository
         {
             score = 1000 - 1000/_users.Count*_currentAnswers.Count;
         }
+
+        if (_statistic.QuestionAnswers.ContainsKey(questionNumber))
+        {
+            _statistic.QuestionAnswers[questionNumber].Add(isCorrect);
+        }
+        else
+        {
+            _statistic.QuestionAnswers.TryAdd(questionNumber, new List<bool> {isCorrect});
+        }
+
         _currentAnswers.Add(new Player(username, score));
         Console.WriteLine(_currentAnswers.Count);
+    }
+
+    public Statistic GetStatistic()
+    {
+        return _statistic;
     }
 
 }
