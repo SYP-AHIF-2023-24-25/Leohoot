@@ -44,7 +44,7 @@ export class RankingComponent {
     }
     this.signalRService.connection.send("sendToNextQuestion");
     const queryParams = {
-      currentQuestionId: this.questionNumber,
+      currentQuestionId: ++this.questionNumber,
       mode: Mode.GAME_MODE
     };
     this.router.navigate(['/question'], { queryParams });
