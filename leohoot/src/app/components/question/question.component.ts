@@ -101,7 +101,7 @@ export class QuestionComponent {
   nextQuestion() {
     if (this.mode == Mode.TEACHER_DEMO_MODE) {
       const queryParams = {
-        currentQuestionId: this.currentQuestion.questionNumber + 1,
+        currentQuestionId: this.currentQuestion.questionNumber,
         mode: Mode.TEACHER_DEMO_MODE
       };
       this.router.navigate(['/question'], { queryParams });
@@ -109,7 +109,7 @@ export class QuestionComponent {
 
     } else if (this.mode == Mode.GAME_MODE) {
       const queryParams = {
-        currentQuestionId: this.currentQuestion.questionNumber + 1,
+        currentQuestionId: this.currentQuestion.questionNumber,
         mode: Mode.GAME_MODE
       };
       this.router.navigate(['/ranking'], { queryParams });
