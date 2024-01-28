@@ -80,13 +80,12 @@ public static class Endpoints
             int quizId = int.Parse(context.Request.RouteValues["quizId"] as string ?? "");
             int questionNumber = int.Parse(context.Request.RouteValues["questionNumber"] as string ?? "");
             bool[]? answers = await JsonSerializer.DeserializeAsync<bool[]>(context.Request.Body);
-            Console.WriteLine(answers);
             string? username = context.Request.Query["username"];
 
             DataContext ctx = context.RequestServices.GetService(typeof(DataContext)) as DataContext ?? throw new Exception("DataContext not found");
             await Repository.GetInstance().AddAnswer(ctx, quizId, questionNumber, answers!, username!);
 
-            await HubContext!.Clients.All.SendAsync("updateAnswerCount", Repository.GetInstance().GetAnswerCount());
+            await HubContext!.Clients.All.SendAsync("updateAnswerCount", Repository.GetInstance().GetAnswerCount(), Repository.GetInstance().GetPlayerCount());
         });
 
         endpoints.MapGet("/api/quizzes/ranking", (DataContext context)=>

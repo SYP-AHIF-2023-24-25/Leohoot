@@ -43,8 +43,13 @@ export class QuestionComponent {
     this.getParams();
     this.audio.loop = true;
 
-    this.signalRService.connection.on("updateAnswerCount", (answerCount: number) => {
-      console.log("updateAnswerCount " + answerCount);
+    this.signalRService.connection.on("updateAnswerCount", (answerCount: number, playerCount: number) => {
+      if (answerCount == playerCount)
+      {
+        this.obsTimer.unsubscribe();
+        this.questionIsFinished = true;
+        this.signalRService.connection.send("sendEndLoading");
+      }
       this.answerCount = answerCount;
     });
   }
