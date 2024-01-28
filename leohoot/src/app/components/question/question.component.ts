@@ -42,7 +42,7 @@ export class QuestionComponent {
   ngOnInit(): void {
     this.getParams();
     this.audio.loop = true;
-
+    
     this.signalRService.connection.on("updateAnswerCount", (answerCount: number, playerCount: number) => {
       if (answerCount == playerCount)
       {
