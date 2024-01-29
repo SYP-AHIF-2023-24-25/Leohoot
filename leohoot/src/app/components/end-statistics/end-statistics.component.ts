@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Player } from 'src/app/model/player';
 import { Question } from 'src/app/model/question';
@@ -13,6 +13,7 @@ import {
   ApexResponsive,
   ApexChart
 } from "ng-apexcharts";
+import { IncomingMessage } from 'http';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -25,7 +26,8 @@ export type ChartOptions = {
 @Component({
   selector: 'app-end-statistics',
   templateUrl: './end-statistics.component.html',
-  styleUrls: []
+  styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndStatisticsComponent {
   displayStatistics: boolean = false;
@@ -34,6 +36,9 @@ export class EndStatisticsComponent {
   resultInPercentage!: string;
   correctAnswers!: number;
   totalAnswers!: number;
+  incorrectAnswers!: number;
+  correctAnswersInPercentage!: number;
+  incorrectAnswersInPercentage!: number;
   quizTitle!: string;
   topThreePlayers: Player[] = [];
 
@@ -43,10 +48,10 @@ export class EndStatisticsComponent {
   
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    this.correctAnswers = 50;
-    this.totalAnswers = 50;
+    this.correctAnswersInPercentage = 0;
+    this.incorrectAnswersInPercentage = 0;
     this.chartOptions = {
-      series: [this.correctAnswers, this.totalAnswers],
+      series: [this.correctAnswersInPercentage, this.incorrectAnswersInPercentage],
       chart: {
         type: "donut"
       },
@@ -103,11 +108,14 @@ export class EndStatisticsComponent {
   calculateResults(questionNumber: number) {
     if (!this.questionAnswers[questionNumber]) {
        this.resultInPercentage = "0 %";
-       this.correctAnswers = 0;
-        this.totalAnswers = 0;
+       this.totalAnswers = 0;
     } else {
-      this.correctAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === true).length;
       this.totalAnswers = this.questionAnswers[questionNumber].length;
+      this.correctAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === true).length;
+      this.incorrectAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === false).length;
+      this.correctAnswersInPercentage = this.correctAnswers / this.totalAnswers * 100;
+      this.incorrectAnswersInPercentage = this.incorrectAnswers / this.totalAnswers * 100;
+      
 
       if (this.totalAnswers > 0) {
         this.resultInPercentage = (this.correctAnswers / this.totalAnswers * 100).toFixed(2) + " %";
@@ -115,6 +123,8 @@ export class EndStatisticsComponent {
         this.resultInPercentage = "0 %";
       }
     }
+
+    this.chartOptions.series = [this.correctAnswersInPercentage, this.incorrectAnswersInPercentage];
   }
 
   truncateText(text: string, maxLength: number): string {
