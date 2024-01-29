@@ -39,16 +39,11 @@ export class RankingComponent {
   }
 
   nextQuestion() {
-    console.log(this.questionNumber, this.quizLength);
-    if (this.questionNumber === this.quizLength) {
-      this.router.navigate(['/statistics']);
-    } else {
-      this.signalRService.connection.send("sendToNextQuestion");
-      const queryParams = {
-        currentQuestionId: ++this.questionNumber,
-        mode: Mode.GAME_MODE
-      };
-      this.router.navigate(['/question'], { queryParams });
-    }
+    this.signalRService.connection.send("sendToNextQuestion");
+    const queryParams = {
+      currentQuestionId: ++this.questionNumber,
+      mode: Mode.GAME_MODE
+    };
+    this.router.navigate(['/question'], { queryParams });
   }
 }

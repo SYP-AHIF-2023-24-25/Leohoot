@@ -44,11 +44,18 @@ export class QuestionComponent {
     this.audio.loop = true;
     
     this.signalRService.connection.on("updateAnswerCount", (answerCount: number, playerCount: number) => {
+      console.log(`AnswerCount: ${answerCount}, PlayerCount: ${playerCount}`);
+      console.log(answerCount == playerCount);
       if (answerCount == playerCount)
       {
         this.obsTimer.unsubscribe();
         this.questionIsFinished = true;
         this.signalRService.connection.send("sendEndLoading");
+        const queryParams = {
+          currentQuestionId: this.currentQuestion.questionNumber,
+          mode: Mode.GAME_MODE
+        };
+        this.router.navigate(['/ranking'], { queryParams });
       }
       this.answerCount = answerCount;
     });
@@ -99,6 +106,13 @@ export class QuestionComponent {
   }
 
   nextQuestion() {
+    console.log(`QuestionNumber: ${this.currentQuestion.questionNumber}, QuizLength: ${this.quizLength}`);
+    console.log(this.currentQuestion.questionNumber === this.quizLength);
+    if (this.currentQuestion.questionNumber === this.quizLength && this.mode == Mode.GAME_MODE) {
+      console.log("nextQuestion");
+      this.router.navigate(['/statistics']);
+    }
+
     if (this.mode == Mode.TEACHER_DEMO_MODE) {
       const queryParams = {
         currentQuestionId: ++this.currentQuestion.questionNumber,
