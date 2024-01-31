@@ -23,6 +23,7 @@ public class ChatHub : Hub
 
     public async Task SendEndLoading()
     {
+        Console.WriteLine("End loading");
         Repository.GetInstance().UpdatePoints();
         await Clients.All.SendAsync("endLoading");
     }

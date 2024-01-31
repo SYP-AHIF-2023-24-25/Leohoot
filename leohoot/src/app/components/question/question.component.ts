@@ -106,10 +106,7 @@ export class QuestionComponent {
   }
 
   nextQuestion() {
-    console.log(`QuestionNumber: ${this.currentQuestion.questionNumber}, QuizLength: ${this.quizLength}`);
-    console.log(this.currentQuestion.questionNumber === this.quizLength);
     if (this.currentQuestion.questionNumber === this.quizLength && this.mode == Mode.GAME_MODE) {
-      console.log("nextQuestion");
       this.router.navigate(['/statistics']);
     }
 

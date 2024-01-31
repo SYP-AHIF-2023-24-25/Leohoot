@@ -13,6 +13,7 @@ public class Repository
     private List<Player> _users = [];
 
     private static Statistic _statistic = new Statistic();
+    private bool _updatedPoints = false;
 
     private Repository()
     {
@@ -70,15 +71,20 @@ public class Repository
 
     public void UpdatePoints()
     {
-        foreach (Player user in _currentAnswers)
+        if (!_updatedPoints)
         {
-            Player userToUpdate = _users.Find(userToUpdate => userToUpdate.Username == user.Username)!;
-            userToUpdate.Score += user.Score;
+            foreach (Player user in _currentAnswers)
+            {
+                Player userToUpdate = _users.Find(userToUpdate => userToUpdate.Username == user.Username)!;
+                userToUpdate.Score += user.Score;
+            }
         }
+        _updatedPoints = true;
     }
 
     public void ClearCurrentAnswers()
     {
+        _updatedPoints = false;
         _currentAnswers.Clear();
     }
 
