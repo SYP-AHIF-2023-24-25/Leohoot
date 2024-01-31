@@ -43,6 +43,11 @@ public static class Endpoints
             await ctx.SaveChangesAsync();
             return Results.Created($"/api/users/{user.Username}", user);
         });
+
+        endpoints.MapDelete("/api/users/reset", () =>
+        {
+            Repository.GetInstance().Reset();
+        });
     }
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
@@ -99,6 +104,5 @@ public static class Endpoints
 
             return new { QuestionAnswers = statistic.QuestionAnswers, Questions = questions };
         });
-
     }
 }

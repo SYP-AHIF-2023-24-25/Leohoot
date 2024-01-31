@@ -17,17 +17,18 @@ export class WaitingroomComponent {
   users: Player[] = [];
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
-    restService.getQuizById(1).subscribe((data) => {;
-      this.quiz = data;
-      
-      this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
-      this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
-      
-      do{
-        this.gamePin = this.generateGamePin();
-      } while (this.gamePin < 10000000 || this.gamePin > 99999999);
-
-      //restService.addGamePin(this.gamePin);
+    this.restService.resetGame().subscribe(() =>
+    {
+      restService.getQuizById(1).subscribe((data) => {;
+        this.quiz = data;
+        
+        this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
+        this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
+        
+        do{
+          this.gamePin = this.generateGamePin();
+        } while (this.gamePin < 10000000 || this.gamePin > 99999999);
+      });
     });
   }
 

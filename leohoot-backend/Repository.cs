@@ -19,6 +19,14 @@ public class Repository
     {
     }
 
+    public void Reset()
+    {
+        _users.Clear();
+        _currentAnswers.Clear();
+        _statistic = new Statistic();
+        _updatedPoints = false;
+    }
+
     public static Repository GetInstance()
     {
         if (_instance == null)
