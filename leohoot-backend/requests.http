@@ -1,0 +1,19 @@
+@apiUrl=https://localhost:5000/api
+
+###
+GET {{apiUrl}}/users
+
+###
+POST {{apiUrl}}/users
+Content-Type: application/json
+
+{
+    "username": "apiUser",
+    "password": "apiPassword"
+}
+
+###
+GET {{apiUrl}}/quizzes
+
+###
+GET {{apiUrl}}/quizzes/1/statistics

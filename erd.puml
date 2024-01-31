@@ -1,0 +1,47 @@
+@startuml ERD-Leohoot
+skinparam linetype ortho
+
+entity Quiz {
+    * quiz_id: number <<PK>>
+    * title: text
+    * description: text
+    --
+    * creator: text <<FK>>
+}
+
+entity Question {
+    * question_id: number <<PK>>
+    * question_text: text
+    * answer_time: number
+    * preview_time: number
+    optional prieview_time: text
+    optional image
+    --
+    * next_question_id: number <<FK>>
+    * quiz_id: number <<FK>>
+}
+
+entity Answer {
+    * answer_id: number <<PK>>
+    * answer_text: text
+    * is_correct: bool
+    --
+    * question_id: number <<FK>>
+}
+
+entity User {
+    * username: text  <<PK>>
+    * password: text
+}
+
+entity Tag {
+    name: text <<PK>>
+}
+
+
+Question }|--|| Quiz
+Answer }|--|| Question
+User }|--|| Quiz
+Quiz }--{ Tag
+
+@enduml
