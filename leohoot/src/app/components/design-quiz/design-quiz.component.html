@@ -1,0 +1,80 @@
+<div class="flex flex-col bg-background-blue min-h-screen">
+    <div class="bg-white text-center drop-shadow-lg" id="questiontext">
+        <div class="container mx-auto p-2">
+          <div
+            class="mt-8 text-2xl font-bold md:text-4xl">
+            Design Quiz
+          </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-4">
+        <div class="bg-design-quiz-blue h-screen">
+            <div class="grid grid-cols-6 my-3 drop-shadow-lg">
+                <p class="col-span-4 flex items-center text-white font-semibold pl-5">Quiz Name</p>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 mr-3" (click)="addQuestion()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
+            </div>
+            <hr>
+                <nav class="flex flex-1 flex-col">
+                <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                    <li>
+                    <ul role="list" class="text-white">
+                        <li class="hover:bg-design-quiz-hover">
+                            <div class="grid grid-cols-6">
+                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" >
+                                    <img class="h-8" src="/assets/images/bin.png" alt="bin">
+                                </button>
+                                <div class="col-span-5 pl-3 flex items-center">
+                                    Frage 1
+                                </div>
+                            </div>
+                        </li>
+                        <hr class="border-background-blue border-t-2">
+                        <li class="hover:bg-design-quiz-hover">
+                            <div class="grid grid-cols-6">
+                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" >
+                                    <img class="h-8" src="/assets/images/bin.png" alt="bin">
+                                </button>
+                                <div class="col-span-5 pl-3 flex items-center">
+                                    Frage 2
+                                </div>
+                            </div>
+                        </li>
+                        <hr class="border-background-blue border-t-2">
+                    </ul>
+                    </li>
+                </ul>
+                </nav>
+        </div>
+        
+        <div class="col-span-3 mt-10">
+            <div class="grid grid-cols-2">
+                <div>
+                    <form #createQuiz="ngForm" class="space-y-6 mx-4 py-5 px-5 rounded max-w-3xl">
+                        <div>
+                            <label for="name" class="block text-lg font-medium leading-6 text-white mb-2">Quiz Name</label>
+                            <input name="name" type="name" placeholder="Name" [(ngModel)]="name" #quizName="ngModel" required class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center placeholder:text-base focus:ring-2 focus:ring-inset">
+                            <div *ngIf="!quizName.pristine">
+                                <p [hidden]="!quizName.errors?.['required']" class="text-gray-400">
+                                    A Quiz Name is required.
+                                </p>
+                            </div>
+                        </div> 
+            
+                        <div>
+                            <label for="description" class="block text-lg font-medium leading-6 text-white mb-2">Description</label>
+                            <input name="description" type="description" placeholder="Description" [(ngModel)]="description" class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center placeholder:text-base focus:ring-2 focus:ring-inset">
+                        </div> 
+                    </form>  
+                </div>
+                <div class="container bg-white border-2 p-4 max-w-xl mx-auto max-h-96 mt-2 rounded-md">
+                    <p class="text-center">Upload Image</p>
+                    <img class="mx-auto mt-4 max-h-72" src="/assets/images/upload.png" alt="Uploaded Image">
+                </div>
+            </div>            
+        </div>
+    </div>
+<div>
