@@ -1,7 +1,9 @@
-import { Question } from "./question";
-import { Quiz } from "./quiz";
+import { Player } from './player';
+import { Question } from './question';
 
 export interface Statistic {
-    questionAnswers: { [key: number]: boolean[] };
+    quizName: string;
+    topThreePlayers: Player[];
+    questionAnswers: Map<number, boolean[]>;
     questions: Question[];
 }

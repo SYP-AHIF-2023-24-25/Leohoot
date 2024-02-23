@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../services/rest.service";
 import { SignalRService } from '../../services/signalr.service';
 import { Question } from 'src/app/model/question';
+import { StudentViewData } from 'src/app/model/student-view-data';
 
 @Component({
   selector: 'app-students-mobile-ranking',
@@ -10,12 +11,9 @@ import { Question } from 'src/app/model/question';
   styleUrls: []
 })
 export class StudentsMobileRankingComponent {
-  quizLength: number = 0;
-  questionNumber: number = 0;
+  gameId!: number;
   username: string = sessionStorage.getItem("username") || "test";
-  points: number = 0;
-  currentPoints: number = 0;
-  question!: Question;
+  question!: StudentViewData;
   
 
   trueOrFalse = [
@@ -37,24 +35,26 @@ export class StudentsMobileRankingComponent {
   ngOnInit() {
     this.getParams();
 
-    this.signalRService.connection.on("nextQuestion", () => {
-      const queryParams = {
-        currentQuestionId: this.questionNumber + 1 
-      };
-      this.router.navigate(['/studentMobileView'], { queryParams });
+    this.signalRService.connection.on("nextQuestion", (gameId: number) => {
+      console.log("nextQuestion");
+      if (gameId == this.gameId)
+      {
+        const queryParams = {
+          gameId: this.gameId 
+        };
+        this.router.navigate(['/studentMobileView'], { queryParams });
+      }
+
     });
-    this.restservice.getQuestionByQuestionNumber(1, this.questionNumber, this.username).subscribe((data) => {
-      this.question = data.question;
-      this.points = data.points;
-      this.quizLength = data.quizLength;
-      this.currentPoints = data.currentPoints;
+    this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
+      this.question = data;
    } );
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
-      if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.questionNumber = parseInt(params['currentQuestionId']);
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
       }
     });
   }

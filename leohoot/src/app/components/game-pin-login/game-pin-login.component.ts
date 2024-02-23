@@ -8,13 +8,13 @@ import { SignalRService } from '../../services/signalr.service';
   templateUrl: './game-pin-login.component.html',
 })
 export class GameLoginComponent {
-  gamePin!: number;
+  gameId!: number;
 
   constructor(private restservice: RestService, private router: Router, private signalRService: SignalRService){
     
   }
 
   enteredGamePin(){
-    this.router.navigate(['/gameUserLogin'], { queryParams: { gamePin: this.gamePin } });
+    this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
   }
 }

@@ -1,8 +1,11 @@
 import { Question } from "./question";
 
+//record QuestionStudentDto(int QuestionNumber, string QuestionText, int CurrentPoints, int QuizLength);
 export interface StudentViewData{
-    question: Question,
-    points: number,
-    quizLength: number,
-    currentPoints: number
+    questionNumber: number;
+    questionText: string;
+    currentPoints: number;
+    points: number;
+    quizLength: number;
+    numberOfAnswers: number;
 }

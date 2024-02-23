@@ -30,17 +30,14 @@ export type ChartOptions = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndStatisticsComponent {
+  statistic!: Statistic;
   displayStatistics: boolean = false;
-  questions: Question[] = [];
-  questionAnswers!: { [key: number]: boolean[] };
   resultInPercentage!: string;
   correctAnswers!: number;
   totalAnswers!: number;
   incorrectAnswers!: number;
   correctAnswersInPercentage!: number;
   incorrectAnswersInPercentage!: number;
-  quizTitle!: string;
-  topThreePlayers: Player[] = [];
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
@@ -74,17 +71,11 @@ export class EndStatisticsComponent {
   }
   
   ngOnInit(): void {
-    //quizId = ??
-    this.restservice.getQuizById(1).subscribe((data) => {
-      this.quizTitle = data.title;
-    });
-
     this.restservice.getGameStatistics(1).subscribe((data) => {
-      this.questions = data.questions;
-      this.questionAnswers = data.questionAnswers;
+      this.statistic = data;
     });
 
-    this.restservice.getRanking(1, this.questions.length).subscribe((data) => {
+    /*this.restservice.getRanking(1, this.questions.length).subscribe((data) => {
       if (data === undefined) {
         this.topThreePlayers = [ {username: "No players yet", score: 0} ];
       } else {
@@ -98,7 +89,7 @@ export class EndStatisticsComponent {
           this.topThreePlayers = data;
         }
       }      
-    });
+    });*/
   }
 
   showStatistics() {
@@ -106,13 +97,13 @@ export class EndStatisticsComponent {
   }
 
   calculateResults(questionNumber: number) {
-    if (!this.questionAnswers[questionNumber]) {
+    if (!this.statistic.questionAnswers.get(questionNumber)) {
        this.resultInPercentage = "0 %";
        this.totalAnswers = 0;
     } else {
-      this.totalAnswers = this.questionAnswers[questionNumber].length;
-      this.correctAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === true).length;
-      this.incorrectAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === false).length;
+      this.totalAnswers = this.statistic.questionAnswers.get(questionNumber)!.length;
+      this.correctAnswers = this.statistic.questionAnswers.get(questionNumber)!.filter((answer) => answer === true).length;
+      this.incorrectAnswers = this.statistic.questionAnswers.get(questionNumber)!.filter((answer) => answer === false).length;
       this.correctAnswersInPercentage = this.correctAnswers / this.totalAnswers * 100;
       this.incorrectAnswersInPercentage = this.incorrectAnswers / this.totalAnswers * 100;
       

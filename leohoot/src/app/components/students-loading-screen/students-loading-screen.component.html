@@ -1,8 +1,8 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="question">
   <div class="bg-white pb-2 text-center">
     <div class="container mx-auto p-2">
       <div class="text-2xl font-bold md:text-4xl">
-        <p class="text-center justify-start">Question {{questionNumber}} of {{questionNumber}}</p>
+        <p class="text-center justify-start">Question {{question.questionNumber}} of {{question.quizLength}}</p>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
     <p class="text-start text-2xl">{{username}}</p>
     <p class="text-end text-2xl">
       <button class="bg-button-yellow text-white rounded-md pl-5 pr-5 pt-1 pb-1">
-    <p class="drop-shadow-[2px_2px_3px_var(--tw-shadow-color)] shadow-black">{{points}}</p>
+    <p class="drop-shadow-[2px_2px_3px_var(--tw-shadow-color)] shadow-black">{{question.points}}</p>
     </button>
     </p>
   </div>

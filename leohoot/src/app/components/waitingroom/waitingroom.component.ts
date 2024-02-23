@@ -12,58 +12,30 @@ import { SignalRService } from '../../services/signalr.service';
 export class WaitingroomComponent {
   qrCodeData!: string;
   qrCodeTitle!: string;
-  gamePin!: number;
-  quiz!: Quiz;
+  gamePin: number = 0;
+  quizId: number = 1;
   users: Player[] = [];
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
-    this.restService.resetGame().subscribe(() =>
+    restService.getNewGameId(1).subscribe((response) => 
     {
-      restService.getQuizById(1).subscribe((data) => {;
-        this.quiz = data;
-        
-        this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
-        this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
-        
-        do{
-          this.gamePin = this.generateGamePin();
-        } while (this.gamePin < 10000000 || this.gamePin > 99999999);
-      });
+      this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
+      this.qrCodeTitle = "Scan the QR code to join the game!"; 
+      this.gamePin = response;
     });
   }
 
   ngOnInit() {
-    this.signalRService.connection.on("registeredUser", (name) => {
-      console.log("registeredUser")
-      console.log(name);
-      this.users.push({username: name, score: 0});
+    this.signalRService.connection.on("registeredUser", (gamePin, name) => {
+      if (gamePin == this.gamePin)
+      {
+        this.users.push({username: name, score: 0});
+      }
     });
   }
 
-  hashString(str: string): number {
-    let hash = 0;
-
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-    }
-
-    return hash;
-  }
-
-  generateGamePin(): number {
-    const currentDateWithTime = new Date();
-    const uniqueString = this.qrCodeTitle + currentDateWithTime.toISOString() + this.quiz.creator;
-      const hashedValue = this.hashString(uniqueString);
-      
-      const gamePin = (hashedValue % 90000000) + 10000000;
-
-      return gamePin;
-  }
-
-
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/question'], { queryParams: { currentQuestionId: 1 , mode: 1} });
+    this.router.navigate(['/question'], { queryParams: { gameId: this.gamePin , mode: 1} });
   }
 }
