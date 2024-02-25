@@ -12,8 +12,8 @@ import { Statistic } from '../model/statistic';
   providedIn: 'root'
 })
 export class RestService {
-  //public static url: string = 'http://localhost:5000/api/';
-  public static url: string = 'http://140.238.173.82:8001/api/'
+  public static url: string = 'http://localhost:5000/api/';
+  //public static url: string = 'http://140.238.173.82:8001/api/'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -47,5 +47,9 @@ export class RestService {
 
   resetGame(): Observable<boolean> {
     return this.httpClient.delete<boolean>(`${RestService.url}users/reset`);
+  }
+
+  addQuiz(quiz: Quiz): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${RestService.url}quiz`, quiz);
   }
 }

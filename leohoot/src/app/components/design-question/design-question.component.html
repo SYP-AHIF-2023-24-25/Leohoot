@@ -8,9 +8,9 @@
         </div>
     </div>
     <div class="grid grid-cols-6">
-        <div class="bg-design-quiz-blue h-screen">
+        <div class="bg-design-quiz-blue min-h-screen">
             <div class="grid grid-cols-6 my-3 drop-shadow-lg">
-                <p class="col-span-4 flex items-center text-white font-semibold pl-5" (click)="editQuizName()">{{quizTitle}}</p>
+                <p class="col-span-4 flex items-center text-white font-semibold pl-5" (click)="editQuizName()">{{ truncateText(quizTitle, 17)}}</p>
                 <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 mr-3" (click)="validateQuestion()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -18,7 +18,7 @@
                 </button>
             </div>
             <hr>
-                <nav class="flex flex-1 flex-col">
+            <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                     <li>
                     <ul *ngFor="let question of questionList" role="list" class="text-white">
@@ -36,9 +36,8 @@
                     </ul>
                     </li>
                 </ul>
-                </nav>
+            </nav>
         </div>
-       
         <div class="col-span-5 mt-10 mx-10">
             <div class="bg-white text-center drop-shadow-lg" id="questiontext">
                 <div class="container mx-auto p-2">
@@ -86,16 +85,21 @@
             
                 <div class="flex items-center justify-center">
                     <div class="w-128 my-16">
-                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-128 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                            </div>
-                            <input id="dropzone-file" type="file" class="hidden" />
-                        </label>
+                        <div *ngIf="!imageUrl">
+                            <label for="dropzone-file" class="flex flex-col items-center justify-center w-128 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                </div>
+                                <input id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)"/>
+                            </label>
+                        </div>
+                        <div *ngIf="imageUrl" class="flex items-center justify-center">
+                            <img [src]="imageUrl" *ngIf="imageUrl" class="max-w-4xl max-h-96" alt="Preview">
+                        </div>
                     </div>
                 </div>
             </div>

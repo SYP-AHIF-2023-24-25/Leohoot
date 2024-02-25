@@ -49,6 +49,7 @@ public static class Endpoints
             Repository.GetInstance().Reset();
         });
     }
+    record QuizPostDto(string Title, string Description, List<Question> Questions,  string creator);
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
     {
@@ -103,6 +104,21 @@ public static class Endpoints
             var questions = await ctx.GetQuestions(quizId);
 
             return new { QuestionAnswers = statistic.QuestionAnswers, Questions = questions };
+        });
+
+        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
+        {
+            var quiz = new Quiz {
+                Title = quizDto.Title,
+                Description = quizDto.Description,
+                Creator = await ctx.Users.Where(u => u.Username == quizDto.creator).FirstOrDefaultAsync(),
+                Questions = quizDto.Questions
+            };
+            
+            ctx.Quizzes.Add(quiz);
+            await ctx.SaveChangesAsync();
+
+            return Results.Created($"/api/quiz/{quiz.Id}", quiz);
         });
     }
 }

@@ -14,6 +14,7 @@ export class DesignQuestionComponent {
   quizTitle: string = '';
   questionList: string[] = [];
 
+  imageUrl: string | undefined;
   title: string | undefined;
   answerTime: number;
   previewTime: number;
@@ -33,11 +34,44 @@ export class DesignQuestionComponent {
   }
 
   ngOnInit() {
-    this.quizTitle = this.configurationService.getQuiz().title;
     this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
     this.questionList.push('New Question');
+
+    this.getParams();
   }
 
+  getParams() {
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['quizName'] !== 'undefined') {
+        console.log(params['quizName']);
+        this.quizTitle = params['quizName'];
+      }
+
+      if (typeof params['questionText'] !== 'undefined') {
+        this.displayQuestion(params['questionText']);
+      }
+    });
+  }
+
+  handleFileInput(event: any) {
+    const files = event?.target?.files;
+    if (files && files.length > 0) {
+      const file = files.item(0);
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageUrl = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Please select an image file.')
+      }
+    } else {
+      alert('Please select an image file.')
+    }
+  }
+  
+  
 
   decrement(time: string) {
     if (time === 'answerTime' && this.answerTime > 5){
@@ -90,7 +124,8 @@ export class DesignQuestionComponent {
       ],
       id: 0,
       questionNumber: 0,
-      nextQuestionId: null
+      nextQuestionId: null,
+      imageName: this.imageUrl
     };
     this.configurationService.addQuestion(question);
   }
@@ -114,6 +149,7 @@ export class DesignQuestionComponent {
     this.answer03Checkbox = false;
     this.answer04 = '';
     this.answer04Checkbox = false;
+    this.imageUrl = undefined;
   }
 
   truncateText(text: string, maxLength: number): string {
@@ -121,15 +157,17 @@ export class DesignQuestionComponent {
   }
 
   editQuizName() {
-    if (this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') {
-      this.router.navigate(['/designQuiz']);
-    }
+    const queryParams = {
+      quizName: this.quizTitle
+    };
 
-    if ((this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') === false) {
-      alert('Please fill in all necessary fields to save the question first.');
-    } else {
+    if ((this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') === true) {
+      this.router.navigate(['/designQuiz'], { queryParams });
+    } else if (this.title !== undefined && this.title !== '' && this.answer01 !== undefined && this.answer01 !== '' && this.answer02 !== undefined && this.answer02 !== '') {
       this.validateQuestion();
-      this.router.navigate(['/designQuiz']);
+      this.router.navigate(['/designQuiz'], { queryParams });
+    } else {
+      alert('Please fill in all necessary fields to save the question first.');
     }
   }
 

@@ -40,7 +40,7 @@ export class ConfigurationService {
   }
 
   resetQuiz() {
-    this.quiz.creator = "test";
+    this.quiz.creator = "sampleUser";
     this.quiz.description = "";
     this.quiz.questions = [];
     this.quiz.title = "";
