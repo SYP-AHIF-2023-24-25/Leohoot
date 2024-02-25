@@ -16,6 +16,11 @@ export class DesignQuizComponent {
   }
 
   addQuestion() {
+    this.signalRService.connection.invoke("addQuestion");
     this.router.navigate(['/designQuestion']);
+  }
+
+  addQuiz() {
+    
   }
 }
