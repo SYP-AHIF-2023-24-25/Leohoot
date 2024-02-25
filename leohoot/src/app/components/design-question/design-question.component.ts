@@ -61,68 +61,22 @@ export class DesignQuestionComponent {
     if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
       alert('Please fill in all necessary fields to save the question.');
     } else {
-      if (this.questionList.includes(this.title) === true){
+      console.log(this.questionList);
+      // todo update question
+      /*if (this.questionList.includes(this.title) === true){
+        
         console.log('updateQuestion');
         this.updateQuestion();
-      } else {
+      } else {*/
         if (this.questionList.includes(this.title) === false){
           this.addQuestion();
           this.reloadPage();
         } else {
           alert('This question already exists in the quiz. Please choose a different question title.');
         }
-      }
+    //}
     }
   }
-
-  updateQuestion() {
-    const question = this.configurationService.getQuestions().find(question => question.questionText === this.title);
-    /*if (question?.questionText !== this.title
-      || question?.answerTimeInSeconds !== this.answerTime
-      || question?.previewTime !== this.previewTime
-      || question?.answers[0].answerText !== this.answer01
-      || question?.answers[0].isCorrect !== this.answer01Checkbox
-      || question?.answers[1].answerText !== this.answer02
-      || question?.answers[1].isCorrect !== this.answer02Checkbox
-      || question?.answers[2].answerText !== this.answer03
-      || question?.answers[2].isCorrect !== this.answer03Checkbox
-      || question?.answers[3].answerText !== this.answer04
-      || question?.answers[3].isCorrect !== this.answer04Checkbox) {
-      
-        this.configurationService.updateQuestion({
-          questionText: this.title ?? '',
-          answerTimeInSeconds: this.answerTime,
-          previewTime: this.previewTime,
-          answers: [
-            { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-            { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-            { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-            { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-          ],
-          id: 0,
-          questionNumber: 0,
-          nextQuestionId: null
-        });     
-    }*/
-    console.log('updateQuestion');
-    console.log(this.configurationService.getQuestions());
-    this.configurationService.updateQuestion({
-      questionText: this.title ?? '',
-      answerTimeInSeconds: this.answerTime,
-      previewTime: this.previewTime,
-      answers: [
-        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-      ],
-      id: 0,
-      questionNumber: 0,
-      nextQuestionId: null
-    });  
-    console.log(this.configurationService.getQuestions());
-  }
-
   addQuestion() {
     const question: Question = {
       questionText: this.title ?? '',
@@ -139,6 +93,10 @@ export class DesignQuestionComponent {
       nextQuestionId: null
     };
     this.configurationService.addQuestion(question);
+  }
+
+  updateQuestion() {
+    //TODO
   }
 
   reloadPage() {
@@ -188,7 +146,6 @@ export class DesignQuestionComponent {
 
   displayQuestion(questionText: string) {
     const question = this.configurationService.getQuestions().find(question => question.questionText === questionText);
-
       this.previewTime = question?.previewTime ?? 5;
       this.answerTime = question?.answerTimeInSeconds ?? 15;
       this.title = question?.questionText;
@@ -207,3 +164,66 @@ export class DesignQuestionComponent {
     this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
   }
 }
+/*const question = this.configurationService.getQuestions().find(question => question.questionText === this.title);
+    /*if (question?.questionText !== this.title
+      || question?.answerTimeInSeconds !== this.answerTime
+      || question?.previewTime !== this.previewTime
+      || question?.answers[0].answerText !== this.answer01
+      || question?.answers[0].isCorrect !== this.answer01Checkbox
+      || question?.answers[1].answerText !== this.answer02
+      || question?.answers[1].isCorrect !== this.answer02Checkbox
+      || question?.answers[2].answerText !== this.answer03
+      || question?.answers[2].isCorrect !== this.answer03Checkbox
+      || question?.answers[3].answerText !== this.answer04
+      || question?.answers[3].isCorrect !== this.answer04Checkbox) {
+      
+        this.configurationService.updateQuestion({
+          questionText: this.title ?? '',
+          answerTimeInSeconds: this.answerTime,
+          previewTime: this.previewTime,
+          answers: [
+            { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
+            { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
+            { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
+            { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
+          ],
+          id: 0,
+          questionNumber: 0,
+          nextQuestionId: null
+        });     
+    }
+    console.log('updateQuestion');
+    console.log(this.configurationService.getQuestions());
+    this.configurationService.updateQuestion({
+      questionText: this.title ?? '',
+      answerTimeInSeconds: this.answerTime,
+      previewTime: this.previewTime,
+      answers: [
+        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
+        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
+        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
+        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
+      ],
+      id: 0,
+      questionNumber: 0,
+      nextQuestionId: null
+    });  
+    console.log(this.configurationService.getQuestions());
+  }
+
+  addQuestion() {
+    const question: Question = {
+      questionText: this.title ?? '',
+      answerTimeInSeconds: this.answerTime,
+      previewTime: this.previewTime,
+      answers: [
+        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
+        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
+        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
+        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
+      ],
+      id: 0,
+      questionNumber: 0,
+      nextQuestionId: null
+    };
+    this.configurationService.addQuestion(question);*/
