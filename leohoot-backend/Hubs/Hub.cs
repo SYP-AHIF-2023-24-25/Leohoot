@@ -10,7 +10,7 @@ public class ChatHub : Hub
     public async Task RegisterUser(int gameId, string username) {
         Console.WriteLine("Registering user " + username + " to game " + gameId);
         var game = Repository.GetInstance().GetGameById(gameId);
-        if (game.RegisterUser(username))
+        if (game!.RegisterUser(username))
         {
             await Clients.All.SendAsync("registeredUser", gameId, username);
             await Clients.Caller.SendAsync("registeredUserSuccess", gameId, username);
@@ -25,14 +25,14 @@ public class ChatHub : Hub
     public async Task SendEndLoading(int gameId)
     {
         var game = Repository.GetInstance().GetGameById(gameId);
-        game.UpdatePoints();
+        game!.UpdatePoints();
         await Clients.All.SendAsync("endLoading", gameId);
     }
 
-    public async Task SendToNextQuestion(int gameId){
+    /*public async Task SendToNextQuestion(int gameId){
         Console.WriteLine("Sending to next question");
         var game = Repository.GetInstance().GetGameById(gameId);
         game.ClearCurrentAnswers();
         await Clients.All.SendAsync("nextQuestion", gameId);
-    }
+    }*/
 }

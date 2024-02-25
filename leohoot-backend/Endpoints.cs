@@ -46,11 +46,6 @@ public static class Endpoints
             await ctx.SaveChangesAsync();
             return Results.Created($"/api/users/{user.Username}", user);
         });
-
-        /*endpoints.MapDelete("/api/users/reset", () =>
-        {
-            Repository.GetInstance().Reset();
-        });*/
     }
 
     record QuestionTeacherDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, string? ImageName, int PreviewTime, AnswerDto[] Answers, int QuizLength);
@@ -75,21 +70,33 @@ public static class Endpoints
         endpoints.MapGet("/api/games/{gameId}/ranking", (int gameId)=>
         {
             var game = Repository.GetInstance().GetGameById(gameId);
-            return new RankingDto(game.Ranking.ToArray(), game.CurrentQuestion.QuestionNumber, game.Quiz.Questions.Count);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            return Results.Ok(new RankingDto(game.Ranking.ToArray(), game.CurrentQuestion.QuestionNumber, game.Quiz.Questions.Count));
         });
 
         endpoints.MapGet("/api/games/{gameId}/statistic", (DataContext ctx, int gameId) => {
             var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
             var questionAnswers = game.Statistic.QuestionAnswers;
             var questions = game.Quiz.Questions.ToArray();
             var TopThreePlayers = game.GetRanking(3);
 
-            return new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions);
+            return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions));
         });
 
         endpoints.MapGet("/api/games/{gameId}/currentQuestion/teacher", (int gameId) =>
         {
             var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
             var question = new QuestionTeacherDto(
                 game.CurrentQuestion.QuestionNumber, 
                 game.CurrentQuestion.QuestionText, 
@@ -98,12 +105,16 @@ public static class Endpoints
                 game.CurrentQuestion.PreviewTime, 
                 game.CurrentQuestion.Answers.ToArray(), 
                 game.Quiz.Questions.Count);
-            return question;
+            return Results.Ok(question);
         });
 
         endpoints.MapGet("/api/games/{gameId}/currentQuestion/student", (DataContext ctx, int gameId, string username)=>
         {
             var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
             var questionStudent = new QuestionStudentDto(
                 game.CurrentQuestion.QuestionNumber, 
                 game.CurrentQuestion.QuestionText,
@@ -111,17 +122,34 @@ public static class Endpoints
                 game.GetCurrentPointsByUsername(username),
                 game.GetPointsByUsername(username), 
                 game.Quiz.Questions.Count);
-            return questionStudent;
+            return Results.Ok(questionStudent);
         });
 
         endpoints.MapPut("/api/games/{gameId}/currentQuestion", async (DataContext ctx, int gameId)=>
         {
             var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            game.ClearCurrentAnswers();
             var nextQuestion = game.Quiz.Questions.SingleOrDefault(q => q.QuestionNumber == game.CurrentQuestion!.QuestionNumber + 1);
-            game.CurrentQuestion = nextQuestion;
+            game.CurrentQuestion = nextQuestion!;
             await ctx.SaveChangesAsync();
-            return nextQuestion;
+            
+            await HubContext!.Clients.All.SendAsync("nextQuestion", gameId);
+            return Results.Ok(nextQuestion);
         });
         
+        endpoints.MapGet("/api/games/{gameId}/exists", (string gameId)=>
+        {
+            int result;
+            Game? game = null;
+            if (int.TryParse(gameId, out result))
+            {
+                game = Repository.GetInstance().GetGameById(result);
+            };
+            return game != null;
+        });
     }
 }

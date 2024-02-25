@@ -59,8 +59,8 @@ public class Repository
         return new CountsDto(game.AnswerCount, game.PlayerCount == game.AnswerCount);
     }
 
-    public Game GetGameById(int gameId)
+    public Game? GetGameById(int gameId)
     {
-        return _games.Find(g => g.GameId == gameId) ?? throw new Exception("Game not found");
+        return _games.Find(g => g.GameId == gameId);
     }
 }

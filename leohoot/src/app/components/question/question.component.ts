@@ -89,10 +89,10 @@ export class QuestionComponent {
 
   nextQuestion() {
     if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
-      this.router.navigate(['/statistics']);
-    }
-    // Game Modes
-    if (this.mode == Mode.TEACHER_DEMO_MODE) {
+      console.log('Game is finished');
+      this.router.navigate(['/statistics'], { queryParams: { gameId: this.gameId } });
+
+    } else if (this.mode == Mode.TEACHER_DEMO_MODE) {
       const queryParams = {
         gameId: this.gameId,
         mode: Mode.TEACHER_DEMO_MODE

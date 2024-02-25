@@ -26,14 +26,6 @@ export class RestService {
     return this.httpClient.get<StudentViewData>(`${RestService.url}games/${gameId}/currentQuestion/student?username=${username}`);
   };
 
-  getQuizLengthById(id: number): Observable<number> {
-    return this.httpClient.get<number>(`${RestService.url}quizzes/${id}/length`);
-  }
-
-  getQuizById(quizId: number): Observable<Quiz> {
-    return this.httpClient.get<Quiz>(`${RestService.url}quizzes/${quizId}`);
-  }
-
   addAnswer(gameId: number, buttons: boolean[], username: string): Observable<boolean> {
     return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});  
   }
@@ -46,15 +38,15 @@ export class RestService {
     return this.httpClient.get<Statistic>(`${RestService.url}games/${gameId}/statistic`);
   }
 
-  resetGame(): Observable<boolean> {
-    return this.httpClient.delete<boolean>(`${RestService.url}users/reset`);
-  }
-
   getNewGameId(quizId: number): Observable<number> {
     return this.httpClient.post<number>(`${RestService.url}games/${quizId}`, {});
   }
 
   nextQuestion(gameId: number): Observable<Question> {
     return this.httpClient.put<Question>(`${RestService.url}games/${gameId}/currentQuestion`, {});
+  }
+
+  doesGameExist(gameId: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${RestService.url}games/${gameId}/exists`);
   }
 }

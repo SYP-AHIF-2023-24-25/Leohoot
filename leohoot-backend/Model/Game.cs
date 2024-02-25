@@ -8,7 +8,7 @@ namespace LeohootBackend.Model
     {
         public int GameId { get; private set; }
         public QuizDto Quiz { get; set; }        
-        public QuestionDto? CurrentQuestion { get; set; }
+        public QuestionDto CurrentQuestion { get; set; }
         public Statistic Statistic { get; set; }
 
         private List<Player> _players;
@@ -126,7 +126,11 @@ namespace LeohootBackend.Model
 
         public Player[] GetRanking(int numberOfPlayers)
         {
-            return _players.OrderByDescending(u => u.Score).Take(numberOfPlayers).ToArray();
+            var ranking = _players.Take(numberOfPlayers).ToList();
+            while (ranking.Count < 3) {
+                ranking.Add(new Player("", 0));
+            }
+            return ranking.OrderByDescending(u => u.Score).ToArray();
         }
     }
 }

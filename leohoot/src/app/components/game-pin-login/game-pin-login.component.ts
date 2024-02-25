@@ -8,13 +8,19 @@ import { SignalRService } from '../../services/signalr.service';
   templateUrl: './game-pin-login.component.html',
 })
 export class GameLoginComponent {
-  gameId!: number;
+  gameId!: string;
 
   constructor(private restservice: RestService, private router: Router, private signalRService: SignalRService){
     
   }
 
   enteredGamePin(){
-    this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
+    this.restservice.doesGameExist(this.gameId).subscribe((exists) => {
+      if(exists){
+        this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
+      } else {
+        alert("This game does not exist");
+      }
+    });
   }
 }

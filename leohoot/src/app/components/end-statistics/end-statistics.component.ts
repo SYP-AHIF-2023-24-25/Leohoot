@@ -1,8 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Player } from 'src/app/model/player';
-import { Question } from 'src/app/model/question';
-import { Quiz } from 'src/app/model/quiz';
 import { Statistic } from 'src/app/model/statistic';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
@@ -13,7 +10,6 @@ import {
   ApexResponsive,
   ApexChart
 } from "ng-apexcharts";
-import { IncomingMessage } from 'http';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -30,8 +26,11 @@ export type ChartOptions = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndStatisticsComponent {
+  gameId!: number;
   statistic!: Statistic;
+
   displayStatistics: boolean = false;
+
   resultInPercentage!: string;
   correctAnswers!: number;
   totalAnswers!: number;
@@ -42,9 +41,24 @@ export class EndStatisticsComponent {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
-  
-
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+
+  }
+  
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
+      }
+      this.restservice.getGameStatistics(this.gameId).subscribe((data) => {
+        this.statistic = data;
+        console.log(this.statistic);
+      });
+    });
+    this.initChart();
+  }
+
+  initChart() {
     this.correctAnswersInPercentage = 0;
     this.incorrectAnswersInPercentage = 0;
     this.chartOptions = {
@@ -68,28 +82,6 @@ export class EndStatisticsComponent {
         }
       ]
     };
-  }
-  
-  ngOnInit(): void {
-    this.restservice.getGameStatistics(1).subscribe((data) => {
-      this.statistic = data;
-    });
-
-    /*this.restservice.getRanking(1, this.questions.length).subscribe((data) => {
-      if (data === undefined) {
-        this.topThreePlayers = [ {username: "No players yet", score: 0} ];
-      } else {
-        if (data.length > 3) {
-          this.topThreePlayers = data.slice(0, 3);
-        } else {
-          while (data.length < 3) {
-            data.push({ username: "", score: 0 });
-          }
-          
-          this.topThreePlayers = data;
-        }
-      }      
-    });*/
   }
 
   showStatistics() {

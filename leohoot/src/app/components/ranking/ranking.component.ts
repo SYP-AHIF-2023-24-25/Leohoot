@@ -37,7 +37,6 @@ export class RankingComponent {
   nextQuestion() {
     this.restservice.nextQuestion(this.gameId).subscribe(() => 
     {
-      this.signalRService.connection.send("sendNextQuestion", this.gameId);
       const queryParams = {
         gameId: this.gameId,
         mode: Mode.GAME_MODE
