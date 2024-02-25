@@ -13,8 +13,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME_FRONTEND: if200127/leohoot
-  IMAGE_NAME_BACKEND: if200127/leohoot-backend
+  IMAGE_NAME_FRONTEND: ${{ secrets.DOCKERHUB_USERNAME_SOPHIE }}/leohoot
+  IMAGE_NAME_BACKEND: ${{ secrets.DOCKERHUB_USERNAME_SOPHIE }}/leohoot-backend
 
 jobs:
     build-and-push:
@@ -31,8 +31,8 @@ jobs:
         - name: Login to DockerHub
           uses: docker/login-action@v2
           with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
+            username: ${{ secrets.DOCKERHUB_USERNAME_SOPHIE }}
+            password: ${{ secrets.DOCKERHUB_TOKEN_SOPHIE }}
   
         - name: Docker Build frontend
           uses: docker/build-push-action@v4
