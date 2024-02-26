@@ -5,14 +5,16 @@ import { Answer } from 'src/app/model/answer';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { Menu } from 'src/app/model/menu';
 
 @Component({
   selector: 'app-design-question',
   templateUrl: './design-question.component.html'
 })
+
 export class DesignQuestionComponent {
   quizTitle: string = '';
-  questionList: string[] = [];
+  questionList: Menu[] = [];
 
   imageUrl: string | undefined;
   title: string | undefined;
@@ -28,27 +30,36 @@ export class DesignQuestionComponent {
   answer04: string | undefined;
   answer04Checkbox: boolean = false;
 
+  questionNumberIncrement: number = 0;
+
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService) {
     this.answerTime = 15;
     this.previewTime = 5;
   }
 
   ngOnInit() {
-    this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
-    this.questionList.push('New Question');
+    this.questionList = this.configurationService.getQuestions().map(question => { 
+      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
+      return JSON.parse(jsonString);
+    });
+
+    console.log(this.questionList);
+    this.questionNumberIncrement = this.questionList.length;
 
     this.getParams();
   }
 
   getParams() {
+    console.log('getParams');
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizName'] !== 'undefined') {
-        console.log(params['quizName']);
         this.quizTitle = params['quizName'];
       }
 
-      if (typeof params['questionText'] !== 'undefined') {
-        this.displayQuestion(params['questionText']);
+      if (typeof params['questionNumber'] !== 'undefined') {
+        this.displayQuestion(params['questionNumber']);
+      } else {
+        this.addEmptyQuestion();
       }
     });
   }
@@ -70,48 +81,55 @@ export class DesignQuestionComponent {
       alert('Please select an image file.')
     }
   }
-  
-  
-
-  decrement(time: string) {
-    if (time === 'answerTime' && this.answerTime > 5){
-      this.answerTime--;
-    } else if (time === 'previewTime' && this.previewTime > 3){
-      this.previewTime--;
-    }
-  }
-
-  increment(time: string) {
-    if (time === 'answerTime'){
-      this.answerTime++;
-    } else {
-      this.previewTime++;
-    }
-  }
-
-
 
   validateQuestion() {
-    if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
+    console.log('validateQuestion');
+    /*if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
       alert('Please fill in all necessary fields to save the question.');
     } else {
-      console.log(this.questionList);
-      // todo update question
-      /*if (this.questionList.includes(this.title) === true){
+        const savedQuestions = this.configurationService.getQuestions();
         
-        console.log('updateQuestion');
-        this.updateQuestion();
-      } else {*/
-        if (this.questionList.includes(this.title) === false){
-          this.addQuestion();
-          this.reloadPage();
+        if (savedQuestions.map(q => q.questionNumber).includes(this.questionNumberIncrement)){
+          const savedQuestion = savedQuestions.find(q => q.questionNumber === this.questionNumberIncrement);
+
+          if (savedQuestion?.questionText === this.title && savedQuestion?.answerTimeInSeconds === this.answerTime && savedQuestion?.previewTime === this.previewTime
+            && savedQuestion?.answers[0].answerText === this.answer01 && savedQuestion?.answers[0].isCorrect === this.answer01Checkbox && savedQuestion?.answers[1].answerText === this.answer02 
+            && savedQuestion?.answers[1].isCorrect === this.answer02Checkbox && savedQuestion?.answers[2].answerText === this.answer03 && savedQuestion?.answers[2].isCorrect === this.answer03Checkbox 
+            && savedQuestion?.answers[3].answerText === this.answer04 && savedQuestion?.answers[3].isCorrect === this.answer04Checkbox) {
+            this.displayQuestion(this.questionNumberIncrement);
+          } else {
+            if (savedQuestion?.questionText === 'New Question') {
+              this.deleteQuestion(this.questionNumberIncrement);
+            }
+            this.addQuestion();
+            this.reloadPage();
+          }          
         } else {
           alert('This question already exists in the quiz. Please choose a different question title.');
+        }*/
+        if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
+          alert('Please fill in all necessary fields to save the question.');
+        } else {
+          console.log(this.questionList);
+          // todo update question
+          /*if (this.questionList.includes(this.title) === true){
+            
+            console.log('updateQuestion');
+            this.updateQuestion();
+          } else {*/
+          const savedQuestions = this.configurationService.getQuestions();
+          if (savedQuestions.map(q => q.questionNumber).includes(this.questionNumberIncrement) === false){
+            this.addQuestion();
+            this.reloadPage();
+          } else {
+            alert('This question already exists in the quiz. Please choose a different question title.');
+          }
         }
-    //}
     }
-  }
+  
+
   addQuestion() {
+    console.log('addQuestion');
     const question: Question = {
       questionText: this.title ?? '',
       answerTimeInSeconds: this.answerTime,
@@ -123,20 +141,37 @@ export class DesignQuestionComponent {
         { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
       ],
       id: 0,
-      questionNumber: 0,
+      questionNumber: this.questionNumberIncrement,
       nextQuestionId: null,
       imageName: this.imageUrl
     };
     this.configurationService.addQuestion(question);
+
+    console.log(this.configurationService.getQuestions());
   }
 
-  updateQuestion() {
-    //TODO
+  addEmptyQuestion() {
+    this.questionNumberIncrement++;
+
+    this.questionList.push( {
+      text: 'New Question',
+      id: this.questionNumberIncrement
+    });
+
   }
 
   reloadPage() {
-    this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
-    this.questionList.push('New Question');
+    console.log('reloadPage');
+    console.log(this.configurationService.getQuestions());
+   
+    this.questionList = this.configurationService.getQuestions().map(question => { 
+      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
+      return JSON.parse(jsonString);
+    });
+
+    console.log(this.questionList);
+
+    this.addEmptyQuestion();
 
     this.title = '';
     this.answerTime = 15;
@@ -162,6 +197,7 @@ export class DesignQuestionComponent {
     };
 
     if ((this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') === true) {
+      this.deleteQuestion(this.questionNumberIncrement);
       this.router.navigate(['/designQuiz'], { queryParams });
     } else if (this.title !== undefined && this.title !== '' && this.answer01 !== undefined && this.answer01 !== '' && this.answer02 !== undefined && this.answer02 !== '') {
       this.validateQuestion();
@@ -171,19 +207,23 @@ export class DesignQuestionComponent {
     }
   }
 
-  editQuestion(questionText: string) {
+  editQuestion(questionNumber: number) {
       if ((this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') === true) {
-        this.displayQuestion(questionText);
+        if (questionNumber !== this.questionNumberIncrement){
+          this.deleteQuestion(this.questionNumberIncrement);
+        }
+        this.displayQuestion(questionNumber);
       } else if (this.title !== undefined && this.title !== '' && this.answer01 !== undefined && this.answer01 !== '' && this.answer02 !== undefined && this.answer02 !== '') {
         this.validateQuestion();
-        this.displayQuestion(questionText);
+        this.displayQuestion(questionNumber);
       } else {
         alert('Please fill in all necessary fields to save the question first.');
       }
   }
 
-  displayQuestion(questionText: string) {
-    const question = this.configurationService.getQuestions().find(question => question.questionText === questionText);
+  displayQuestion(questionNumber: number) {
+    console.log('displayQuestion');
+    const question = this.configurationService.getQuestions().find(question => question.questionNumber === questionNumber);
       this.previewTime = question?.previewTime ?? 5;
       this.answerTime = question?.answerTimeInSeconds ?? 15;
       this.title = question?.questionText;
@@ -197,71 +237,28 @@ export class DesignQuestionComponent {
       this.answer04Checkbox = question?.answers[3].isCorrect ?? false;
   }
 
-  deleteQuestion(questionText: string) {
-    this.configurationService.deleteQuestion(questionText);
-    this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
-  }
-}
-/*const question = this.configurationService.getQuestions().find(question => question.questionText === this.title);
-    /*if (question?.questionText !== this.title
-      || question?.answerTimeInSeconds !== this.answerTime
-      || question?.previewTime !== this.previewTime
-      || question?.answers[0].answerText !== this.answer01
-      || question?.answers[0].isCorrect !== this.answer01Checkbox
-      || question?.answers[1].answerText !== this.answer02
-      || question?.answers[1].isCorrect !== this.answer02Checkbox
-      || question?.answers[2].answerText !== this.answer03
-      || question?.answers[2].isCorrect !== this.answer03Checkbox
-      || question?.answers[3].answerText !== this.answer04
-      || question?.answers[3].isCorrect !== this.answer04Checkbox) {
-      
-        this.configurationService.updateQuestion({
-          questionText: this.title ?? '',
-          answerTimeInSeconds: this.answerTime,
-          previewTime: this.previewTime,
-          answers: [
-            { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-            { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-            { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-            { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-          ],
-          id: 0,
-          questionNumber: 0,
-          nextQuestionId: null
-        });     
-    }
-    console.log('updateQuestion');
-    console.log(this.configurationService.getQuestions());
-    this.configurationService.updateQuestion({
-      questionText: this.title ?? '',
-      answerTimeInSeconds: this.answerTime,
-      previewTime: this.previewTime,
-      answers: [
-        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-      ],
-      id: 0,
-      questionNumber: 0,
-      nextQuestionId: null
-    });  
-    console.log(this.configurationService.getQuestions());
+  deleteQuestion(questionNumber: number) {
+    this.configurationService.deleteQuestion(questionNumber);
+    this.questionList = this.configurationService.getQuestions().map(question => { 
+      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
+      return JSON.parse(jsonString);
+    });
+
   }
 
-  addQuestion() {
-    const question: Question = {
-      questionText: this.title ?? '',
-      answerTimeInSeconds: this.answerTime,
-      previewTime: this.previewTime,
-      answers: [
-        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-      ],
-      id: 0,
-      questionNumber: 0,
-      nextQuestionId: null
-    };
-    this.configurationService.addQuestion(question);*/
+  decrement(time: string) {
+    if (time === 'answerTime' && this.answerTime > 5){
+      this.answerTime--;
+    } else if (time === 'previewTime' && this.previewTime > 3){
+      this.previewTime--;
+    }
+  }
+
+  increment(time: string) {
+    if (time === 'answerTime'){
+      this.answerTime++;
+    } else {
+      this.previewTime++;
+    }
+  }
+}

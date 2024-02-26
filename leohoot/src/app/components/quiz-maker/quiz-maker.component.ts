@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { get } from 'jquery';
+import { Question } from 'src/app/model/question';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
@@ -10,14 +11,15 @@ import { SignalRService } from 'src/app/services/signalr.service';
   templateUrl: './quiz-maker.component.html'
 })
 export class DesignQuizComponent {
-  questionList: string[] = [];
+  questions: Question[] = [];
   name: string = "";
   description: string | undefined;
   imageUrl: string | undefined;
   
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
     this.getParams();
-    this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
+    this.questions = this.configurationService.getQuestions();
+    this.description = this.configurationService.getQuiz().description;
   }
 
   getParams() {
@@ -32,8 +34,10 @@ export class DesignQuizComponent {
 
   addQuestion() {
     const queryParams = {
-      quizName: this.name
+      quizName: this.name,
     };
+
+    this.configurationService.setQuiz(this.name, this.description ? this.description : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
   }
@@ -41,6 +45,8 @@ export class DesignQuizComponent {
   addQuiz() {
     this.configurationService.setQuiz(this.name, this.description ? this.description : '');
     const quiz = this.configurationService.getQuiz();
+
+    quiz.questions = quiz.questions.filter(question => question.questionText !== undefined || question.questionText !== '');
 
     this.restService.addQuiz(quiz).subscribe(data => {
       console.log(data);
@@ -71,16 +77,18 @@ export class DesignQuizComponent {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
-  deleteQuestion(questionText: string) {
-    this.configurationService.deleteQuestion(questionText);
-    this.questionList = this.configurationService.getQuestions().map(question => question.questionText);
+  deleteQuestion(questionNumber: number) {
+    this.configurationService.deleteQuestion(questionNumber);
+    this.questions = this.configurationService.getQuestions();
   }
 
-  editQuestion(questionText: string) {
+  editQuestion(questionNumber: number) {
     const queryParams = {
       quizName: this.name,
-      questionText: questionText
+      questionNumber: questionNumber
     };
+
+    this.configurationService.setQuiz(this.name, this.description ? this.description : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
   }

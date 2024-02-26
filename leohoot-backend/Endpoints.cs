@@ -49,7 +49,10 @@ public static class Endpoints
             Repository.GetInstance().Reset();
         });
     }
-    record QuizPostDto(string Title, string Description, List<Question> Questions,  string creator);
+
+    record AnswerDto(string AnswerText, bool IsCorrect);
+    record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime);
+    record QuizPostDto(string Title, string Description, List<QuestionDto> Questions,  string Creator);
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
     {
@@ -108,13 +111,25 @@ public static class Endpoints
 
         endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
         {
-            var quiz = new Quiz {
+            var quiz = new Quiz
+            {
                 Title = quizDto.Title,
                 Description = quizDto.Description,
-                Creator = await ctx.Users.Where(u => u.Username == quizDto.creator).FirstOrDefaultAsync(),
-                Questions = quizDto.Questions
+                Creator = ctx.Users.Where(u => u.Username == quizDto.Creator).FirstOrDefault(),
+                Questions = quizDto.Questions.Select(q => new Question
+                {
+                    QuestionNumber = q.QuestionNumber,
+                    QuestionText = q.QuestionText,
+                    AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                    Answers = q.Answers.Select(a => new Answer
+                    {
+                        AnswerText = a.AnswerText,
+                        IsCorrect = a.IsCorrect
+                    }).ToList(),
+                    ImageName = q.ImageName,
+                    PreviewTime = q.PreviewTime
+                }).ToList()
             };
-            
             ctx.Quizzes.Add(quiz);
             await ctx.SaveChangesAsync();
 

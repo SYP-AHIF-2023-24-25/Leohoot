@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { Question } from '../model/question';
+import { QuestionComponent } from '../components/question/question.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -51,8 +52,11 @@ export class ConfigurationService {
     this.quiz.description = quizDescription;
   }
 
-  deleteQuestion(questionText: string) {
-    this.quiz.questions = this.quiz.questions.filter(question => question.questionText !== questionText);
+  deleteQuestion(questionId: number) {
+    this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== questionId);
+    this.quiz.questions.forEach((question, index) => {
+      question.questionNumber = index + 1;
+    });
   }
 
 }

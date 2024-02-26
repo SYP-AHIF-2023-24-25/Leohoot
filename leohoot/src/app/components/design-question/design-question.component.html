@@ -24,11 +24,11 @@
                     <ul *ngFor="let question of questionList" role="list" class="text-white">
                         <li class="hover:bg-design-quiz-hover">
                             <div class="grid grid-cols-6">
-                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question)">
+                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question.id)">
                                     <img class="h-8" src="/assets/images/bin.png" alt="bin">
                                 </button>
-                                <div class="col-span-5 pl-3 flex items-center" (click)="editQuestion(question)">
-                                    {{ truncateText(question, 30) }}
+                                <div class="col-span-5 pl-3 flex items-center" (click)="editQuestion(question.id)">
+                                    {{ truncateText(question.text, 30) }}
                                 </div>
                             </div>
                         </li>

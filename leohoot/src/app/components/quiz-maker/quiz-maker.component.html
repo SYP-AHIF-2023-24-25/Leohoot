@@ -21,14 +21,14 @@
             <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                     <li>
-                    <ul *ngFor="let question of questionList" role="list" class="text-white" (click)="editQuestion(question)">
+                    <ul *ngFor="let question of questions" role="list" class="text-white" (click)="editQuestion(question.questionNumber)">
                         <li class="hover:bg-design-quiz-hover">
                             <div class="grid grid-cols-6">
-                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question)">
+                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question.questionNumber)">
                                     <img class="h-8" src="/assets/images/bin.png" alt="bin">
                                 </button>
                                 <div class="col-span-5 pl-3 flex items-center">
-                                    {{ truncateText(question, 30) }}
+                                    {{ truncateText(question.questionText, 30) }}
                                 </div>
                             </div>
                         </li>
