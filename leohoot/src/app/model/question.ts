@@ -7,5 +7,5 @@ export interface Question {
   imageName?: string;
   previewTime: number;
   answers: Answer[];
-  quizLength: number;
+  quizLength?: number;
 }

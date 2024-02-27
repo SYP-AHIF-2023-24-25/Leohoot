@@ -49,4 +49,8 @@ export class RestService {
   doesGameExist(gameId: string): Observable<boolean> {
     return this.httpClient.get<boolean>(`${RestService.url}games/${gameId}/exists`);
   }
+
+  addQuiz(quiz: Quiz): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${RestService.url}quiz`, quiz);
+  }
 }

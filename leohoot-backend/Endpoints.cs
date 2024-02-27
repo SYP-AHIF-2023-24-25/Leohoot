@@ -20,6 +20,7 @@ public static class Endpoints
     {
         ConfigureUserEndpoints(app);
         ConfigureGameEndpoints(app);
+        ConfigureQuizEndpoints(app);
     }
 
     public record UserPostDto(string Username, string Password);
@@ -53,6 +54,10 @@ public static class Endpoints
     record AnswerPostDto(bool[] Answers, string Username);
     record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts);
     record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
+    record AnswerDto(string AnswerText, bool IsCorrect);
+    record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime);
+    record QuizPostDto(string Title, string Description, List<QuestionDto> Questions,  string Creator);
+
     private static void ConfigureGameEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/api/games/{quizId}", async (int quizId, DataContext ctx) =>
@@ -84,8 +89,14 @@ public static class Endpoints
                 return Results.NotFound("Game not found");
             }
             var questionAnswers = game.Statistic.QuestionAnswers;
-            var questions = game.Quiz.Questions.ToArray();
             var TopThreePlayers = game.GetRanking(3);
+            QuestionDto[] questions = game.Quiz.Questions.Select(q => new QuestionDto(
+                q.QuestionNumber, 
+                q.QuestionText, 
+                q.AnswerTimeInSeconds, 
+                q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
+                q.ImageName, 
+                q.PreviewTime)).ToArray();
 
             return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions));
         });
@@ -103,7 +114,7 @@ public static class Endpoints
                 game.CurrentQuestion.AnswerTimeInSeconds, 
                 game.CurrentQuestion.ImageName, 
                 game.CurrentQuestion.PreviewTime, 
-                game.CurrentQuestion.Answers.ToArray(), 
+                game.CurrentQuestion.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToArray(),
                 game.Quiz.Questions.Count);
             return Results.Ok(question);
         });
@@ -150,6 +161,36 @@ public static class Endpoints
                 game = Repository.GetInstance().GetGameById(result);
             };
             return game != null;
+        });
+    }
+
+    private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
+        {
+            var quiz = new Quiz
+            {
+                Title = quizDto.Title,
+                Description = quizDto.Description,
+                Creator = ctx.Users.Where(u => u.Username == quizDto.Creator).FirstOrDefault(),
+                Questions = quizDto.Questions.Select(q => new Question
+                {
+                    QuestionNumber = q.QuestionNumber,
+                    QuestionText = q.QuestionText,
+                    AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                    Answers = q.Answers.Select(a => new Answer
+                    {
+                        AnswerText = a.AnswerText,
+                        IsCorrect = a.IsCorrect
+                    }).ToList(),
+                    ImageName = q.ImageName,
+                    PreviewTime = q.PreviewTime
+                }).ToList()
+            };
+            ctx.Quizzes.Add(quiz);
+            await ctx.SaveChangesAsync();
+
+            return Results.Created($"/api/quiz/{quiz.Id}", quiz);
         });
     }
 }

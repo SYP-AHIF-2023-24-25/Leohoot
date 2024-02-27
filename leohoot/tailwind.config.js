@@ -20,6 +20,8 @@ module.exports = {
         "pastel-lila": "#D4B0F9",
         "background-blue-light": "#cde7ef",
         "ranking-blue": "#9CCFDF",
+        "design-quiz-blue": "#39A0C0",
+        "design-quiz-hover": "#62C6E4"
       },
       spacing: {
         '128': '32rem',
