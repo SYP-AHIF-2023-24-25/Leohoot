@@ -13,14 +13,14 @@ import { Mode } from 'src/app/model/mode';
 })
 export class QuizMakerComponent {
   quizId: number | undefined;
-  questions: Question[] = [];
+  existingQuestions: Question[] = [];
   name: string = "";
   description: string | undefined;
   imageUrl: string | undefined;
   
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
     this.getParams();
-    this.questions = this.configurationService.getQuestions();
+    this.refetchQuestions();
     this.description = this.configurationService.getQuiz().description;
   }
 
@@ -42,6 +42,10 @@ export class QuizMakerComponent {
     this.configurationService.setQuiz(this.name, this.description ? this.description : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
+  }
+
+  refetchQuestions() {
+    this.existingQuestions = this.configurationService.getQuestions();
   }
 
   addQuiz() {
@@ -79,9 +83,9 @@ export class QuizMakerComponent {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
-  deleteQuestion(questionNumber: number) {
-    this.configurationService.deleteQuestion(questionNumber);
-    this.questions = this.configurationService.getQuestions();
+  deleteQuestion(id: number) {
+    this.configurationService.deleteQuestion(id);
+    this.refetchQuestions();  
   }
 
   editQuestion(questionNumber: number) {
@@ -95,10 +99,10 @@ export class QuizMakerComponent {
     this.router.navigate(['/designQuestion'], { queryParams });
   }
 
-  playDemoView()
+  /*playDemoView()
   {
     this.restService.getNewGameId(this.quizId!).subscribe(data => {
       this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE } });
     });
-  }
+  }*/
 }

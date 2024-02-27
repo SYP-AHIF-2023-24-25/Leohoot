@@ -21,16 +21,16 @@
             <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
                     <li>
-                    <ul *ngFor="let question of questions" role="list" class="text-white" (click)="editQuestion(question.questionNumber)">
+                    <ul *ngFor="let question of existingQuestions" role="list" class="text-white">
                         <li class="hover:bg-design-quiz-hover">
                             <div class="grid grid-cols-6">
-                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question.questionNumber)">
-                                    <img class="h-8" src="/assets/images/bin.png" alt="bin">
+                                <button class="pt-4 pb-4 flex items-center justify-center hover:bg-design-quiz-blue" (click)="deleteQuestion(question.questionNumber)">
+                                  <img class="size-6" src="/assets/images/bin.png" alt="bin">
                                 </button>
-                                <div class="col-span-5 pl-3 flex items-center">
-                                    {{ truncateText(question.questionText, 30) }}
+                                <div class="col-span-5 pl-3 flex items-center" (click)="editQuestion(question.questionNumber)">
+                                  {{ truncateText(question.questionText, 30) }}
                                 </div>
-                            </div>
+                              </div>
                         </li>
                         <hr class="border-background-blue border-t-2">
                     </ul>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-span-5 mt-7">
-            <div class="flex justify-end">
+            <!--<div class="flex justify-end">
                 <div *ngIf="createQuiz.form.valid === false; then disableButtonSave else buttonSave"></div>
                 <div *ngIf="quizId == undefined; then disableButtonPlay else buttonPlay"></div>
             </div>
@@ -57,7 +57,7 @@
             </ng-template>
             <ng-template #buttonPlay>
                 <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="playDemoView()">Play</button>
-            </ng-template>
+            </ng-template>-->
 
             <div class="grid grid-cols-2 mt-5">
                 <div>

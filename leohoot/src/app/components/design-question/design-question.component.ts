@@ -158,19 +158,24 @@ export class DesignQuestionComponent {
   }
 
   displayQuestion(data: number | Question) {
-    if (typeof data === 'number') {
-      this.refetchQuestions()
-
-      const searchResult = this.existingQuestions.find(question => question.questionNumber === data);
-      if (!searchResult) {
-        alert('Question not found');
-        return
+    if (this.question.questionText === undefined || this.question.questionText === '' && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' 
+    || this.validateQuestion()) {
+      if (typeof data === 'number') {
+        this.refetchQuestions()
+  
+        const searchResult = this.existingQuestions.find(question => question.questionNumber === data);
+        if (!searchResult) {
+          alert('Question not found');
+          return
+        }
+        this.question = searchResult;
+      } else {
+        this.question = data as Question;
       }
-      this.question = searchResult;
+      this.editMode = true;
     } else {
-      this.question = data as Question;
+      alert('Please fill in all necessary fields to save the question first.');
     }
-    this.editMode = true;
   }
 
   truncateText(text: string | undefined, maxLength: number): string {

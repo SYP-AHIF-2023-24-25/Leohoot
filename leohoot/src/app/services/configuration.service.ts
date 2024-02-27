@@ -15,20 +15,12 @@ export class ConfigurationService {
   };
 
   updateQuestion(question: Question) {
-    let oldQuestion = this.quiz.questions.find(q => q.questionText === question.questionText);
-    let indexToUpdate = oldQuestion ? this.quiz.questions.indexOf(oldQuestion) : -1;
-
-    console.log("indexToUpdate: " + indexToUpdate);
-    console.log(this.quiz.questions);
-
-    if (indexToUpdate === -1) {
-      this.quiz.questions.push(question);
-    } else {
-      this.quiz.questions[indexToUpdate] = question;
-    }
+      this.quiz.questions[question.questionNumber] = question;
+    
   }
 
   addQuestion(question: Question) {
+    question.questionNumber = this.quiz.questions.length;
     this.quiz.questions.push(question);
   }
 
@@ -40,13 +32,6 @@ export class ConfigurationService {
     return this.quiz.questions;
   }
 
-  resetQuiz() {
-    this.quiz.creator = "sampleUser";
-    this.quiz.description = "";
-    this.quiz.questions = [];
-    this.quiz.title = "";
-  }
-
   setQuiz(quizTitle: string, quizDescription: string) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
@@ -55,7 +40,7 @@ export class ConfigurationService {
   deleteQuestion(questionId: number) {
     this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== questionId);
     this.quiz.questions.forEach((question, index) => {
-      question.questionNumber = index + 1;
+      question.questionNumber = index;
     });
   }
 
