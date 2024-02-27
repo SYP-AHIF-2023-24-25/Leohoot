@@ -63,4 +63,9 @@ public class Repository
     {
         return _games.Find(g => g.GameId == gameId);
     }
+
+    public void DeleteGame(int gameId)
+    {
+        _games.RemoveAll(g => g.GameId == gameId);
+    }
 }

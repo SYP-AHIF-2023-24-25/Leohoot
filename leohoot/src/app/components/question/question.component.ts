@@ -89,28 +89,19 @@ export class QuestionComponent {
 
   nextQuestion() {
     if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
-      console.log('Game is finished');
       this.router.navigate(['/statistics'], { queryParams: { gameId: this.gameId } });
-
-    } else if (this.mode == Mode.TEACHER_DEMO_MODE) {
-      const queryParams = {
-        gameId: this.gameId,
-        mode: Mode.TEACHER_DEMO_MODE
-      };
-      this.router.navigate(['/question'], { queryParams });
-      this.questionIsFinished = false;
-
     } else if (this.mode == Mode.GAME_MODE) {
-      const queryParams = {
-        gameId: this.gameId,
-        mode: Mode.GAME_MODE
-      };
-      this.router.navigate(['/ranking'], { queryParams });
+      this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });
+    } else {
+      if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
+        this.restservice.deleteGame(this.gameId).subscribe(() => {
+          this.router.navigate(['/designQuiz']);
+        });
+      } else {
+        this.restservice.nextQuestion(this.gameId).subscribe(() => {
+          window.location.reload();
+        });
+      }
     }
-  }
-
-  ngOnDestroy() {
-    this.obsTimer.unsubscribe();
-    console.log('destroyed');
   }
 }

@@ -162,6 +162,12 @@ public static class Endpoints
             };
             return game != null;
         });
+
+        endpoints.MapDelete("/api/games/{gameId}", (int gameId)=>
+        {
+            Repository.GetInstance().DeleteGame(gameId);
+            return Results.Ok();
+        });
     }
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)

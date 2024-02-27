@@ -53,4 +53,8 @@ export class RestService {
   addQuiz(quiz: Quiz): Observable<boolean> {
     return this.httpClient.post<boolean>(`${RestService.url}quiz`, quiz);
   }
+
+  deleteGame(gameId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.url}games/${gameId}`);
+  }
 }
