@@ -10,7 +10,7 @@ import { GameLoginComponent } from './components/game-pin-login/game-pin-login.c
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
 import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
-import { DesignQuizComponent } from './components/quiz-maker/quiz-maker.component';
+import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
 import { DesignQuestionComponent } from './components/design-question/design-question.component';
 
 const routes: Routes = [
@@ -25,8 +25,8 @@ const routes: Routes = [
   { path: 'gameUserLogin', component: GameUserLoginComponent},
   { path: 'studentWaitingPage', component: StudentWaitingPageComponent},
   { path: 'statistics', component: EndStatisticsComponent},
-  { path: 'designQuiz', component: DesignQuizComponent},
-  { path: 'designQuestion', component: DesignQuestionComponent}
+  { path: 'designQuestion', component: DesignQuestionComponent},
+  { path: 'quizMaker', component: QuizMakerComponent}
 ];
 
 @NgModule({

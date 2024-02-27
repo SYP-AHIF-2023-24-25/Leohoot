@@ -10,7 +10,7 @@ import { SignalRService } from 'src/app/services/signalr.service';
   selector: 'app-design-quiz',
   templateUrl: './quiz-maker.component.html'
 })
-export class DesignQuizComponent {
+export class QuizMakerComponent {
   questions: Question[] = [];
   name: string = "";
   description: string | undefined;

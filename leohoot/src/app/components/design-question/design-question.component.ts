@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Question } from 'src/app/model/question';
-import { Answer } from 'src/app/model/answer';
-import { ConfigurationService } from 'src/app/services/configuration.service';
-import { RestService } from 'src/app/services/rest.service';
-import { SignalRService } from 'src/app/services/signalr.service';
-import { Menu } from 'src/app/model/menu';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Question} from 'src/app/model/question';
+import {ConfigurationService} from 'src/app/services/configuration.service';
+import {RestService} from 'src/app/services/rest.service';
+import {SignalRService} from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-design-question',
@@ -13,55 +11,136 @@ import { Menu } from 'src/app/model/menu';
 })
 
 export class DesignQuestionComponent {
+  existingQuestions: Question[] = [];
+
+  question: Question = {
+    questionText: 'New Question',
+    answerTimeInSeconds: 0,
+    previewTime: 0,
+    answers: [],
+    id: 0,
+    questionNumber: 0,
+    nextQuestionId: null,
+    imageName: undefined
+  };
+
+  editMode: boolean = false;
+
   quizTitle: string = '';
-  questionList: Menu[] = [];
-
-  imageUrl: string | undefined;
-  title: string | undefined;
-  answerTime: number;
-  previewTime: number;
-
-  answer01: string | undefined;
-  answer01Checkbox: boolean = false;
-  answer02: string | undefined;
-  answer02Checkbox: boolean = false;
-  answer03: string | undefined;
-  answer03Checkbox: boolean = false;
-  answer04: string | undefined;
-  answer04Checkbox: boolean = false;
-
-  questionNumberIncrement: number = 0;
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService) {
-    this.answerTime = 15;
-    this.previewTime = 5;
   }
 
   ngOnInit() {
-    this.questionList = this.configurationService.getQuestions().map(question => { 
-      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
-      return JSON.parse(jsonString);
-    });
+    this.refetchQuestions()
 
-    console.log(this.questionList);
-    this.questionNumberIncrement = this.questionList.length;
-
-    this.getParams();
-  }
-
-  getParams() {
-    console.log('getParams');
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizName'] !== 'undefined') {
         this.quizTitle = params['quizName'];
       }
 
       if (typeof params['questionNumber'] !== 'undefined') {
-        this.displayQuestion(params['questionNumber']);
+        this.displayQuestion(Number.parseInt(params['questionNumber']));
       } else {
-        this.addEmptyQuestion();
+        this.initNewQuestion();
       }
     });
+  }
+
+  initNewQuestion() {
+    this.question = {
+      questionText: '',
+      answerTimeInSeconds: 15,
+      previewTime: 5,
+      answers: [],
+      id: -1,
+      questionNumber: 0,
+      nextQuestionId: null,
+      imageName: undefined
+    };
+
+    for (let i = 0; i < 4; i++) {
+      this.question.answers.push({answerText: '', isCorrect: false});
+    }
+
+    this.editMode = false;
+  }
+
+  refetchQuestions() {
+    this.existingQuestions = this.configurationService.getQuestions();
+  }
+
+  validateQuestion() {
+    if (this.question.questionText === undefined || this.question.questionText === '' || this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '') {
+      return false;
+    }
+    return true;
+  }
+
+  onQuestionAdd() {
+    const isQuestionValid = this.validateQuestion();
+
+    if (!isQuestionValid) {
+      alert('Please fill in all necessary fields to save the question.');
+      return;
+    }
+
+    if (this.doesQuestionExist() && !this.editMode) { 
+      alert('This question already exists.');
+      return;
+    }
+
+    if (this.editMode) {
+      this.initNewQuestion();
+      this.refetchQuestions();
+      return;
+    }
+
+    this.configurationService.addQuestion(this.question);
+    this.initNewQuestion();
+    this.refetchQuestions();
+  }
+
+  onQuestionDelete(id: number) {
+    this.configurationService.deleteQuestion(id);
+    this.refetchQuestions();    
+  }
+
+  onQuestionEdit(questionNumber: number) {
+    if (this.question.questionNumber !== questionNumber) {
+      alert('Please save the current question before editing another one.');
+      return;
+    }
+
+    const questionIsValid = this.validateQuestion();
+
+    if (questionIsValid) {
+      this.configurationService.updateQuestion(this.question);
+    } else {
+      alert('Please fill in all necessary fields to save the question.');
+    }
+
+    this.refetchQuestions();
+    console.log(this.existingQuestions);
+  }
+
+  onQuizTitle() {
+    if (this.question.questionText === undefined || this.question.questionText === '' && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' 
+        || this.validateQuestion()) {
+      this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle}});
+    } else if (this.validateQuestion() === false) {
+      alert('Please fill in all necessary fields to save the question first.');
+    }
+  }
+
+  doesQuestionExist() {
+    return this.existingQuestions.some(existingQuestion => 
+      existingQuestion.questionText === this.question.questionText &&
+      existingQuestion.answerTimeInSeconds === this.question.answerTimeInSeconds &&
+      existingQuestion.previewTime === this.question.previewTime &&
+      JSON.stringify(existingQuestion.answers) === JSON.stringify(this.question.answers) &&
+      existingQuestion.imageName === this.question.imageName
+    );
   }
 
   handleFileInput(event: any) {
@@ -71,7 +150,7 @@ export class DesignQuestionComponent {
       if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.imageUrl = e.target?.result as string;
+          this.question.imageName = e.target?.result as string;
         };
         reader.readAsDataURL(file);
       } else {
@@ -82,183 +161,39 @@ export class DesignQuestionComponent {
     }
   }
 
-  validateQuestion() {
-    console.log('validateQuestion');
-    /*if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
-      alert('Please fill in all necessary fields to save the question.');
-    } else {
-        const savedQuestions = this.configurationService.getQuestions();
-        
-        if (savedQuestions.map(q => q.questionNumber).includes(this.questionNumberIncrement)){
-          const savedQuestion = savedQuestions.find(q => q.questionNumber === this.questionNumberIncrement);
+  displayQuestion(data: number | Question) {
+    if (typeof data === 'number') {
+      this.refetchQuestions()
 
-          if (savedQuestion?.questionText === this.title && savedQuestion?.answerTimeInSeconds === this.answerTime && savedQuestion?.previewTime === this.previewTime
-            && savedQuestion?.answers[0].answerText === this.answer01 && savedQuestion?.answers[0].isCorrect === this.answer01Checkbox && savedQuestion?.answers[1].answerText === this.answer02 
-            && savedQuestion?.answers[1].isCorrect === this.answer02Checkbox && savedQuestion?.answers[2].answerText === this.answer03 && savedQuestion?.answers[2].isCorrect === this.answer03Checkbox 
-            && savedQuestion?.answers[3].answerText === this.answer04 && savedQuestion?.answers[3].isCorrect === this.answer04Checkbox) {
-            this.displayQuestion(this.questionNumberIncrement);
-          } else {
-            if (savedQuestion?.questionText === 'New Question') {
-              this.deleteQuestion(this.questionNumberIncrement);
-            }
-            this.addQuestion();
-            this.reloadPage();
-          }          
-        } else {
-          alert('This question already exists in the quiz. Please choose a different question title.');
-        }*/
-        if (this.title === undefined || this.title === '' || this.answer01 === undefined || this.answer01 === '' || this.answer02 === undefined || this.answer02 === '') {
-          alert('Please fill in all necessary fields to save the question.');
-        } else {
-          console.log(this.questionList);
-          // todo update question
-          /*if (this.questionList.includes(this.title) === true){
-            
-            console.log('updateQuestion');
-            this.updateQuestion();
-          } else {*/
-          const savedQuestions = this.configurationService.getQuestions();
-          if (savedQuestions.map(q => q.questionNumber).includes(this.questionNumberIncrement) === false){
-            this.addQuestion();
-            this.reloadPage();
-          } else {
-            alert('This question already exists in the quiz. Please choose a different question title.');
-          }
-        }
-    }
-  
-
-  addQuestion() {
-    console.log('addQuestion');
-    const question: Question = {
-      questionText: this.title ?? '',
-      answerTimeInSeconds: this.answerTime,
-      previewTime: this.previewTime,
-      answers: [
-        { answerText: this.answer01 ?? '', isCorrect: this.answer01Checkbox },
-        { answerText: this.answer02 ?? '', isCorrect: this.answer02Checkbox },
-        { answerText: this.answer03 ?? '', isCorrect: this.answer03Checkbox },
-        { answerText: this.answer04 ?? '', isCorrect: this.answer04Checkbox }
-      ],
-      id: 0,
-      questionNumber: this.questionNumberIncrement,
-      nextQuestionId: null,
-      imageName: this.imageUrl
-    };
-    this.configurationService.addQuestion(question);
-
-    console.log(this.configurationService.getQuestions());
-  }
-
-  addEmptyQuestion() {
-    this.questionNumberIncrement++;
-
-    this.questionList.push( {
-      text: 'New Question',
-      id: this.questionNumberIncrement
-    });
-
-  }
-
-  reloadPage() {
-    console.log('reloadPage');
-    console.log(this.configurationService.getQuestions());
-   
-    this.questionList = this.configurationService.getQuestions().map(question => { 
-      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
-      return JSON.parse(jsonString);
-    });
-
-    console.log(this.questionList);
-
-    this.addEmptyQuestion();
-
-    this.title = '';
-    this.answerTime = 15;
-    this.previewTime = 5;
-    this.answer01 = '';
-    this.answer01Checkbox = false;
-    this.answer02 = '';
-    this.answer02Checkbox = false;
-    this.answer03 = '';
-    this.answer03Checkbox = false;
-    this.answer04 = '';
-    this.answer04Checkbox = false;
-    this.imageUrl = undefined;
-  }
-
-  truncateText(text: string, maxLength: number): string {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-  }
-
-  editQuizName() {
-    const queryParams = {
-      quizName: this.quizTitle
-    };
-
-    if ((this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') === true) {
-      this.deleteQuestion(this.questionNumberIncrement);
-      this.router.navigate(['/designQuiz'], { queryParams });
-    } else if (this.title !== undefined && this.title !== '' && this.answer01 !== undefined && this.answer01 !== '' && this.answer02 !== undefined && this.answer02 !== '') {
-      this.validateQuestion();
-      this.router.navigate(['/designQuiz'], { queryParams });
-    } else {
-      alert('Please fill in all necessary fields to save the question first.');
-    }
-  }
-
-  editQuestion(questionNumber: number) {
-      if ((this.title === undefined || this.title === '' && this.answer01 === undefined || this.answer01 === '' && this.answer02 === undefined || this.answer02 === '' && this.answer03 === undefined || this.answer03 === '' && this.answer04 === undefined || this.answer04 === '') === true) {
-        if (questionNumber !== this.questionNumberIncrement){
-          this.deleteQuestion(this.questionNumberIncrement);
-        }
-        this.displayQuestion(questionNumber);
-      } else if (this.title !== undefined && this.title !== '' && this.answer01 !== undefined && this.answer01 !== '' && this.answer02 !== undefined && this.answer02 !== '') {
-        this.validateQuestion();
-        this.displayQuestion(questionNumber);
-      } else {
-        alert('Please fill in all necessary fields to save the question first.');
+      const searchResult = this.existingQuestions.find(question => question.questionNumber === data);
+      if (!searchResult) {
+        alert('Question not found');
+        return
       }
+      this.question = searchResult;
+    } else {
+      this.question = data as Question;
+    }
+    this.editMode = true;
   }
 
-  displayQuestion(questionNumber: number) {
-    console.log('displayQuestion');
-    const question = this.configurationService.getQuestions().find(question => question.questionNumber === questionNumber);
-      this.previewTime = question?.previewTime ?? 5;
-      this.answerTime = question?.answerTimeInSeconds ?? 15;
-      this.title = question?.questionText;
-      this.answer01 = question?.answers[0].answerText;
-      this.answer01Checkbox = question?.answers[0].isCorrect ?? false;
-      this.answer02 = question?.answers[1].answerText;
-      this.answer02Checkbox = question?.answers[1].isCorrect ?? false;
-      this.answer03 = question?.answers[2].answerText;
-      this.answer03Checkbox = question?.answers[2].isCorrect ?? false;
-      this.answer04 = question?.answers[3].answerText;
-      this.answer04Checkbox = question?.answers[3].isCorrect ?? false;
+  truncateText(text: string | undefined, maxLength: number): string {
+    return text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text || '';
   }
 
-  deleteQuestion(questionNumber: number) {
-    this.configurationService.deleteQuestion(questionNumber);
-    this.questionList = this.configurationService.getQuestions().map(question => { 
-      const jsonString = JSON.stringify(` { text: ${question.questionText}, id: ${question.questionNumber} }`);
-      return JSON.parse(jsonString);
-    });
-
-  }
-
-  decrement(time: string) {
-    if (time === 'answerTime' && this.answerTime > 5){
-      this.answerTime--;
-    } else if (time === 'previewTime' && this.previewTime > 3){
-      this.previewTime--;
+  decrement(type: "answerTime" | "previewTime") {
+    if (type === 'answerTime' && this.question.answerTimeInSeconds > 5) {
+      this.question.answerTimeInSeconds--;
+    } else if (type === 'previewTime' && this.question.previewTime > 3) {
+      this.question.previewTime--;
     }
   }
 
-  increment(time: string) {
-    if (time === 'answerTime'){
-      this.answerTime++;
-    } else {
-      this.previewTime++;
+  increment(type: "answerTime" | "previewTime") {
+    if (type === 'answerTime') {
+      this.question.answerTimeInSeconds++;
+    } else if (type === 'previewTime') {
+      this.question.previewTime++;
     }
   }
 }
