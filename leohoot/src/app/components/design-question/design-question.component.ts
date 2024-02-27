@@ -18,9 +18,7 @@ export class DesignQuestionComponent {
     answerTimeInSeconds: 0,
     previewTime: 0,
     answers: [],
-    id: 0,
     questionNumber: 0,
-    nextQuestionId: null,
     imageName: undefined
   };
 
@@ -53,9 +51,7 @@ export class DesignQuestionComponent {
       answerTimeInSeconds: 15,
       previewTime: 5,
       answers: [],
-      id: -1,
       questionNumber: 0,
-      nextQuestionId: null,
       imageName: undefined
     };
 

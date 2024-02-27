@@ -1,8 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Player } from 'src/app/model/player';
-import { Question } from 'src/app/model/question';
-import { Quiz } from 'src/app/model/quiz';
 import { Statistic } from 'src/app/model/statistic';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
@@ -13,7 +10,6 @@ import {
   ApexResponsive,
   ApexChart
 } from "ng-apexcharts";
-import { IncomingMessage } from 'http';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -30,24 +26,39 @@ export type ChartOptions = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EndStatisticsComponent {
+  gameId!: number;
+  statistic!: Statistic;
+
   displayStatistics: boolean = false;
-  questions: Question[] = [];
-  questionAnswers!: { [key: number]: boolean[] };
+
   resultInPercentage!: string;
   correctAnswers!: number;
   totalAnswers!: number;
   incorrectAnswers!: number;
   correctAnswersInPercentage!: number;
   incorrectAnswersInPercentage!: number;
-  quizTitle!: string;
-  topThreePlayers: Player[] = [];
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
-  
-
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+
+  }
+  
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
+      }
+      this.restservice.getGameStatistics(this.gameId).subscribe((data) => {
+        this.statistic = data;
+        console.log(this.statistic);
+      });
+    });
+    this.initChart();
+  }
+
+  initChart() {
     this.correctAnswersInPercentage = 0;
     this.incorrectAnswersInPercentage = 0;
     this.chartOptions = {
@@ -72,47 +83,19 @@ export class EndStatisticsComponent {
       ]
     };
   }
-  
-  ngOnInit(): void {
-    //quizId = ??
-    this.restservice.getQuizById(1).subscribe((data) => {
-      this.quizTitle = data.title;
-    });
-
-    this.restservice.getGameStatistics(1).subscribe((data) => {
-      this.questions = data.questions;
-      this.questionAnswers = data.questionAnswers;
-    });
-
-    this.restservice.getRanking(1, this.questions.length).subscribe((data) => {
-      if (data === undefined) {
-        this.topThreePlayers = [ {username: "No players yet", score: 0} ];
-      } else {
-        if (data.length > 3) {
-          this.topThreePlayers = data.slice(0, 3);
-        } else {
-          while (data.length < 3) {
-            data.push({ username: "", score: 0 });
-          }
-          
-          this.topThreePlayers = data;
-        }
-      }      
-    });
-  }
 
   showStatistics() {
     this.displayStatistics = !this.displayStatistics;
   }
 
   calculateResults(questionNumber: number) {
-    if (!this.questionAnswers[questionNumber]) {
+    if (!this.statistic.questionAnswers.get(questionNumber)) {
        this.resultInPercentage = "0 %";
        this.totalAnswers = 0;
     } else {
-      this.totalAnswers = this.questionAnswers[questionNumber].length;
-      this.correctAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === true).length;
-      this.incorrectAnswers = this.questionAnswers[questionNumber].filter((answer) => answer === false).length;
+      this.totalAnswers = this.statistic.questionAnswers.get(questionNumber)!.length;
+      this.correctAnswers = this.statistic.questionAnswers.get(questionNumber)!.filter((answer) => answer === true).length;
+      this.incorrectAnswers = this.statistic.questionAnswers.get(questionNumber)!.filter((answer) => answer === false).length;
       this.correctAnswersInPercentage = this.correctAnswers / this.totalAnswers * 100;
       this.incorrectAnswersInPercentage = this.incorrectAnswers / this.totalAnswers * 100;
       

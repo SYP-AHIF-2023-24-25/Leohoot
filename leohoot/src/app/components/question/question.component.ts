@@ -33,8 +33,8 @@ export class QuestionComponent {
   questionIsFinished: boolean = false;
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: Question;
-  quizLength: number = 0;
   answerCount: number = 0;
+  gameId: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
@@ -43,19 +43,10 @@ export class QuestionComponent {
     this.getParams();
     this.audio.loop = true;
     
-    this.signalRService.connection.on("updateAnswerCount", (answerCount: number, playerCount: number) => {
-      console.log(`AnswerCount: ${answerCount}, PlayerCount: ${playerCount}`);
-      console.log(answerCount == playerCount);
-      if (answerCount == playerCount)
+    this.signalRService.connection.on("updateAnswerCount", (answerCount: number, isFinished: boolean) => {
+      if (isFinished)
       {
-        this.obsTimer.unsubscribe();
-        this.questionIsFinished = true;
-        this.signalRService.connection.send("sendEndLoading");
-        const queryParams = {
-          currentQuestionId: this.currentQuestion.questionNumber,
-          mode: Mode.GAME_MODE
-        };
-        this.router.navigate(['/ranking'], { queryParams });
+        this.showCorrectAnswer();
       }
       this.answerCount = answerCount;
     });
@@ -63,23 +54,17 @@ export class QuestionComponent {
 
   getParams() {
     this.route.queryParams.subscribe(params => {
-      if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.currentQuestionId = parseInt(params['currentQuestionId']);
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
       }
       if (typeof params['mode'] !== 'undefined') {
         this.mode = params['mode'];
       }
-      this.getQuestion();
-      this.restservice.getQuizLengthById(1).subscribe((data) => {
-        this.quizLength = data;
+      
+      this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
+        this.currentQuestion = response;
+        this.startTimer();
       });
-    });
-  }
-
-  getQuestion() {
-    this.restservice.getQuestionByIdAllInfo(1,this.currentQuestionId).subscribe(response => {
-      this.currentQuestion = response;
-      this.startTimer();
     });
   }
 
@@ -89,41 +74,34 @@ export class QuestionComponent {
       if (
         currTime == this.currentQuestion.answerTimeInSeconds
       ) {
-        this.obsTimer.unsubscribe();
-        this.questionIsFinished = true;
-        this.signalRService.connection.send("sendEndLoading");
-        this.audio.pause();
+        this.showCorrectAnswer();
       }
       this.currTime = currTime;
     });
   }
 
   showCorrectAnswer() {
-    this.signalRService.connection.send("sendEndLoading");
+    this.signalRService.connection.send("sendEndLoading", this.gameId);
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
     this.audio.pause();
   }
 
   nextQuestion() {
-    if (this.currentQuestion.questionNumber === this.quizLength && this.mode == Mode.GAME_MODE) {
-      this.router.navigate(['/statistics']);
-    }
-
-    if (this.mode == Mode.TEACHER_DEMO_MODE) {
-      const queryParams = {
-        currentQuestionId: ++this.currentQuestion.questionNumber,
-        mode: Mode.TEACHER_DEMO_MODE
-      };
-      this.router.navigate(['/question'], { queryParams });
-      this.questionIsFinished = false;
-
+    if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
+      this.router.navigate(['/statistics'], { queryParams: { gameId: this.gameId } });
     } else if (this.mode == Mode.GAME_MODE) {
-      const queryParams = {
-        currentQuestionId: this.currentQuestion.questionNumber,
-        mode: Mode.GAME_MODE
-      };
-      this.router.navigate(['/ranking'], { queryParams });
+      this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });
+    } else {
+      if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
+        this.restservice.deleteGame(this.gameId).subscribe(() => {
+          this.router.navigate(['/designQuiz']);
+        });
+      } else {
+        this.restservice.nextQuestion(this.gameId).subscribe(() => {
+          window.location.reload();
+        });
+      }
     }
   }
 }

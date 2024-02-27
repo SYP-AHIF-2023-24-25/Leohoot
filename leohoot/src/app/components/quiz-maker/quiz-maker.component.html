@@ -40,17 +40,25 @@
         </div>
 
         <div class="col-span-5 mt-7">
-            <div *ngIf="createQuiz.form.valid === false; then disableButton else button"></div>
-            <ng-template #disableButton>
-                <div class="flex justify-end">
-                    <button class="col-span-2 flex items-center justify-center bg-gray-500 text-white h-10 px-8 mr-10 font-semibold">Add Quiz</button>
-                </div>
+            <div class="flex justify-end">
+                <div *ngIf="createQuiz.form.valid === false; then disableButtonSave else buttonSave"></div>
+                <div *ngIf="quizId == undefined; then disableButtonPlay else buttonPlay"></div>
+            </div>
+
+            <ng-template #disableButtonSave>
+                <button class="col-span-2 flex items-center justify-center bg-gray-500 text-white h-10 px-8 mr-10 font-semibold w-28" onclick="alert('Fill all infos correctly to save the quiz')">Save</button>
             </ng-template>
-            <ng-template #button>
-                <div class="flex justify-end">
-                    <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="addQuiz()">Add Quiz</button>
-                </div>
+            <ng-template #buttonSave>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="addQuiz()">Save</button>
             </ng-template>
+
+            <ng-template #disableButtonPlay>
+                <button class="col-span-2 flex items-center justify-center bg-gray-500 text-white h-10 px-8 mr-10 font-semibold w-28" onclick="alert('You have to save the quiz before you can play it')">Play</button>
+            </ng-template>
+            <ng-template #buttonPlay>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="playDemoView()">Play</button>
+            </ng-template>
+
             <div class="grid grid-cols-2 mt-5">
                 <div>
                     <form #createQuiz="ngForm" class="space-y-6 mx-4 py-5 px-5 rounded max-w-3xl">

@@ -5,12 +5,14 @@ import { Question } from 'src/app/model/question';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { Mode } from 'src/app/model/mode';
 
 @Component({
   selector: 'app-design-quiz',
   templateUrl: './quiz-maker.component.html'
 })
 export class QuizMakerComponent {
+  quizId: number | undefined;
   questions: Question[] = [];
   name: string = "";
   description: string | undefined;
@@ -91,5 +93,12 @@ export class QuizMakerComponent {
     this.configurationService.setQuiz(this.name, this.description ? this.description : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
+  }
+
+  playDemoView()
+  {
+    this.restService.getNewGameId(this.quizId!).subscribe(data => {
+      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE } });
+    });
   }
 }

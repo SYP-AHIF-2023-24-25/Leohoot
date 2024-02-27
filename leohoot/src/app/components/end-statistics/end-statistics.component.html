@@ -1,9 +1,9 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="statistic">
     <div class="bg-white text-center drop-shadow-lg" id="questiontext">
         <div class="container mx-auto p-2">
           <div
             class="mt-8 text-2xl font-bold md:text-4xl">
-            {{ quizTitle }}
+            {{ statistic.quizName }}
           </div>
         </div>
     </div>
@@ -15,15 +15,15 @@
     <div class="flex justify-center items-center">
         <div class="grid gap-16 content-center p-4 pt-20">
             <div class="w-128 row-start-2 row-span-4 bg-blue-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl  uppercase font-bold text-white">{{ topThreePlayers[1].username }}</span>
+                <span class="text-xl  uppercase font-bold text-white">{{ statistic.topThreePlayers[1].username }}</span>
                 <span class="text-8xl font-bold text-white text-center">2</span>
             </div>
             <div class="w-128 row-start-1 row-span-5 bg-red-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl  uppercase font-bold text-white">{{ topThreePlayers[0].username }}</span>
+                <span class="text-xl  uppercase font-bold text-white">{{ statistic.topThreePlayers[0].username }}</span>
                 <span class="text-9xl font-bold text-white">1</span>
             </div>
             <div class="w-128 row-start-3 row-span-3 bg-green-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl uppercase font-bold text-white">{{ topThreePlayers[2].username }}</span>
+                <span class="text-xl uppercase font-bold text-white">{{ statistic.topThreePlayers[2].username }}</span>
                 <span class="text-6xl font-bold text-white">3</span>
             </div>
         </div>
@@ -69,10 +69,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let question of questions" class="bg-white border-b hover:bg-gray-100">
-                            {{ calculateResults(question.id) }}
+                        <tr *ngFor="let question of statistic.questions" class="bg-white border-b hover:bg-gray-100">
+                            {{ calculateResults(question.questionNumber) }}
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="font-semibold text-black text-xl pr-4">{{ question.id }}</span>
+                                <span class="font-semibold text-black text-xl pr-4">{{ question.questionNumber }}</span>
 
                                 <span class="text-lg">{{ truncateText(question.questionText, 120) }}</span>
                             </td>
