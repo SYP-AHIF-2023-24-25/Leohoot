@@ -95,7 +95,7 @@ export class QuestionComponent {
     } else {
       if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
         this.restservice.deleteGame(this.gameId).subscribe(() => {
-          this.router.navigate(['/designQuiz']);
+          this.router.navigate(['/quizMaker']);
         });
       } else {
         this.restservice.nextQuestion(this.gameId).subscribe(() => {
