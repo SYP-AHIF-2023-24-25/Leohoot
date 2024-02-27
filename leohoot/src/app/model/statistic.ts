@@ -4,6 +4,7 @@ import { Question } from './question';
 export interface Statistic {
     quizName: string;
     topThreePlayers: Player[];
-    questionAnswers: Map<number, boolean[]>;
-    questions: Question[];
+    questionAnswers: { [key: number]: boolean[] };
+    questionTexts: Question[];
+    playerCount: number;
 }

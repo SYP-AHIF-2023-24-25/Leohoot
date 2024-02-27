@@ -20,10 +20,12 @@ import { StudentWaitingPageComponent } from './components/students-waiting-page/
 import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
 import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
 import { DesignQuestionComponent } from './components/design-question/design-question.component';
+import { CommonModule } from '@angular/common';
+import { StatisticComponent } from './components/statistic/statistic.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent, QuizMakerComponent, DesignQuestionComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
     providers: [],
     bootstrap: [AppComponent],
 })

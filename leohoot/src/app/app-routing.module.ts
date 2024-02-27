@@ -12,6 +12,7 @@ import { StudentWaitingPageComponent } from './components/students-waiting-page/
 import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
 import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
 import { DesignQuestionComponent } from './components/design-question/design-question.component';
+import { StatisticComponent } from './components/statistic/statistic.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/question', pathMatch: 'full' },
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'gameLogin', component: GameLoginComponent},
   { path: 'gameUserLogin', component: GameUserLoginComponent},
   { path: 'studentWaitingPage', component: StudentWaitingPageComponent},
-  { path: 'statistics', component: EndStatisticsComponent},
+  { path: 'statistic', component: StatisticComponent},
   { path: 'designQuestion', component: DesignQuestionComponent},
   { path: 'quizMaker', component: QuizMakerComponent}
 ];

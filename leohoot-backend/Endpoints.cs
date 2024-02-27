@@ -52,7 +52,7 @@ public static class Endpoints
     record QuestionTeacherDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, string? ImageName, int PreviewTime, AnswerDto[] Answers, int QuizLength);
     record QuestionStudentDto(int QuestionNumber, string QuestionText, int NumberOfAnswers, int CurrentPoints, int Points, int QuizLength);
     record AnswerPostDto(bool[] Answers, string Username);
-    record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts);
+    record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts, int PlayerCount);
     record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
     record AnswerDto(string AnswerText, bool IsCorrect);
     record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime);
@@ -98,7 +98,7 @@ public static class Endpoints
                 q.ImageName, 
                 q.PreviewTime)).ToArray();
 
-            return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions));
+            return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions, game.PlayerCount));
         });
 
         endpoints.MapGet("/api/games/{gameId}/currentQuestion/teacher", (int gameId) =>

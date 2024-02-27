@@ -89,7 +89,7 @@ export class EndStatisticsComponent {
   }
 
   calculateResults(questionNumber: number) {
-    if (!this.statistic.questionAnswers.get(questionNumber)) {
+    /*if (!this.statistic.questionAnswers.get(questionNumber)) {
        this.resultInPercentage = "0 %";
        this.totalAnswers = 0;
     } else {
@@ -105,7 +105,7 @@ export class EndStatisticsComponent {
       } else {
         this.resultInPercentage = "0 %";
       }
-    }
+    }*/
 
     this.chartOptions.series = [this.correctAnswersInPercentage, this.incorrectAnswersInPercentage];
   }
