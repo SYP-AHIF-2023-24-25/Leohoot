@@ -9,7 +9,6 @@ import { StudentsLoadingScreenComponent } from './components/students-loading-sc
 import { GameLoginComponent } from './components/game-pin-login/game-pin-login.component';
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
-import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
 import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
 import { DesignQuestionComponent } from './components/design-question/design-question.component';
 import { StatisticComponent } from './components/statistic/statistic.component';
