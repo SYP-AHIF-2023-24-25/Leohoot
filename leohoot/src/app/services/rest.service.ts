@@ -72,6 +72,6 @@ export class RestService {
   }
 
   getAllQuizzes(): Observable<Quiz[]> {
-    return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
+    return this.httpClient.get<Quiz[]>(`${RestService.url}quiz`);
   }
 }

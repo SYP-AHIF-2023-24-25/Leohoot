@@ -7,10 +7,10 @@ import { QuestionComponent } from '../components/question/question.component';
 })
 export class ConfigurationService {
   quiz: Quiz = {
-    creator: "sampleUser",
-    description: "",
-    questions: [],
     title: "",
+    description: "",
+    creator: "sampleUser",
+    questions: [],
     imageName: ""
   };
 

@@ -182,6 +182,8 @@ public static class Endpoints
     public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string ImageName, int PreviewTime);
     public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
 
+    public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, string ImageName);
+
 
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
     {
@@ -191,19 +193,61 @@ public static class Endpoints
         });
 
 
-        endpoints.MapGet("/api/quizzes", async (DataContext ctx)=>
+        endpoints.MapGet("/api/quiz", async (DataContext ctx)=>
         {
             return await ctx.GetAllQuizzes();
         });
 
-        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizDto quizDto) =>
+        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
         {
-            var quiz = new Quiz
+            var creator = ctx.Users.FirstOrDefault(u => u.Username == quizDto.Creator);
+            if (creator == null)
             {
-                Title = quizDto.Title,
-                Description = quizDto.Description,
-                Creator = ctx.Users.Where(u => u.Username == quizDto.CreatorName).FirstOrDefault(),
-                Questions = quizDto.Questions.Select(q => new Question
+                 return Results.NotFound($"/api/quiz/");
+            }
+            else
+            {
+                var quiz = new Quiz
+                {
+                    Title = quizDto.Title,
+                    Description = quizDto.Description,
+                    Creator = creator,
+                    Questions = quizDto.Questions.Select(q => new Question
+                    {
+                        QuestionNumber = q.QuestionNumber,
+                        QuestionText = q.QuestionText,
+                        AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                        Answers = q.Answers.Select(a => new Answer
+                        {
+                            AnswerText = a.AnswerText,
+                            IsCorrect = a.IsCorrect
+                        }).ToList(),
+                        ImageName = q.ImageName,
+                        PreviewTime = q.PreviewTime
+                    }).ToList(),
+                    ImageName = quizDto.ImageName
+                };
+
+                ctx.Quizzes.Add(quiz);
+                await ctx.SaveChangesAsync();
+                 return Results.Created($"/api/quiz/{quiz.Id}", quiz.Id);
+            }           
+        });
+
+        endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizPostDto quizDto) =>
+        {
+            var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+            if (existingQuiz == null)
+            {
+                return Results.NotFound("Quiz not found");
+            }
+
+            existingQuiz.Title = quizDto.Title;
+            existingQuiz.Description = quizDto.Description;
+            if (quizDto.Questions.Count == 0){
+                existingQuiz.Questions.Clear();
+            } else {
+                existingQuiz.Questions = quizDto.Questions.Select(q => new Question
                 {
                     QuestionNumber = q.QuestionNumber,
                     QuestionText = q.QuestionText,
@@ -215,37 +259,8 @@ public static class Endpoints
                     }).ToList(),
                     ImageName = q.ImageName,
                     PreviewTime = q.PreviewTime
-                }).ToList()
-            };
-            ctx.Quizzes.Add(quiz);
-            await ctx.SaveChangesAsync();
-
-            return Results.Created($"/api/quiz/{quiz.Id}", quiz.Id);
-        });
-
-        endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizDto quizDto) =>
-        {
-            var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
-            if (existingQuiz == null)
-            {
-                return Results.NotFound("Quiz not found");
+                }).ToList();
             }
-
-            existingQuiz.Title = quizDto.Title;
-            existingQuiz.Description = quizDto.Description;
-            existingQuiz.Questions = quizDto.Questions.Select(q => new Question
-            {
-                QuestionNumber = q.QuestionNumber,
-                QuestionText = q.QuestionText,
-                AnswerTimeInSeconds = q.AnswerTimeInSeconds,
-                Answers = q.Answers.Select(a => new Answer
-                {
-                    AnswerText = a.AnswerText,
-                    IsCorrect = a.IsCorrect
-                }).ToList(),
-                ImageName = q.ImageName,
-                PreviewTime = q.PreviewTime
-            }).ToList();
 
             await ctx.SaveChangesAsync();
             return Results.Ok(existingQuiz);
