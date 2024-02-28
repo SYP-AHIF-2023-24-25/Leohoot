@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from '../../services/rest.service';
 import { SignalRService } from '../../services/signalr.service';
 
@@ -9,24 +9,27 @@ import { SignalRService } from '../../services/signalr.service';
 })
 export class GameUserLoginComponent {
   username: string | undefined;
-  constructor(restService: RestService, private router: Router, private signalRService: SignalRService){
+  gameId!: number;
+  constructor(private router: Router, private signalRService: SignalRService, private route: ActivatedRoute){
     
   }
   ngOnInit() {
-    this.signalRService.connection.on("registeredUserFailed", (name) => {
-      alert(`Username ${name} is already taken`);
-    });
-
-    this.signalRService.connection.on("registeredUserSuccess", (name) => {
-      const queryParams = {
-        username: name
-      };
-      sessionStorage.setItem("username", name);
-      this.router.navigate(['/studentWaitingPage'], { queryParams });
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
+      }
+      this.signalRService.connection.on("registeredUserFailed", (name) => {
+        alert(`Username ${name} is already taken`);
+      });
+  
+      this.signalRService.connection.on("registeredUserSuccess", (gameId, name) => {
+        sessionStorage.setItem("username", name);
+        this.router.navigate(['/studentWaitingPage'], { queryParams: { gameId: gameId } });
+      });
     });
   }
 
   addUser(){
-    this.signalRService.connection.send("registerUser", this.username);
+    this.signalRService.connection.send("registerUser", this.gameId, this.username);
   }
 }

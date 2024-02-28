@@ -1,0 +1,103 @@
+<div class="flex flex-col bg-background-blue min-h-screen">  
+    <div class="bg-white text-center drop-shadow-lg" id="questiontext">
+        <div class="container mx-auto p-2">
+          <div
+            class="mt-8 text-2xl font-bold md:text-4xl">
+            Quiz Maker
+          </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-6">
+        <div class="bg-design-quiz-blue min-h-screen">
+            <div class="grid grid-cols-6 my-3 drop-shadow-lg">
+                <p class="col-span-4 flex items-center text-white font-semibold pl-5">{{ truncateText(name, 17) }}</p>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 mr-3" (click)="addQuestion()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
+            </div>
+            <hr>
+            <nav class="flex flex-1 flex-col">
+                <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                    <li>
+                    <ul *ngFor="let question of questions" role="list" class="text-white" (click)="editQuestion(question.questionNumber)">
+                        <li class="hover:bg-design-quiz-hover">
+                            <div class="grid grid-cols-6">
+                                <button class="p-3 pl-5 hover:bg-design-quiz-blue" (click)="deleteQuestion(question.questionNumber)">
+                                    <img class="h-8" src="/assets/images/bin.png" alt="bin">
+                                </button>
+                                <div class="col-span-5 pl-3 flex items-center">
+                                    {{ truncateText(question.questionText, 30) }}
+                                </div>
+                            </div>
+                        </li>
+                        <hr class="border-background-blue border-t-2">
+                    </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="col-span-5 mt-7">
+            <div class="flex justify-end">
+                <div *ngIf="createQuiz.form.valid === false; then disableButtonSave else buttonSave"></div>
+                <div *ngIf="quizId == undefined; then disableButtonPlay else buttonPlay"></div>
+            </div>
+
+            <ng-template #disableButtonSave>
+                <button class="col-span-2 flex items-center justify-center bg-gray-500 text-white h-10 px-8 mr-10 font-semibold w-28" onclick="alert('Fill all infos correctly to save the quiz')">Save</button>
+            </ng-template>
+            <ng-template #buttonSave>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="addQuiz()">Save</button>
+            </ng-template>
+
+            <ng-template #disableButtonPlay>
+                <button class="col-span-2 flex items-center justify-center bg-gray-500 text-white h-10 px-8 mr-10 font-semibold w-28" onclick="alert('You have to save the quiz before you can play it')">Play</button>
+            </ng-template>
+            <ng-template #buttonPlay>
+                <button class="col-span-2 flex items-center justify-center bg-hooti-yellow text-white h-10 px-8 mr-10 font-semibold" (click)="playDemoView()">Play</button>
+            </ng-template>
+
+            <div class="grid grid-cols-2 mt-5">
+                <div>
+                    <form #createQuiz="ngForm" class="space-y-6 mx-4 py-5 px-5 rounded max-w-3xl">
+                        <div>
+                            <label for="name" class="block text-lg font-medium leading-6 text-white mb-2">Quiz Name</label>
+                            <input name="name" type="name" placeholder="Name" [(ngModel)]="name" #quizName="ngModel" required class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center placeholder:text-base focus:ring-2 focus:ring-inset">
+                            <div *ngIf="!quizName.pristine">
+                                <p [hidden]="!quizName.errors?.['required']" class="text-gray-400">
+                                    A Quiz Name is required.
+                                </p>
+                            </div>
+                        </div> 
+            
+                        <div>
+                            <label for="description" class="block text-lg font-medium leading-6 text-white mb-2">Description</label>
+                            <input name="description" type="description" placeholder="Description" [(ngModel)]="description" required class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center placeholder:text-base focus:ring-2 focus:ring-inset">
+                        </div> 
+                    </form>  
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="w-128 my-16">
+                        <div *ngIf="!imageUrl">
+                            <label for="dropzone-file" class="flex flex-col items-center justify-center w-128 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                </div>
+                                <input id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)"/>
+                            </label>
+                        </div>
+                        <div *ngIf="imageUrl" class="flex items-center justify-center">
+                            <img [src]="imageUrl" *ngIf="imageUrl" class="max-w-4xl max-h-96" alt="Preview">
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+<div>

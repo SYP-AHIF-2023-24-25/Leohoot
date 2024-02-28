@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../services/rest.service";
 import { SignalRService } from '../../services/signalr.service';
-import { Question } from 'src/app/model/question';
+import { StudentViewData } from 'src/app/model/student-view-data';
 
 @Component({
   selector: 'app-students-mobile-view',
@@ -10,13 +10,11 @@ import { Question } from 'src/app/model/question';
   styleUrls: []
 })
 export class StudentsMobileViewComponent {
+  gameId!: number;
+  question!: StudentViewData;
   username: string = sessionStorage.getItem("username") || "test";
   questionIsFinished: boolean = false;
-  quizLength?: number = 0;
-  currentQuestionId: number = 1;
-  question: Question | undefined;
-  currentPoints: number = 0;
-  buttons: boolean[] = [false, false, false, false];
+  buttons!: boolean[];
   colors = [
     'bg-button-yellow',
     'bg-green-400',
@@ -37,32 +35,29 @@ export class StudentsMobileViewComponent {
 
   ngOnInit() {
     this.getParams();
-    this.signalRService.connection.on("endLoading", () => {
-      this.router.navigate(['/studentMobileRanking'], { queryParams: { currentQuestionId: this.currentQuestionId } });
+    this.signalRService.connection.on("endLoading", (gameId: number) => {
+      if (gameId == this.gameId)
+      {
+        this.router.navigate(['/studentMobileRanking'], { queryParams: { gameId: this.gameId } });
+      }
     });
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
-      if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.currentQuestionId = parseInt(params['currentQuestionId']);
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
       }
-      this.getInformationAboutQuestion();
-    });
-  }
-
-  getInformationAboutQuestion() {
-    this.restservice.getQuestionByQuestionNumber(1, this.currentQuestionId, this.username).subscribe((data) => {
-      this.question = data.question;
-      this.currentPoints = data.points;
-      this.quizLength = data.question.quizLength;
-      this.generateButtons();
+      this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
+        this.question = data;
+        this.generateButtons();
+      });
     });
   }
 
   generateButtons() {
     this.buttons = [];
-    for (let i = 0; i < this.question!.answerCount!; i++) {
+    for (let i = 0; i < this.question!.numberOfAnswers!; i++) {
       this.buttons.push(false);
     }
   }
@@ -72,8 +67,8 @@ export class StudentsMobileViewComponent {
   }
 
   confirmAnswers() {
-    this.restservice.addAnswer(1, this.currentQuestionId, this.buttons, this.username).subscribe((response) => {
-      this.router.navigate(['/studentLoadingScreen'], { queryParams: { currentQuestionId: this.currentQuestionId } });
+    this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe((response) => {
+      this.router.navigate(['/studentLoadingScreen'], { queryParams: { gameId: this.gameId } });
     });
   }
 }

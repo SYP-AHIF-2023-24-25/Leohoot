@@ -1,9 +1,9 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="statistic">
     <div class="bg-white text-center drop-shadow-lg" id="questiontext">
         <div class="container mx-auto p-2">
           <div
             class="mt-8 text-2xl font-bold md:text-4xl">
-            {{ quizTitle }}
+            {{ statistic.quizName }}
           </div>
         </div>
     </div>
@@ -15,21 +15,19 @@
     <div class="flex justify-center items-center">
         <div class="grid gap-16 content-center p-4 pt-20">
             <div class="w-128 row-start-2 row-span-4 bg-blue-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl  uppercase font-bold text-white">{{ topThreePlayers[1].username }}</span>
+                <span class="text-xl  uppercase font-bold text-white">{{ statistic.topThreePlayers[1].username }}</span>
                 <span class="text-8xl font-bold text-white text-center">2</span>
             </div>
             <div class="w-128 row-start-1 row-span-5 bg-red-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl  uppercase font-bold text-white">{{ topThreePlayers[0].username }}</span>
+                <span class="text-xl  uppercase font-bold text-white">{{ statistic.topThreePlayers[0].username }}</span>
                 <span class="text-9xl font-bold text-white">1</span>
             </div>
             <div class="w-128 row-start-3 row-span-3 bg-green-400 rounded flex items-center flex-col justify-center">
-                <span class="text-xl uppercase font-bold text-white">{{ topThreePlayers[2].username }}</span>
+                <span class="text-xl uppercase font-bold text-white">{{ statistic.topThreePlayers[2].username }}</span>
                 <span class="text-6xl font-bold text-white">3</span>
             </div>
         </div>
     </div>
-   
-    
 
     <div *ngIf="!displayStatistics" class="bg-white focus:ring-1 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-center inline-flex items-center mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 mt-12">
         <button (click)="showStatistics()" data-dropdown-toggle="dropdown" class="text-black text-sm px-5 py-2.5 text-center inline-flex items-center w-full" type="button">final statistics  
@@ -55,7 +53,7 @@
 
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-black">
-                    <thead class="text-white bg-pastel-lila">
+                    <thead class="text-white bg-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Questions
@@ -69,21 +67,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let question of questions" class="bg-white border-b hover:bg-gray-100">
-                            {{ calculateResults(question.id) }}
+                        <tr *ngFor="let chart of charts" class="bg-white border-b hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="font-semibold text-black text-xl pr-4">{{ question.id }}</span>
+                                <span class="font-semibold text-black text-xl pr-4">{{ chart.questionNumber }}</span>
 
-                                <span class="text-lg">{{ truncateText(question.questionText, 120) }}</span>
+                                <span class="text-lg">{{ truncateText(chart.questionText, 120) }}</span>
                             </td>
                             <td class="px-6 py-4 text-center text-lg">
-                                <span> {{ correctAnswers }} / {{ totalAnswers }} </span>
+                                <span> {{ chart.correctAnswers }} / {{ chart.totalAnswers }} </span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div *ngIf="chartOptions" class="w-96">
                                     <apx-chart
-                                      *ngIf="chartOptions.series && chartOptions.chart && chartOptions.responsive"
-                                      [series]="chartOptions.series"
+                                      *ngIf="chartOptions.chart && chartOptions.responsive"
+                                      [series]="[chart.correctAnswersInPercentage, chart.incorrectAnswersInPercentage]"
                                       [chart]="chartOptions.chart"
                                       [labels]="chartOptions.labels"
                                       [responsive]="chartOptions.responsive"
