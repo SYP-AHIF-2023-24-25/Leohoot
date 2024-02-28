@@ -21,7 +21,6 @@ export interface Chart {
   incorrectAnswers: number;
   correctAnswersInPercentage: number;
   incorrectAnswersInPercentage: number;
-  resultInPercentage: string;
 }
 
 @Component({
@@ -92,24 +91,16 @@ export class StatisticComponent {
         questionText: this.truncateText(this.statistic.questionTexts[questionNumber - 1].questionText, 20),
         totalAnswers: this.statistic.playerCount,
         correctAnswers: 0,
-        incorrectAnswers: 0,
+        incorrectAnswers: 3,
         correctAnswersInPercentage: 0,
-        incorrectAnswersInPercentage: 0,
-        resultInPercentage: "0 %"
+        incorrectAnswersInPercentage: 100
       };
       
       if (this.statistic.questionAnswers[questionNumber]) {
         chart.correctAnswers = this.statistic.questionAnswers[questionNumber].filter((answer) => answer === true).length;
-        chart.incorrectAnswers = this.statistic.questionAnswers[questionNumber].filter((answer) => answer === false).length;
+        chart.incorrectAnswers = chart.totalAnswers - chart.correctAnswers;
         chart.correctAnswersInPercentage = chart.correctAnswers / chart.totalAnswers * 100;
         chart.incorrectAnswersInPercentage = chart.incorrectAnswers / chart.totalAnswers * 100;
-       
- 
-        if (chart.totalAnswers > 0) {
-          chart.resultInPercentage = (chart.correctAnswers / chart.totalAnswers * 100).toFixed(2) + " %";
-        } else {
-          chart.resultInPercentage = "0 %";
-        }
       }
 
       this.charts.push(chart);

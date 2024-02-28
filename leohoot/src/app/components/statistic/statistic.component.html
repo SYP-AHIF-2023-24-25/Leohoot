@@ -79,7 +79,7 @@
                             <td class="px-6 py-4 text-center">
                                 <div *ngIf="chartOptions" class="w-96">
                                     <apx-chart
-                                      *ngIf="chartOptions.series && chartOptions.chart && chartOptions.responsive"
+                                      *ngIf="chartOptions.chart && chartOptions.responsive"
                                       [series]="[chart.correctAnswersInPercentage, chart.incorrectAnswersInPercentage]"
                                       [chart]="chartOptions.chart"
                                       [labels]="chartOptions.labels"
