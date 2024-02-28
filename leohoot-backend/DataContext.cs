@@ -43,14 +43,15 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                         AnswerText = answer.AnswerText,
                         IsCorrect = answer.IsCorrect
                     }).ToList()
-                }).ToList()
+                }).ToList(),
+                ImageName = q.ImageName
             })
             .ToListAsync();
     }
 
     public record AnswerDto(string AnswerText, bool IsCorrect);
     public record QuestionDto(string QuestionText, int QuestionNumber, string ImageName, int AnswerTimeInSeconds, int PreviewTime, List<AnswerDto> Answers);
-    public record QuizDto(int Id, string Title, string CreatorName, List<QuestionDto> Questions);
+    public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
 
     public async Task<QuizDto?> GetQuiz(int quizId)
     {
@@ -60,6 +61,7 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
             (
                 q.Id,
                 q.Title,
+                q.Description,
                 q.Creator!.Username,
                 q.Questions
                     .Select(question => new QuestionDto
@@ -74,7 +76,8 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                             answer.AnswerText,
                             answer.IsCorrect
                         )).ToList()
-                    )).ToList()
+                    )).ToList(),
+                q.ImageName
             ))
             .SingleOrDefaultAsync();
         

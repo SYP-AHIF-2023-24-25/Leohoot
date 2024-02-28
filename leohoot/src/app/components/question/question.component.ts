@@ -5,6 +5,7 @@ import { Mode } from '../../model/mode';
 import { Question } from '../../model/question';
 import { RestService } from '../../services/rest.service';
 import { SignalRService } from '../../services/signalr.service';
+import { Quiz } from 'src/app/model/quiz';
 
 @Component({
   selector: 'app-question',
@@ -35,6 +36,7 @@ export class QuestionComponent {
   currentQuestion!: Question;
   answerCount: number = 0;
   gameId: number = 0;
+  quizId: number = -1;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
   }
@@ -59,6 +61,10 @@ export class QuestionComponent {
       }
       if (typeof params['mode'] !== 'undefined') {
         this.mode = params['mode'];
+      }
+
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = params['quizId'];
       }
       
       this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
@@ -94,9 +100,15 @@ export class QuestionComponent {
       this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });
     } else {
       if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
+        if (this.quizId !== -1) {
+          this.restservice.deleteGame(this.gameId).subscribe(() => {
+            this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId } });
+          });
+        } 
         this.restservice.deleteGame(this.gameId).subscribe(() => {
           this.router.navigate(['/quizMaker']);
         });
+       
       } else {
         this.restservice.nextQuestion(this.gameId).subscribe(() => {
           window.location.reload();

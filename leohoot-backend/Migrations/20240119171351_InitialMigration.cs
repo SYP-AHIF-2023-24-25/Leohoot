@@ -32,7 +32,8 @@ namespace leohoot_backend.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false)
+                    CreatorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

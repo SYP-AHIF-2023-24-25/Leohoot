@@ -7,21 +7,25 @@ import { QuestionComponent } from '../components/question/question.component';
 })
 export class ConfigurationService {
   quiz: Quiz = {
-    creator: "",
+    creator: "sampleUser",
     description: "",
     questions: [],
     title: "",
-    id: 0
+    imageName: ""
   };
 
   updateQuestion(question: Question) {
-      this.quiz.questions[question.questionNumber] = question;
+      this.quiz.questions[question.questionNumber - 1] = question;
     
   }
 
   addQuestion(question: Question) {
-    question.questionNumber = this.quiz.questions.length;
+    question.questionNumber = this.quiz.questions.length + 1;
     this.quiz.questions.push(question);
+  }
+
+  addImage(imageName: string) {
+    this.quiz.imageName = imageName;
   }
 
   getQuiz() {
@@ -32,16 +36,22 @@ export class ConfigurationService {
     return this.quiz.questions;
   }
 
-  setQuiz(quizTitle: string, quizDescription: string) {
+  setQuizTitleAndDescription(quizTitle: string, quizDescription: string, imageUrl: string) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
+  }
+
+  setQuiz(quiz: Quiz) {
+    this.quiz.title = quiz.title;
+    this.quiz.description = quiz.description;
+    this.quiz.questions = quiz.questions;
+    this.quiz.imageName = quiz.imageName;
   }
 
   deleteQuestion(questionId: number) {
     this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== questionId);
     this.quiz.questions.forEach((question, index) => {
-      question.questionNumber = index;
+      question.questionNumber = index + 1;
     });
   }
-
 }

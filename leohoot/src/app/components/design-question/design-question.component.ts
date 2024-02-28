@@ -30,7 +30,9 @@ export class DesignQuestionComponent {
   }
 
   ngOnInit() {
-    this.refetchQuestions()
+    console.log("refetch Quesitons");
+    this.refetchQuestions();
+    console.log(this.existingQuestions);
 
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizName'] !== 'undefined') {
@@ -99,29 +101,17 @@ export class DesignQuestionComponent {
 
   onQuestionDelete(id: number) {
     this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();    
-  }
-
-  onQuestionEdit(questionNumber: number) {
-    if (this.question.questionNumber !== questionNumber) {
-      alert('Please save the current question before editing another one.');
-      return;
-    }
-
-    const questionIsValid = this.validateQuestion();
-
-    if (questionIsValid) {
-      this.configurationService.updateQuestion(this.question);
-    } else {
-      alert('Please fill in all necessary fields to save the question.');
-    }
-
     this.refetchQuestions();
-    console.log(this.existingQuestions);
+    
+    if (this.existingQuestions.length == 0){
+      this.initNewQuestion();
+    } else {
+      this.displayQuestion(this.existingQuestions[0]);
+    }
   }
 
   onQuizTitle() {
-    if (this.question.questionText === undefined || this.question.questionText === '' && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' 
+    if ((this.question.questionText === undefined || this.question.questionText === '') && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '') && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '') 
         || this.validateQuestion()) {
       this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle}});
     } else if (this.validateQuestion() === false) {
@@ -158,26 +148,26 @@ export class DesignQuestionComponent {
   }
 
   displayQuestion(data: number | Question) {
-    if (this.question.questionText === undefined || this.question.questionText === '' && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' 
-    || this.validateQuestion()) {
-      if (typeof data === 'number') {
-        this.refetchQuestions()
-  
-        const searchResult = this.existingQuestions.find(question => question.questionNumber === data);
-        if (!searchResult) {
-          alert('Question not found');
-          return
-        }
-        this.question = searchResult;
-      } else {
-        this.question = data as Question;
-      }
-      this.editMode = true;
-    } else {
-      alert('Please fill in all necessary fields to save the question first.');
-    }
-  }
+    if (typeof data === 'number') {
+      this.refetchQuestions()
 
+      const searchResult = this.existingQuestions.find(question => question.questionNumber === data);
+      if (!searchResult) {
+        alert('Question not found');
+        return
+      }
+      this.question = searchResult;
+    } else {
+      if ((this.question.questionText === undefined || this.question.questionText === '') && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '') && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '')
+      || this.validateQuestion()) {
+        this.question = data as Question;
+      } else {
+        alert('Please fill in all necessary fields to save the question first and press the add button.');
+      }
+    }
+    this.editMode = true;
+  } 
+  
   truncateText(text: string | undefined, maxLength: number): string {
     return text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text || '';
   }

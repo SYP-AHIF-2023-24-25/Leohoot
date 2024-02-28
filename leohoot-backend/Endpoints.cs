@@ -54,12 +54,21 @@ public static class Endpoints
     record AnswerPostDto(bool[] Answers, string Username);
     record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts);
     record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
-    record AnswerDto(string AnswerText, bool IsCorrect);
-    record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime);
-    record QuizPostDto(string Title, string Description, List<QuestionDto> Questions,  string Creator);
+   
 
     private static void ConfigureGameEndpoints(IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapGet("/api/games/{gameId}/quiz", (int gameId)=>
+        {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+
+            return Results.Ok(game.Quiz.Id);
+        });
+
         endpoints.MapPost("/api/games/{quizId}", async (int quizId, DataContext ctx) =>
         {
             var gameId = await Repository.GetInstance().CreateGame(quizId, ctx);
@@ -170,15 +179,26 @@ public static class Endpoints
         });
     }
 
+    public record AnswerDto(string AnswerText, bool IsCorrect);
+    public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string ImageName, int PreviewTime);
+    public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
+
+
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
+        endpoints.MapGet("/api/quiz/{quizId}", async (DataContext ctx, int quizId)=>
+        {
+            return await ctx.GetQuiz(quizId);
+        });
+
+
+        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizDto quizDto) =>
         {
             var quiz = new Quiz
             {
                 Title = quizDto.Title,
                 Description = quizDto.Description,
-                Creator = ctx.Users.Where(u => u.Username == quizDto.Creator).FirstOrDefault(),
+                Creator = ctx.Users.Where(u => u.Username == quizDto.CreatorName).FirstOrDefault(),
                 Questions = quizDto.Questions.Select(q => new Question
                 {
                     QuestionNumber = q.QuestionNumber,
@@ -196,7 +216,34 @@ public static class Endpoints
             ctx.Quizzes.Add(quiz);
             await ctx.SaveChangesAsync();
 
-            return Results.Created($"/api/quiz/{quiz.Id}", quiz);
+            return Results.Created($"/api/quiz/{quiz.Id}", quiz.Id);
         });
-    }
+
+        endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizDto quizDto) =>
+        {
+            var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+            if (existingQuiz == null)
+            {
+                return Results.NotFound("Quiz not found");
+            }
+
+            existingQuiz.Title = quizDto.Title;
+            existingQuiz.Description = quizDto.Description;
+            existingQuiz.Questions = quizDto.Questions.Select(q => new Question
+            {
+                QuestionNumber = q.QuestionNumber,
+                QuestionText = q.QuestionText,
+                AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                Answers = q.Answers.Select(a => new Answer
+                {
+                    AnswerText = a.AnswerText,
+                    IsCorrect = a.IsCorrect
+                }).ToList(),
+                ImageName = q.ImageName,
+                PreviewTime = q.PreviewTime
+            }).ToList();
+
+            await ctx.SaveChangesAsync();
+            return Results.Ok(existingQuiz);
+        });}
 }

@@ -14,32 +14,41 @@ import { Mode } from 'src/app/model/mode';
 export class QuizMakerComponent {
   quizId: number | undefined;
   existingQuestions: Question[] = [];
-  name: string = "";
+  title: string = "";
   description: string | undefined;
-  imageUrl: string | undefined;
+  imageName: string | undefined;
   
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
     this.getParams();
     this.refetchQuestions();
+    this.title = this.configurationService.getQuiz().title;
     this.description = this.configurationService.getQuiz().description;
+    this.imageName = this.configurationService.getQuiz().imageName;
   }
 
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizName'] !== 'undefined') {
-        this.name = params['quizName'];
-      } else {
-        this.name = '';
+        this.title = params['quizName'];
+      }
+
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = Number.parseInt(params['quizId']);
+        this.restService.getQuizById(this.quizId).subscribe(quiz => {
+          console.log(quiz);
+          this.configurationService.setQuiz(quiz);
+          console.log(this.configurationService.getQuiz());
+        });
       }
     });
   }
 
   addQuestion() {
     const queryParams = {
-      quizName: this.name,
+      quizName: this.title,
     };
 
-    this.configurationService.setQuiz(this.name, this.description ? this.description : '');
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
   }
@@ -48,17 +57,25 @@ export class QuizMakerComponent {
     this.existingQuestions = this.configurationService.getQuestions();
   }
 
-  addQuiz() {
-    this.configurationService.setQuiz(this.name, this.description ? this.description : '');
+  saveQuiz() {
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
     const quiz = this.configurationService.getQuiz();
 
-    quiz.questions = quiz.questions.filter(question => question.questionText !== undefined || question.questionText !== '');
+    quiz.questions =  quiz.questions.map(question => ({
+      ...question,
+      answers: question.answers.filter(answer => answer.answerText !== '')
+    }));
 
-    this.restService.addQuiz(quiz).subscribe(data => {
-      console.log(data);
-    });
-
-    //TODO LINK MIAS PAGE
+    if (this.quizId === undefined){
+      this.restService.addQuiz(quiz).subscribe(data => {
+        this.quizId = data;
+      });
+    } else {
+      this.restService.updateQuiz(this.quizId).subscribe(data => {
+        console.log(data);
+      });
+    }
+    
   }
 
   handleFileInput(event: any) {
@@ -68,7 +85,8 @@ export class QuizMakerComponent {
       if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          this.imageUrl = e.target?.result as string;
+          this.imageName = e.target?.result as string;
+          this.configurationService.addImage(this.imageName);
         };
         reader.readAsDataURL(file);
       } else {
@@ -79,30 +97,36 @@ export class QuizMakerComponent {
     }
   }
 
+  onClose(){
+    if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
+      this.router.navigate(['/games']);
+    }
+  }
+
   truncateText(text: string, maxLength: number): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
   deleteQuestion(id: number) {
     this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();  
+    this.refetchQuestions();
   }
 
   editQuestion(questionNumber: number) {
     const queryParams = {
-      quizName: this.name,
+      quizName: this.title,
       questionNumber: questionNumber
     };
 
-    this.configurationService.setQuiz(this.name, this.description ? this.description : '');
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
 
     this.router.navigate(['/designQuestion'], { queryParams });
   }
 
-  /*playDemoView()
+  playDemoView()
   {
     this.restService.getNewGameId(this.quizId!).subscribe(data => {
-      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE } });
+      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
     });
-  }*/
+  }
 }

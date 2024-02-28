@@ -10,4 +10,5 @@ public class Quiz
     public int CreatorId { get; set; } = 0;
     public User? Creator { get; set; }
     public List<Question> Questions { get; set; } = [];
+    public string ImageName { get; set; } = string.Empty;
 }
