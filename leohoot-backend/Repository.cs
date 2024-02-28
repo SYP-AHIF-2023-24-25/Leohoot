@@ -2,30 +2,27 @@ using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using LeohootBackend.Hubs;
 using LeohootBackend.Model;
+using System.Collections.Immutable;
+using static LeohootBackend.DataContext;
 
 namespace LeohootBackend;
 
 public class Repository
 {
     private static Repository? _instance;
-    static List<Player> _currentAnswers = [];
-
-    private List<Player> _users = [];
-
-    private static Statistic _statistic = new Statistic();
-    private bool _updatedPoints = false;
+    private List<Game> _games = [];
 
     private Repository()
     {
     }
 
-    public void Reset()
+    /*public void Reset()
     {
         _users.Clear();
         _currentAnswers.Clear();
         _statistic = new Statistic();
         _updatedPoints = false;
-    }
+    }*/
 
     public static Repository GetInstance()
     {
@@ -37,91 +34,38 @@ public class Repository
         return _instance;
     }
 
-    public bool RegisterUser(string username)
+
+    public async Task<int> CreateGame(int quizId, DataContext ctx)
     {
-        if (_users.Find(user => user.Username == username) == null)
+        int gameId;
+        QuizDto? quiz = await ctx.GetQuiz(quizId);
+        long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        int seed = (timestamp.ToString() + quiz!.Id).GetHashCode();
+        Random random = new Random(seed);
+        do
         {
-            _users.Add(new Player(username, 0));
-            return true;
-        }
-        return false;
+            gameId = random.Next(10000000, 100000000);
+        } while (_games.Select(g => g.GameId).Contains(gameId));
+        _games.Add(await Game.CreateGame(gameId, quizId, ctx));
+        return gameId;
     }
 
-    public List<Player> GetRanking()
-    {
-        return _users.OrderByDescending(u => u.Score).Take(5).ToList();
-    }
-
-    public int GetPoints(string username)
-    {
-        return _users.Find(user => user.Username == username)!.Score;
-    }
-
-    public int GetCurrentPoints(string username)
-    {
-        Player? answer = _currentAnswers.Find(user => user.Username == username);
-        if (answer == null)
-        {
-            return 0;
-        }
-        return answer.Score;
-    }
-
-    public int GetAnswerCount()
-    {
-        return _currentAnswers.Count;
-    }
-
-    public int GetPlayerCount()
-    {
-        return _users.Count;
-    }
-
-    public void UpdatePoints()
-    {
-        if (!_updatedPoints)
-        {
-            foreach (Player user in _currentAnswers)
-            {
-                Player userToUpdate = _users.Find(userToUpdate => userToUpdate.Username == user.Username)!;
-                userToUpdate.Score += user.Score;
-            }
-        }
-        _updatedPoints = true;
-    }
-
-    public void ClearCurrentAnswers()
-    {
-        _updatedPoints = false;
-        _currentAnswers.Clear();
-    }
-
+    public record CountsDto(int AnswerCount, bool IsFinished);
     
-    public async Task AddAnswer(DataContext ctx, int quizId, int questionNumber, bool[] answers, string username)
+    public CountsDto AddAnswerToGame(int gameId, string username, bool[] answers)
     {
-        int score = 0;
-        bool isCorrect = await ctx.IsAnswerCorrect(quizId, questionNumber, answers);
-        var currentCorrectAnswers = _currentAnswers.FindAll(answer => answer.Score > 0).ToList();
-        if (isCorrect)
-        {
-            score = 1000 - 1000/_users.Count*currentCorrectAnswers.Count;
-        }
-
-        if (_statistic.QuestionAnswers.ContainsKey(questionNumber))
-        {
-            _statistic.QuestionAnswers[questionNumber].Add(isCorrect);
-        }
-        else
-        {
-            _statistic.QuestionAnswers.TryAdd(questionNumber, new List<bool> {isCorrect});
-        }
-
-        _currentAnswers.Add(new Player(username, score));
+        var game = _games.Find(g => g.GameId == gameId) ?? throw new Exception("Game not found");
+        game.AddAnswer(game.GameId, answers, username);
+        return new CountsDto(game.AnswerCount, game.PlayerCount == game.AnswerCount);
     }
 
-    public Statistic GetStatistic()
+    public Game? GetGameById(int gameId)
     {
-        return _statistic;
+        return _games.Find(g => g.GameId == gameId);
     }
 
+    public void DeleteGame(int gameId)
+    {
+        _games.RemoveAll(g => g.GameId == gameId);
+    }
 }

@@ -17,12 +17,17 @@ import { StudentsLoadingScreenComponent } from './components/students-loading-sc
 import { GameLoginComponent } from './components/game-pin-login/game-pin-login.component';
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
-import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
+import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
+import { DesignQuestionComponent } from './components/design-question/design-question.component';
+import { CommonModule } from '@angular/common';
+import { StatisticComponent } from './components/statistic/statistic.component';
+import { GamesComponent } from './components/games/games.component';
+import { QuestionPreviewComponent } from './components/question-preview/question-preview.component';
 
 @NgModule({
-  declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

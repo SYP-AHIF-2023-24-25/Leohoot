@@ -6,6 +6,9 @@ using LeohootBackend.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Net.WebSockets;
+using System.Diagnostics.Eventing.Reader;
+using System.Security.Cryptography.X509Certificates;
+using static LeohootBackend.DataContext;
 
 namespace LeohootBackend;
 
@@ -16,6 +19,7 @@ public static class Endpoints
     public static void ConfigureEndpoints(this WebApplication app)
     {
         ConfigureUserEndpoints(app);
+        ConfigureGameEndpoints(app);
         ConfigureQuizEndpoints(app);
     }
 
@@ -43,66 +47,222 @@ public static class Endpoints
             await ctx.SaveChangesAsync();
             return Results.Created($"/api/users/{user.Username}", user);
         });
+    }
 
-        endpoints.MapDelete("/api/users/reset", () =>
+    record QuestionTeacherDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, string? ImageName, int PreviewTime, AnswerDto[] Answers, int QuizLength);
+    record QuestionStudentDto(int QuestionNumber, string QuestionText, int NumberOfAnswers, int CurrentPoints, int Points, int QuizLength);
+    record AnswerPostDto(bool[] Answers, string Username);
+    record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts, int PlayerCount);
+    record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
+   
+
+    private static void ConfigureGameEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapGet("/api/games/{gameId}/quiz", (int gameId)=>
         {
-            Repository.GetInstance().Reset();
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+
+            return Results.Ok(game.Quiz.Id);
+        });
+
+        endpoints.MapPost("/api/games/{quizId}", async (int quizId, DataContext ctx) =>
+        {
+            var gameId = await Repository.GetInstance().CreateGame(quizId, ctx);
+            return gameId;
+        });
+        
+        endpoints.MapPost("/api/games/{gameId}/answers", async (DataContext ctx, int gameId, AnswerPostDto body) =>
+        {
+            var count = Repository.GetInstance().AddAnswerToGame(gameId, body.Username, body.Answers);
+            await HubContext!.Clients.All.SendAsync("updateAnswerCount", count.AnswerCount, count.IsFinished);
+        });
+
+        endpoints.MapGet("/api/games/{gameId}/ranking", (int gameId)=>
+        {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            return Results.Ok(new RankingDto(game.Ranking.ToArray(), game.CurrentQuestion.QuestionNumber, game.Quiz.Questions.Count));
+        });
+
+        endpoints.MapGet("/api/games/{gameId}/statistic", (DataContext ctx, int gameId) => {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            var questionAnswers = game.Statistic.QuestionAnswers;
+            var TopThreePlayers = game.GetRanking(3);
+            QuestionDto[] questions = game.Quiz.Questions.Select(q => new QuestionDto(
+                q.QuestionNumber, 
+                q.QuestionText, 
+                q.AnswerTimeInSeconds, 
+                q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
+                q.ImageName, 
+                q.PreviewTime)).ToArray();
+
+            return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions, game.PlayerCount));
+        });
+
+        endpoints.MapGet("/api/games/{gameId}/currentQuestion/teacher", (int gameId) =>
+        {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            var question = new QuestionTeacherDto(
+                game.CurrentQuestion.QuestionNumber, 
+                game.CurrentQuestion.QuestionText, 
+                game.CurrentQuestion.AnswerTimeInSeconds, 
+                game.CurrentQuestion.ImageName, 
+                game.CurrentQuestion.PreviewTime, 
+                game.CurrentQuestion.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToArray(),
+                game.Quiz.Questions.Count);
+            return Results.Ok(question);
+        });
+
+        endpoints.MapGet("/api/games/{gameId}/currentQuestion/student", (DataContext ctx, int gameId, string username)=>
+        {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            var questionStudent = new QuestionStudentDto(
+                game.CurrentQuestion.QuestionNumber, 
+                game.CurrentQuestion.QuestionText,
+                game.CurrentQuestion.Answers.Count,
+                game.GetCurrentPointsByUsername(username),
+                game.GetPointsByUsername(username), 
+                game.Quiz.Questions.Count);
+            return Results.Ok(questionStudent);
+        });
+
+        endpoints.MapPut("/api/games/{gameId}/currentQuestion", async (DataContext ctx, int gameId)=>
+        {
+            var game = Repository.GetInstance().GetGameById(gameId);
+            if (game == null)
+            {
+                return Results.NotFound("Game not found");
+            }
+            game.ClearCurrentAnswers();
+            var nextQuestion = game.Quiz.Questions.SingleOrDefault(q => q.QuestionNumber == game.CurrentQuestion!.QuestionNumber + 1);
+            game.CurrentQuestion = nextQuestion!;
+            await ctx.SaveChangesAsync();
+            
+            return Results.Ok(nextQuestion);
+        });
+        
+        endpoints.MapGet("/api/games/{gameId}/exists", (string gameId)=>
+        {
+            int result;
+            Game? game = null;
+            if (int.TryParse(gameId, out result))
+            {
+                game = Repository.GetInstance().GetGameById(result);
+            };
+            return game != null;
+        });
+
+        endpoints.MapDelete("/api/games/{gameId}", (int gameId)=>
+        {
+            Repository.GetInstance().DeleteGame(gameId);
+            return Results.Ok();
         });
     }
 
+    public record AnswerDto(string AnswerText, bool IsCorrect);
+    public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string ImageName, int PreviewTime);
+    public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
+
+    public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, string ImageName);
+
+
     private static void ConfigureQuizEndpoints(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/api/quizzes", async (DataContext ctx)=>
+        endpoints.MapGet("/api/quiz/{quizId}", async (DataContext ctx, int quizId)=>
+        {
+            return await ctx.GetQuiz(quizId);
+        });
+
+
+        endpoints.MapGet("/api/quiz", async (DataContext ctx)=>
         {
             return await ctx.GetAllQuizzes();
         });
 
-        endpoints.MapGet("/api/quizzes/{quizId}", async (DataContext ctx, int quizId)=>
+        endpoints.MapPost("/api/quiz", async (DataContext ctx, QuizPostDto quizDto) =>
         {
-            return await ctx.GetQuiz(quizId);
+            var creator = ctx.Users.FirstOrDefault(u => u.Username == quizDto.Creator);
+            if (creator == null)
+            {
+                 return Results.NotFound($"/api/quiz/");
+            }
+            else
+            {
+                var quiz = new Quiz
+                {
+                    Title = quizDto.Title,
+                    Description = quizDto.Description,
+                    Creator = creator,
+                    Questions = quizDto.Questions.Select(q => new Question
+                    {
+                        QuestionNumber = q.QuestionNumber,
+                        QuestionText = q.QuestionText,
+                        AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                        Answers = q.Answers.Select(a => new Answer
+                        {
+                            AnswerText = a.AnswerText,
+                            IsCorrect = a.IsCorrect
+                        }).ToList(),
+                        ImageName = q.ImageName,
+                        PreviewTime = q.PreviewTime
+                    }).ToList(),
+                    ImageName = quizDto.ImageName
+                };
+
+                ctx.Quizzes.Add(quiz);
+                await ctx.SaveChangesAsync();
+                 return Results.Created($"/api/quiz/{quiz.Id}", quiz.Id);
+            }           
         });
-        
-        endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}", async (DataContext ctx, int quizId, int questionNumber)=>
+
+        endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizPostDto quizDto) =>
         {
-            return await ctx.GetQuestion(quizId, questionNumber);
-        });
+            var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+            if (existingQuiz == null)
+            {
+                return Results.NotFound("Quiz not found");
+            }
 
-        endpoints.MapGet("/api/quizzes/{quizId}/questions/{questionNumber}/mobile", async (DataContext ctx, int quizId, int questionNumber, string username)=>
-        {
-            var question = await ctx.GetQuestionStudent(quizId, questionNumber, username);
-            int points = Repository.GetInstance().GetPoints(username);
-            int currentPoints = Repository.GetInstance().GetCurrentPoints(username);
-            return new { Question = question, Points = points, CurrentPoints = currentPoints };
-        });
+            existingQuiz.Title = quizDto.Title;
+            existingQuiz.Description = quizDto.Description;
+            if (quizDto.Questions.Count == 0){
+                existingQuiz.Questions.Clear();
+            } else {
+                existingQuiz.Questions = quizDto.Questions.Select(q => new Question
+                {
+                    QuestionNumber = q.QuestionNumber,
+                    QuestionText = q.QuestionText,
+                    AnswerTimeInSeconds = q.AnswerTimeInSeconds,
+                    Answers = q.Answers.Select(a => new Answer
+                    {
+                        AnswerText = a.AnswerText,
+                        IsCorrect = a.IsCorrect
+                    }).ToList(),
+                    ImageName = q.ImageName,
+                    PreviewTime = q.PreviewTime
+                }).ToList();
+            }
 
-        endpoints.MapGet("/api/quizzes/{quizId}/length", async (DataContext ctx, int quizId)=>
-        {
-            return await ctx.GetQuizLength(quizId);
-        });
-
-        endpoints.MapPost("/api/quizzes/{quizId}/questions/{questionNumber}", async (HttpContext context)=>
-        {
-            int quizId = int.Parse(context.Request.RouteValues["quizId"] as string ?? "");
-            int questionNumber = int.Parse(context.Request.RouteValues["questionNumber"] as string ?? "");
-            bool[]? answers = await JsonSerializer.DeserializeAsync<bool[]>(context.Request.Body);
-            string? username = context.Request.Query["username"];
-
-            DataContext ctx = context.RequestServices.GetService(typeof(DataContext)) as DataContext ?? throw new Exception("DataContext not found");
-            await Repository.GetInstance().AddAnswer(ctx, quizId, questionNumber, answers!, username!);
-
-            await HubContext!.Clients.All.SendAsync("updateAnswerCount", Repository.GetInstance().GetAnswerCount(), Repository.GetInstance().GetPlayerCount());
-        });
-
-        endpoints.MapGet("/api/quizzes/ranking", (DataContext context)=>
-        {
-            return Repository.GetInstance().GetRanking();
-        });
-
-        endpoints.MapGet("/api/quizzes/{quizId}/statistic", async (DataContext ctx, int quizId) => {
-            var statistic = Repository.GetInstance().GetStatistic();
-            var questions = await ctx.GetQuestions(quizId);
-
-            return new { QuestionAnswers = statistic.QuestionAnswers, Questions = questions };
-        });
-    }
+            await ctx.SaveChangesAsync();
+            return Results.Ok(existingQuiz);
+        });}
 }

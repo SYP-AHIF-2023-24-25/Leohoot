@@ -43,50 +43,74 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                         AnswerText = answer.AnswerText,
                         IsCorrect = answer.IsCorrect
                     }).ToList()
-                }).ToList()
+                }).ToList(),
+                ImageName = q.ImageName
             })
             .ToListAsync();
     }
 
-    public async Task<object?> GetQuiz(int quizId)
+    public record AnswerDto(string AnswerText, bool IsCorrect);
+    public record QuestionDto(string QuestionText, int QuestionNumber, string ImageName, int AnswerTimeInSeconds, int PreviewTime, List<AnswerDto> Answers);
+    public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
+
+    public async Task<QuizDto?> GetQuiz(int quizId)
     {
-        return await Quizzes
+        QuizDto? quiz = await Quizzes
             .Where(q => q.Id == quizId)
-            .Select(q => new
-            {
-                Id = q.Id,
-                Title = q.Title,
-                Creator = q.Creator!.Username
-            })
+            .Select(q => new QuizDto
+            (
+                q.Id,
+                q.Title,
+                q.Description,
+                q.Creator!.Username,
+                q.Questions
+                    .Select(question => new QuestionDto
+                    (
+                        question.QuestionText,
+                        question.QuestionNumber,
+                        question.ImageName ?? string.Empty,
+                        question.AnswerTimeInSeconds,
+                        question.PreviewTime,
+                        question.Answers.Select(answer => new AnswerDto
+                        (
+                            answer.AnswerText,
+                            answer.IsCorrect
+                        )).ToList()
+                    )).ToList(),
+                q.ImageName
+            ))
             .SingleOrDefaultAsync();
+        
+        return quiz;
     }
 
-    public async Task<object?> GetQuestions(int quizId)
-    {
-        return await Quizzes
-            .Where(q => q.Id == quizId)
-            .Select(q => q.Questions)
-            .SingleOrDefaultAsync();
-    }
-
-    public async Task<object?> GetQuestion(int quizId, int questionNumber)
+    public async Task<List<QuestionDto>> GetQuestions(int quizId)
     {
         return await Questions
-            .Where(q => q.QuestionNumber == questionNumber && q.QuizId == quizId)
-            .Select(q => new
-            {
-                Id = q.Id,
-                QuestionText = q.QuestionText,
-                QuestionNumber = q.QuestionNumber,
-                ImageName = q.ImageName,
-                AnswerTimeInSeconds = q.AnswerTimeInSeconds,
-                Answers = q.Answers.Select(answer => new
-                {
-                    Id = answer.Id,
-                    AnswerText = answer.AnswerText,
-                    IsCorrect = answer.IsCorrect
-                }).ToList()
-            }).FirstOrDefaultAsync();
+            .Where(q => q.QuizId == quizId)
+            .Select(question => new QuestionDto
+            (
+                question.QuestionText,
+                question.QuestionNumber,
+                question.ImageName ?? string.Empty,
+                question.AnswerTimeInSeconds,
+                question.PreviewTime,
+                question.Answers.Select(answer => new AnswerDto
+                (
+                    answer.AnswerText,
+                    answer.IsCorrect
+                )).ToList()
+            )).ToListAsync();
+    }
+
+    public async Task<QuestionDto?> GetQuestion(int quizId, int questionNumber)
+    {
+        QuizDto? quiz = await GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return null;
+        }
+        return quiz.Questions.Find(q => q.QuestionNumber == questionNumber);
     }
 
     public async Task<object?> GetQuestionStudent(int quizId, int questionNumber, string username)
@@ -100,15 +124,6 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                 AnswerCount = q.Answers.Count,
                 QuizLength = q.Quiz!.Questions.Count,
             }).FirstOrDefaultAsync();
-    }
-
-    public async Task<int?> GetQuizLength(int quizId)
-    {
-        var question =  await Quizzes.Where(q => q.Id == quizId).Select(q => new
-        {
-            Length = q.Questions.Count
-        }).FirstOrDefaultAsync();
-        return question!.Length;
     }
 
     public async Task<bool> IsAnswerCorrect(int quizId, int questionNumber, bool[] answers)
