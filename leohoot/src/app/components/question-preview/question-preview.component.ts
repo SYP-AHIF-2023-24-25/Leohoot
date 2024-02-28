@@ -8,13 +8,12 @@ import {Subscription, timer} from "rxjs";
 
 @Component({
   selector: 'app-question-preview',
-  standalone: true,
-  imports: [],
   templateUrl: './question-preview.component.html'
 })
 export class QuestionPreviewComponent {
+  gameId!: number;
   question!: Question;
-  questionNumber: number = 0;
+
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
 
@@ -28,12 +27,11 @@ export class QuestionPreviewComponent {
 
   getParams() {
     this.route.queryParams.subscribe(params => {
-      if (typeof params['currentQuestionId'] !== 'undefined') {
-        this.questionNumber = parseInt(params['currentQuestionId']);
+      if (typeof params['gameId'] !== 'undefined') {
+        this.gameId = parseInt(params['gameId']);
       }
-      this.restservice.getQuestionByIdAllInfo(1, this.questionNumber).subscribe((data) => {
+      this.restservice.getQuestionTeacher(this.gameId).subscribe((data) => {
         this.question = data;
-        this.question.previewTime = 5;
         this.startTimer();
       } );
     });
@@ -44,7 +42,8 @@ export class QuestionPreviewComponent {
         currTime == this.question.previewTime
       ) {
         this.obsTimer.unsubscribe();
-        this.router.navigate(['/question'], { queryParams: { currentQuestionId: this.questionNumber, mode: Mode.GAME_MODE }});
+        this.signalRService.connection.send("sendToNextQuestion", this.gameId);
+        this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});
       }
       this.currTime = currTime;
     });

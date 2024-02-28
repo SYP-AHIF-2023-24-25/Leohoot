@@ -23,4 +23,8 @@ export class GamesComponent {
       this.quizzes = data;
     });
   }
+
+  goToWaitingroom(quizId: number) {
+    this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
+  }
 }
