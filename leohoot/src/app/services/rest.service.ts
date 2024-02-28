@@ -13,8 +13,8 @@ import { Ranking } from '../model/ranking';
   providedIn: 'root'
 })
 export class RestService {
-  public static url: string = 'http://localhost:5000/api/';
-  //public static url: string = 'http://140.238.173.82:8001/api/'
+  //public static url: string = 'http://localhost:5000/api/';
+  public static url: string = 'http://140.238.173.82:8001/api/'
 
   constructor(private httpClient: HttpClient) { }
 
