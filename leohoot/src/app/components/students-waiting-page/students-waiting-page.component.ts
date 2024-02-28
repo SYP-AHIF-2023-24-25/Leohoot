@@ -15,7 +15,7 @@ export class StudentWaitingPageComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
-        this.signalRService.connection.on("startedGame", (gameId: number) => {
+        this.signalRService.connection.on("nextQuestion", (gameId: number) => {
           if (gameId == this.gameId) {
             this.router.navigate(['/studentMobileView'], { queryParams: { gameId: this.gameId }});
           }

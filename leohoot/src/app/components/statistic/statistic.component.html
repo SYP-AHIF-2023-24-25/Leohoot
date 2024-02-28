@@ -7,6 +7,12 @@
           </div>
         </div>
     </div>
+    <div class="flex justify-end">
+        <button class="sm:w-15 rounded-xl bg-white p-2 text-black text-lg font-bold drop-shadow-lg sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 my-5 w-24" routerLink="/games">
+            Back
+        </button>
+    </div>
+
     <img
             class="mx-auto w-1/6 max-w-md mt-10"
             src="/assets/images/trophy-star.png"
@@ -28,8 +34,6 @@
             </div>
         </div>
     </div>
-   
-    
 
     <div *ngIf="!displayStatistics" class="bg-white focus:ring-1 focus:outline-none focus:ring-gray-600 font-medium rounded-lg text-center inline-flex items-center mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 mt-12">
         <button (click)="showStatistics()" data-dropdown-toggle="dropdown" class="text-black text-sm px-5 py-2.5 text-center inline-flex items-center w-full" type="button">final statistics  
@@ -55,7 +59,7 @@
 
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-black">
-                    <thead class="text-white bg-pastel-lila">
+                    <thead class="text-white bg-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Questions
@@ -69,21 +73,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let question of statistic.questions" class="bg-white border-b hover:bg-gray-100">
-                            {{ calculateResults(question.questionNumber) }}
+                        <tr *ngFor="let chart of charts" class="bg-white border-b hover:bg-gray-100">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="font-semibold text-black text-xl pr-4">{{ question.questionNumber }}</span>
+                                <span class="font-semibold text-black text-xl pr-4">{{ chart.questionNumber }}</span>
 
-                                <span class="text-lg">{{ truncateText(question.questionText, 120) }}</span>
+                                <span class="text-lg">{{ truncateText(chart.questionText, 120) }}</span>
                             </td>
                             <td class="px-6 py-4 text-center text-lg">
-                                <span> {{ correctAnswers }} / {{ totalAnswers }} </span>
+                                <span> {{ chart.correctAnswers }} / {{ chart.totalAnswers }} </span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div *ngIf="chartOptions" class="w-96">
                                     <apx-chart
-                                      *ngIf="chartOptions.series && chartOptions.chart && chartOptions.responsive"
-                                      [series]="chartOptions.series"
+                                      *ngIf="chartOptions.chart && chartOptions.responsive"
+                                      [series]="[chart.correctAnswersInPercentage, chart.incorrectAnswersInPercentage]"
                                       [chart]="chartOptions.chart"
                                       [labels]="chartOptions.labels"
                                       [responsive]="chartOptions.responsive"

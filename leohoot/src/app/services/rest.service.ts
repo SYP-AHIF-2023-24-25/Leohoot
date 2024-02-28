@@ -70,4 +70,8 @@ export class RestService {
   deleteGame(gameId: number): Observable<void> {
     return this.httpClient.delete<void>(`${RestService.url}games/${gameId}`);
   }
+
+  getAllQuizzes(): Observable<Quiz[]> {
+    return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
+  }
 }

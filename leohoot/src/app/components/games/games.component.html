@@ -1,0 +1,26 @@
+<div class="flex flex-col bg-background-blue min-h-screen">
+  <div class="bg-white pb-2">
+    <div class="container mx-auto p-2">
+      <div class="text-3xl font-bold md:text-5xl">
+        <p class="text-center">Games</p>
+      </div>
+    </div>
+  </div>
+  <div class="container mx-auto mt-5 w-full bg-ranking-blue">
+    <div
+      *ngFor="
+          let quiz of quizzes;
+          index as i
+        "
+    >
+      <div class="p-5 pl-10">
+        <a (click)="goToWaitingroom(quiz.id)">
+          <p class="text-2xl font-bold">{{ quiz.title }}</p>
+          <p class="">Created by: {{ quiz.creator }}</p>
+          <p class="">Total Questions: {{ quiz.questions.length}}</p>
+          <p class="">{{quiz.description}}</p>
+        </a >
+      </div>
+    </div>
+  </div>
+</div>

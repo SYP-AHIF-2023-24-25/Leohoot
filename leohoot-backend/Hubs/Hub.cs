@@ -29,10 +29,7 @@ public class ChatHub : Hub
         await Clients.All.SendAsync("endLoading", gameId);
     }
 
-    /*public async Task SendToNextQuestion(int gameId){
-        Console.WriteLine("Sending to next question");
-        var game = Repository.GetInstance().GetGameById(gameId);
-        game.ClearCurrentAnswers();
+    public async Task SendToNextQuestion(int gameId){
         await Clients.All.SendAsync("nextQuestion", gameId);
-    }*/
+    }
 }

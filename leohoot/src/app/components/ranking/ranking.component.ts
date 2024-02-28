@@ -16,7 +16,7 @@ export class RankingComponent {
   mode: number = 1;
   ranking!: Ranking;
 
-  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) { 
+  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) {
     this.getParams();
   }
 
@@ -41,7 +41,7 @@ export class RankingComponent {
         gameId: this.gameId,
         mode: Mode.GAME_MODE
       };
-      this.router.navigate(['/question'], { queryParams });
+      this.router.navigate(['/preview'], { queryParams });
     });
   }
 }

@@ -17,11 +17,16 @@ export class WaitingroomComponent {
   users: Player[] = [];
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
-    restService.getNewGameId(1).subscribe((response) => 
-    {
-      this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
-      this.qrCodeTitle = "Scan the QR code to join the game!"; 
-      this.gamePin = response;
+    this.route.queryParams.subscribe(params => {
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = parseInt(params['quizId']);
+        this.restService.getNewGameId(1).subscribe((response) => 
+        {
+          this.qrCodeData = `http://140.238.173.82:8000/gameUserLogin?gameId=${response}`;    
+          this.qrCodeTitle = "Scan the QR code to join the game!"; 
+          this.gamePin = response;
+        });
+      }
     });
   }
 
@@ -36,6 +41,6 @@ export class WaitingroomComponent {
 
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/question'], { queryParams: { gameId: this.gamePin , mode: 1} });
+    this.router.navigate(['/preview'], { queryParams: { gameId: this.gamePin , mode: 1} });
   }
 }

@@ -27,7 +27,7 @@ export class QuestionComponent {
     'assets/images/bird.png'
     ];
 
-  currentQuestionId: number = 1;
+    
   mode: Mode = Mode.TEACHER_DEMO_MODE;
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
@@ -95,7 +95,7 @@ export class QuestionComponent {
 
   nextQuestion() {
     if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
-      this.router.navigate(['/statistics'], { queryParams: { gameId: this.gameId } });
+      this.router.navigate(['/statistic'], { queryParams: { gameId: this.gameId } });
     } else if (this.mode == Mode.GAME_MODE) {
       this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });
     } else {
