@@ -79,6 +79,7 @@ public sealed class DataContext(IConfiguration configuration) : DbContext
                 QuestionText = q.QuestionText,
                 QuestionNumber = q.QuestionNumber,
                 ImageName = q.ImageName,
+                PreviewTime = q.PreviewTime,
                 AnswerTimeInSeconds = q.AnswerTimeInSeconds,
                 Answers = q.Answers.Select(answer => new
                 {

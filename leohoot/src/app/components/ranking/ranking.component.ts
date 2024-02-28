@@ -17,7 +17,7 @@ export class RankingComponent {
   ranking: Player[] = [];
   quizLength: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) { 
+  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) {
     this.getParams();
     this.restservice.getRanking(1, this.questionNumber).subscribe((data) => {
       this.ranking = data;
@@ -44,6 +44,6 @@ export class RankingComponent {
       currentQuestionId: ++this.questionNumber,
       mode: Mode.GAME_MODE
     };
-    this.router.navigate(['/question'], { queryParams });
+    this.router.navigate(['/preview'], { queryParams });
   }
 }

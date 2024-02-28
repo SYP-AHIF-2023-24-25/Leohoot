@@ -10,6 +10,8 @@ import { GameLoginComponent } from './components/game-pin-login/game-pin-login.c
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
 import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
+import {QuestionPreviewComponent} from "./components/question-preview/question-preview.component";
+import {GamesComponent} from "./components/games/games.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/question', pathMatch: 'full' },
@@ -22,7 +24,9 @@ const routes: Routes = [
   { path: 'gameLogin', component: GameLoginComponent},
   { path: 'gameUserLogin', component: GameUserLoginComponent},
   { path: 'studentWaitingPage', component: StudentWaitingPageComponent},
-  { path: 'statistics', component: EndStatisticsComponent}
+  { path: 'statistics', component: EndStatisticsComponent},
+  { path: 'preview', component: QuestionPreviewComponent},
+  { path: 'games', component: GamesComponent }
 ];
 
 @NgModule({

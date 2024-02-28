@@ -42,7 +42,7 @@ export class QuestionComponent {
   ngOnInit(): void {
     this.getParams();
     this.audio.loop = true;
-    
+
     this.signalRService.connection.on("updateAnswerCount", (answerCount: number, playerCount: number) => {
       console.log(`AnswerCount: ${answerCount}, PlayerCount: ${playerCount}`);
       console.log(answerCount == playerCount);
@@ -123,7 +123,7 @@ export class QuestionComponent {
         currentQuestionId: this.currentQuestion.questionNumber,
         mode: Mode.GAME_MODE
       };
-      this.router.navigate(['/ranking'], { queryParams });
+        this.router.navigate(['/ranking'], {queryParams});
     }
   }
 }

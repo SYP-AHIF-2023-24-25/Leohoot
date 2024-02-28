@@ -21,10 +21,10 @@ export class WaitingroomComponent {
     {
       restService.getQuizById(1).subscribe((data) => {;
         this.quiz = data;
-        
-        this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";    
-        this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator; 
-        
+
+        this.qrCodeData = "http://140.238.173.82:8000/gameUserLogin";
+        this.qrCodeTitle = this.quiz.title + Date.now().toString() + this.quiz.creator;
+
         do{
           this.gamePin = this.generateGamePin();
         } while (this.gamePin < 10000000 || this.gamePin > 99999999);
@@ -55,7 +55,7 @@ export class WaitingroomComponent {
     const currentDateWithTime = new Date();
     const uniqueString = this.qrCodeTitle + currentDateWithTime.toISOString() + this.quiz.creator;
       const hashedValue = this.hashString(uniqueString);
-      
+
       const gamePin = (hashedValue % 90000000) + 10000000;
 
       return gamePin;
@@ -64,6 +64,6 @@ export class WaitingroomComponent {
 
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/question'], { queryParams: { currentQuestionId: 1 , mode: 1} });
+    this.router.navigate(['/preview'], { queryParams: { currentQuestionId: 1 , mode: 1} });
   }
 }

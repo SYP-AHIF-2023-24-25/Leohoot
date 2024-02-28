@@ -25,6 +25,10 @@ export class RestService {
     return this.httpClient.get<StudentViewData>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}/mobile?username=${username}`);
   };
 
+  getAllQuizzes(): Observable<Quiz[]> {
+    return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
+  }
+
   getQuizLengthById(id: number): Observable<number> {
     return this.httpClient.get<number>(`${RestService.url}quizzes/${id}/length`);
   }
@@ -34,7 +38,7 @@ export class RestService {
   }
 
   addAnswer(quizId: number, questionNumber: number, buttons: boolean[], username: string): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}?username=${username}`, buttons);  
+    return this.httpClient.post<boolean>(`${RestService.url}quizzes/${quizId}/questions/${questionNumber}?username=${username}`, buttons);
   }
 
   getRanking(quizId: number, questionNumber: number): Observable<Player[]> {

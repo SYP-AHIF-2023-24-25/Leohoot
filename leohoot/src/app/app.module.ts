@@ -18,10 +18,12 @@ import { GameLoginComponent } from './components/game-pin-login/game-pin-login.c
 import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
 import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
 import { EndStatisticsComponent } from './components/end-statistics/end-statistics.component';
+import {QuestionPreviewComponent} from "./components/question-preview/question-preview.component";
+import { GamesComponent } from './components/games/games.component';
 
 @NgModule({
-  declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule],
+  declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, EndStatisticsComponent, GamesComponent],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, QuestionPreviewComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
