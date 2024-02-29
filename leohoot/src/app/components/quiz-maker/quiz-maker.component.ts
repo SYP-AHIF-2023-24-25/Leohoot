@@ -35,9 +35,7 @@ export class QuizMakerComponent {
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = Number.parseInt(params['quizId']);
         this.restService.getQuizById(this.quizId).subscribe(quiz => {
-          console.log(quiz);
           this.configurationService.setQuiz(quiz);
-          console.log(this.configurationService.getQuiz());
         });
       }
     });
@@ -71,9 +69,7 @@ export class QuizMakerComponent {
         this.quizId = data;
       });
     } else {
-      this.restService.updateQuiz(this.quizId, quiz).subscribe(data => {
-        console.log(data);
-      });
+      this.restService.updateQuiz(this.quizId, quiz);
     }
     
   }

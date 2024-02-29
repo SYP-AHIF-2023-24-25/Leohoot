@@ -236,7 +236,7 @@ public static class Endpoints
 
         endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizPostDto quizDto) =>
         {
-            var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+            var existingQuiz = await ctx.Quizzes.Include(q => q.Questions).FirstOrDefaultAsync(q => q.Id == quizId);
             if (existingQuiz == null)
             {
                 return Results.NotFound("Quiz not found");
@@ -267,6 +267,6 @@ public static class Endpoints
             }
 
             await ctx.SaveChangesAsync();
-            return Results.Ok(existingQuiz);
+            return Results.Ok();
         });}
 }
