@@ -71,7 +71,7 @@ export class QuizMakerComponent {
         this.quizId = data;
       });
     } else {
-      this.restService.updateQuiz(this.quizId).subscribe(data => {
+      this.restService.updateQuiz(this.quizId, quiz).subscribe(data => {
         console.log(data);
       });
     }

@@ -244,9 +244,13 @@ public static class Endpoints
 
             existingQuiz.Title = quizDto.Title;
             existingQuiz.Description = quizDto.Description;
-            if (quizDto.Questions.Count == 0){
+            if (quizDto.Questions.Count == 0)
+            {
                 existingQuiz.Questions.Clear();
-            } else {
+            }
+            else
+            {
+                Console.WriteLine(quizDto.Questions.Count);
                 existingQuiz.Questions = quizDto.Questions.Select(q => new Question
                 {
                     QuestionNumber = q.QuestionNumber,
