@@ -1,10 +1,10 @@
 import { Player } from './player';
-import { Question } from './question';
+import { QuestionTeacher } from './question-teacher';
 
 export interface Statistic {
     quizName: string;
     topThreePlayers: Player[];
     questionAnswers: { [key: number]: boolean[] };
-    questionTexts: Question[];
+    questionTexts: QuestionTeacher[];
     playerCount: number;
 }

@@ -8,24 +8,24 @@ import { NgApexchartsModule } from "ng-apexcharts";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WaitingroomComponent } from './components/waitingroom/waitingroom.component';
-import { RankingComponent } from './components/ranking/ranking.component';
-import { QuestionComponent } from './components/question/question.component';
-import { StudentsMobileViewComponent } from './components/students-mobile-view/students-mobile-view.component';
-import { StudentsMobileRankingComponent } from './components/students-mobile-ranking/students-mobile-ranking.component';
-import { StudentsLoadingScreenComponent } from './components/students-loading-screen/students-loading-screen.component';
-import { GameLoginComponent } from './components/game-pin-login/game-pin-login.component';
-import { GameUserLoginComponent } from './components/game-user-login/game-user-login.component';
-import { StudentWaitingPageComponent } from './components/students-waiting-page/students-waiting-page.component';
-import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component';
-import { DesignQuestionComponent } from './components/design-question/design-question.component';
+import { WaitingroomComponent } from './components/teacher-components/waitingroom/waitingroom.component';
+import { RankingComponent } from './components/teacher-components/ranking/ranking.component';
+import { QuestionComponent } from './components/teacher-components/question/question.component';
+import { AnswerViewComponent } from './components/student-components/answer-view/answer-view.component';
+import { InterimResultRankingComponent } from './components/student-components/interim-result-view/interim-result-ranking.component';
+import { LoadingScreenComponent } from './components/student-components/loading-screen/loading-screen.component';
+import { GameLoginComponent } from './components/student-components/game-login/game-login.component';
+import { GameUserLoginComponent } from './components/student-components/game-user-login/game-user-login.component';
+import { WaitingPageComponent } from './components/student-components/waiting-page/waiting-page.component';
+import { QuizMakerComponent } from './components/teacher-components/quiz-maker/quiz-maker.component';
+import { QuestionDesignerComponent } from './components/teacher-components/question-designer/question-designer.component';
 import { CommonModule } from '@angular/common';
-import { StatisticComponent } from './components/statistic/statistic.component';
-import { GamesComponent } from './components/games/games.component';
-import { QuestionPreviewComponent } from './components/question-preview/question-preview.component';
+import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
+import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
+import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, QuestionDesignerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent],
     imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
     providers: [],
     bootstrap: [AppComponent],
