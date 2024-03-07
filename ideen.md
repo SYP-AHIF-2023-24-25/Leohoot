@@ -5,7 +5,7 @@
 - Frage aufpoppen bei Klick auf Fragezeichen
 
 ## Teacherview
-- Question Preview
+- QuestionTeacher Preview
 - Shuffle Answers
 
 # Else:
@@ -25,4 +25,14 @@
     - Konfigurationen: 2-4 Antworten, Delay, Vorschau + Delay 
     - Ansicht mit Fragen umsortieren (drag and drop oder button up down)
     - Shufflen der Antworten
-    - Host auf OracleVM: ping pong rest endpoint
+
+- Testdaten kombiniert mit Sinnvolle Lehrinhalte, z.B. LinQ (Sophie), DBI, Mathe (Vici)
+- Hinterramskogler fragen
+- csv import, (export) auch ok mit migration => Sophie
+- Listenmanagement: cars, thumbmail, edit, delete, add => Mia
+- Maker: +, Save, Drag and Drop, Antwortmöglichkeiten immer Random, Multiple Choice => Vici
+- Responsiveness => alle
+- Environment => Sophie
+- Zusammenräumen => Sophie
+- Images nicht in Datenbank => vici
+- Bis 4.4.2024
