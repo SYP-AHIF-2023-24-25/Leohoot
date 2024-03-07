@@ -6,7 +6,7 @@
       </div>
     </div>
   </div>
-  <div class="container grid grid-cols-3 mx-auto mt-5 w-full">
+  <div class="container grid md:grid-cols-3 grid-auto mx-auto mt-5 w-full">
     <div
       *ngFor="
           let quiz of quizzes;
@@ -20,12 +20,12 @@
               *ngIf="quiz.imageName"
               class="flex items-center justify-center"
             >
-              <img class="w-full" src="{{ quiz.imageName }}" alt="{{ quiz.imageName }}"/></div>
+              <img class="w-full max-h-64 object-cover" src="{{ quiz.imageName }}" alt="{{ quiz.imageName }}"/></div>
             <div
               *ngIf="!quiz.imageName"
               class="flex items-center justify-center"
             >
-              <img class="w-full" src="/assets/images/noImage.png" alt="no image"/></div>
+              <img class="w-full max-h-64 object-cover" src="/assets/images/hooti.png" alt="no image"/></div>
             <div class="px-6 py-4">
               <div class="font-bold text-xl mb-2">{{ quiz.title }}</div>
               <p class="text-base">
