@@ -27,4 +27,6 @@ export class GamesComponent {
   goToWaitingroom(quizId: number) {
     this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
   }
+
+  protected readonly onmouseover = onmouseover;
 }

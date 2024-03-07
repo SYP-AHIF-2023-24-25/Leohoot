@@ -164,6 +164,7 @@ internal static class SampleData
 
         Quiz quiz = new()
         {
+            ImageName = "/assets/images/herr-nilsson.jpg",
             Title = "Demo Quiz",
             Description = "This is a demo quiz",
             Creator = user,
