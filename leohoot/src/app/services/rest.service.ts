@@ -27,7 +27,7 @@ export class RestService {
   };
 
   addAnswer(gameId: number, buttons: boolean[], username: string): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});  
+    return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});
   }
 
   getRanking(gameId: number): Observable<Ranking> {
@@ -69,6 +69,10 @@ export class RestService {
 
   deleteGame(gameId: number): Observable<void> {
     return this.httpClient.delete<void>(`${RestService.url}games/${gameId}`);
+  }
+
+  deleteQuiz(quizId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.url}quiz/${quizId}`);
   }
 
   getAllQuizzes(): Observable<Quiz[]> {

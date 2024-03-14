@@ -234,6 +234,18 @@ public static class Endpoints
             }           
         });
 
+        endpoints.MapDelete("api/quiz/{quizId}", async (DataContext ctx, int quizId) =>
+        {
+            var quiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return Results.NotFound("Quiz not found");
+            }
+            ctx.Quizzes.Remove(quiz);
+            await ctx.SaveChangesAsync();
+            return Results.Ok();
+        });
+
         endpoints.MapPut("api/quiz/{quizId}", async (DataContext ctx, int quizId, QuizPostDto quizDto) =>
         {
             var existingQuiz = await ctx.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
@@ -264,5 +276,6 @@ public static class Endpoints
 
             await ctx.SaveChangesAsync();
             return Results.Ok(existingQuiz);
-        });}
+        });
+    }
 }

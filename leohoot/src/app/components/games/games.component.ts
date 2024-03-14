@@ -21,6 +21,7 @@ export class GamesComponent {
   ngOnInit() {
     this.restservice.getAllQuizzes().subscribe((data) => {
       this.quizzes = data;
+      console.log(this.quizzes)
     });
   }
 
@@ -28,5 +29,16 @@ export class GamesComponent {
     this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
   }
 
-  protected readonly onmouseover = onmouseover;
+  goToQuizMaker(quizId: number) {
+    this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId} });
+  }
+
+  deleteQuiz(quizId: number) {
+    this.restservice.deleteQuiz(quizId).subscribe(() => {
+      console.log('Quiz deleted successfully');
+      location.reload();
+    }, error => {
+      console.error('Error occurred while deleting quiz:', error);
+    });
+  }
 }

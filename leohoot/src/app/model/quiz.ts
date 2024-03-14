@@ -6,4 +6,5 @@ export interface Quiz {
   questions: Question[];
   creator: string;
   imageName: string;
+  id?: number;
 }
