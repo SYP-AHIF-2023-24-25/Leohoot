@@ -9,8 +9,10 @@ import {
 
 @Component({
   selector: 'app-question-navbar',
-  templateUrl: './question-navbar.component.html'
+  templateUrl: './question-navbar.component.html',
+  styleUrls: ['./question-navbar.component.css'] // Use styleUrls instead of styleUrl
 })
+
 export class QuestionNavbarComponent {
   existingQuestions: string[] = [
     "LinQ Statements",

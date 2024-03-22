@@ -1,0 +1,10 @@
+.cdk-drag-preview {
+    border: 2px dashed #6B7280;
+    background-color: #0788b0 ; 
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0.65; 
+    background-color: #D1D5DB;
+  }
+  

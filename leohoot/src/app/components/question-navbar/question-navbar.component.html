@@ -160,27 +160,29 @@
               </div>
             </div>
             <hr>
-            <nav class="flex flex-1 flex-col">
+            <nav cdkDropList class="flex flex-1 flex-col" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
               <ul role="list" class="flex flex-1 flex-col gap-y-48">
                 <li>
-                  <ul *ngFor="let question of existingQuestions; let idx = index" role="list" class="-mx-2 space-y-3">
-                    <li class="grid text-white hover:bg-background-blue rounded py-3">
-                      <p class="flex items-center justify-center py-2 text-lg">
-                        {{ question }}
-                      </p>
-                      <div class="grid grid-cols-5 items-center justify-items-center">
-                        <p class="text-xl font-semibold hover:font-extrabold">{{idx + 1}}</p>
-                        <img class="col-span-3 self-center justify-self-stretch h-28 w-50 " src="/assets/images/placeholder_question.png">
-                        <img class="h-6 w-6 hover:h-7 hover:w-7" src="/assets/images/bin.png" alt="bin">
+                  <ul cdkDropList class="-mx-2 space-y-3" [cdkDropListConnectedTo]="['existingQuestions']">
+                    <li *ngFor="let question of existingQuestions; let idx = index" cdkDrag>
+                      <div class="grid text-white hover:bg-background-blue rounded py-3">
+                        <p class="flex items-center justify-center py-2 text-lg">
+                          {{ question }}
+                        </p>
+                        <div class="grid grid-cols-5 items-center justify-items-center">
+                          <p class="text-xl font-semibold hover:font-extrabold">{{idx + 1}}</p>
+                          <img class="col-span-3 self-center justify-self-stretch h-28 w-52" src="/assets/images/placeholder_question.png">
+                          <img class="h-6 w-6 hover:h-7 hover:w-7" src="/assets/images/bin.png" alt="bin">
+                        </div>
                       </div>
                     </li>                                 
                   </ul> 
                 </li>
               </ul>
             </nav>
+                     
           </div>
-        </div>
-      
+        </div>      
         <div class="lg:pl-72">
                
           <main class="py-10">
