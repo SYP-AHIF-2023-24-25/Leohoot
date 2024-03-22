@@ -14,9 +14,10 @@ import { DesignQuestionComponent } from './components/design-question/design-que
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { GamesComponent } from './components/games/games.component';
 import { QuestionPreviewComponent } from './components/question-preview/question-preview.component';
+import { QuestionNavbarComponent } from './components/question-navbar/question-navbar.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/question', pathMatch: 'full' },
+  { path: '', redirectTo: '/questionNavbar', pathMatch: 'full' },
   {path: 'studentMobileView', component: StudentsMobileViewComponent},
   {path: 'studentMobileRanking', component: StudentsMobileRankingComponent},
   { path: 'ranking', component: RankingComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'quizMaker', component: QuizMakerComponent},
   { path: 'games', component: GamesComponent},
   { path: 'preview', component: QuestionPreviewComponent},
+  { path: 'questionNavbar', component: QuestionNavbarComponent}
 ];
 
 @NgModule({

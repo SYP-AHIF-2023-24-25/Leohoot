@@ -5,6 +5,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,10 +24,11 @@ import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { GamesComponent } from './components/games/games.component';
 import { QuestionPreviewComponent } from './components/question-preview/question-preview.component';
+import { QuestionNavbarComponent } from './components/question-navbar/question-navbar.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent, QuestionNavbarComponent],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule],
     providers: [],
     bootstrap: [AppComponent],
 })
