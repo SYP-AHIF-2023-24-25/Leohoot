@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Api.Hubs;
 
-public class ChatHub : Hub
+public class LeohootHub : Hub
 {
-    public ChatHub() {
+    public LeohootHub() {
     }
 
     public async Task RegisterUser(int gameId, string username) {

@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
     </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ namespace Api.Controllers;
 public class GameController : Controller
 {
     private readonly ApplicationDbContext _context;
-    public static IHubContext<ChatHub>? HubContext { get; set; }
+    public static IHubContext<LeohootHub>? HubContext { get; set; }
 
     public GameController(ApplicationDbContext context)
     {

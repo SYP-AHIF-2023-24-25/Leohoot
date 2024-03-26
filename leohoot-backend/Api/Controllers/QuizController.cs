@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Core;
 using Microsoft.AspNetCore.Http;
 using Persistence;
-
+using ConsoleApp;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
@@ -98,5 +98,16 @@ public class QuizController : Controller
 
         await _context.SaveChangesAsync();
         return Results.Ok(existingQuiz);
+    }
+
+    [HttpPost("init")]
+    public async Task<IResult> InitQuizzes()
+    {
+        var quizzes = Importer.ImportQuizzes();
+        _context.Database.EnsureDeleted();
+        _context.Database.EnsureCreated();
+        _context.Quizzes.AddRange(quizzes);
+        await _context.SaveChangesAsync();
+        return Results.Ok();
     }
 }

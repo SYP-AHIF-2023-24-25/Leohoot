@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlite(connectionString);
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 var app = builder.Build();
@@ -42,15 +42,14 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await context.Database.EnsureDeletedAsync();
     await context.Database.MigrateAsync();
     await context.InsertSampleData();
 }
 
-GameController.HubContext = app.Services.GetRequiredService<IHubContext<ChatHub>>();
+GameController.HubContext = app.Services.GetRequiredService<IHubContext<LeohootHub>>();
 
 app.UseHttpsRedirection();
 app.MapControllers();
 app.UseCors("CorsPolicy");
-app.MapHub<ChatHub>("/hub");
+app.MapHub<LeohootHub>("/hub");
 app.Run();

@@ -9,10 +9,10 @@ namespace Persistence;
 
 public sealed class ApplicationDbContext : DbContext
 {
-    public required DbSet<Quiz> Quizzes { get; init; }
-    public required DbSet<Question> Questions { get; init; }
-    public required DbSet<Answer> Answers { get; init; }
-    public required DbSet<User> Users { get; init; }
+    public DbSet<Quiz> Quizzes { get; init; }
+    public DbSet<Question> Questions { get; init; }
+    public DbSet<Answer> Answers { get; init; }
+    public DbSet<User> Users { get; init; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
@@ -24,9 +24,9 @@ public sealed class ApplicationDbContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        const string connectionString = "Server=localhost; User ID=root; Password=password; Database=db";
+        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         base.OnConfiguring(optionsBuilder);
-        optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.UseSqlite("Data Source=../Data/leohoot.db");
     }
 
     public async Task<List<QuizDto>> GetAllQuizzes()
