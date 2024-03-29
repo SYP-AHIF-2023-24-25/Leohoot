@@ -24,10 +24,10 @@ import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/statistic/statistic.component';
 import { GamesComponent } from './components/games/games.component';
 import { QuestionPreviewComponent } from './components/question-preview/question-preview.component';
-import { QuestionNavbarComponent } from './components/question-navbar/question-navbar.component';
+import { QuizMakerQuestionsComponent } from './components/quiz-maker-questions/quiz-maker-questions.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent, QuestionNavbarComponent],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, StudentsMobileViewComponent, QuestionComponent, StudentsMobileRankingComponent, StudentsLoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, StudentWaitingPageComponent, QuizMakerComponent, DesignQuestionComponent, StatisticComponent, QuestionPreviewComponent, GamesComponent, QuizMakerQuestionsComponent],
     imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule],
     providers: [],
     bootstrap: [AppComponent],

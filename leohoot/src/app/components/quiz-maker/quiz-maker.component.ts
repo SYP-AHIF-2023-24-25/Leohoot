@@ -48,7 +48,7 @@ export class QuizMakerComponent {
 
     this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
 
-    this.router.navigate(['/designQuestion'], { queryParams });
+    this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
 
   refetchQuestions() {
@@ -116,7 +116,7 @@ export class QuizMakerComponent {
 
     this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
 
-    this.router.navigate(['/designQuestion'], { queryParams });
+    this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
 
   playDemoView()

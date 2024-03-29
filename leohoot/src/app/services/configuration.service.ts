@@ -16,7 +16,10 @@ export class ConfigurationService {
 
   updateQuestion(question: Question) {
       this.quiz.questions[question.questionNumber - 1] = question;
-    
+  }
+
+  changeOrderOfQuestions(newOrderOfQuestions: Question[]){
+    this.quiz.questions = newOrderOfQuestions;
   }
 
   addQuestion(question: Question) {
