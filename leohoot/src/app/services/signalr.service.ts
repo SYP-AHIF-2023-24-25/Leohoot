@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,7 @@ export class SignalRService {
 
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
-      //.withUrl("ws://140.238.173.82:8001/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
-      .withUrl("http://localhost:5000/hub", {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
+      .withUrl(`${environment.apiUrl}/hub`, {skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets})
       .build();
 
     this.connection.start()

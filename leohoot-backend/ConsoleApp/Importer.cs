@@ -7,7 +7,7 @@ public class Importer
 {
     public static List<Quiz> ImportQuizzes()
     {
-        string jsonString = File.ReadAllText("../Files/quizzes.json");
+        string jsonString = File.ReadAllText("./Files/quizzes.json");
         return JsonSerializer.Deserialize<List<Quiz>>(jsonString) ?? [];
     }
 }

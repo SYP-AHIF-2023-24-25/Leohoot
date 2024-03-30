@@ -43,7 +43,6 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await context.Database.MigrateAsync();
-    await context.InsertSampleData();
 }
 
 GameController.HubContext = app.Services.GetRequiredService<IHubContext<LeohootHub>>();
