@@ -138,13 +138,8 @@ export class QuizMakerComponent {
   }
 
   isMobileMenuOpen = false;
-  isProfileMenuOpen = false;
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
-
-  toggleProfileMenu() {
-    this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 }

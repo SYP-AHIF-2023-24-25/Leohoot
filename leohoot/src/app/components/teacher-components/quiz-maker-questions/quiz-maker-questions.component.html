@@ -9,14 +9,22 @@
     </div>
   </div>
   <div class="flex flex-row">
-    <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+    <div *ngIf="!isMobileMenuOpen" class="lg:hidden">
+      <button type="button" class="inset-y-0 left-0 flex items-center justify-center w-16 h-16 text-white" (click)="toggleMobileMenu()">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <div *ngIf="isMobileMenuOpen" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
       <div class="fixed inset-0 bg-gray-900/80"></div>
 
       <div class="fixed inset-0 flex">
         <div class="relative mr-16 flex w-full max-w-xs flex-1">
 
           <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-            <button type="button" class="-m-2.5 p-2.5">
+            <button type="button" class="-m-2.5 p-2.5" (click)="toggleMobileMenu()">
               <span class="sr-only">Close sidebar</span>
               <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -24,46 +32,7 @@
             </button>
           </div>
 
-          <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-background-blue px-6 pb-4">
-            <div class="flex items-center justify-center">
-              <div class="flex flex-col items-center justify-center mt-8">
-                  <p class=" text-white text-lg font-semibold mb-3">Mein erstes Quiz</p>
-                  <button class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white h-8 w-56">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                      </svg>
-                  </button>
-              </div>
-            </div>
-            <hr>
-            <nav cdkDropList class="flex flex-1 flex-col" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
-              <ul role="list" class="flex flex-1 flex-col gap-y-48">
-                <li>
-                  <ul cdkDropList class="-mx-2 space-y-2" [cdkDropListConnectedTo]="['existingQuestions']">
-                    <li *ngFor="let question of existingQuestions; let idx = index" cdkDrag>
-                      <div class="grid text-white hover:bg-background-blue rounded py-2">
-                        <p class="flex items-center justify-center py-2 text-md">
-                          {{ question }}
-                        </p>
-                        <div class="grid grid-cols-5 items-center justify-items-center">
-                          <p class="text-lg font-semibold">{{idx + 1}}</p>
-                          <img class="col-span-3 self-center justify-self-stretch h-24 w-52" src="/assets/images/placeholder_question.png">
-                          <img class="h-5 w-5" src="/assets/images/bin.png" alt="bin">
-                        </div>
-                      </div>
-                    </li>                                 
-                  </ul> 
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-      
-        <!-- Static sidebar for desktop -->
-        <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen">
-          <div class="flex flex-grow flex-col gap-y-5 bg-design-quiz-blue px-6">
+          <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-design-quiz-blue px-6 pb-4">
             <div class="flex items-center justify-center">
               <div class="flex flex-col items-center justify-center mt-8">
                 <div *ngIf="!quizTitle">
@@ -101,7 +70,51 @@
               </ul>
             </nav>
           </div>
-        </div>      
+        </div>
+      </div>
+    </div>
+      
+    <!-- Static sidebar for desktop -->
+    <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen">
+      <div class="flex flex-grow flex-col gap-y-5 bg-design-quiz-blue px-6">
+        <div class="flex items-center justify-center">
+          <div class="flex flex-col items-center justify-center mt-8">
+            <div *ngIf="!quizTitle">
+                <p class="text-gray-300 text-xl font-semibold mb-3" (click)="onQuizTitle()">Quiz Name</p>
+            </div>
+            <div *ngIf="quizTitle">
+              <p class="text-white text-xl font-semibold mb-3" (click)="onQuizTitle()">{{ truncateText(quizTitle, 17) }}</p>
+            </div>
+            <button class="flex items-center justify-center rounded-lg bg-hooti-yellow mx-2 text-white h-10 w-64" (click)="onQuestionCreate()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          </button>
+          </div>
+        </div>
+        <hr>
+        <nav class="flex flex-1 flex-col" >
+          <ul role="list" class="flex flex-1 flex-col gap-y-48 overflow-y-auto">
+            <li>
+              <ul cdkDropList class="-mx-2 space-y-3 scrollbar-white" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
+                <li *ngFor="let existingQuestion of existingQuestions; let idx = index" cdkDrag (click)="displayQuestion(existingQuestion)">
+                  <div class="grid text-white hover:bg-background-blue rounded py-3">
+                    <p class="flex items-center justify-center py-2 text-lg">
+                      {{ truncateText(existingQuestion.questionText, 30) }}
+                    </p>
+                    <div class="grid grid-cols-5 items-center justify-items-center">
+                      <p class="text-xl font-semibold hover:font-extrabold">{{idx + 1}}</p>
+                      <img class="col-span-3 self-center justify-self-stretch h-28 w-52" src="/assets/images/placeholder_question.png">
+                      <button class="h-6 w-6 hover:h-7 hover:w-7" (click)="onQuestionDelete($event, existingQuestion.questionNumber)"><img src="/assets/images/bin.png" alt="bin"/></button>
+                    </div>
+                  </div>
+                </li>                                 
+              </ul> 
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>      
  
         <div class="flex-grow overflow-y-auto">
           <main>
@@ -122,7 +135,7 @@
                   </div>
                 </div>
 
-              <div class="grid grid-cols-3 gap-8 items-center justify-center">
+              <div class="grid grid-cols-3 gap-8 items-center justify-center overflow-y-auto">
                 <div>
                   <form class="max-w-xs">
                     <label for="preview-time-input" class="block mb-2 text-sm font-medium text-white">Preview Time</label>
@@ -133,7 +146,7 @@
                         class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                       >
                         <svg
-                          class="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                           viewBox="0 0 18 2"
                         >
                           <path
@@ -145,7 +158,7 @@
                         name="previewTime" [(ngModel)]="question.previewTime" type="text" id="preview-time-input"
                         data-input-counter data-input-counter-min="3" data-input-counter-max="60"
                         aria-describedby="preview-helper-text-explanation" placeholder="{{question.previewTime}}"
-                        class="bg-white border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                        class="bg-white border-x-0 border-gray-300 h-11 md:w-12 w-10 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block py-2.5"
                         required
                       />
                       <button
@@ -154,7 +167,7 @@
                         class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                       >
                         <svg
-                          class="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                           viewBox="0 0 18 18"
                         >
                           <path
@@ -166,14 +179,14 @@
                     </div>
         
                     <label for="answer-time-input" class="block mt-4 mb-2 text-sm font-medium text-white">Answer Time</label>
-                    <div class="relative flex items-center max-w-[8rem]">
+                    <div class="relative flex items-center max-w-[8rem] sm:w-20">
                       <button
                         type="button" id="answer-decrement-button" data-input-counter-decrement="answer-time-input"
                         (click)="decrement('answerTime')"
                         class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                       >
                         <svg
-                          class="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                           viewBox="0 0 18 2"
                         >
                           <path
@@ -185,7 +198,7 @@
                         name="answerTime" [(ngModel)]="question.answerTimeInSeconds" type="text" id="answer-time-input"
                         data-input-counter data-input-counter-min="5" data-input-counter-max="500"
                         aria-describedby="answer-helper-text-explanation"
-                        class="bg-white border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                        class="bg-white border-x-0 border-gray-300 h-11 md:w-12 w-10 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block py-2.5"
                         required
                       />
                       <button
@@ -194,7 +207,7 @@
                         class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                       >
                         <svg
-                          class="w-3 h-3 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                           viewBox="0 0 18 18"
                         >
                           <path
@@ -212,9 +225,9 @@
                     <div *ngIf="!question.imageName">
                       <label
                         for="dropzone-file"
-                        class="flex flex-col items-center justify-center h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100"
+                        class="flex flex-col items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100"
                       >
-                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
                           <svg
                             class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"
@@ -245,7 +258,7 @@
                 </div>
               </div>
         
-              <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
+              <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0 overflow-y-auto">
                 <div
                   *ngFor="let answer of question.answers; let i = index"
                   [ngClass]="{'bg-button-yellow': i === 0, 'bg-green-400': i === 1, 'bg-rose-400': i === 2, 'bg-blue-400': i === 3}"
@@ -276,7 +289,11 @@
                 </div>
               </div>
               <div *ngIf="initQuestion" class="flex items-end justify-end mt-5">
-                <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52" (click)="onQuestionAdd()">Add Question</button>
+                <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionAdd()">Add Question</button>
+              </div>
+
+              <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5">
+                <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-40 mb-5" (click)="onQuestionCreate()">New Question</button>
               </div>
             </div>
           </div>

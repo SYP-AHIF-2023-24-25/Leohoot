@@ -89,6 +89,9 @@ export class QuizMakerQuestionsComponent {
   }
 
   onQuestionCreate() {
+    if (this.isMobileMenuOpen) {
+      this.toggleMobileMenu();
+    }
     if (this.initQuestion === false 
       || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) 
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
@@ -157,6 +160,10 @@ export class QuizMakerQuestionsComponent {
   }
 
   displayQuestion(data: number | QuestionTeacher) {
+    if (this.isMobileMenuOpen) {
+      this.toggleMobileMenu();
+    }
+
     if (typeof data === 'number') {
       this.refetchQuestions()
 
@@ -227,13 +234,9 @@ export class QuizMakerQuestionsComponent {
   }
 
   isMobileMenuOpen = false;
-  isProfileMenuOpen = false;
 
   toggleMobileMenu() {
+    console.log('toggleMobileMenu');
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
-
-  toggleProfileMenu() {
-    this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 }
