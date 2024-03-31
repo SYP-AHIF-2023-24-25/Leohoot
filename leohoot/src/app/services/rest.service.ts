@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
-import { Question } from '../model/question';
+import { QuestionTeacher } from '../model/question-teacher';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { QuestionComponent } from '../components/question/question.component';
-import { StudentViewData } from '../model/student-view-data';
+import { QuestionComponent } from '../components/teacher-components/question/question.component';
+import { QuestionStudent } from '../model/question-student';
 import { Player } from '../model/player';
 import { Statistic } from '../model/statistic';
 import { Ranking } from '../model/ranking';
@@ -18,16 +18,16 @@ export class RestService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getQuestionTeacher(gameId: number): Observable<Question> {
-    return this.httpClient.get<Question>(`${RestService.url}games/${gameId}/currentQuestion/teacher`);
+  getQuestionTeacher(gameId: number): Observable<QuestionTeacher> {
+    return this.httpClient.get<QuestionTeacher>(`${RestService.url}games/${gameId}/currentQuestion/teacher`);
   }
 
-  getQuestionStudent(gameId: number, username: string): Observable<StudentViewData> {
-    return this.httpClient.get<StudentViewData>(`${RestService.url}games/${gameId}/currentQuestion/student?username=${username}`);
+  getQuestionStudent(gameId: number, username: string): Observable<QuestionStudent> {
+    return this.httpClient.get<QuestionStudent>(`${RestService.url}games/${gameId}/currentQuestion/student?username=${username}`);
   };
 
   addAnswer(gameId: number, buttons: boolean[], username: string): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});  
+    return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});
   }
 
   getRanking(gameId: number): Observable<Ranking> {
@@ -47,8 +47,8 @@ export class RestService {
   }
 
 
-  nextQuestion(gameId: number): Observable<Question> {
-    return this.httpClient.put<Question>(`${RestService.url}games/${gameId}/currentQuestion`, {});
+  nextQuestion(gameId: number): Observable<QuestionTeacher> {
+    return this.httpClient.put<QuestionTeacher>(`${RestService.url}games/${gameId}/currentQuestion`, {});
   }
 
   doesGameExist(gameId: string): Observable<boolean> {
@@ -56,15 +56,15 @@ export class RestService {
   }
 
   addQuiz(quiz: Quiz): Observable<number> {
-    return this.httpClient.post<number>(`${RestService.url}quiz`, quiz);
+    return this.httpClient.post<number>(`${RestService.url}quizzes`, quiz);
   }
 
-  updateQuiz(id: number, quiz: Quiz): Observable<void> {
-    return this.httpClient.put<void>(`${RestService.url}quiz/${id}`, quiz);
+  updateQuiz(id: number): Observable<void> {
+    return this.httpClient.put<void>(`${RestService.url}quizzes/${id}`, {});
   }
 
   getQuizById(id: number): Observable<Quiz> {
-    return this.httpClient.get<Quiz>(`${RestService.url}quiz/${id}`);
+    return this.httpClient.get<Quiz>(`${RestService.url}quizzes/${id}`);
   }
 
   deleteGame(gameId: number): Observable<void> {
@@ -72,6 +72,6 @@ export class RestService {
   }
 
   getAllQuizzes(): Observable<Quiz[]> {
-    return this.httpClient.get<Quiz[]>(`${RestService.url}quiz`);
+    return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
   }
 }
