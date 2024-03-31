@@ -104,7 +104,7 @@ export class QuizMakerComponent {
     this.imageName = undefined;
   }
 
-  drop(event: CdkDragDrop<Question[]>) {
+  drop(event: CdkDragDrop<QuestionTeacher[]>) {
     moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
     this.configurationService.changeOrderOfQuestions(this.existingQuestions);
     this.refetchQuestions();
@@ -127,11 +127,7 @@ export class QuizMakerComponent {
 
     this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
 
-<<<<<<< HEAD:leohoot/src/app/components/quiz-maker/quiz-maker.component.ts
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
-=======
-    this.router.navigate(['/questionDesigner'], { queryParams });
->>>>>>> dev-sprint-5:leohoot/src/app/components/teacher-components/quiz-maker/quiz-maker.component.ts
   }
 
   playDemoView()

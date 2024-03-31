@@ -27,8 +27,8 @@ import { QuestionPreviewComponent } from './components/teacher-components/questi
 import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, QuestionDesignerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, QuestionDesignerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent ],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule],
     providers: [],
     bootstrap: [AppComponent],
 })
