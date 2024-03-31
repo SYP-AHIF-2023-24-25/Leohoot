@@ -6,6 +6,7 @@ import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 import { Mode } from 'src/app/model/mode';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-design-quiz',
@@ -41,7 +42,7 @@ export class QuizMakerComponent {
     });
   }
 
-  addQuestion() {
+  onQuestionCreate() {
     const queryParams = {
       quizName: this.title,
     };
@@ -99,16 +100,26 @@ export class QuizMakerComponent {
     }
   }
 
+  onDeleteImage(){
+    this.imageName = undefined;
+  }
+
+  drop(event: CdkDragDrop<Question[]>) {
+    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
+    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
+    this.refetchQuestions();
+  }
+
   truncateText(text: string, maxLength: number): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
-  deleteQuestion(id: number) {
+  onQuestionDelete(id: number) {
     this.configurationService.deleteQuestion(id);
     this.refetchQuestions();
   }
 
-  editQuestion(questionNumber: number) {
+  onQuestionEdit(questionNumber: number) {
     const queryParams = {
       quizName: this.title,
       questionNumber: questionNumber
@@ -124,5 +135,16 @@ export class QuizMakerComponent {
     this.restService.getNewGameId(this.quizId!).subscribe(data => {
       this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
     });
+  }
+
+  isMobileMenuOpen = false;
+  isProfileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  toggleProfileMenu() {
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 }
