@@ -21,7 +21,7 @@ import {QuestionPreviewComponent} from './components/teacher-components/question
 import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/question', pathMatch: 'full' },
+  { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
   {path: 'answerView', component: AnswerViewComponent},
   {path: 'interimResult', component: InterimResultRankingComponent},
   { path: 'ranking', component: RankingComponent },

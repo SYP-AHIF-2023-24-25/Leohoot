@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -7,6 +7,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgxCaptureService } from "ngx-capture";
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -29,12 +30,14 @@ export class QuizMakerQuestionsComponent {
     previewTime: 0,
     answers: [],
     questionNumber: 0,
-    imageName: undefined
+    imageName: undefined,
+    snapshot: undefined
   };
 
   quizTitle: string = '';
+  @ViewChild('questionScreen', { static: true }) screen: any;
 
-  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService) {
+  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
   }
 
   ngOnInit() {
@@ -115,6 +118,11 @@ export class QuizMakerQuestionsComponent {
       return;
     }
 
+    // this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+    //   console.log(img);
+    //   this.question.snapshot = img;
+    // });
+
     this.configurationService.addQuestion(this.question);
     this.initQuestion = false;
   }
@@ -163,6 +171,11 @@ export class QuizMakerQuestionsComponent {
     if (this.isMobileMenuOpen) {
       this.toggleMobileMenu();
     }
+    
+   /* this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+      console.log(img);
+      this.question.snapshot = img;
+    });*/
 
     if (typeof data === 'number') {
       this.refetchQuestions()

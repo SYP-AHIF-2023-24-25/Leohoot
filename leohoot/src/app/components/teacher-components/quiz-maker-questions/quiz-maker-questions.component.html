@@ -1,4 +1,4 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue">
   <div class="bg-white text-center drop-shadow-lg">
     <div class="container mx-auto p-2">
       <div
@@ -75,7 +75,7 @@
     </div>
       
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen">
+    <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen overflow-y-auto">
       <div class="flex flex-grow flex-col gap-y-5 bg-design-quiz-blue px-6">
         <div class="flex items-center justify-center">
           <div class="flex flex-col items-center justify-center mt-8">
@@ -93,31 +93,33 @@
           </div>
         </div>
         <hr>
-        <nav class="flex flex-1 flex-col" >
-          <ul role="list" class="flex flex-1 flex-col gap-y-48 overflow-y-auto">
-            <li>
-              <ul cdkDropList class="-mx-2 space-y-3 scrollbar-white" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
-                <li *ngFor="let existingQuestion of existingQuestions; let idx = index" cdkDrag (click)="displayQuestion(existingQuestion)">
-                  <div class="grid text-white hover:bg-background-blue rounded py-3">
-                    <p class="flex items-center justify-center py-2 text-lg">
-                      {{ truncateText(existingQuestion.questionText, 30) }}
-                    </p>
-                    <div class="grid grid-cols-5 items-center justify-items-center">
-                      <p class="text-xl font-semibold hover:font-extrabold">{{idx + 1}}</p>
-                      <img class="col-span-3 self-center justify-self-stretch h-28 w-52" src="/assets/images/placeholder_question.png">
-                      <button class="h-6 w-6 hover:h-7 hover:w-7" (click)="onQuestionDelete($event, existingQuestion.questionNumber)"><img src="/assets/images/bin.png" alt="bin"/></button>
+        <nav class="flex flex-1 flex-col overflow-y-auto" >
+          <div class="overflow-y-auto">
+            <ul role="list" class="flex flex-1 flex-col gap-y-48">
+              <li>
+                <ul cdkDropList class="-mx-2 space-y-3" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
+                  <li *ngFor="let existingQuestion of existingQuestions; let idx = index" cdkDrag (click)="displayQuestion(existingQuestion)">
+                    <div class="grid text-white hover:bg-background-blue rounded py-3">
+                      <p class="flex items-center justify-center py-2 text-lg">
+                        {{ truncateText(existingQuestion.questionText, 30) }}
+                      </p>
+                      <div class="grid grid-cols-5 items-center justify-items-center">
+                        <p class="text-xl font-semibold hover:font-extrabold">{{idx + 1}}</p>
+                        <img class="col-span-3 self-center justify-self-stretch h-28 w-52" src="/assets/images/placeholder_question.png">
+                        <button class="h-6 w-6 hover:h-7 hover:w-7" (click)="onQuestionDelete($event, existingQuestion.questionNumber)"><img src="/assets/images/bin.png" alt="bin"/></button>
+                      </div>
                     </div>
-                  </div>
-                </li>                                 
-              </ul> 
-            </li>
-          </ul>
+                  </li>                                 
+                </ul> 
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
     </div>      
  
-        <div class="flex-grow overflow-y-auto">
-          <main>
+        <div class="flex-grow max-h-screen overflow-y-auto">
+          <main #questionScreen>
             <div class="px- sm:px-6 lg:px-8">
               <div class="col-span-5 mt-10 mx-10">
                 <div class="bg-white text-center drop-shadow-lg" id="questiontext">
@@ -292,7 +294,7 @@
                 <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionAdd()">Add Question</button>
               </div>
 
-              <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5">
+              <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5 lg:hidden">
                 <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-40 mb-5" (click)="onQuestionCreate()">New Question</button>
               </div>
             </div>
