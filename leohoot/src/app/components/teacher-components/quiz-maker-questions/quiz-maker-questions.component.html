@@ -75,7 +75,7 @@
     </div>
       
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen overflow-y-auto">
+    <div class="hidden lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col min-h-screen">
       <div class="flex flex-grow flex-col gap-y-5 bg-design-quiz-blue px-6">
         <div class="flex items-center justify-center">
           <div class="flex flex-col items-center justify-center mt-8">
@@ -93,9 +93,9 @@
           </div>
         </div>
         <hr>
-        <nav class="flex flex-1 flex-col overflow-y-auto" >
+        <nav class="flex flex-1 flex-col" >
           <div class="overflow-y-auto">
-            <ul role="list" class="flex flex-1 flex-col gap-y-48">
+            <ul role="list" class="flex flex-1 flex-col gap-y-48 overflow-y-auto" style="max-height: calc(100vh - 200px);">
               <li>
                 <ul cdkDropList class="-mx-2 space-y-3" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
                   <li *ngFor="let existingQuestion of existingQuestions; let idx = index" cdkDrag (click)="displayQuestion(existingQuestion)">
