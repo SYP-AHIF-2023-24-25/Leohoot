@@ -176,6 +176,136 @@
         ]
       }
     ]
+  },
+  {
+    "Title": "Difficult Math Quiz",
+    "Description": "This is a challenging quiz to test your advanced math skills",
+    "Creator": { "Username": "mathgenius", "Password": "math123"},
+    "Questions": [
+      {
+        "QuestionText": "Find the derivative of f(x) = x^3 - 3x^2 + 2x - 5",
+        "QuestionNumber": 1,
+        "PreviewTime": 10,
+        "AnswerTimeInSeconds": 30,
+        "Answers": [
+          {
+            "AnswerText": "f'(x) = 3x^2 - 6x + 2",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "f'(x) = 3x^2 - 6x - 2",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "f'(x) = x^2 - 6x + 2",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "f'(x) = 3x^3 - 6x^2 + 2x",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "What is the derivative of sin(x) with respect to x?",
+        "QuestionNumber": 2,
+        "PreviewTime": 10,
+        "AnswerTimeInSeconds": 20,
+        "Answers": [
+          {
+            "AnswerText": "cos(x)",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "sin(x)",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "-cos(x)",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "-sin(x)",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "What is the integral of e^x with respect to x?",
+        "QuestionNumber": 3,
+        "PreviewTime": 10,
+        "AnswerTimeInSeconds": 20,
+        "Answers": [
+          {
+            "AnswerText": "e^x + C",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "ln(x) + C",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "1/x + C",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "x^2/2 + C",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "What is the value of π (pi) rounded to 5 decimal places?",
+        "QuestionNumber": 4,
+        "PreviewTime": 10,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "3.14159",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "3.1416",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "3.1415",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "3.141",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "What is the sum of interior angles of a triangle?",
+        "QuestionNumber": 5,
+        "PreviewTime": 10,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "180 degrees",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "180 + 120 + 60 degrees",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "260 - 70 degrees",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "360 degrees",
+            "IsCorrect": false
+          }
+        ],
+        "ImageName": "assets/images/triangle.svg",
+        "ShowMultipleChoice": true
+      }
+    ]
   }
+  
 ]
 

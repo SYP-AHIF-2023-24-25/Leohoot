@@ -84,7 +84,7 @@
                 <p class="text-gray-300 text-xl font-semibold mb-3" (click)="onQuizTitle()">Quiz Name</p>
             </div>
             <div *ngIf="quizTitle">
-              <p class="text-white text-xl font-semibold mb-3" (click)="onQuizTitle()">{{ truncateText(quizTitle, 17) }}</p>
+              <p class="text-white text-xl font-semibold mb-3 hover:text-2xl" (click)="onQuizTitle()">{{ truncateText(quizTitle, 17) }}</p>
             </div>
             <button class="flex items-center justify-center rounded-lg bg-hooti-yellow mx-2 text-white h-10 w-64" (click)="onQuestionCreate()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
