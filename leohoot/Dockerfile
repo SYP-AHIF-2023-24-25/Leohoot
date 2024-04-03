@@ -1,9 +1,9 @@
 FROM node:18 AS builder
 WORKDIR /app
 COPY ./package*.json .
-RUN npm install
+RUN npm install -g @angular/cli@17.2.1 && npm install
 COPY . .
-RUN npm run build
+RUN ng build --configuration=production
 
 FROM nginx
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf

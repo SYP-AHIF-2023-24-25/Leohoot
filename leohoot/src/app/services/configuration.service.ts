@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
-import { Question } from '../model/question';
-import { QuestionComponent } from '../components/question/question.component';
+import { QuestionTeacher } from '../model/question-teacher';
+import { QuestionComponent } from '../components/teacher-components/question/question.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,12 +14,12 @@ export class ConfigurationService {
     imageName: ""
   };
 
-  updateQuestion(question: Question) {
+  updateQuestion(question: QuestionTeacher) {
       this.quiz.questions[question.questionNumber - 1] = question;
-    
+
   }
 
-  addQuestion(question: Question) {
+  addQuestion(question: QuestionTeacher) {
     question.questionNumber = this.quiz.questions.length + 1;
     this.quiz.questions.push(question);
   }

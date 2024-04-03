@@ -1,9 +1,9 @@
-import { Question } from './question';
+import { QuestionTeacher } from './question-teacher';
 
 export interface Quiz {
   title: string;
   description: string;
-  questions: Question[];
+  questions: QuestionTeacher[];
   creator: string;
   imageName: string;
   id?: number;

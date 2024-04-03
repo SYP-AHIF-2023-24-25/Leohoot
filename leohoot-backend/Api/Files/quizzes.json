@@ -1,0 +1,179 @@
+
+[
+  {
+    "Title": "Demo Quiz",
+    "Description": "This is a demo quiz",
+    "Creator": { "Username": "sampleUser", "Password": "sampleUser"},
+    "ImageName": "assets/images/hooti.png",
+    "Questions": [
+      {
+        "QuestionText": "What is the capital of France?",
+        "QuestionNumber": 1,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "Lyon",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Paris",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Marseille",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "St. Tropez",
+            "IsCorrect": false
+          }
+        ],
+        "ImageName": "assets/images/panorama.jpg"
+      },
+      {
+        "QuestionText": "Is Syp cool?",
+        "QuestionNumber": 2,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 10,
+        "Answers": [
+          {
+            "AnswerText": "true",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "false",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Which animals are in our mascot?",
+        "QuestionNumber": 3,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 20,
+        "Answers": [
+          {
+            "AnswerText": "Lion",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Chicken",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Cat",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Owl",
+            "IsCorrect": true
+          }
+        ],
+        "ImageName": "assets/images/hooti.png"
+      },
+      {
+        "QuestionText": "Du bist Busfahrer. An der 1. Haltestelle steigen 5 Gäste ein. An der 2. Haltestelle steigen 3 Leute zu und 2 aus. An der 3. Haltestelle steigen 4 ein und 5 aus. Wie alt ist der Busfahrer?",
+        "QuestionNumber": 4,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 30,
+        "Answers": [
+          {
+            "AnswerText": "18, er ist Fahranfänger",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Der Busfahrer existiert gar nicht",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Du bist der Busfahrer",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "über 90, er hat den Führerschein in seinen jungen Jahren gemacht",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Wie heißt Pippi Langstrumpfs Affe?",
+        "QuestionNumber": 5,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "Herr Peterson",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Nils Holgerson",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Herr Nilsson",
+            "IsCorrect": true
+          }
+        ],
+        "ImageName": "assets/images/herr-nilsson.jpg"
+      }
+    ]
+  },
+  {
+    "Title": "Simple Math",
+    "Description": "This is a quiz to learn simple Math",
+    "Creator": { "Username": "sampleUser2", "Password": "sampleUser"},
+    "Questions": [
+      {
+        "QuestionText": "1 + 2 =",
+        "QuestionNumber": 1,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 10,
+        "Answers": [
+          {
+            "AnswerText": "1",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "2",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "3",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "4",
+            "IsCorrect": false
+          }
+        ],
+        "ImageName": "assets/images/panorama.jpg"
+      },
+      {
+        "QuestionText": "What calculation gives this result: 4",
+        "QuestionNumber": 2,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 10,
+        "Answers": [
+          {
+            "AnswerText": "2 + 2",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "2 * 6",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "2 * 2",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "2²",
+            "IsCorrect": true
+          }
+        ]
+      }
+    ]
+  }
+]
+
