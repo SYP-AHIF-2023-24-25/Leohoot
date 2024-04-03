@@ -35,6 +35,7 @@ export class QuestionComponent {
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: QuestionTeacher;
   answerCount: number = 0;
+  correctAnswersCount: number = 0;
   gameId: number = 0;
   quizId: number = -1;
 
@@ -69,6 +70,7 @@ export class QuestionComponent {
 
       this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
         this.currentQuestion = response;
+        this.correctAnswersCount = this.currentQuestion.answers.filter(answer => answer.isCorrect).length;
         this.startTimer();
       });
     });
