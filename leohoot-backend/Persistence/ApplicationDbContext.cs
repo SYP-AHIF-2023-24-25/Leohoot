@@ -23,6 +23,16 @@ public sealed class ApplicationDbContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            string connectionString = "server=localhost;port=3306;database=db;user=root;password=password";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
+    }
+
+
     public async Task<List<QuizDto>> GetAllQuizzes()
     {
         return await Quizzes
@@ -45,7 +55,8 @@ public sealed class ApplicationDbContext : DbContext
                         )).ToList(),
                         question.ImageName ?? string.Empty,
                         question.PreviewTime,
-                        question.showMultipleChoice ?? false
+                        question.Snapshot ?? string.Empty,
+                        question.ShowMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -74,7 +85,8 @@ public sealed class ApplicationDbContext : DbContext
                         )).ToList(),
                         question.ImageName ?? string.Empty,
                         question.PreviewTime,
-                        question.showMultipleChoice ?? false
+                        question.Snapshot ?? string.Empty,
+                        question.ShowMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -99,7 +111,8 @@ public sealed class ApplicationDbContext : DbContext
                 )).ToList(),
                 question.ImageName ?? string.Empty,
                 question.PreviewTime,
-                question.showMultipleChoice ?? false
+                question.Snapshot ?? string.Empty,
+                question.ShowMultipleChoice ?? false
             )).ToListAsync();
     }
 
@@ -134,6 +147,7 @@ public sealed class ApplicationDbContext : DbContext
         return true;
     }
 }
+
 
 public static class SampleData
 {
@@ -181,7 +195,7 @@ public static class SampleData
                             IsCorrect = false
                         }
                     ],
-                    ImageName = "assets/images/panorama.jpg"
+                    ImageName = "assets/images/panorama.jpg",
                 },
                 new()
                 {
@@ -232,8 +246,7 @@ public static class SampleData
                             IsCorrect = true
                         }
                     ],
-                    ImageName = "assets/images/hooti.png",
-                    showMultipleChoice = true
+                    ImageName = "assets/images/hooti.png"
                 },
                 new()
                 {
@@ -289,8 +302,7 @@ public static class SampleData
                             IsCorrect = true
                         }
                     ],
-                    ImageName = "assets/images/herr-nilsson.jpg",
-                    showMultipleChoice = true
+                    ImageName = "assets/images/herr-nilsson.jpg"
                 }
             ]
         };

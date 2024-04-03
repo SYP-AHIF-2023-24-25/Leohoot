@@ -60,7 +60,7 @@ export class RestService {
   }
 
   updateQuiz(id: number, quiz: Quiz): Observable<void> {
-    return this.httpClient.put<void>(`${RestService.url}quiz/${id}`, quiz);
+    return this.httpClient.put<void>(`${RestService.url}quizzes/${id}`, quiz);
   }
 
   getQuizById(id: number): Observable<Quiz> {

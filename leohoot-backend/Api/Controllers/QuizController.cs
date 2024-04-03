@@ -36,9 +36,11 @@ public class QuizController : Controller
     public async Task<IResult> PostNewQuiz(QuizPostDto quizDto)
     {
         var creator = _context.Users.FirstOrDefault(u => u.Username == quizDto.Creator);
+
         if (creator == null)
         {
-             return Results.NotFound($"/api/quiz/");
+            Console.WriteLine("Creator not found");
+             return Results.NotFound($"/api/quizzes/");
         }
 
         var quiz = new Quiz
@@ -57,14 +59,16 @@ public class QuizController : Controller
                     IsCorrect = a.IsCorrect
                 }).ToList(),
                 ImageName = q.ImageName,
-                PreviewTime = q.PreviewTime
+                Snapshot = q.Snapshot,
+                PreviewTime = q.PreviewTime,
+                ShowMultipleChoice = q.ShowMultipleChoice
             }).ToList(),
             ImageName = quizDto.ImageName
         };
 
         _context.Quizzes.Add(quiz);
         await _context.SaveChangesAsync();
-        return Results.Created($"/api/quiz/{quiz.Id}", quiz.Id);
+        return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
     }
     
     [HttpPut("{quizId:int}")]
@@ -78,6 +82,7 @@ public class QuizController : Controller
 
         existingQuiz.Title = quizDto.Title;
         existingQuiz.Description = quizDto.Description;
+        existingQuiz.ImageName = quizDto.ImageName;
         if (quizDto.Questions.Count == 0){
             existingQuiz.Questions.Clear();
         } else {
@@ -92,7 +97,9 @@ public class QuizController : Controller
                     IsCorrect = a.IsCorrect
                 }).ToList(),
                 ImageName = q.ImageName,
-                PreviewTime = q.PreviewTime
+                Snapshot = q.Snapshot,
+                PreviewTime = q.PreviewTime,
+                ShowMultipleChoice = q.ShowMultipleChoice
             }).ToList();
         }
 

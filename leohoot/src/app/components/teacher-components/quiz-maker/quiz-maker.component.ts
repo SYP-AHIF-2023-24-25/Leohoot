@@ -7,6 +7,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 import { Mode } from 'src/app/model/mode';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Quiz } from 'src/app/model/quiz';
 
 @Component({
   selector: 'app-design-quiz',
@@ -35,9 +36,14 @@ export class QuizMakerComponent {
 
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = Number.parseInt(params['quizId']);
-        this.restService.getQuizById(this.quizId).subscribe(quiz => {
-          this.configurationService.setQuiz(quiz);
-        });
+
+        if (typeof params['mode'] !== 'undefined') {
+          this.restService.getQuizById(this.quizId).subscribe(quiz => {
+            this.configurationService.setQuiz(quiz);
+          });
+
+          console.log(this.configurationService.getQuiz());
+        }
       }
     });
   }
@@ -45,6 +51,7 @@ export class QuizMakerComponent {
   onQuestionCreate() {
     const queryParams = {
       quizName: this.title,
+      quizId: this.quizId
     };
 
     this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
@@ -72,7 +79,6 @@ export class QuizMakerComponent {
     } else {
       this.restService.updateQuiz(this.quizId, quiz);
     }
-
   }
 
   handleFileInput(event: any) {
@@ -122,7 +128,8 @@ export class QuizMakerComponent {
   onQuestionEdit(questionNumber: number) {
     const queryParams = {
       quizName: this.title,
-      questionNumber: questionNumber
+      questionNumber: questionNumber,
+      quizId: this.quizId
     };
 
     this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');

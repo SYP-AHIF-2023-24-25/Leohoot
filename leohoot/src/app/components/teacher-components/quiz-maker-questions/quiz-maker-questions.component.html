@@ -291,27 +291,28 @@
                   </ng-template>
                 </div>
               </div>
-              <div class="flex items-end mt-4">
-                <p class="text-lg text-white ml-2">Show multiple choice</p>
-                <input
-                type="checkbox" [(ngModel)]="question.showMultipleChoice"
-                class="w-6 h-6 mx-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-200 focus:ring-2"
-                >
-              </div>
-              <div *ngIf="initQuestion" class="flex items-end justify-end mt-3">
-                <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionAdd()">Add Question</button>
-              </div>
-
-              <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5 lg:hidden">
-                <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-40 mb-5" (click)="onQuestionCreate()">New Question</button>
-              </div>
-
-              <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5">
-                <button class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionCreate()">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                  </svg>
-                </button>
+              <div class="grid grid-cols-2">
+                <div class="flex mt-7">
+                  <p class="flex text-lg text-white ml-2">Show multiple choice</p>
+                  <input
+                  type="checkbox" [(ngModel)]="question.showMultipleChoice"
+                  class="w-6 h-6 mx-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-200 focus:ring-2"
+                  >
+                </div>
+                <div *ngIf="initQuestion" class="flex items-end justify-end mt-5">
+                  <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionAdd()">Add Question</button>
+                </div>
+                <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5 lg:hidden">
+                  <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-40 mb-5" (click)="onQuestionCreate()">New Question</button>
+                </div>
+  
+                <div *ngIf="!initQuestion && !isMobileMenuOpen" class="flex items-end justify-end mt-5">
+                  <button class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionCreate()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

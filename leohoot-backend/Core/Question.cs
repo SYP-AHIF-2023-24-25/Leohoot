@@ -12,7 +12,6 @@ public class Question
         public List<Answer> Answers { get; set; } = new List<Answer>();
         public string? ImageName { get; set; }
         public int PreviewTime { get; set; }
-
-        public bool? showMultipleChoice { get; set; }
-
+        public string? Snapshot { get; set; }
+        public bool? ShowMultipleChoice { get; set; }
 }

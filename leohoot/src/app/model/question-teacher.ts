@@ -8,6 +8,6 @@ export interface QuestionTeacher {
   snapshot?: string;
   previewTime: number;
   answers: Answer[];
-  quizLength?: number;
   showMultipleChoice?: boolean;
+  quizLength?: number;
 }

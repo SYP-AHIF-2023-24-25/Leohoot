@@ -33,10 +33,13 @@ export class QuizMakerQuestionsComponent {
     answers: [],
     questionNumber: 0,
     imageName: undefined,
-    snapshot: undefined
+    snapshot: undefined,
+    showMultipleChoice: false
   };
 
   quizTitle: string = '';
+  quizId: number | undefined; 
+
   @ViewChild('questionScreen', { static: true }) screen: any;
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
@@ -49,6 +52,10 @@ export class QuizMakerQuestionsComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizName'] !== 'undefined') {
         this.quizTitle = params['quizName'];
+      }
+
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = params['quizId'];
       }
 
       if (typeof params['questionNumber'] !== 'undefined') {
@@ -66,7 +73,8 @@ export class QuizMakerQuestionsComponent {
       previewTime: 5,
       answers: [],
       questionNumber: 0,
-      imageName: undefined
+      imageName: undefined,
+      showMultipleChoice: false
     };
 
     for (let i = 0; i < 4; i++) {
@@ -165,7 +173,7 @@ export class QuizMakerQuestionsComponent {
           this.question.snapshot = img;
           this.loading = false;
         });
-        this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle}});
+        this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle, quizId: this.quizId}});
     } else if (this.validateQuestion() === false) {
       alert('Please fill in all necessary fields and save the question first.');
     }
