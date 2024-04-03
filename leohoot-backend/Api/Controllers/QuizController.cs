@@ -107,6 +107,20 @@ public class QuizController : Controller
         return Results.Ok(existingQuiz);
     }
 
+    [HttpDelete("{quizId:int}")]
+    public async Task<IResult> DeleteQuiz(int quizId)
+    {
+        var quiz = await _context.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        _context.Quizzes.Remove(quiz);
+        await _context.SaveChangesAsync();
+        return Results.Ok();
+    }
+
     [HttpPost("init")]
     public async Task<IResult> InitQuizzes()
     {

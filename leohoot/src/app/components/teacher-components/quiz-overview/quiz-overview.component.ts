@@ -21,10 +21,24 @@ export class QuizOverviewComponent {
   ngOnInit() {
     this.restservice.getAllQuizzes().subscribe((data) => {
       this.quizzes = data;
+      console.log(this.quizzes)
     });
   }
 
   goToWaitingroom(quizId: number) {
     this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
+  }
+
+  goToQuizMaker(quizId: number) {
+    this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId} });
+  }
+
+  deleteQuiz(quizId: number) {
+    this.restservice.deleteQuiz(quizId).subscribe(() => {
+      console.log('Quiz deleted successfully');
+      location.reload();
+    }, error => {
+      console.error('Error occurred while deleting quiz:', error);
+    });
   }
 }

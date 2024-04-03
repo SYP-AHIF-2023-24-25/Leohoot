@@ -4,6 +4,7 @@
     "Title": "Demo Quiz",
     "Description": "This is a demo quiz",
     "Creator": { "Username": "sampleUser", "Password": "sampleUser"},
+    "ImageName": "assets/images/hooti.png",
     "Questions": [
       {
         "QuestionText": "What is the capital of France?",
