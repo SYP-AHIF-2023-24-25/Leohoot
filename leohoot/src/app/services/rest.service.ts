@@ -8,14 +8,14 @@ import { QuestionStudent } from '../model/question-student';
 import { Player } from '../model/player';
 import { Statistic } from '../model/statistic';
 import { Ranking } from '../model/ranking';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
-  public static url: string = 'http://localhost:5000/api/';
-  //public static url: string = 'http://140.238.173.82:8001/api/'
-
+  public static url: string = `${environment.apiUrl}/api/`;
+  
   constructor(private httpClient: HttpClient) { }
 
   getQuestionTeacher(gameId: number): Observable<QuestionTeacher> {

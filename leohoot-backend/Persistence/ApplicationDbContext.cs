@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using System.Configuration;
 using Core;
+using Microsoft.Extensions.Configuration;
 
 namespace Persistence;
 
@@ -13,20 +14,13 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Question> Questions { get; init; }
     public DbSet<Answer> Answers { get; init; }
     public DbSet<User> Users { get; init; }
-    
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
     }
 
     public ApplicationDbContext()
     {
-    }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        const string connectionString = "Server=localhost; User ID=root; Password=password; Database=db";
-        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-        base.OnConfiguring(optionsBuilder);
     }
 
     public async Task<List<QuizDto>> GetAllQuizzes()
