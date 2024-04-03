@@ -49,7 +49,7 @@ public static class Endpoints
         });
     }
 
-    record QuestionTeacherDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, string? ImageName, int PreviewTime, AnswerDto[] Answers, int QuizLength);
+    record QuestionTeacherDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, string? ImageName, int PreviewTime, AnswerDto[] Answers, bool showMultipleChoice, int QuizLength);
     record QuestionStudentDto(int QuestionNumber, string QuestionText, int NumberOfAnswers, int CurrentPoints, int Points, int QuizLength);
     record AnswerPostDto(bool[] Answers, string Username);
     record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts, int PlayerCount);
@@ -105,7 +105,9 @@ public static class Endpoints
                 q.AnswerTimeInSeconds, 
                 q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
                 q.ImageName, 
-                q.PreviewTime)).ToArray();
+                q.PreviewTime,
+                q.showMultipleChoice
+                )).ToArray();
 
             return Results.Ok(new StatisticDto(game.Quiz.Title, TopThreePlayers, questionAnswers, questions, game.PlayerCount));
         });
@@ -124,6 +126,7 @@ public static class Endpoints
                 game.CurrentQuestion.ImageName, 
                 game.CurrentQuestion.PreviewTime, 
                 game.CurrentQuestion.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToArray(),
+                game.CurrentQuestion.showMultipleChoice,
                 game.Quiz.Questions.Count);
             return Results.Ok(question);
         });
@@ -179,7 +182,7 @@ public static class Endpoints
     }
 
     public record AnswerDto(string AnswerText, bool IsCorrect);
-    public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string ImageName, int PreviewTime);
+    public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string ImageName, int PreviewTime, bool showMultipleChoice);
     public record QuizDto(int Id, string Title, string Description, string CreatorName, List<QuestionDto> Questions, string ImageName);
 
     public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, string ImageName);
@@ -223,7 +226,8 @@ public static class Endpoints
                             IsCorrect = a.IsCorrect
                         }).ToList(),
                         ImageName = q.ImageName,
-                        PreviewTime = q.PreviewTime
+                        PreviewTime = q.PreviewTime,
+                        showMultipleChoice = q.showMultipleChoice
                     }).ToList(),
                     ImageName = quizDto.ImageName
                 };
@@ -262,7 +266,8 @@ public static class Endpoints
                         IsCorrect = a.IsCorrect
                     }).ToList(),
                     ImageName = q.ImageName,
-                    PreviewTime = q.PreviewTime
+                    PreviewTime = q.PreviewTime,
+                    showMultipleChoice = q.showMultipleChoice
                 }).ToList();
             }
 

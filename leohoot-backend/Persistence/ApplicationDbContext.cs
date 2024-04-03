@@ -50,7 +50,8 @@ public sealed class ApplicationDbContext : DbContext
                             answer.IsCorrect
                         )).ToList(),
                         question.ImageName ?? string.Empty,
-                        question.PreviewTime
+                        question.PreviewTime,
+                        question.showMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -78,7 +79,8 @@ public sealed class ApplicationDbContext : DbContext
                             answer.IsCorrect
                         )).ToList(),
                         question.ImageName ?? string.Empty,
-                        question.PreviewTime
+                        question.PreviewTime,
+                        question.showMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -102,7 +104,8 @@ public sealed class ApplicationDbContext : DbContext
                     answer.IsCorrect
                 )).ToList(),
                 question.ImageName ?? string.Empty,
-                question.PreviewTime
+                question.PreviewTime,
+                question.showMultipleChoice ?? false
             )).ToListAsync();
     }
 
@@ -184,7 +187,7 @@ public static class SampleData
                             IsCorrect = false
                         }
                     ],
-                    ImageName = "assets/images/panorama.jpg",
+                    ImageName = "assets/images/panorama.jpg"
                 },
                 new()
                 {
@@ -235,7 +238,8 @@ public static class SampleData
                             IsCorrect = true
                         }
                     ],
-                    ImageName = "assets/images/hooti.png"
+                    ImageName = "assets/images/hooti.png",
+                    showMultipleChoice = true
                 },
                 new()
                 {
@@ -291,7 +295,8 @@ public static class SampleData
                             IsCorrect = true
                         }
                     ],
-                    ImageName = "assets/images/herr-nilsson.jpg"
+                    ImageName = "assets/images/herr-nilsson.jpg",
+                    showMultipleChoice = true
                 }
             ]
         };

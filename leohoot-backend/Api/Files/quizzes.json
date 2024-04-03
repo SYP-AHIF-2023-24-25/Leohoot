@@ -69,7 +69,8 @@
             "IsCorrect": true
           }
         ],
-        "ImageName": "assets/images/hooti.png"
+        "ImageName": "assets/images/hooti.png",
+        "ShowMultipleChoice": true
       },
       {
         "QuestionText": "Du bist Busfahrer. An der 1. Haltestelle steigen 5 Gäste ein. An der 2. Haltestelle steigen 3 Leute zu und 2 aus. An der 3. Haltestelle steigen 4 ein und 5 aus. Wie alt ist der Busfahrer?",
@@ -114,7 +115,8 @@
             "IsCorrect": true
           }
         ],
-        "ImageName": "assets/images/herr-nilsson.jpg"
+        "ImageName": "assets/images/herr-nilsson.jpg",
+        "ShowMultipleChoice": true
       }
     ]
   },

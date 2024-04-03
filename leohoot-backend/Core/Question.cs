@@ -13,4 +13,6 @@ public class Question
         public string? ImageName { get; set; }
         public int PreviewTime { get; set; }
 
+        public bool? showMultipleChoice { get; set; }
+
 }
