@@ -9,4 +9,5 @@ export interface QuestionTeacher {
   previewTime: number;
   answers: Answer[];
   quizLength?: number;
+  showMultipleChoice?: boolean;
 }

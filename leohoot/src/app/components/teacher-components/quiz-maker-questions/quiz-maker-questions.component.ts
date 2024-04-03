@@ -12,6 +12,7 @@ import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-maker-questions',
@@ -23,6 +24,7 @@ export class QuizMakerQuestionsComponent {
   existingQuestions: QuestionTeacher[] = [];
 
   initQuestion: boolean = false;
+  loading: boolean = false;
 
   question: QuestionTeacher = {
     questionText: 'New Question',
@@ -91,7 +93,7 @@ export class QuizMakerQuestionsComponent {
     return !str.trim();
   }
 
-  onQuestionCreate() {
+  async onQuestionCreate() {
     if (this.isMobileMenuOpen) {
       this.toggleMobileMenu();
     }
@@ -99,6 +101,12 @@ export class QuizMakerQuestionsComponent {
       || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) 
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
+          this.loading = true;
+      await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+        this.question.snapshot = img;
+        this.loading = false;
+      });
+  
       this.initNewQuestion();
       this.refetchQuestions();
     } else {
@@ -110,18 +118,18 @@ export class QuizMakerQuestionsComponent {
     }   
   }
 
-  onQuestionAdd() {
+  async onQuestionAdd() {
     const isQuestionValid = this.validateQuestion();
 
     if (!isQuestionValid) {
       alert('Please fill in all necessary fields to save the question. (no whitespaces allowed)');
       return;
     }
-
-    // this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
-    //   console.log(img);
-    //   this.question.snapshot = img;
-    // });
+    this.loading = true;
+    this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+      this.question.snapshot = img;
+      this.loading = false;
+    });
 
     this.configurationService.addQuestion(this.question);
     this.initQuestion = false;
@@ -151,7 +159,13 @@ export class QuizMakerQuestionsComponent {
     || (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText) 
        && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText) 
        && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText))) {
-      this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle}});
+      
+        this.loading = true;
+        this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+          this.question.snapshot = img;
+          this.loading = false;
+        });
+        this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle}});
     } else if (this.validateQuestion() === false) {
       alert('Please fill in all necessary fields and save the question first.');
     }
@@ -167,15 +181,10 @@ export class QuizMakerQuestionsComponent {
     );
   }
 
-  displayQuestion(data: number | QuestionTeacher) {
+  async displayQuestion(data: number | QuestionTeacher) {
     if (this.isMobileMenuOpen) {
       this.toggleMobileMenu();
     }
-    
-   /* this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
-      console.log(img);
-      this.question.snapshot = img;
-    });*/
 
     if (typeof data === 'number') {
       this.refetchQuestions()
@@ -187,6 +196,15 @@ export class QuizMakerQuestionsComponent {
       }
       this.question = searchResult;
     } else {
+      if (this.question.questionText !== data.questionText || !this.arrayEqual(this.question.answers, data.answers) ||
+          this.question.answerTimeInSeconds !== data.answerTimeInSeconds || this.question.previewTime !== data.previewTime || this.question.imageName !== data.imageName) {
+          this.loading = true;
+          await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then((img) => {
+            this.question.snapshot = img;
+            this.loading = false;
+          });
+        }
+
       if (this.initQuestion === false && this.validateQuestion()
       || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) 
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
@@ -196,6 +214,10 @@ export class QuizMakerQuestionsComponent {
           alert('Please fill in all necessary fields and save the question.');         
         }
     }
+  }
+
+  arrayEqual(a: any[], b: any[]): boolean {
+    return JSON.stringify(a) === JSON.stringify(b);
   }
 
   handleFileInput(event: any) {
