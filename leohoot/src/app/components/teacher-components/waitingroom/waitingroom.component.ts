@@ -20,7 +20,7 @@ export class WaitingroomComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = parseInt(params['quizId']);
-        this.restService.getNewGameId(1).subscribe((response) =>
+        this.restService.getNewGameId(this.quizId).subscribe((response) =>
         {
           this.qrCodeData = `http://140.238.173.82:8000/gameUserLogin?gameId=${response}`;
           this.qrCodeTitle = "Scan the QR code to join the game!";

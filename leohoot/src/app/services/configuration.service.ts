@@ -48,7 +48,7 @@ export class ConfigurationService {
     }
   }
 
-  setQuizTitleAndDescription(quizTitle: string, quizDescription: string, imageUrl: string) {
+  setQuizTitleAndDescription(quizTitle: string, quizDescription: string) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
   }

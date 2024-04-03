@@ -18,7 +18,7 @@ export class QuestionPreviewComponent {
   obsTimer: Subscription = new Subscription();
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-
+    
   }
 
   ngOnInit() {
