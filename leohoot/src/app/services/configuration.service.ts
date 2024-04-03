@@ -32,20 +32,11 @@ export class ConfigurationService {
   }
 
   getQuiz() {
-    //this.setQuizLengthForQuestions();
     return this.quiz;
   }
 
   getQuestions() {
-    //this.setQuizLengthForQuestions();
-
     return this.quiz.questions;
-  }
-
-  setQuizLengthForQuestions() { 
-    for (let q of this.quiz.questions) {
-      q.quizLength = this.quiz.questions.length;
-    }
   }
 
   setQuizTitleAndDescription(quizTitle: string, quizDescription: string) {
