@@ -197,10 +197,6 @@
             "IsCorrect": false
           },
           {
-            "AnswerText": "f'(x) = x^2 - 6x + 2",
-            "IsCorrect": false
-          },
-          {
             "AnswerText": "f'(x) = 3x^3 - 6x^2 + 2x",
             "IsCorrect": false
           }
@@ -209,7 +205,7 @@
       {
         "QuestionText": "What is the derivative of sin(x) with respect to x?",
         "QuestionNumber": 2,
-        "PreviewTime": 10,
+        "PreviewTime": 5,
         "AnswerTimeInSeconds": 20,
         "Answers": [
           {
@@ -233,7 +229,7 @@
       {
         "QuestionText": "What is the integral of e^x with respect to x?",
         "QuestionNumber": 3,
-        "PreviewTime": 10,
+        "PreviewTime": 5,
         "AnswerTimeInSeconds": 20,
         "Answers": [
           {
@@ -257,7 +253,7 @@
       {
         "QuestionText": "What is the value of π (pi) rounded to 5 decimal places?",
         "QuestionNumber": 4,
-        "PreviewTime": 10,
+        "PreviewTime": 5,
         "AnswerTimeInSeconds": 15,
         "Answers": [
           {
@@ -265,15 +261,11 @@
             "IsCorrect": true
           },
           {
-            "AnswerText": "3.1416",
+            "AnswerText": "3.14169",
             "IsCorrect": false
           },
           {
-            "AnswerText": "3.1415",
-            "IsCorrect": false
-          },
-          {
-            "AnswerText": "3.141",
+            "AnswerText": "3.14157",
             "IsCorrect": false
           }
         ]
@@ -301,7 +293,7 @@
             "IsCorrect": false
           }
         ],
-        "ImageName": "assets/images/triangle.svg",
+        "ImageName": "assets/images/triangle.png",
         "ShowMultipleChoice": true
       }
     ]

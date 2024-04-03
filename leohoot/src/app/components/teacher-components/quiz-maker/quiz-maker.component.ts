@@ -39,6 +39,15 @@ export class QuizMakerComponent {
 
         if (typeof params['mode'] !== undefined) {
           this.restService.getQuizById(this.quizId).subscribe(quiz => {
+            quiz.questions.forEach(question => {
+              const missingAnswersCount = 4 - question.answers.length;
+              if (missingAnswersCount > 0) {
+                for (let i = 0; i < missingAnswersCount; i++) {
+                  question.answers.push({ answerText: '', isCorrect: false });
+                }
+              }
+            });
+            
             this.configurationService.setQuiz(quiz);
 
             this.title = this.configurationService.getQuiz().title;
