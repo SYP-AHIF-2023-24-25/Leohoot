@@ -87,9 +87,11 @@ export class QuizMakerComponent {
     if (this.quizId === undefined){
       this.restService.addQuiz(quiz).subscribe(data => {
         this.quizId = data;
+        alert('Quiz saved successfully.');
       });
     } else {
       this.restService.updateQuiz(this.quizId, quiz);
+      alert('Quiz updated successfully.');
     }
   }
 
@@ -98,12 +100,13 @@ export class QuizMakerComponent {
     if (files && files.length > 0) {
       const file = files.item(0);
       if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.imageName = e.target?.result as string;
+        const formData = new FormData();
+        formData.append('file', file);
+        this.restService.addImage(formData).subscribe(imagePath => {
+          console.log(imagePath);
+          this.imageName = 'http://localhost:4200/' + imagePath;
           this.configurationService.addImage(this.imageName);
-        };
-        reader.readAsDataURL(file);
+        });
       } else {
         alert('Please select an image file.')
       }
@@ -114,6 +117,7 @@ export class QuizMakerComponent {
 
   onClose(){
     if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
+      this.configurationService.clearQuiz();
       this.router.navigate(['/quizOverview']);
     }
   }

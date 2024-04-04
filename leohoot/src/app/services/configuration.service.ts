@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { QuestionComponent } from '../components/teacher-components/question/question.component';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,5 +57,15 @@ export class ConfigurationService {
     this.quiz.questions.forEach((question, index) => {
       question.questionNumber = index + 1;
     });
+  }
+
+  clearQuiz() {
+    this.quiz = {
+      title: "",
+      description: "",
+      creator: "sampleUser",
+      questions: [],
+      imageName: ""
+    };
   }
 }

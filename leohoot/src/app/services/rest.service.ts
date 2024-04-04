@@ -78,4 +78,8 @@ export class RestService {
   getAllQuizzes(): Observable<Quiz[]> {
     return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
   }
+
+  addImage(image: FormData): Observable<string> {
+    return this.httpClient.post<string>(`${RestService.url}quizzes/upload/images`, image);
+  }
 }

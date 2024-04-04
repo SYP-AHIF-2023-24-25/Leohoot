@@ -122,62 +122,6 @@
     ]
   },
   {
-    "Title": "Simple Math",
-    "Description": "This is a quiz to learn simple Math",
-    "Creator": { "Username": "sampleUser2", "Password": "sampleUser"},
-    "Questions": [
-      {
-        "QuestionText": "1 + 2 =",
-        "QuestionNumber": 1,
-        "PreviewTime": 5,
-        "AnswerTimeInSeconds": 10,
-        "Answers": [
-          {
-            "AnswerText": "1",
-            "IsCorrect": false
-          },
-          {
-            "AnswerText": "2",
-            "IsCorrect": false
-          },
-          {
-            "AnswerText": "3",
-            "IsCorrect": true
-          },
-          {
-            "AnswerText": "4",
-            "IsCorrect": false
-          }
-        ],
-        "ImageName": "assets/images/panorama.jpg"
-      },
-      {
-        "QuestionText": "What calculation gives this result: 4",
-        "QuestionNumber": 2,
-        "PreviewTime": 5,
-        "AnswerTimeInSeconds": 10,
-        "Answers": [
-          {
-            "AnswerText": "2 + 2",
-            "IsCorrect": true
-          },
-          {
-            "AnswerText": "2 * 6",
-            "IsCorrect": false
-          },
-          {
-            "AnswerText": "2 * 2",
-            "IsCorrect": true
-          },
-          {
-            "AnswerText": "2²",
-            "IsCorrect": true
-          }
-        ]
-      }
-    ]
-  },
-  {
     "Title": "Difficult Math Quiz",
     "Description": "This is a challenging quiz to test your advanced math skills",
     "Creator": { "Username": "mathgenius", "Password": "math123"},
@@ -285,7 +229,7 @@
             "IsCorrect": false
           },
           {
-            "AnswerText": "260 - 70 degrees",
+            "AnswerText": "260 - 80 degrees",
             "IsCorrect": true
           },
           {
