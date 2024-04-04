@@ -70,7 +70,10 @@ namespace Persistence.Migrations
                     AnswerTimeInSeconds = table.Column<int>(type: "int", nullable: false),
                     ImageName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PreviewTime = table.Column<int>(type: "int", nullable: false)
+                    PreviewTime = table.Column<int>(type: "int", nullable: false),
+                    Snapshot = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ShowMultipleChoice = table.Column<bool>(type: "tinyint(1)", nullable: true)
                 },
                 constraints: table =>
                 {
