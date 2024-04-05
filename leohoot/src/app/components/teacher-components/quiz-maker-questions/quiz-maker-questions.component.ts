@@ -143,25 +143,6 @@ export class QuizMakerQuestionsComponent {
     this.initQuestion = false;
   }
 
-  onQuestionDelete(event: MouseEvent, id: number) {
-    event.stopPropagation(); 
-
-    if (this.initQuestion === true){
-      alert('Save the question first before deleting one.');
-      return;
-    }
-
-    this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();
-    
-    if (this.existingQuestions.length == 0){
-      this.initNewQuestion();
-    } else {
-      let index = id > 2 ? id - 2 : 0;
-      this.displayQuestion(this.existingQuestions[index]);
-    }
-  }
-
   onQuizTitle() {
     if (this.initQuestion === false 
     || (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText) 
@@ -264,12 +245,6 @@ export class QuizMakerQuestionsComponent {
     } else if (type === 'previewTime') {
       this.question.previewTime++;
     }
-  }
-
-  drop(event: CdkDragDrop<QuestionTeacher[]>) {
-    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
-    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
-    this.refetchQuestions();
   }
 
   truncateText(text: string, maxLength: number): string {

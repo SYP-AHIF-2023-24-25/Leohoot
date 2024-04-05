@@ -1,0 +1,10 @@
+<div class="grid text-white hover:bg-background-blue rounded py-3">
+    <p class="flex items-center justify-center py-2 text-lg">
+      {{ truncateText(existingQuestion.questionText, 20) }}
+    </p>
+    <div class="grid grid-cols-5 items-center justify-items-center">
+      <p class="text-xl font-semibold hover:font-extrabold">{{ existingQuestion.questionNumber }}</p>
+      <img class="col-span-3 self-center justify-self-stretch h-28 w-52" [src]="snapshot">
+      <button class="h-6 w-6 hover:h-7 hover:w-7" (click)="onQuestionDelete()"><img src="/assets/images/bin.png" alt="bin"/></button>
+    </div>
+  </div>

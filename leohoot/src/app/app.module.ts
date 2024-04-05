@@ -20,14 +20,17 @@ import { GameLoginComponent } from './components/student-components/game-login/g
 import { GameUserLoginComponent } from './components/student-components/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './components/student-components/waiting-page/waiting-page.component';
 import { QuizMakerComponent } from './components/teacher-components/quiz-maker/quiz-maker.component';
+import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
+import { QuizMakerSidebarComponent } from './components/teacher-components/quiz-maker-sidebar/quiz-maker-sidebar.component';
+import { QuizMakerSidebarItemComponent } from './components/teacher-components/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
 import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
 import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
-import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
+
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent ],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent, QuizMakerSidebarComponent, QuizMakerSidebarItemComponent],
     imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule, NgxCaptureModule],
     providers: [],
     bootstrap: [AppComponent],

@@ -7,6 +7,10 @@ using Core;
 using Microsoft.AspNetCore.Http;
 using Persistence;
 using ConsoleApp;
+using System.Net.Http.Headers;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
@@ -43,6 +47,7 @@ public class QuizController : Controller
              return Results.NotFound($"/api/quizzes/");
         }
 
+
         var quiz = new Quiz
         {
             Title = quizDto.Title,
@@ -69,6 +74,53 @@ public class QuizController : Controller
         _context.Quizzes.Add(quiz);
         await _context.SaveChangesAsync();
         return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
+    }
+
+    [HttpPost("upload/images")]
+    public async Task<IResult> UploadImage(IFormFile file)
+    {
+        /*if (file == null || file.Length == 0)
+        {
+            return Results.BadRequest("No file uploaded");
+        }
+
+        var fileName = file.FileName;
+        var filePath = "/public/images/" + fileName;
+        using (var stream = System.IO.File.Create(filePath))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        return Results.Ok(filePath);*/
+
+        if (file == null || file.Length == 0)
+        {
+            return Results.BadRequest("Please select a file.");
+        }
+
+        var folderName = Path.Combine("wwwroot", "images");
+        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+        if (!Directory.Exists(pathToSave))
+        {
+            Directory.CreateDirectory(pathToSave);
+        }
+
+        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+        var fullPath = Path.Combine(pathToSave, fileName);
+        var dbPath = Path.Combine(folderName, fileName);
+
+        if (System.IO.File.Exists(fullPath))
+        {
+            return Results.BadRequest($"{fileName} already exists on the server!");
+        }
+
+        using (var stream = new FileStream(fullPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        return Results.Ok(new { dbPath });
     }
     
     [HttpPut("{quizId:int}")]
