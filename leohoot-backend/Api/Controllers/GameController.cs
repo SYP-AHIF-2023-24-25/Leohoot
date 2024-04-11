@@ -74,13 +74,17 @@ public class GameController : Controller
             q.AnswerTimeInSeconds, 
             q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
             q.ImageName, 
-            q.PreviewTime)).ToArray();
+            q.PreviewTime,
+            q.Snapshot,
+            q.ShowMultipleChoice
+            )).ToArray();
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
     }
     
     [HttpGet("{gameId:int}/currentQuestion/teacher")]
     public IResult GetCurrentQuestionOfGameTeacher (int gameId)
     {
+        //string? Snapshot, int PreviewTime, AnswerDto[] Answers, bool ShowMultipleChoice, int QuizLength);
         var game = Repository.GetInstance().GetGameById(gameId);
         if (game == null)
         {
@@ -91,8 +95,10 @@ public class GameController : Controller
             game.CurrentQuestion.QuestionText, 
             game.CurrentQuestion.AnswerTimeInSeconds, 
             game.CurrentQuestion.ImageName, 
+            game.CurrentQuestion.Snapshot,
             game.CurrentQuestion.PreviewTime, 
             game.CurrentQuestion.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToArray(),
+            game.CurrentQuestion.ShowMultipleChoice,
             game.Quiz.Questions.Count);
         return Results.Ok(question);
     }

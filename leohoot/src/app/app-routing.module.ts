@@ -14,13 +14,13 @@ import {
   WaitingPageComponent
 } from './components/student-components/waiting-page/waiting-page.component';
 import {QuizMakerComponent} from './components/teacher-components/quiz-maker/quiz-maker.component';
-import {QuestionDesignerComponent} from './components/teacher-components/question-designer/question-designer.component';
 import {StatisticComponent} from './components/teacher-components/statistic/statistic.component';
 import {QuizOverviewComponent} from './components/teacher-components/quiz-overview/quiz-overview.component';
 import {QuestionPreviewComponent} from './components/teacher-components/question-preview/question-preview.component';
+import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/question', pathMatch: 'full' },
+  { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
   {path: 'answerView', component: AnswerViewComponent},
   {path: 'interimResult', component: InterimResultRankingComponent},
   { path: 'ranking', component: RankingComponent },
@@ -31,8 +31,8 @@ const routes: Routes = [
   { path: 'gameUserLogin', component: GameUserLoginComponent},
   { path: 'waitingPage', component: WaitingPageComponent},
   { path: 'statistic', component: StatisticComponent},
-  { path: 'questionDesigner', component: QuestionDesignerComponent},
   { path: 'quizMaker', component: QuizMakerComponent},
+  { path: 'quizMakerQuestions', component: QuizMakerQuestionsComponent},
   { path: 'quizOverview', component: QuizOverviewComponent},
   { path: 'questionPreview', component: QuestionPreviewComponent},
 ];

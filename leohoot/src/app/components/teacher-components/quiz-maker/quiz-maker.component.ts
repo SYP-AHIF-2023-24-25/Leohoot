@@ -6,6 +6,8 @@ import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 import { Mode } from 'src/app/model/mode';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Quiz } from 'src/app/model/quiz';
 
 @Component({
   selector: 'app-design-quiz',
@@ -21,8 +23,8 @@ export class QuizMakerComponent {
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
     this.getParams();
     this.refetchQuestions();
-    this.title = this.configurationService.getQuiz().title;
     this.description = this.configurationService.getQuiz().description;
+    this.title = this.configurationService.getQuiz().title;
     this.imageName = this.configurationService.getQuiz().imageName;
   }
 
@@ -34,23 +36,39 @@ export class QuizMakerComponent {
 
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = Number.parseInt(params['quizId']);
-        this.restService.getQuizById(this.quizId).subscribe(quiz => {
-          console.log(quiz);
-          this.configurationService.setQuiz(quiz);
-          console.log(this.configurationService.getQuiz());
-        });
+
+        if (typeof params['mode'] !== undefined) {
+          this.restService.getQuizById(this.quizId).subscribe(quiz => {
+            quiz.questions.forEach(question => {
+              const missingAnswersCount = 4 - question.answers.length;
+              if (missingAnswersCount > 0) {
+                for (let i = 0; i < missingAnswersCount; i++) {
+                  question.answers.push({ answerText: '', isCorrect: false });
+                }
+              }
+            });
+            
+            this.configurationService.setQuiz(quiz);
+
+            this.title = this.configurationService.getQuiz().title;
+            this.description = this.configurationService.getQuiz().description;
+            this.imageName = this.configurationService.getQuiz().imageName;
+            this.existingQuestions = this.configurationService.getQuestions();
+          });
+        }
       }
     });
   }
 
-  addQuestion() {
+  onQuestionCreate() {
     const queryParams = {
       quizName: this.title,
+      quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
 
-    this.router.navigate(['/questionDesigner'], { queryParams });
+    this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
 
   refetchQuestions() {
@@ -58,7 +76,7 @@ export class QuizMakerComponent {
   }
 
   saveQuiz() {
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
     const quiz = this.configurationService.getQuiz();
 
     quiz.questions =  quiz.questions.map(question => ({
@@ -69,13 +87,12 @@ export class QuizMakerComponent {
     if (this.quizId === undefined){
       this.restService.addQuiz(quiz).subscribe(data => {
         this.quizId = data;
+        alert('Quiz saved successfully.');
       });
     } else {
-      this.restService.updateQuiz(this.quizId).subscribe(data => {
-        console.log(data);
-      });
+      this.restService.updateQuiz(this.quizId, quiz);
+      alert('Quiz updated successfully.');
     }
-
   }
 
   handleFileInput(event: any) {
@@ -83,12 +100,13 @@ export class QuizMakerComponent {
     if (files && files.length > 0) {
       const file = files.item(0);
       if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.imageName = e.target?.result as string;
+        const formData = new FormData();
+        formData.append('file', file);
+        this.restService.addImage(formData).subscribe(imagePath => {
+          console.log(imagePath);
+          this.imageName = 'http://localhost:4200/' + imagePath;
           this.configurationService.addImage(this.imageName);
-        };
-        reader.readAsDataURL(file);
+        });
       } else {
         alert('Please select an image file.')
       }
@@ -99,28 +117,40 @@ export class QuizMakerComponent {
 
   onClose(){
     if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
+      this.configurationService.clearQuiz();
       this.router.navigate(['/quizOverview']);
     }
+  }
+
+  onDeleteImage(){
+    this.imageName = undefined;
+  }
+
+  drop(event: CdkDragDrop<QuestionTeacher[]>) {
+    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
+    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
+    this.refetchQuestions();
   }
 
   truncateText(text: string, maxLength: number): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
-  deleteQuestion(id: number) {
+  onQuestionDelete(id: number) {
     this.configurationService.deleteQuestion(id);
     this.refetchQuestions();
   }
 
-  editQuestion(questionNumber: number) {
+  onQuestionEdit(questionNumber: number) {
     const queryParams = {
       quizName: this.title,
-      questionNumber: questionNumber
+      questionNumber: questionNumber,
+      quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '', this.imageName ? this.imageName : '');
+    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
 
-    this.router.navigate(['/questionDesigner'], { queryParams });
+    this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
 
   playDemoView()
@@ -128,5 +158,11 @@ export class QuizMakerComponent {
     this.restService.getNewGameId(this.quizId!).subscribe(data => {
       this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
     });
+  }
+
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }

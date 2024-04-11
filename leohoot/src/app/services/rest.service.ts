@@ -59,8 +59,8 @@ export class RestService {
     return this.httpClient.post<number>(`${RestService.url}quizzes`, quiz);
   }
 
-  updateQuiz(id: number): Observable<void> {
-    return this.httpClient.put<void>(`${RestService.url}quizzes/${id}`, {});
+  updateQuiz(id: number, quiz: Quiz): Observable<void> {
+    return this.httpClient.put<void>(`${RestService.url}quizzes/${id}`, quiz);
   }
 
   getQuizById(id: number): Observable<Quiz> {
@@ -71,7 +71,15 @@ export class RestService {
     return this.httpClient.delete<void>(`${RestService.url}games/${gameId}`);
   }
 
+  deleteQuiz(quizId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.url}quizzes/${quizId}`);
+  }
+
   getAllQuizzes(): Observable<Quiz[]> {
     return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
+  }
+
+  addImage(image: FormData): Observable<string> {
+    return this.httpClient.post<string>(`${RestService.url}quizzes/upload/images`, image);
   }
 }

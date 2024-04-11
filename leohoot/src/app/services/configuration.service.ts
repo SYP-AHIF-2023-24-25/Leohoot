@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { QuestionComponent } from '../components/teacher-components/question/question.component';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +17,10 @@ export class ConfigurationService {
 
   updateQuestion(question: QuestionTeacher) {
       this.quiz.questions[question.questionNumber - 1] = question;
+  }
 
+  changeOrderOfQuestions(newOrderOfQuestions: QuestionTeacher[]){
+    this.quiz.questions = newOrderOfQuestions;
   }
 
   addQuestion(question: QuestionTeacher) {
@@ -36,7 +40,7 @@ export class ConfigurationService {
     return this.quiz.questions;
   }
 
-  setQuizTitleAndDescription(quizTitle: string, quizDescription: string, imageUrl: string) {
+  setQuizTitleAndDescription(quizTitle: string, quizDescription: string) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
   }
@@ -53,5 +57,15 @@ export class ConfigurationService {
     this.quiz.questions.forEach((question, index) => {
       question.questionNumber = index + 1;
     });
+  }
+
+  clearQuiz() {
+    this.quiz = {
+      title: "",
+      description: "",
+      creator: "sampleUser",
+      questions: [],
+      imageName: ""
+    };
   }
 }

@@ -35,6 +35,7 @@ export class QuestionComponent {
   audio = new Audio('assets/audio/quiz-background-sound.mp3');
   currentQuestion!: QuestionTeacher;
   answerCount: number = 0;
+  correctAnswersCount: number = 0;
   gameId: number = 0;
   quizId: number = -1;
 
@@ -69,6 +70,8 @@ export class QuestionComponent {
 
       this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
         this.currentQuestion = response;
+        this.correctAnswersCount = this.currentQuestion.answers.filter(answer => answer.isCorrect).length;
+        this.currentQuestion.answers = this.currentQuestion.answers.sort(() => Math.random() - 0.5);
         this.startTimer();
       });
     });
@@ -102,13 +105,13 @@ export class QuestionComponent {
       if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
         if (this.quizId !== -1) {
           this.restservice.deleteGame(this.gameId).subscribe(() => {
-            this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId } });
+            this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId, mode: Mode.TEACHER_DEMO_MODE } });
           });
         }
         this.restservice.deleteGame(this.gameId).subscribe(() => {
           this.router.navigate(['/quizMaker']);
         });
-
+        
       } else {
         this.restservice.nextQuestion(this.gameId).subscribe(() => {
           window.location.reload();

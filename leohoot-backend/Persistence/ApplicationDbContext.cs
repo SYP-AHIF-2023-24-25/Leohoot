@@ -23,6 +23,16 @@ public sealed class ApplicationDbContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            string connectionString = "server=localhost;port=3306;database=db;user=root;password=password";
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
+    }
+
+
     public async Task<List<QuizDto>> GetAllQuizzes()
     {
         return await Quizzes
@@ -44,7 +54,9 @@ public sealed class ApplicationDbContext : DbContext
                             answer.IsCorrect
                         )).ToList(),
                         question.ImageName ?? string.Empty,
-                        question.PreviewTime
+                        question.PreviewTime,
+                        question.Snapshot ?? string.Empty,
+                        question.ShowMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -72,7 +84,9 @@ public sealed class ApplicationDbContext : DbContext
                             answer.IsCorrect
                         )).ToList(),
                         question.ImageName ?? string.Empty,
-                        question.PreviewTime
+                        question.PreviewTime,
+                        question.Snapshot ?? string.Empty,
+                        question.ShowMultipleChoice ?? false
                     )).ToList(),
                 q.ImageName
             ))
@@ -96,7 +110,9 @@ public sealed class ApplicationDbContext : DbContext
                     answer.IsCorrect
                 )).ToList(),
                 question.ImageName ?? string.Empty,
-                question.PreviewTime
+                question.PreviewTime,
+                question.Snapshot ?? string.Empty,
+                question.ShowMultipleChoice ?? false
             )).ToListAsync();
     }
 
@@ -132,6 +148,7 @@ public sealed class ApplicationDbContext : DbContext
     }
 }
 
+
 public static class SampleData
 {
     public static async Task InsertSampleData(this ApplicationDbContext ctx)
@@ -144,6 +161,7 @@ public static class SampleData
 
         Quiz quiz = new()
         {
+            ImageName = "/assets/images/herr-nilsson.jpg",
             Title = "Demo Quiz",
             Description = "This is a demo quiz",
             Creator = user,

@@ -9,8 +9,9 @@ public class Question
         public int QuestionNumber { get; set; }
         public string QuestionText { get; set; } = string.Empty;
         public int AnswerTimeInSeconds { get; set; }
-        public List<Answer> Answers { get; set; } = [];
+        public List<Answer> Answers { get; set; } = new List<Answer>();
         public string? ImageName { get; set; }
         public int PreviewTime { get; set; }
-
+        public string? Snapshot { get; set; }
+        public bool? ShowMultipleChoice { get; set; }
 }

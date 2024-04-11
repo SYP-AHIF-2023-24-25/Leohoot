@@ -5,6 +5,8 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxCaptureModule } from "ngx-capture";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,15 +20,15 @@ import { GameLoginComponent } from './components/student-components/game-login/g
 import { GameUserLoginComponent } from './components/student-components/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './components/student-components/waiting-page/waiting-page.component';
 import { QuizMakerComponent } from './components/teacher-components/quiz-maker/quiz-maker.component';
-import { QuestionDesignerComponent } from './components/teacher-components/question-designer/question-designer.component';
 import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
 import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
+import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, QuestionDesignerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule],
+    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent ],
+    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule, NgxCaptureModule],
     providers: [],
     bootstrap: [AppComponent],
 })

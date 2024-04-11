@@ -24,7 +24,7 @@
           class="flex items-center justify-center"
         >
           <img
-            class="max-h-56"
+            class="max-h-80"
             src="{{ currentQuestion.imageName }}"
             alt="{{ currentQuestion.imageName }}"
           />
@@ -78,8 +78,11 @@
         >
           <img src="{{icons[i]}}" class="h-10 w-10 m-2">{{ answer.answerText }}
         </div>
-      </div>
     </div>
+  </div>
+  <div *ngIf="currentQuestion.showMultipleChoice" class="flex items-start justify-start mt-4">
+    <p class="text-xl ml-2 text-white font-semibold">Multiple Choice ({{ correctAnswersCount }})</p>
+  </div>
   </div>
   <div id="footer" class="bg-white p-4 shadow-md font-bold text-2xl">
     {{currentQuestion.questionNumber}}/{{currentQuestion.quizLength}}

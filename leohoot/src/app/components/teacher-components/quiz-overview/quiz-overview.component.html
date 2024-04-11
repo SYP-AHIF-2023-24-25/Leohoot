@@ -1,12 +1,22 @@
 <div class="flex flex-col bg-background-blue min-h-screen">
-  <div class="bg-white pb-2">
+  <div class="bg-white text-center drop-shadow-lg relative">
     <div class="container mx-auto p-2">
-      <div class="text-3xl font-bold md:text-5xl">
-        <p class="text-center">Games</p>
+      <div class="grid grid-cols-3 pr-3">
+        <p></p>
+        <div class="mt-8 text-2xl font-bold md:text-4xl">
+          Games
+        </div>
+        <div class="flex justify-end items-center ">
+          <button class="flex items-center justify-center rounded-lg bg-hooti-yellow mx-2 text-white h-10 w-32"  routerLink="/quizMaker">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="container mx-auto mt-5 w-full bg-ranking-blue">
+  <div class="container grid md:grid-cols-3 grid-auto mx-auto mt-5 w-full">
     <div
       *ngFor="
           let quiz of quizzes;
@@ -14,12 +24,49 @@
         "
     >
       <div class="p-5 pl-10">
-        <a (click)="goToWaitingroom(i + 1)">
-          <p class="text-2xl font-bold">{{ quiz.title }}</p>
-          <p class="">Created by: {{ quiz.creator }}</p>
-          <p class="">Total Questions: {{ quiz.questions.length}}</p>
-          <p class="">{{quiz.description}}</p>
-        </a >
+          <div class="relative max-w-md md:rounded-xl rounded-md overflow-hidden shadow-lg bg-white">
+            <button class="absolute top-2 left-2 w-10" (click)="deleteQuiz(quiz.id!)">
+              <img src="assets/images/bin-black.png" alt="delete">
+            </button>
+            <button class="absolute top-2 right-4 w-9" (click)="goToQuizMaker(quiz.id!)">
+              <img src="assets/images/edit.png" alt="edit">
+            </button>
+            <div
+              *ngIf="quiz.imageName"
+              class="flex items-center justify-center"
+            >
+              <img class="w-full max-h-64 object-cover" src="{{ quiz.imageName }}" alt="{{ quiz.imageName }}"/></div>
+            <div
+              *ngIf="!quiz.imageName"
+              class="flex items-center justify-center"
+            >
+              <img class="w-full max-h-64 object-cover" src="/assets/images/noImage.png" alt="no image"/></div>
+              <div class="px-6 py-4">
+                  <div class="grid grid-cols-2">
+                    <div class="font-bold text-xl mb-2">{{ quiz.title }}</div>
+                    <div class="flex justify-end items-center ">
+                      <button class="bg-hooti-yellow text-xl rounded-xl pb-1 pl-4 cursor-pointer pr-4 text-white text-end font-bold" (click)="goToWaitingroom(i + 1)">
+                        Start
+                      </button>
+                    </div>
+                  </div>
+                <p class="text-base">
+                  {{quiz.description}}
+                </p>
+              </div>
+              <div class="px-6 pt-4 pb-2 flex justify-between items-center">
+                <div class="flex items-center">
+                  <img class="w-10 h-10 rounded-full mr-4" src="/assets/images/hootiFaceIcon.ico" alt="Picture">
+                  <div class="text-sm">
+                    <p class="text-gray-900 leading-none">User {{ quiz.creator }}</p>
+                  </div>
+                </div>
+                <div class="flex justify-end items-center">
+                  <div class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-bold ml-2 mr-2 text-end">?</div>
+                  <div class="text-end">{{ quiz.questions.length }}</div>
+                </div>
+              </div>
+          </div>
       </div>
     </div>
   </div>
