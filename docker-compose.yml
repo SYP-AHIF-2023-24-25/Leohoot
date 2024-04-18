@@ -10,6 +10,7 @@ services:
     ports:
       - 80:80
       - 8080:8080
+      - 8000:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   leohoot-frontend:
@@ -26,8 +27,8 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      timeout: 30s
+      interval: 20s
+      timeout: 20s
       retries: 5
       start_period: 5s
     environment:
@@ -50,6 +51,14 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.leohoot-backend.rule=PathPrefix(`/api`) || PathPrefix(`/hub`)"
       - "traefik.http.services.leohoot-backend.loadbalancer.server.port=8080"
+  leohoot-nginx:
+    image: haidersophie/leohoot-nginx
+    container_name: leohoot-nginx
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leohoot-nginx.rule=PathPrefix(`/cdn`)"
+      - "traefik.http.services.leohoot-nginx.loadbalancer.server.port=80"
 
 volumes:
   leohoot-mysql-data:
