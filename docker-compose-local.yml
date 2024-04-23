@@ -6,6 +6,8 @@ services:
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
     volumes:
       - leohoot-mysql-data:/var/lib/mysql
   leohoot-nginx:
