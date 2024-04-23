@@ -51,6 +51,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.leohoot-backend.rule=PathPrefix(`/api`) || PathPrefix(`/hub`)"
       - "traefik.http.services.leohoot-backend.loadbalancer.server.port=8080"
+    volumes:
+      - /usr/share/cdn-data:/usr/share/cdn-data
   leohoot-nginx:
     image: haidersophie/leohoot-nginx
     container_name: leohoot-nginx
@@ -59,6 +61,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.leohoot-nginx.rule=PathPrefix(`/cdn`)"
       - "traefik.http.services.leohoot-nginx.loadbalancer.server.port=80"
+    volumes:
+      - /usr/share/cdn-data:/usr/share/cdn-data
 
 volumes:
   leohoot-mysql-data:

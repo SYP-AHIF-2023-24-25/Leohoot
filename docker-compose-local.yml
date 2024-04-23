@@ -1,0 +1,20 @@
+services:
+
+  leohoot-db:
+    image: mysql
+    container_name: leohoot-db
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - leohoot-mysql-data:/var/lib/mysql
+  leohoot-nginx:
+    image: haidersophie/leohoot-nginx
+    container_name: leohoot-nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./leohoot-nginx/static-files:/usr/share/cdn-data
+
+volumes:
+  leohoot-mysql-data:
