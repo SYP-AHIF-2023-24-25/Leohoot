@@ -18,9 +18,8 @@ export class QuizMakerSidebarComponent {
 
   @Output() onQuizName = new EventEmitter<string>();
   @Output() onCreate = new EventEmitter<void>();
-  @Output() onDisplayQuestion = new EventEmitter<QuestionTeacher>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
-
+  @Output() onDisplay = new EventEmitter<QuestionTeacher>();
 
   existingQuestions: QuestionTeacher[] = [];
   
@@ -54,9 +53,8 @@ export class QuizMakerSidebarComponent {
   }
 
   onQuestionSelect(question: QuestionTeacher) {
-    this.onDisplayQuestion.emit(question);
+    this.onDisplay.emit(question);
   }
-  
   
   onQuestionDelete(id: number) {
     if (this.initQuestion === true){

@@ -199,6 +199,7 @@ export class QuizMakerQuestionsComponent {
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
           this.question = data as QuestionTeacher;
+          this.initQuestion = false;
         } else {
           alert('Please fill in all necessary fields and save the question.');         
         }
