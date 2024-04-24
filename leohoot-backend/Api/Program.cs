@@ -20,6 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", b => b
         .WithOrigins("http://localhost:4200")
         .WithOrigins("http://140.238.173.82:8000")
+        .WithOrigins("http://leohoot.sophiehaider.com")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
