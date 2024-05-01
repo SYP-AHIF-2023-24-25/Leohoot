@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
@@ -18,10 +19,12 @@ namespace Api.Controllers;
 public class QuizController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly LeohootSettings _settings;
 
-    public QuizController(ApplicationDbContext context)
+    public QuizController(ApplicationDbContext context, IOptions<LeohootSettings> settings)
     {
         _context = context;
+        _settings = settings.Value;
     }
     
     [HttpGet("{quizId:int}")]
@@ -46,7 +49,6 @@ public class QuizController : Controller
             Console.WriteLine("Creator not found");
              return Results.NotFound($"/api/quizzes/");
         }
-
 
         var quiz = new Quiz
         {
@@ -76,53 +78,6 @@ public class QuizController : Controller
         return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
     }
 
-    [HttpPost("upload/images")]
-    public async Task<IResult> UploadImage(IFormFile file)
-    {
-        /*if (file == null || file.Length == 0)
-        {
-            return Results.BadRequest("No file uploaded");
-        }
-
-        var fileName = file.FileName;
-        var filePath = "/public/images/" + fileName;
-        using (var stream = System.IO.File.Create(filePath))
-        {
-            await file.CopyToAsync(stream);
-        }
-
-        return Results.Ok(filePath);*/
-
-        if (file == null || file.Length == 0)
-        {
-            return Results.BadRequest("Please select a file.");
-        }
-
-        var folderName = Path.Combine("wwwroot", "images");
-        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-        if (!Directory.Exists(pathToSave))
-        {
-            Directory.CreateDirectory(pathToSave);
-        }
-
-        var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-        var fullPath = Path.Combine(pathToSave, fileName);
-        var dbPath = Path.Combine(folderName, fileName);
-
-        if (System.IO.File.Exists(fullPath))
-        {
-            return Results.BadRequest($"{fileName} already exists on the server!");
-        }
-
-        using (var stream = new FileStream(fullPath, FileMode.Create))
-        {
-            await file.CopyToAsync(stream);
-        }
-
-        return Results.Ok(new { dbPath });
-    }
-    
     [HttpPut("{quizId:int}")]
     public async Task<IResult> UpdateQuiz(int quizId, QuizPostDto quizDto)
     {
@@ -183,4 +138,30 @@ public class QuizController : Controller
         await _context.SaveChangesAsync();
         return Results.Ok();
     }
+
+    [HttpPost("upload/images")]
+    public async Task<IResult> UploadImage(IFormFile image)
+    {
+        var imageRow = new Image();
+        await _context.Images.AddAsync(imageRow);
+        await _context.SaveChangesAsync();
+
+        var nextVal = imageRow.Id.ToString().PadLeft(2, '0');
+        var newImageName = $"{nextVal}_{image.FileName}";
+
+        var directoryPath = Path.Combine(_settings.ImagePath);
+        var filePath = Path.Combine(directoryPath, newImageName);
+        
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+       
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await image.CopyToAsync(stream);
+        }
+
+        return Results.Created($"/cdn/images/{newImageName}", newImageName);
+    }    
 }
