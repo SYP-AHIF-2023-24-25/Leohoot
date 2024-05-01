@@ -14,72 +14,76 @@ import { environment } from 'src/environments/environment.development';
   providedIn: 'root'
 })
 export class RestService {
-  public static url: string = `${environment.apiUrl}/api/`;
+  public static apiUrl: string = `${environment.apiUrl}/api/`;
+  public static cdnUrl: string = `${environment.cdnUrl}/cdn/`;
   
   constructor(private httpClient: HttpClient) { }
 
   getQuestionTeacher(gameId: number): Observable<QuestionTeacher> {
-    return this.httpClient.get<QuestionTeacher>(`${RestService.url}games/${gameId}/currentQuestion/teacher`);
+    return this.httpClient.get<QuestionTeacher>(`${RestService.apiUrl}games/${gameId}/currentQuestion/teacher`);
   }
 
   getQuestionStudent(gameId: number, username: string): Observable<QuestionStudent> {
-    return this.httpClient.get<QuestionStudent>(`${RestService.url}games/${gameId}/currentQuestion/student?username=${username}`);
+    return this.httpClient.get<QuestionStudent>(`${RestService.apiUrl}games/${gameId}/currentQuestion/student?username=${username}`);
   };
 
   addAnswer(gameId: number, buttons: boolean[], username: string): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${RestService.url}games/${gameId}/answers`, {answers: buttons, username: username});
+    return this.httpClient.post<boolean>(`${RestService.apiUrl}games/${gameId}/answers`, {answers: buttons, username: username});
   }
 
   getRanking(gameId: number): Observable<Ranking> {
-    return this.httpClient.get<Ranking>(`${RestService.url}games/${gameId}/ranking`);
+    return this.httpClient.get<Ranking>(`${RestService.apiUrl}games/${gameId}/ranking`);
   }
 
   getGameStatistics(gameId: number): Observable<Statistic> {
-    return this.httpClient.get<Statistic>(`${RestService.url}games/${gameId}/statistic`);
+    return this.httpClient.get<Statistic>(`${RestService.apiUrl}games/${gameId}/statistic`);
   }
 
   getNewGameId(quizId: number): Observable<number> {
-    return this.httpClient.post<number>(`${RestService.url}games/${quizId}`, {});
+    return this.httpClient.post<number>(`${RestService.apiUrl}games/${quizId}`, {});
   }
 
   getQuizIdByGameId(gameId: number): Observable<number> {
-    return this.httpClient.get<number>(`${RestService.url}games/${gameId}/quiz`);
+    return this.httpClient.get<number>(`${RestService.apiUrl}games/${gameId}/quiz`);
   }
 
 
   nextQuestion(gameId: number): Observable<QuestionTeacher> {
-    return this.httpClient.put<QuestionTeacher>(`${RestService.url}games/${gameId}/currentQuestion`, {});
+    return this.httpClient.put<QuestionTeacher>(`${RestService.apiUrl}games/${gameId}/currentQuestion`, {});
   }
 
   doesGameExist(gameId: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(`${RestService.url}games/${gameId}/exists`);
+    return this.httpClient.get<boolean>(`${RestService.apiUrl}games/${gameId}/exists`);
   }
 
   addQuiz(quiz: Quiz): Observable<number> {
-    return this.httpClient.post<number>(`${RestService.url}quizzes`, quiz);
+    return this.httpClient.post<number>(`${RestService.apiUrl}quizzes`, quiz);
   }
 
   updateQuiz(id: number, quiz: Quiz): Observable<void> {
-    return this.httpClient.put<void>(`${RestService.url}quizzes/${id}`, quiz);
+    return this.httpClient.put<void>(`${RestService.apiUrl}quizzes/${id}`, quiz);
   }
 
   getQuizById(id: number): Observable<Quiz> {
-    return this.httpClient.get<Quiz>(`${RestService.url}quizzes/${id}`);
+    return this.httpClient.get<Quiz>(`${RestService.apiUrl}quizzes/${id}`);
   }
 
   deleteGame(gameId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${RestService.url}games/${gameId}`);
+    return this.httpClient.delete<void>(`${RestService.apiUrl}games/${gameId}`);
   }
 
   deleteQuiz(quizId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${RestService.url}quizzes/${quizId}`);
+    return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/${quizId}`);
   }
 
   getAllQuizzes(): Observable<Quiz[]> {
-    return this.httpClient.get<Quiz[]>(`${RestService.url}quizzes`);
+    return this.httpClient.get<Quiz[]>(`${RestService.apiUrl}quizzes`);
   }
 
   addImage(image: FormData): Observable<string> {
-    return this.httpClient.post<string>(`${RestService.url}quizzes/upload/images`, image);
+    return this.httpClient.post<string>(`${RestService.apiUrl}quizzes/upload/images`, image);
+  }
+  getImage(imageName: string): string {
+    return `${RestService.cdnUrl}images/${imageName}`;
   }
 }

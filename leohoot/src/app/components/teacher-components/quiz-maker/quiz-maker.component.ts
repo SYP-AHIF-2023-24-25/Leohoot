@@ -18,14 +18,14 @@ export class QuizMakerComponent {
   existingQuestions: QuestionTeacher[] = [];
   title: string = "";
   description: string | undefined;
-  imageName: string | undefined;
+  imageUrl: string | undefined;
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
     this.getParams();
     this.refetchQuestions();
     this.description = this.configurationService.getQuiz().description;
     this.title = this.configurationService.getQuiz().title;
-    this.imageName = this.configurationService.getQuiz().imageName;
+    this.imageUrl = this.configurationService.getQuiz().imageName;
   }
 
   getParams() {
@@ -52,12 +52,22 @@ export class QuizMakerComponent {
 
             this.title = this.configurationService.getQuiz().title;
             this.description = this.configurationService.getQuiz().description;
-            this.imageName = this.configurationService.getQuiz().imageName;
             this.existingQuestions = this.configurationService.getQuestions();
+
+            if (this.configurationService.getQuiz().imageName) {
+              this.getImageFromServer(this.configurationService.getQuiz().imageName);
+            } else {
+              this.imageUrl = this.configurationService.getQuiz().imageName;
+            }
           });
         }
       }
     });
+  }
+
+  getImageFromServer(imageUrl: string) {
+    this.imageUrl = this.restService.getImage(imageUrl);   
+    console.log(this.imageUrl)
   }
 
   onQuestionCreate() {
@@ -66,7 +76,10 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
+    if (this.imageUrl){
+      this.configurationService.addImage(this.imageUrl);
+    }
 
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
@@ -76,7 +89,7 @@ export class QuizMakerComponent {
   }
 
   saveQuiz() {
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
     const quiz = this.configurationService.getQuiz();
 
     quiz.questions =  quiz.questions.map(question => ({
@@ -100,19 +113,45 @@ export class QuizMakerComponent {
     if (files && files.length > 0) {
       const file = files.item(0);
       if (file && file.type.startsWith('image/')) {
-        const formData = new FormData();
-        formData.append('file', file);
-        this.restService.addImage(formData).subscribe(imagePath => {
-          console.log(imagePath);
-          this.imageName = 'http://localhost:4200/' + imagePath;
-          this.configurationService.addImage(this.imageName);
-        });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageString = e.target?.result as string;
+          
+          const extension = file.name.split('.').pop();
+          const fileName = `quizImage.${extension}`;
+
+          this.uploadImage(imageString, fileName).subscribe(data => {
+            this.getImageFromServer(data);
+          });          
+        };
+        reader.readAsDataURL(file);
       } else {
         alert('Please select an image file.')
       }
     } else {
       alert('Please select an image file.')
     }
+  }
+
+  uploadImage(imageString: string, fileName: string) {
+    const imageBlob = this.dataURItoBlob(imageString);
+  
+    const formData = new FormData();
+  
+    formData.append('image', imageBlob, fileName);
+    
+    return this.restService.addImage(formData);
+  }
+
+  dataURItoBlob(dataURI: string) {
+    const byteString = window.atob(dataURI.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });  
+    return blob;
   }
 
   onClose(){
@@ -122,8 +161,8 @@ export class QuizMakerComponent {
     }
   }
 
-  onDeleteImage(){
-    this.imageName = undefined;
+  onImageDelete(){
+    this.imageUrl = undefined;
   }
 
   drop(event: CdkDragDrop<QuestionTeacher[]>) {
@@ -148,7 +187,7 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
 
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }

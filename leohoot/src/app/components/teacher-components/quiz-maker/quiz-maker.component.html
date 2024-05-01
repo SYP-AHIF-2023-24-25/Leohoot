@@ -168,7 +168,7 @@
                             <p class="mx-9 mt-3 text-sm text-white">*Always save your changes before playing the demo view.</p>
                             
                           </div>
-                          <div *ngIf="!imageName" class="flex ">
+                          <div *ngIf="!imageUrl" class="flex ">
                             <div class="mt-10 mr-10">
                               <label class="flex items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
@@ -192,12 +192,12 @@
                            
                           </div>
 
-                          <div *ngIf="imageName" class="flex-1 flex-col items-center justify-center h-72 my-5">
+                          <div *ngIf="imageUrl" class="flex-1 flex-col items-center justify-center h-72 my-5">
                             <div class="flex items-center justify-center">
-                              <img [src]="imageName" class="flex items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
+                              <img [src]="imageUrl" class="flex items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
                             </div>
                             <div class="flex items-center justify-center mt-2">
-                              <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onDeleteImage()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
+                              <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onImageDelete()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
                             </div>
                           </div>
                         </div>         

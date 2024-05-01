@@ -7,6 +7,11 @@ using Core;
 using Microsoft.AspNetCore.Http;
 using Persistence;
 using ConsoleApp;
+using System.Net.Http.Headers;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
@@ -14,10 +19,12 @@ namespace Api.Controllers;
 public class QuizController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly LeohootSettings _settings;
 
-    public QuizController(ApplicationDbContext context)
+    public QuizController(ApplicationDbContext context, IOptions<LeohootSettings> settings)
     {
         _context = context;
+        _settings = settings.Value;
     }
     
     [HttpGet("{quizId:int}")]
@@ -70,7 +77,7 @@ public class QuizController : Controller
         await _context.SaveChangesAsync();
         return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
     }
-    
+
     [HttpPut("{quizId:int}")]
     public async Task<IResult> UpdateQuiz(int quizId, QuizPostDto quizDto)
     {
@@ -131,4 +138,30 @@ public class QuizController : Controller
         await _context.SaveChangesAsync();
         return Results.Ok();
     }
+
+    [HttpPost("upload/images")]
+    public async Task<IResult> UploadImage(IFormFile image)
+    {
+        var imageRow = new Image();
+        await _context.Images.AddAsync(imageRow);
+        await _context.SaveChangesAsync();
+
+        var nextVal = imageRow.Id.ToString().PadLeft(2, '0');
+        var newImageName = $"{nextVal}_{image.FileName}";
+
+        var directoryPath = Path.Combine(_settings.ImagePath);
+        var filePath = Path.Combine(directoryPath, newImageName);
+        
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+       
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await image.CopyToAsync(stream);
+        }
+
+        return Results.Created($"/cdn/images/{newImageName}", newImageName);
+    }    
 }

@@ -14,3 +14,34 @@ using (var dbContext = new ApplicationDbContext())
     dbContext.Quizzes.AddRange(quizzes);
     dbContext.SaveChanges();
 }
+
+ /*// Pfad zum Bild, das hochgeladen werden soll
+string imagePath = "../../images/test.png";
+
+
+// Erstelle einen HttpClient
+try
+{
+    using (var client = new HttpClient())
+    using (var formData = new MultipartFormDataContent())
+    {
+        var fileStream = File.Open(imagePath, FileMode.Open);
+        var fileName = Path.GetFileName(imagePath);
+        formData.Add(new StreamContent(fileStream), "file", fileName);
+
+        var response = await client.PostAsync("http://localhost/cdn/upload", formData);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Bild erfolgreich hochgeladen!");
+        }
+        else
+        {
+            Console.WriteLine("Fehler beim Hochladen des Bildes. Statuscode: " + response.StatusCode);
+        }
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Fehler: " + ex.Message);
+}*/
