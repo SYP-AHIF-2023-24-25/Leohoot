@@ -25,11 +25,7 @@ export class QuizMakerComponent {
     this.refetchQuestions();
     this.description = this.configurationService.getQuiz().description;
     this.title = this.configurationService.getQuiz().title;
-
-    if (this.configurationService.getQuiz().imageName) {
-      this.getImageFromServer(this.configurationService.getQuiz().imageName);
-    }
-    console.log(this.existingQuestions)
+    this.imageUrl = this.configurationService.getQuiz().imageName;
   }
 
   getParams() {
@@ -71,6 +67,7 @@ export class QuizMakerComponent {
 
   getImageFromServer(imageUrl: string) {
     this.imageUrl = this.restService.getImage(imageUrl);   
+    console.log(this.imageUrl)
   }
 
   onQuestionCreate() {
@@ -79,7 +76,10 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
+    if (this.imageUrl){
+      this.configurationService.addImage(this.imageUrl);
+    }
 
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
@@ -89,7 +89,7 @@ export class QuizMakerComponent {
   }
 
   saveQuiz() {
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
     const quiz = this.configurationService.getQuiz();
 
     quiz.questions =  quiz.questions.map(question => ({
@@ -187,7 +187,7 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleAndDescription(this.title, this.description ? this.description : '');
+    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
 
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }

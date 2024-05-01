@@ -141,8 +141,6 @@ export class QuizMakerQuestionsComponent {
   }
 
   async displayQuestion(data: number | QuestionTeacher) {
-    console.log("mitgegebene Frage", data)
-    console.log("aktuelle Frage", this.question)
     if (this.isMobileMenuOpen) {
       this.toggleMobileMenu();
     }
@@ -160,9 +158,8 @@ export class QuizMakerQuestionsComponent {
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
           await this.createQuestionSnapshot(); 
-          console.log("alte Frage", this.question)
+
           this.question = data as QuestionTeacher;
-          console.log("neue Frage", this.question)
           this.initQuestion = false;
         } else {
           alert('Please fill in all necessary fields and save the question.');         
@@ -236,12 +233,10 @@ export class QuizMakerQuestionsComponent {
       if (this.question.questionNumber === 0) {
         questionNumber = this.configurationService.getQuestions().length + 1;
       }
-      console.log("snapshot update");
       const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
   
       const data = await this.uploadImage(img!, fileName).toPromise();
       this.question.snapshot = this.restService.getImage(data!);
-      console.log(this.question.snapshot)
       
       this.loading = false;
     });

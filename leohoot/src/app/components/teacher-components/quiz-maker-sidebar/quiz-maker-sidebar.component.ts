@@ -53,7 +53,6 @@ export class QuizMakerSidebarComponent {
   }
 
   onQuestionSelect(question: QuestionTeacher) {
-    console.log(question);
     this.onDisplay.emit(question);
   }
   
