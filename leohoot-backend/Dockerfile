@@ -8,9 +8,9 @@ RUN dotnet publish ./Api/Api.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+COPY ./Api/Files/ .
 EXPOSE 80
 EXPOSE 443
 ENV ASPNETCORE_ENVIRONMENT=Production
-COPY ./Api/Files/quizzes.json ./Files/
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
