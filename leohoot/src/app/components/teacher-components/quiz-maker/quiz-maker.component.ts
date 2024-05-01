@@ -54,11 +54,7 @@ export class QuizMakerComponent {
             this.description = this.configurationService.getQuiz().description;
             this.existingQuestions = this.configurationService.getQuestions();
 
-            if (this.configurationService.getQuiz().imageName) {
-              this.getImageFromServer(this.configurationService.getQuiz().imageName);
-            } else {
-              this.imageUrl = this.configurationService.getQuiz().imageName;
-            }
+            this.imageUrl = this.configurationService.getQuiz().imageName;
           });
         }
       }
