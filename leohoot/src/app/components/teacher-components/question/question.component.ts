@@ -75,6 +75,7 @@ export class QuestionComponent {
         this.startTimer();
       });
     });
+    console.log(this.currentQuestion.imageName);
   }
 
   startTimer() {

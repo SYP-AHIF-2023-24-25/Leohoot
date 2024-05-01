@@ -5,17 +5,17 @@ using Persistence;
 
 Console.WriteLine("Hello, World!");
 
-//var quizzes = Importer.ImportQuizzes();
+var quizzes = Importer.ImportQuizzes();
 
-/*using (var dbContext = new ApplicationDbContext())
+using (var dbContext = new ApplicationDbContext())
 {
     dbContext.Database.EnsureDeleted();
     dbContext.Database.EnsureCreated();
     dbContext.Quizzes.AddRange(quizzes);
     dbContext.SaveChanges();
-}*/
+}
 
- // Pfad zum Bild, das hochgeladen werden soll
+ /*// Pfad zum Bild, das hochgeladen werden soll
 string imagePath = "../../images/test.png";
 
 
@@ -44,4 +44,4 @@ try
 catch (Exception ex)
 {
     Console.WriteLine("Fehler: " + ex.Message);
-}
+}*/

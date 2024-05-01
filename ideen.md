@@ -36,3 +36,5 @@
 - Zusammenräumen => Sophie
 - Images nicht in Datenbank => vici
 - Bis 4.4.2024
+
+lade images im backend in das volume, dass sich beide server teilen

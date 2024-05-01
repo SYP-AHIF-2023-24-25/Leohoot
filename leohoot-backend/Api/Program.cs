@@ -32,6 +32,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+builder.Services.Configure<LeohootSettings>(builder.Configuration.GetSection("LeohootSettings"));
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
