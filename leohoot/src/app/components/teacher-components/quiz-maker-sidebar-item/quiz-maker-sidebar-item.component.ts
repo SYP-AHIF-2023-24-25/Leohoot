@@ -7,23 +7,12 @@ import { QuestionTeacher } from 'src/app/model/question-teacher';
   styleUrl: './quiz-maker-sidebar-item.component.css'
 })
 export class QuizMakerSidebarItemComponent {
-  @Input() existingQuestion: QuestionTeacher = {
-    questionText: '',
-    answerTimeInSeconds: 15,
-    previewTime: 5,
-    answers: [],
-    questionNumber: 0,
-    imageName: undefined,
-    showMultipleChoice: false
-  };
+  @Input() existingQuestion: QuestionTeacher | undefined;
 
   @Output() onDelete = new EventEmitter<number>();
 
-  //snapshtot of the quiz from rest api
-  snapshot: string = "assets/images/placeholder_question.png";
-
   onQuestionDelete() {
-    this.onDelete.emit(this.existingQuestion.questionNumber);
+    this.onDelete.emit(this.existingQuestion!.questionNumber);
   }
 
   truncateText(text: string, maxLength: number): string {

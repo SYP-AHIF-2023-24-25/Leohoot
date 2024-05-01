@@ -29,6 +29,7 @@ export class QuizMakerComponent {
     if (this.configurationService.getQuiz().imageName) {
       this.getImageFromServer(this.configurationService.getQuiz().imageName);
     }
+    console.log(this.existingQuestions)
   }
 
   getParams() {
@@ -96,8 +97,6 @@ export class QuizMakerComponent {
       answers: question.answers.filter(answer => answer.answerText !== '')
     }));
 
-    this.saveImagesToServer();
-
     if (this.quizId === undefined){
       this.restService.addQuiz(quiz).subscribe(data => {
         this.quizId = data;
@@ -153,30 +152,6 @@ export class QuizMakerComponent {
     }
     const blob = new Blob([int8Array], { type: 'image/jpeg' });  
     return blob;
-  }
-
-  saveImagesToServer() {
-    this.existingQuestions.forEach(question => {
-      if (question.imageName) {
-        const imageString = question.imageName;
-        const fileName = "questionImage_" + question.questionNumber.toString().padStart(2, '0') + ".png";
-        
-        this.uploadImage(imageString, fileName).subscribe(data => {
-          question.imageName = data;
-        });
-      }
-
-      if (question.snapshot){
-        const imageString = question.snapshot;
-        const fileName = "snapshot_" + question.questionNumber.toString().padStart(2, '0') + ".png";
-        
-        this.uploadImage(imageString, fileName).subscribe(data => {
-          question.imageName = data;
-        });
-
-        question.snapshot = fileName;
-      }      
-    });
   }
 
   onClose(){

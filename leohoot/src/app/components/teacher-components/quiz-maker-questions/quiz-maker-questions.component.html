@@ -149,7 +149,7 @@
         
                 <div class="flex items-center justify-center">
                   <div class="w-128 my-16">
-                    <div *ngIf="!question.imageName">
+                    <div *ngIf="!question.imageUrl">
                       <label
                         for="dropzone-file"
                         class="flex flex-col items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100"
@@ -173,9 +173,9 @@
                       </label>
                     </div>
                     
-                    <div *ngIf="question.imageName" class="flex flex-col items-center justify-center h-72 my-5">
+                    <div *ngIf="question.imageUrl" class="flex flex-col items-center justify-center h-72 my-5">
                       <label for="dropzone-file">
-                        <img [src]="question.imageName" class="flex flex-col items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
+                        <img [src]="question.imageUrl" class="flex flex-col items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
                         <div class="flex items-center justify-center mt-2">
                           <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onDeleteImage()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
                         </div>                   
