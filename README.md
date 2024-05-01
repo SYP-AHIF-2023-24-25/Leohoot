@@ -40,3 +40,7 @@ Siehe [Sprints](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4)
     - [#3](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4/views/1?pane=issue&itemId=50879252)
 - Sprint 4 (Endet am 29.02.2024):
     - [#4](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4/views/1?pane=issue&itemId=52637698)
+- Sprint 5 (Endet am 04.04.2024):
+    - [#5](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4/views/1?pane=issue&itemId=61031177)
+- Sprint 6 (Endet am 02.05.2024):
+    - [#6](https://github.com/orgs/SYP-AHIF-2023-24-25/projects/4/views/1?pane=issue&itemId=61031443)
