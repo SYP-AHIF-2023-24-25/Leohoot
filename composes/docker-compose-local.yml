@@ -16,7 +16,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./leohoot-nginx/static-files:/usr/share/cdn-data
+      - ../leohoot-nginx/static-files:/usr/share/cdn-data
 
 volumes:
   leohoot-mysql-data:
