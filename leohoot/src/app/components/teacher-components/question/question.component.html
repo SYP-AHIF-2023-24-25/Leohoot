@@ -20,17 +20,17 @@
 
       <div class="col-span-3 self-center justify-self-stretch">
         <div
-          *ngIf="currentQuestion.imageUrl"
+          *ngIf="currentQuestion.imageName"
           class="flex items-center justify-center"
         >
           <img
             class="max-h-80"
-            src="{{ currentQuestion.imageUrl }}"
-            alt="{{ currentQuestion.imageUrl }}"
+            src="{{ currentQuestion.imageName }}"
+            alt="{{ currentQuestion.imageName }}"
           />
         </div>
         <div
-          *ngIf="!currentQuestion.imageUrl"
+          *ngIf="!currentQuestion.imageName"
           class="my-20"
         ></div>
       </div>

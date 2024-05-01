@@ -30,7 +30,7 @@ export class QuizMakerQuestionsComponent {
     previewTime: 0,
     answers: [],
     questionNumber: 0,
-    imageUrl: undefined,
+    imageName: undefined,
     snapshot: undefined,
     showMultipleChoice: false
   };
@@ -68,7 +68,7 @@ export class QuizMakerQuestionsComponent {
       previewTime: 5,
       answers: [],
       questionNumber: 0,
-      imageUrl: undefined,
+      imageName: undefined,
       showMultipleChoice: false
     };
 
@@ -205,7 +205,7 @@ export class QuizMakerQuestionsComponent {
   }
 
   getImageFromServer(imageUrl: string) {
-    this.question.imageUrl = this.restService.getImage(imageUrl);   
+    this.question.imageName = this.restService.getImage(imageUrl);   
   }
 
   uploadImage(imageString: string, fileName: string) {
@@ -248,7 +248,7 @@ export class QuizMakerQuestionsComponent {
   }  
 
   onDeleteImage(){
-    this.question.imageUrl = undefined;
+    this.question.imageName = undefined;
   }
 
   decrement(type: "answerTime" | "previewTime") {

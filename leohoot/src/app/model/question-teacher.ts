@@ -4,7 +4,7 @@ export interface QuestionTeacher {
   questionNumber: number;
   questionText: string;
   answerTimeInSeconds: number;
-  imageUrl?: string;
+  imageName?: string;
   snapshot?: string;
   previewTime: number;
   answers: Answer[];
