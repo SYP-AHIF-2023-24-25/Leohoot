@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b33f556-65f6-44ac-8511-5ef4eed100ca" name="Changes" comment="" />
+    <list default="true" id="9b33f556-65f6-44ac-8511-5ef4eed100ca" name="Changes" comment="Search bar added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +16,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2cuYQS2dduhDUrop9yR3EMfxyUU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,8 +31,9 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "victoria",
     "last_opened_file_path": "C:/Users/Victoria/Documents/htl/4AHIF/Syp/Leohoot",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "C:\\HomeworkFolder\\4AHIF\\SYP\\Leohoot\\leohoot\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -48,13 +52,16 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Search bar added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Search bar added" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/leohoot/src/app/components/design-question/design-question.component.html</url>
           <line>23</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

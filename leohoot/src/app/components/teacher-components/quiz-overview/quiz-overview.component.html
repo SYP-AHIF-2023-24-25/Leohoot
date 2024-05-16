@@ -1,22 +1,22 @@
 <div class="flex flex-col bg-background-blue min-h-screen">
-  <div class="bg-white text-center drop-shadow-lg relative">
+  <nav class="bg-white text-center drop-shadow-lg relative">
     <div class="container mx-auto p-2">
-      <div class="grid grid-cols-3 pr-3">
-        <p></p>
-        <div class="mt-8 text-2xl font-bold md:text-4xl">
-          Games
+      <div class="grid grid-cols-3 ">
+          <div class="flex items-center pl-7">
+              <button routerLink="/quizOverview"><img class="max-h-16" src="assets/images/hootiFaceIcon.ico" alt="hooti"></button>
+              <button routerLink="/quizOverview" class="flex items-center text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Quizzes</button>
+              <button routerLink="/gameLogin" class="" ><p class="text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Join Quiz</p></button>
+          </div>
+        <div class="text-2xl font-bold md:text-4xl text-center mt-2.5">
+          Quizzes
         </div>
-        <div class="flex justify-end items-center ">
-          <button class="flex items-center justify-center rounded-lg bg-hooti-yellow mx-2 text-white h-10 w-32"  routerLink="/quizMaker">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-          </button>
+        <div class="flex justify-end items-center">
+            <button class="items-center justify-center font-bold rounded-lg bg-hooti-yellow mx-2 text-white text-xl h-10 w-32">Login</button>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container grid md:grid-cols-3 grid-auto mx-auto mt-5 w-full">
+  </nav>
+  <div class="container grid md:grid-cols-3 grid-auto mx-auto mt-4 w-full">
       <div class="col-span-3">
           <section>
           <form class="mx-auto max-w-lg">
@@ -83,5 +83,12 @@
           </div>
       </div>
     </div>
+      <div class='fixed bottom-4 w-full pr-3.5'>
+          <button class="flex items-center font-bold float-right justify-center rounded-lg shadow-lg bg-hooti-yellow mx-2 text-white h-10 w-32"  routerLink="/quizMaker">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+          </button>
+      </div>
   </div>
 </div>
