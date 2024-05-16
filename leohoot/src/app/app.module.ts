@@ -27,12 +27,16 @@ import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
 import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
+import { KeycloakService } from 'keycloak-angular';
+import { appConfig } from './app.config';
 
 
 @NgModule({
     declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent, QuizMakerSidebarComponent, QuizMakerSidebarItemComponent],
     imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule, NgxCaptureModule],
-    providers: [],
+    providers: [
+        ...appConfig.providers
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import {RestService} from "../../../services/rest.service";
 import {SignalRService} from "../../../services/signalr.service";
 import {Quiz} from "../../../model/quiz";
 import { ConfigurationService } from 'src/app/services/configuration.service';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-quiz-overview',
@@ -15,17 +16,37 @@ import { ConfigurationService } from 'src/app/services/configuration.service';
 export class QuizOverviewComponent {
   quizzes: Quiz[] = [];
   filteredQuizzes: Quiz[] = [];
+  loggedIn: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService, private configurationService: ConfigurationService) {
+  constructor(private router: Router, private restservice: RestService, private keycloakService: KeycloakService, private signalRService: SignalRService) {
   }
 
-  ngOnInit() {
-    this.restservice.getAllQuizzes().subscribe((data) => {
-      this.quizzes = data;
-      this.filteredQuizzes = this.quizzes;
+  async ngOnInit() {
+    this.loggedIn = this.keycloakService.isLoggedIn()
 
-      console.log(this.quizzes)
-    });
+    if (this.loggedIn)
+    {
+      this.restservice.getAllQuizzes().subscribe((data) => {
+        this.quizzes = data;
+        this.filteredQuizzes = this.quizzes;
+      });
+    }
+  }
+
+  async login() {
+    console.log("login")
+    if (this.keycloakService.isLoggedIn() == false)
+    {
+      await this.keycloakService.login();
+    }
+
+  }
+
+  async logout(): Promise<void> {
+    if (this.loggedIn) {
+      await this.keycloakService.logout();
+    }
+    this.loggedIn = this.keycloakService.isLoggedIn()
   }
 
   goToWaitingroom(quizId: number) {
@@ -38,10 +59,7 @@ export class QuizOverviewComponent {
 
   deleteQuiz(quizId: number) {
     this.restservice.deleteQuiz(quizId).subscribe(() => {
-      console.log('Quiz deleted successfully');
       location.reload();
-    }, error => {
-      console.error('Error occurred while deleting quiz:', error);
     });
   }
 

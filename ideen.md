@@ -38,3 +38,9 @@
 - Bis 4.4.2024
 
 lade images im backend in das volume, dass sich beide server teilen
+
+## Sprint 7
+- Sophie: Authentifizieren, Feedback Hinterramskogler 
+- Victoria: Tags im Backend, Game kill
+- Mia: Navigationkonzept (Navbar, Titelbar, ...)
+- Termin: 6.6.

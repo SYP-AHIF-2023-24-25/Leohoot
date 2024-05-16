@@ -19,22 +19,22 @@ import {QuizOverviewComponent} from './components/teacher-components/quiz-overvi
 import {QuestionPreviewComponent} from './components/teacher-components/question-preview/question-preview.component';
 import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
-  {path: 'answerView', component: AnswerViewComponent},
-  {path: 'interimResult', component: InterimResultRankingComponent},
+  { path: 'answerView', component: AnswerViewComponent },
+  { path: 'interimResult', component: InterimResultRankingComponent },
   { path: 'ranking', component: RankingComponent },
   { path: 'question', component: QuestionComponent },
   { path: 'waitingroom', component: WaitingroomComponent },
-  { path: 'loadingScreen', component: LoadingScreenComponent},
-  { path: 'gameLogin', component: GameLoginComponent},
-  { path: 'gameUserLogin', component: GameUserLoginComponent},
-  { path: 'waitingPage', component: WaitingPageComponent},
-  { path: 'statistic', component: StatisticComponent},
-  { path: 'quizMaker', component: QuizMakerComponent},
-  { path: 'quizMakerQuestions', component: QuizMakerQuestionsComponent},
-  { path: 'quizOverview', component: QuizOverviewComponent},
-  { path: 'questionPreview', component: QuestionPreviewComponent},
+  { path: 'loadingScreen', component: LoadingScreenComponent },
+  { path: 'gameLogin', component: GameLoginComponent },
+  { path: 'gameUserLogin', component: GameUserLoginComponent },
+  { path: 'waitingPage', component: WaitingPageComponent },
+  { path: 'statistic', component: StatisticComponent },
+  { path: 'quizMaker', component: QuizMakerComponent },
+  { path: 'quizMakerQuestions', component: QuizMakerQuestionsComponent },
+  { path: 'quizOverview', component: QuizOverviewComponent },
+  { path: 'questionPreview', component: QuestionPreviewComponent },
 ];
 
 @NgModule({
