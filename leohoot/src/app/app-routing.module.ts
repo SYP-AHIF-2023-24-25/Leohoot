@@ -28,13 +28,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginViewComponent},
   { path: 'answerView', component: AnswerViewComponent },
   { path: 'signup', component: SignupViewComponent},
-  { 
-    path: 'interimResult', 
-    component: InterimResultRankingComponent, 
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    } 
-  },
+  { path: 'interimResult', component: InterimResultRankingComponent },
   { 
     path: 'ranking', 
     component: RankingComponent,
@@ -56,33 +50,10 @@ export const routes: Routes = [
       roles: [Role.Student]
     } 
   },
-  { 
-    path: 'loadingScreen', 
-    component: LoadingScreenComponent,
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    } 
-  },
-  { 
-    path: 'gameLogin', component: GameLoginComponent,
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    } 
-  },
-  { 
-    path: 'gameUserLogin', 
-    component: GameUserLoginComponent,
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    } 
-  },
-  { 
-    path: 'waitingPage', 
-    component: WaitingPageComponent,
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    } 
-  },
+  { path: 'loadingScreen', component: LoadingScreenComponent },
+  { path: 'gameLogin', component: GameLoginComponent },
+  { path: 'gameUserLogin', component: GameUserLoginComponent },
+  { path: 'waitingPage', component: WaitingPageComponent } ,
   { 
     path: 'statistic', 
     component: StatisticComponent,
@@ -104,12 +75,7 @@ export const routes: Routes = [
       roles: [Role.Student]
     } 
   },
-  { 
-    path: 'quizOverview', 
-    component: QuizOverviewComponent,
-    //canActivate: [AuthGuard], data: { 
-    //  roles: [Role.Student]
-  },
+  { path: 'quizOverview', component: QuizOverviewComponent },
   { 
     path: 'questionPreview', 
     component: QuestionPreviewComponent,
