@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Core;
+using Core.Entities;
 using Persistence;
 namespace ConsoleApp;
 

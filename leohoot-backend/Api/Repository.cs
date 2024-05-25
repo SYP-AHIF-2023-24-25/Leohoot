@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core;
+using Core.Contracts;
+using Core.DataTransferObjects;
 using Persistence;
 
 namespace Api;
@@ -26,10 +28,10 @@ public class Repository
         return _instance;
     }
     
-    public static async Task<Game> CreateGame(int gameId, int quizId, ApplicationDbContext ctx)
+    public static async Task<Game> CreateGame(int gameId, int quizId, IUnitOfWork uow)
     {
-        QuizDto? quiz = await ctx.GetQuiz(quizId);
-        QuestionDto? question = await ctx.GetQuestion(quizId, 1);
+        QuizDto? quiz = await uow.Quizzes.GetQuizDto(quizId);
+        QuestionDto? question = await uow.Quizzes.GetQuestion(quizId, 1);
         if (quiz == null || question == null)
         {
             throw new Exception("Invalid quiz or question");
@@ -37,10 +39,10 @@ public class Repository
         return new Game(gameId, quiz, question);
     }
 
-    public async Task<int> AddNewGame(int quizId, ApplicationDbContext ctx)
+    public async Task<int> AddNewGame(int quizId, IUnitOfWork uow)
     {
         int gameId;
-        QuizDto? quiz = await ctx.GetQuiz(quizId);
+        QuizDto? quiz = await uow.Quizzes.GetQuizDto(quizId);
         long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         int seed = (timestamp.ToString() + quiz!.Id).GetHashCode();
         Random random = new Random(seed);
@@ -48,7 +50,7 @@ public class Repository
         {
             gameId = random.Next(10000000, 100000000);
         } while (_games.Select(g => g.GameId).Contains(gameId));
-        _games.Add(await CreateGame(gameId, quizId, ctx));
+        _games.Add(await CreateGame(gameId, quizId, uow));
         return gameId;
     }
 

@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using Core.Entities;
+using Core.DataTransferObjects;
 
 namespace Core;
 

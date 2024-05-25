@@ -1,6 +1,8 @@
 using Api;
 using Api.Hubs;
 using Api.Controllers;
+using Base.Persistence;
+using Core.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.Configure<LeohootSettings>(builder.Configuration.GetSection("LeohootSettings"));
 
 var app = builder.Build();
@@ -40,13 +42,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await context.Database.EnsureCreatedAsync();
-    await context.Database.MigrateAsync();
 }
 
 GameController.HubContext = app.Services.GetRequiredService<IHubContext<LeohootHub>>();

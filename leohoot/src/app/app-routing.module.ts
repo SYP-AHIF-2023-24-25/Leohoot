@@ -18,23 +18,105 @@ import {StatisticComponent} from './components/teacher-components/statistic/stat
 import {QuizOverviewComponent} from './components/teacher-components/quiz-overview/quiz-overview.component';
 import {QuestionPreviewComponent} from './components/teacher-components/question-preview/question-preview.component';
 import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
+import { AuthGuard } from './model/auth-guard';
+import { Role } from './model/leo-token';
+import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
+import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
+  { path: 'login', component: LoginViewComponent},
   { path: 'answerView', component: AnswerViewComponent },
-  { path: 'interimResult', component: InterimResultRankingComponent },
-  { path: 'ranking', component: RankingComponent },
-  { path: 'question', component: QuestionComponent },
-  { path: 'waitingroom', component: WaitingroomComponent },
-  { path: 'loadingScreen', component: LoadingScreenComponent },
-  { path: 'gameLogin', component: GameLoginComponent },
-  { path: 'gameUserLogin', component: GameUserLoginComponent },
-  { path: 'waitingPage', component: WaitingPageComponent },
-  { path: 'statistic', component: StatisticComponent },
-  { path: 'quizMaker', component: QuizMakerComponent },
-  { path: 'quizMakerQuestions', component: QuizMakerQuestionsComponent },
-  { path: 'quizOverview', component: QuizOverviewComponent },
-  { path: 'questionPreview', component: QuestionPreviewComponent },
+  { path: 'signup', component: SignupViewComponent},
+  { 
+    path: 'interimResult', 
+    component: InterimResultRankingComponent, 
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'ranking', 
+    component: RankingComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    }
+  },
+  { 
+    path: 'question', 
+    component: QuestionComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    }
+  },
+  { 
+    path: 'waitingroom', 
+    component: WaitingroomComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'loadingScreen', 
+    component: LoadingScreenComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'gameLogin', component: GameLoginComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'gameUserLogin', 
+    component: GameUserLoginComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'waitingPage', 
+    component: WaitingPageComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'statistic', 
+    component: StatisticComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'quizMaker', 
+    component: QuizMakerComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  {
+    path: 'quizMakerQuestions',
+    component: QuizMakerQuestionsComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
+  { 
+    path: 'quizOverview', 
+    component: QuizOverviewComponent,
+    //canActivate: [AuthGuard], data: { 
+    //  roles: [Role.Student]
+  },
+  { 
+    path: 'questionPreview', 
+    component: QuestionPreviewComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    } 
+  },
 ];
 
 @NgModule({

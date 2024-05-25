@@ -27,13 +27,49 @@ import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
 import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
-import { KeycloakService } from 'keycloak-angular';
 import { appConfig } from './app.config';
+import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
+import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
+import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
 
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent, QuizMakerSidebarComponent, QuizMakerSidebarItemComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule, NgxCaptureModule],
+    declarations: 
+    [
+        AppComponent, 
+        WaitingroomComponent, 
+        RankingComponent, 
+        AnswerViewComponent, 
+        QuestionComponent, 
+        InterimResultRankingComponent, 
+        LoadingScreenComponent, 
+        GameLoginComponent, 
+        GameUserLoginComponent, 
+        WaitingPageComponent, 
+        QuizMakerComponent, 
+        StatisticComponent, 
+        QuestionPreviewComponent, 
+        QuizOverviewComponent, 
+        QuizMakerQuestionsComponent, 
+        QuizMakerSidebarComponent, 
+        QuizMakerSidebarItemComponent, 
+        LoginViewComponent, 
+        SignupViewComponent,
+        ValidatePasswordDirective
+    ],
+    imports: 
+    [
+        BrowserModule, 
+        AppRoutingModule, 
+        FormsModule, 
+        QRCodeModule, 
+        NgxQrcodeStylingModule, 
+        HttpClientModule, 
+        NgApexchartsModule, 
+        CommonModule, 
+        DragDropModule, 
+        NgxCaptureModule
+    ],
     providers: [
         ...appConfig.providers
     ],

@@ -11,38 +11,42 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Core.Contracts;
 using Microsoft.Extensions.Options;
+using Core.DataTransferObjects;
+using Core.Entities;
+
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
 [ApiController]
 public class QuizController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly LeohootSettings _settings;
 
-    public QuizController(ApplicationDbContext context, IOptions<LeohootSettings> settings)
+    public QuizController(IUnitOfWork unitOfWork, IOptions<LeohootSettings> settings)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
         _settings = settings.Value;
     }
     
     [HttpGet("{quizId:int}")]
     public async Task<QuizDto?> GetQuizById(int quizId)
     {
-        return await _context.GetQuiz(quizId);
+        return await _unitOfWork.Quizzes.GetQuizDto(quizId);
     }
 
     [HttpGet]
     public async Task<List<QuizDto>> GetAllQuizzes()
     {
-        return await _context.GetAllQuizzes();
+        return await _unitOfWork.Quizzes.GetAllQuizzes();
     }
     
     [HttpPost]
     public async Task<IResult> PostNewQuiz(QuizPostDto quizDto)
     {
-        var creator = _context.Users.FirstOrDefault(u => u.Username == quizDto.Creator);
+        var creator = await _unitOfWork.Users.GetUserByUsername(quizDto.Creator);
 
         if (creator == null)
         {
@@ -73,15 +77,15 @@ public class QuizController : Controller
             ImageName = quizDto.ImageName
         };
 
-        _context.Quizzes.Add(quiz);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.Quizzes.AddAsync(quiz);
+        await _unitOfWork.SaveChangesAsync();
         return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
     }
 
     [HttpPut("{quizId:int}")]
     public async Task<IResult> UpdateQuiz(int quizId, QuizPostDto quizDto)
     {
-        var existingQuiz = await _context.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+        var existingQuiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
         if (existingQuiz == null)
         {
             return Results.NotFound("Quiz not found");
@@ -110,21 +114,21 @@ public class QuizController : Controller
             }).ToList();
         }
 
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
         return Results.Ok(existingQuiz);
     }
 
     [HttpDelete("{quizId:int}")]
     public async Task<IResult> DeleteQuiz(int quizId)
     {
-        var quiz = await _context.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
         if (quiz == null)
         {
             return Results.NotFound("Quiz not found");
         }
 
-        _context.Quizzes.Remove(quiz);
-        await _context.SaveChangesAsync();
+        _unitOfWork.Quizzes.Remove(quiz);
+        await _unitOfWork.SaveChangesAsync();
         return Results.Ok();
     }
 
@@ -132,10 +136,10 @@ public class QuizController : Controller
     public async Task<IResult> InitQuizzes()
     {
         var quizzes = Importer.ImportQuizzes();
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();
-        _context.Quizzes.AddRange(quizzes);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.DeleteDatabaseAsync();
+        await _unitOfWork.CreateDatabaseAsync();
+        await _unitOfWork.Quizzes.AddRangeAsync(quizzes);
+        await _unitOfWork.SaveChangesAsync();
         return Results.Ok();
     }
 
@@ -143,8 +147,8 @@ public class QuizController : Controller
     public async Task<IResult> UploadImage(IFormFile image)
     {
         var imageRow = new Image();
-        await _context.Images.AddAsync(imageRow);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.Images.AddAsync(imageRow);
+        await _unitOfWork.SaveChangesAsync();
 
         var nextVal = imageRow.Id.ToString().PadLeft(2, '0');
         var newImageName = $"{nextVal}_{image.FileName}";

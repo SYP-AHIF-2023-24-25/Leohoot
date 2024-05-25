@@ -7,6 +7,8 @@ import {SignalRService} from "../../../services/signalr.service";
 import {Quiz} from "../../../model/quiz";
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { KeycloakService } from 'keycloak-angular';
+import { LoginService } from 'src/app/services/login.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-quiz-overview',
@@ -16,16 +18,15 @@ import { KeycloakService } from 'keycloak-angular';
 export class QuizOverviewComponent {
   quizzes: Quiz[] = [];
   filteredQuizzes: Quiz[] = [];
-  loggedIn: boolean = false;
+  isDropdownOpen = false;
+  loggedIn = () => this.loginService.isLoggedIn();
+  protected readonly input = input;
 
-  constructor(private router: Router, private restservice: RestService, private keycloakService: KeycloakService, private signalRService: SignalRService) {
+  constructor(private router: Router, private restservice: RestService, private signalRService: SignalRService, private loginService: LoginService) {
   }
 
   async ngOnInit() {
-    this.loggedIn = this.keycloakService.isLoggedIn()
-
-    if (this.loggedIn)
-    {
+    if (this.loginService.isLoggedIn()){
       this.restservice.getAllQuizzes().subscribe((data) => {
         this.quizzes = data;
         this.filteredQuizzes = this.quizzes;
@@ -33,20 +34,12 @@ export class QuizOverviewComponent {
     }
   }
 
-  async login() {
-    console.log("login")
-    if (this.keycloakService.isLoggedIn() == false)
-    {
-      await this.keycloakService.login();
-    }
-
+  async login(loginWithKeycloak: boolean) {
+    await this.loginService.login(loginWithKeycloak);
   }
 
-  async logout(): Promise<void> {
-    if (this.loggedIn) {
-      await this.keycloakService.logout();
-    }
-    this.loggedIn = this.keycloakService.isLoggedIn()
+  async logout() {
+    await this.loginService.logout();
   }
 
   goToWaitingroom(quizId: number) {
@@ -63,8 +56,6 @@ export class QuizOverviewComponent {
     });
   }
 
-  protected readonly input = input;
-
   search(input: string) {
     if (!input) {
       this.filteredQuizzes = this.quizzes;
@@ -74,5 +65,9 @@ export class QuizOverviewComponent {
     this.filteredQuizzes = this.quizzes.filter(
       quiz => quiz?.title.toLowerCase().includes(input.toLowerCase()) || quiz?.description.toLowerCase().includes(input.toLowerCase())
     );
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }
