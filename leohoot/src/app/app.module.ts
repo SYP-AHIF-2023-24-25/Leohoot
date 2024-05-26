@@ -31,6 +31,7 @@ import { appConfig } from './app.config';
 import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
 import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
+import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { ValidatePasswordDirective } from './validatiors/validate-password.direc
         QuizMakerSidebarItemComponent, 
         LoginViewComponent, 
         SignupViewComponent,
-        ValidatePasswordDirective
+        ValidatePasswordDirective,
+        LoginOptionsComponent
     ],
     imports: 
     [

@@ -1,42 +1,20 @@
-import { KeycloakAuthGuard, KeycloakService } from "keycloak-angular";
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Injectable } from "@angular/core";
-import { jwtDecode } from "jwt-decode";
-import { createLeoUser, Role } from "./leo-token";
 
-@Injectable({
-  providedIn: "root"
-})
-export class AuthGuard extends KeycloakAuthGuard {
-  constructor(
-    router: Router,
-    keycloak: KeycloakService
-  ) {
-    super(router, keycloak);
+import { Injectable, inject } from "@angular/core";
+import {
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+  CanActivateFn, ActivatedRoute, mapToCanActivate
+} from '@angular/router';
+import { LoginService } from "../services/auth.service";
+
+export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const loginService = inject(LoginService);
+  const router = inject(Router);
+
+  if (loginService.isLoggedIn())
+  {
+    return true;
   }
-
-  public async isAccessAllowed(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ) {
-    // Force the user to log in if currently unauthenticated.
-    if (!this.authenticated) {
-      await this.keycloakAngular.login({
-        redirectUri: window.location.origin + state.url
-      });
-    }
-
-    // Get the roles required from the route.
-    const requiredRoles: Role[] = route.data["roles"];
-
-    // Allow the user to proceed if no additional roles are required to access the route.
-    if (!Array.isArray(requiredRoles) || requiredRoles.length === 0) {
-      return true;
-    }
-
-    const leoUser = await createLeoUser(this.keycloakAngular);
-
-    // Allow the user to proceed if all the required roles are present.
-    return requiredRoles.some((role) => leoUser.hasRole(role));
-  }
-}
+  return router.navigate(['/loginOptions']);
+};

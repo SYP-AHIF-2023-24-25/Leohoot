@@ -22,6 +22,7 @@ import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
 import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
 import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
+import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
@@ -29,6 +30,7 @@ export const routes: Routes = [
   { path: 'answerView', component: AnswerViewComponent },
   { path: 'signup', component: SignupViewComponent},
   { path: 'interimResult', component: InterimResultRankingComponent },
+  { path: 'loginOptions', component: LoginOptionsComponent},
   { 
     path: 'ranking', 
     component: RankingComponent,
