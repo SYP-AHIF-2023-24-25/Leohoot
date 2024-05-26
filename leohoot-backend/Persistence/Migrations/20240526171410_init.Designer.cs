@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240525150502_init")]
+    [Migration("20240526171410_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -139,6 +139,11 @@ namespace Persistence.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatorName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
                     b.Property<string>("Description")
                         .HasMaxLength(800)
                         .HasColumnType("varchar(800)");
@@ -160,8 +165,6 @@ namespace Persistence.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
 
                     b.ToTable("Quizzes");
                 });
@@ -187,6 +190,7 @@ namespace Persistence.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
                     b.Property<byte[]>("Salt")
+                        .IsRequired()
                         .HasColumnType("longblob");
 
                     b.Property<string>("Username")
@@ -222,17 +226,6 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Quiz");
-                });
-
-            modelBuilder.Entity("Core.Entities.Quiz", b =>
-                {
-                    b.HasOne("Core.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Core.Entities.Question", b =>

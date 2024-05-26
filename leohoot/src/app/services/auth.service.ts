@@ -4,8 +4,9 @@ import { BlobOptions } from "buffer";
 import { KeycloakService } from "keycloak-angular";
 import { RestService } from "./rest.service";
 import { lastValueFrom } from 'rxjs';
-import { AuthResponse } from "../model/AuthResponse";
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { AuthResponse } from "../model/auth-response";
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "../model/jwt-payload";
 
 @Injectable({
     providedIn: 'root'
@@ -69,5 +70,19 @@ export class LoginService {
         expirationDate.setUTCSeconds(decoded.exp!);
     
         return expirationDate < new Date();
+    }
+
+    getUserName(): string {
+        let token: string | null | undefined = "";
+        if (this.isLoggedInIntern())
+        {
+            token = localStorage.getItem('token');
+        } else if (this.isLoggedInKeycloak())
+        {
+            token = this.keycloakService.getKeycloakInstance().token;
+        }
+        const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
+        var username = this.isLoggedInIntern() ? decoded.username : decoded.preferred_username;
+        return username
     }
 }

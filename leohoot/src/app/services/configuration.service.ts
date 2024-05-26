@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { QuestionComponent } from '../components/teacher-components/question/question.component';
+import { LoginService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationService {
+  constructor(private loginService: LoginService) { }
   quiz: Quiz = {
     title: "",
     description: "",
-    creator: "sampleUser",
+    creator: this.loginService.getUserName(),
     questions: [],
     imageName: ""
   };

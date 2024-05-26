@@ -24,7 +24,7 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                 q.Id,
                 q.Title,
                 q.Description,
-                q.Creator!.Username,
+                q.CreatorName,
                 q.Questions
                     .Select(question => new QuestionDto
                     (
@@ -54,7 +54,7 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                 q.Id,
                 q.Title,
                 q.Description,
-                q.Creator!.Username,
+                q.CreatorName,
                 q.Questions
                     .Select(question => new QuestionDto
                     (

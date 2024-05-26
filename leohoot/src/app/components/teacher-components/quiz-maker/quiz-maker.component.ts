@@ -8,6 +8,7 @@ import { SignalRService } from 'src/app/services/signalr.service';
 import { Mode } from 'src/app/model/mode';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Quiz } from 'src/app/model/quiz';
+import { LoginService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-design-quiz',
@@ -20,7 +21,14 @@ export class QuizMakerComponent {
   description: string | undefined;
   imageUrl: string | undefined;
 
-  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService,  private configurationService: ConfigurationService) {
+  constructor(
+      private restService: RestService, 
+      private router: Router, 
+      private route: ActivatedRoute, 
+      private signalRService: SignalRService,  
+      private configurationService: ConfigurationService,
+      private loginService: LoginService
+    ) {
     this.getParams();
     this.refetchQuestions();
     this.description = this.configurationService.getQuiz().description;
@@ -87,6 +95,7 @@ export class QuizMakerComponent {
   saveQuiz() {
     this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
     const quiz = this.configurationService.getQuiz();
+    console.log(quiz);
 
     quiz.questions =  quiz.questions.map(question => ({
       ...question,

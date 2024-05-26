@@ -9,7 +9,7 @@ import { Player } from '../model/player';
 import { Statistic } from '../model/statistic';
 import { Ranking } from '../model/ranking';
 import { environment } from 'src/environments/environment.development';
-import { AuthResponse } from '../model/AuthResponse';
+import { AuthResponse } from '../model/auth-response';
 
 @Injectable({
   providedIn: 'root'

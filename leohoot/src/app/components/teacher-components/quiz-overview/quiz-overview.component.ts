@@ -23,6 +23,7 @@ export class QuizOverviewComponent {
   protected readonly input = input;
 
   constructor(private router: Router, private restservice: RestService, private signalRService: SignalRService, private loginService: LoginService) {
+    
   }
 
   async ngOnInit() {

@@ -46,19 +46,11 @@ public class QuizController : Controller
     [HttpPost]
     public async Task<IResult> PostNewQuiz(QuizPostDto quizDto)
     {
-        var creator = await _unitOfWork.Users.GetUserByUsername(quizDto.Creator);
-
-        if (creator == null)
-        {
-            Console.WriteLine("Creator not found");
-             return Results.NotFound($"/api/quizzes/");
-        }
-
         var quiz = new Quiz
         {
             Title = quizDto.Title,
             Description = quizDto.Description,
-            Creator = creator,
+            CreatorName = quizDto.Creator,
             Questions = quizDto.Questions.Select(q => new Question
             {
                 QuestionNumber = q.QuestionNumber,

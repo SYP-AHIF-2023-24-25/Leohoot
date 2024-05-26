@@ -3,7 +3,7 @@
   {
     "Title": "Demo Quiz",
     "Description": "This is a demo quiz",
-    "Creator": { "Username": "sampleUser", "Password": "sampleUser"},
+    "CreatorName": "if200148",
     "ImageName": "assets/images/hooti.png",
     "Questions": [
       {
@@ -124,7 +124,7 @@
   {
     "Title": "Difficult Math Quiz",
     "Description": "This is a challenging quiz to test your advanced math skills",
-    "Creator": { "Username": "mathgenius", "Password": "math123"},
+    "CreatorName": "if200148",
     "Questions": [
       {
         "QuestionText": "Find the derivative of f(x) = x^3 - 3x^2 + 2x - 5",

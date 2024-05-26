@@ -10,7 +10,9 @@ public class Quiz: EntityObject
     [MaxLength(800)]
     public string? Description { get; set; }
     public int CreatorId { get; set; }
-    public User? Creator { get; set; }
+    
+    [MaxLength(30)]
+    public required string CreatorName { get; set; }
     public List<Question> Questions { get; set; } = [];
     [MaxLength(256)]
     public string? ImageName { get; set; }

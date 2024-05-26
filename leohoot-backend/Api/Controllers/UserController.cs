@@ -77,7 +77,7 @@ public class UserController : Controller
             new JwtSecurityToken(
                 issuer: _jwtSettings["validIssuer"],
                 audience: _jwtSettings["validAudience"],
-                claims: new List<Claim>(){new Claim(ClaimTypes.Name, user.Username)},
+                claims: new List<Claim>(){new Claim("username", user.Username)},
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings["expiryInMinutes"])),
                 signingCredentials: signingCredentials)
        );
