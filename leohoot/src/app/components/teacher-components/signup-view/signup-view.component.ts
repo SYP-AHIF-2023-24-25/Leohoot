@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LoginService } from 'src/app/services/login.service';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-signup-view',
@@ -10,13 +11,17 @@ export class SignupViewComponent {
   password: string = "";
   confirmPassword: string = "";
 
-  constructor(private loginService: LoginService) { 
+  constructor(private loginService: LoginService, private router: Router) { 
 
   }
 
   async signup()
   {
     await this.loginService.signup({username: this.username, password: this.password});
+    if (this.loginService.isLoggedIn())
+    {
+      this.router.navigate(['/quizOverview']);
+    }
   }
 
 }

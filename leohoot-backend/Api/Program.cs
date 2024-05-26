@@ -1,14 +1,17 @@
+using System.Text;
 using Api;
 using Api.Hubs;
 using Api.Controllers;
 using Base.Persistence;
 using Core.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +25,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", b => b
         .WithOrigins("http://localhost:4200")
         .WithOrigins("http://140.238.173.82:8000")
-        .WithOrigins("http://leohoot.sophiehaider.com")
+        .WithOrigins("https://leohoot.sophiehaider.com")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
@@ -36,7 +39,30 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.Configure<LeohootSettings>(builder.Configuration.GetSection("LeohootSettings"));
 
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["validIssuer"],
+        ValidAudience = jwtSettings["validAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value!))
+    };
+});
+
 var app = builder.Build();
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

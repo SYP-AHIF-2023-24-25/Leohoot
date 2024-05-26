@@ -9,6 +9,7 @@ import { Player } from '../model/player';
 import { Statistic } from '../model/statistic';
 import { Ranking } from '../model/ranking';
 import { environment } from 'src/environments/environment.development';
+import { AuthResponse } from '../model/AuthResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -85,5 +86,13 @@ export class RestService {
   }
   getImage(imageName: string): string {
     return `${RestService.cdnUrl}images/${imageName}`;
+  }
+
+  signup(username: string, password: string): Observable<AuthResponse> {
+    return this.httpClient.post<AuthResponse>(`${RestService.apiUrl}users`, {username: username, password: password});
+  }
+
+  login(username: string, password: string): Observable<AuthResponse> {
+    return this.httpClient.put<AuthResponse>(`${RestService.apiUrl}users/login`, {username: username, password: password});
   }
 }

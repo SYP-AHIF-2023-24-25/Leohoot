@@ -40,8 +40,7 @@ namespace Persistence.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Salt = table.Column<byte[]>(type: "longblob", nullable: true),
                     RowVersion = table.Column<DateTime>(type: "timestamp(6)", rowVersion: true, nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn)
                 },
@@ -150,6 +149,12 @@ namespace Persistence.Migrations
                 name: "IX_Quizzes_CreatorId",
                 table: "Quizzes",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />

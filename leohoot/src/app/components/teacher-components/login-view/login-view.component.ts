@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { LoginService } from 'src/app/services/login.service';
+import { LoginService } from 'src/app/services/auth.service';
 import { User } from 'src/app/model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-view',
@@ -10,7 +11,7 @@ export class LoginViewComponent {
   username: string = "";
   password: string = "";
 
-  constructor(private loginService: LoginService) { 
+  constructor(private loginService: LoginService, private router: Router) { 
 
   }
 
@@ -22,5 +23,9 @@ export class LoginViewComponent {
       password: this.password
     }
     await this.loginService.login(false, user);
+    if (this.loginService.isLoggedIn())
+      {
+        this.router.navigate(['/quizOverview']);
+      }
   }
 }

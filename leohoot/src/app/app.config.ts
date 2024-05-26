@@ -30,7 +30,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
       // Prefix for the Bearer token
       bearerPrefix: 'Bearer',
       // URLs excluded from Bearer token addition (empty by default)
-      //bearerExcludedUrls: []
+      bearerExcludedUrls: [
+        "/api/.*"
+      ]
     });
 }
 

@@ -8,4 +8,5 @@ public record AnswerDto(string AnswerText, bool IsCorrect);
 public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime, string? Snapshot, bool ShowMultipleChoice);
 public record QuizDto(int Id, string Title, string? Description, string Creator, List<QuestionDto> Questions, string? ImageName);
 public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, string ImageName);
-public record UserDto(string Username, string Password, string Salt);
+public record UserDto(string Username, string Password);
+public record AuthResponseDto(bool IsAuthSuccessful, string? ErrorMessage, string? Token);

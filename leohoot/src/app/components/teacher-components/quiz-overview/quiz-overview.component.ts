@@ -7,7 +7,7 @@ import {SignalRService} from "../../../services/signalr.service";
 import {Quiz} from "../../../model/quiz";
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { KeycloakService } from 'keycloak-angular';
-import { LoginService } from 'src/app/services/login.service';
+import { LoginService } from 'src/app/services/auth.service';
 import { log } from 'console';
 
 @Component({

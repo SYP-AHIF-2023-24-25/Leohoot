@@ -25,6 +25,7 @@
     "@types/node": "^20.9.0",
     "angularx-qrcode": "^17.0.0",
     "install": "^0.13.0",
+    "jwt-decode": "^4.0.0",
     "keycloak-angular": "^15.2.1",
     "keycloak-js": "^24.0.4",
     "ng-apexcharts": "^1.8.0",

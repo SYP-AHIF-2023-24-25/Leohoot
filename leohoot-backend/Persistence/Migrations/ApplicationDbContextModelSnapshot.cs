@@ -183,9 +183,8 @@ namespace Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
-                    b.Property<string>("Salt")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("longblob");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -193,6 +192,9 @@ namespace Persistence.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

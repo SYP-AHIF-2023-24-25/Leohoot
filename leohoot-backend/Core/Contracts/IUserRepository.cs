@@ -1,4 +1,5 @@
 using Base.Core.Contracts;
+using Core.DataTransferObjects;
 using Core.Entities;
 
 namespace Core.Contracts;
