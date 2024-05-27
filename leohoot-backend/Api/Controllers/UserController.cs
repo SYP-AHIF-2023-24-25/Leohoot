@@ -31,13 +31,10 @@ public class UserController : Controller
     [HttpPost]
     public async Task<AuthResponseDto> AddNewUser(UserDto userDto)
     {
-        byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-        var hashedPassword = HashPassword(userDto.Password, salt);
         var user = new User
         {
             Username = userDto.Username,
-            Password = hashedPassword,
-            Salt = salt
+            Password = userDto.Password
         };
         try
         {
@@ -48,26 +45,24 @@ public class UserController : Controller
         {
             return new AuthResponseDto(false, "This username already exists", null);
         }
-        return new AuthResponseDto(true, null, GenerateToken(user));
+        return new AuthResponseDto(true, null, GenerateToken(userDto));
     }
 
     [HttpPut("login")]
-    public async Task<AuthResponseDto> Login(UserDto userDto)
+    public AuthResponseDto Login(UserDto userDto)
     {
-        var user = await _unitOfWork.Users.GetUserByUsername(userDto.Username);
-        if (user != null)
-        {
-            var hashedPassword = HashPassword(userDto.Password, user.Salt);
-            if (user.Password == hashedPassword)
-            {
-                var token = GenerateToken(user);
-                return new AuthResponseDto(true, null, token);
-            }
-        }
-        return new AuthResponseDto(false, "Wrong password or username!", null);
+        var token = GenerateToken(userDto);
+        return new AuthResponseDto(true, null, token);
     }
 
-    private string? GenerateToken(User user)
+    [HttpGet("{username}")]
+    public async Task<User?> GetUser(string username)
+    {
+        var user = await _unitOfWork.Users.GetUserByUsername(username);
+        return user;
+    }
+
+    private string? GenerateToken(UserDto user)
     {
         var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value!);
         var secret = new SymmetricSecurityKey(key);
@@ -81,16 +76,5 @@ public class UserController : Controller
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings["expiryInMinutes"])),
                 signingCredentials: signingCredentials)
        );
-    }
-
-    private string HashPassword(string password, byte[] salt)
-    {
-        return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8)
-        );
     }
 }

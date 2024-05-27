@@ -8,6 +8,7 @@ import { AuthResponse } from "../model/auth-response";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "../model/jwt-payload";
 import { Router } from "@angular/router";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable({
     providedIn: 'root'
@@ -30,12 +31,17 @@ export class LoginService {
             await this.router.navigate(['/quizOverview']);
             await this.keycloakService.login();
         } else if (!loginWithKeycloak && !this.isLoggedInIntern()) {
-            const response: AuthResponse = await lastValueFrom(this.restService.login(user!.username, user!.password));
-            if (!response.isAuthSuccessful) {
-                alert(response.errorMessage);
-            } else {
-                localStorage.setItem('token', response.token);
-            }
+            this.restService.getUser(user!.username).subscribe(async data => {
+                const isAuthorized = await bcrypt.compare(user!.password, data.password);
+                if (!isAuthorized)
+                {
+                    alert("Password or Username are wrong!");
+                } else {
+                    const response: AuthResponse = await lastValueFrom(this.restService.login(user!.username, user!.password));
+                    localStorage.setItem('token', response.token);
+                    await this.router.navigate(['/quizOverview']);
+                }
+            });
         }
     }
 
@@ -53,7 +59,9 @@ export class LoginService {
 
     async signup(user: User): Promise<void>
     {
-        const response: AuthResponse = await lastValueFrom(this.restService.signup(user.username, user.password));
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(user.password, salt);
+        const response: AuthResponse = await lastValueFrom(this.restService.signup(user.username, hashedPassword));
         if (!response.isAuthSuccessful) {
             alert("Username already exists");
         } else {

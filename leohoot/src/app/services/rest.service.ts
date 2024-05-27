@@ -10,6 +10,7 @@ import { Statistic } from '../model/statistic';
 import { Ranking } from '../model/ranking';
 import { environment } from 'src/environments/environment.development';
 import { AuthResponse } from '../model/auth-response';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -94,5 +95,9 @@ export class RestService {
 
   login(username: string, password: string): Observable<AuthResponse> {
     return this.httpClient.put<AuthResponse>(`${RestService.apiUrl}users/login`, {username: username, password: password});
+  }
+
+  getUser(username: string): Observable<User> {
+    return this.httpClient.get<User>(`${RestService.apiUrl}users/${username}`);
   }
 }
