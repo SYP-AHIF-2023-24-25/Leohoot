@@ -41,6 +41,9 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                         question.Snapshot ?? string.Empty,
                         question.ShowMultipleChoice ?? false
                     )).ToList(),
+                q.Tags
+                    .Select(tag => new TagDto(tag.Name))
+                    .ToList(),
                 q.ImageName
             ))
             .ToListAsync();
@@ -71,6 +74,9 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                         question.Snapshot,
                         question.ShowMultipleChoice ?? false
                     )).ToList(),
+                q.Tags
+                    .Select(tag => new TagDto(tag.Name))
+                    .ToList(),
                 q.ImageName
             ))
             .SingleOrDefaultAsync();

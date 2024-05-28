@@ -19,6 +19,8 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; init; }
     public DbSet<Image> Images { get; init;}
 
+    public DbSet<Tag> Tags { get; init; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
     }

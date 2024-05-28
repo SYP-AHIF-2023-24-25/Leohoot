@@ -166,6 +166,35 @@ namespace Persistence.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("Core.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("QuizId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -221,6 +250,13 @@ namespace Persistence.Migrations
                     b.Navigation("Quiz");
                 });
 
+            modelBuilder.Entity("Core.Entities.Tag", b =>
+                {
+                    b.HasOne("Core.Entities.Quiz", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("QuizId");
+                });
+
             modelBuilder.Entity("Core.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -229,6 +265,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

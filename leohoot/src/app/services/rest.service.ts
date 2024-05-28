@@ -11,6 +11,7 @@ import { Ranking } from '../model/ranking';
 import { environment } from 'src/environments/environment.development';
 import { AuthResponse } from '../model/auth-response';
 import { User } from '../model/user';
+import { Tag } from '../model/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,34 @@ export class RestService {
   }
   getImage(imageName: string): string {
     return `${RestService.cdnUrl}images/${imageName}`;
+  }
+
+  getAllTags(): Observable<Tag[]> {
+    return this.httpClient.get<Tag[]>(`${RestService.apiUrl}quizzes/tags`);
+  }
+
+  getTagByName(name: string): Observable<Tag> {
+    return this.httpClient.get<Tag>(`${RestService.apiUrl}quizzes/tags/${name}`);
+  }
+
+  addTag(tag: Tag): Observable<void> {
+    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/tags`, tag);
+  }
+
+  deleteTag(name: string): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/tags/${name}`);
+  }
+
+  getTagsByQuizId(quizId: number): Observable<Tag[]> {
+    return this.httpClient.get<Tag[]>(`${RestService.apiUrl}quizzes/${quizId}/tags`);
+  }
+
+  addTagToQuiz(quizId: number, tagName: string): Observable<void> {
+    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/tags/`, tagName);
+  }
+
+  removeTagFromQuiz(quizId: number, tagName: string): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/${quizId}/tags/${tagName}`);
   }
 
   signup(username: string, password: string): Observable<AuthResponse> {

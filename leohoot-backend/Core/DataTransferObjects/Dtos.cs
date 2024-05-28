@@ -6,7 +6,8 @@ public record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary
 public record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
 public record AnswerDto(string AnswerText, bool IsCorrect);
 public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime, string? Snapshot, bool ShowMultipleChoice);
-public record QuizDto(int Id, string Title, string? Description, string Creator, List<QuestionDto> Questions, string? ImageName);
-public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, string ImageName);
+public record QuizDto(int Id, string Title, string? Description, string Creator, List<QuestionDto> Questions, List<TagDto> Tags, string? ImageName);
+public record QuizPostDto(string Title, string Description, string Creator, List<QuestionDto> Questions, List<TagDto> Tags, string ImageName);
 public record UserDto(string Username, string Password);
+public record TagDto(string Name);
 public record AuthResponseDto(bool IsAuthSuccessful, string? ErrorMessage, string? Token);
