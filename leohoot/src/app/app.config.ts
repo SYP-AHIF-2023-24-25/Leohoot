@@ -5,6 +5,7 @@ import { routes } from './app-routing.module';
 import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 // Function to initialize Keycloak with the necessary configurations
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -51,6 +52,12 @@ const KeycloakInitializerProvider: Provider = {
   deps: [KeycloakService]
 }
 
+const AuthInterceptorProvider: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: AuthInterceptorService,
+  multi: true
+};
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()), // Provides HttpClient with interceptors
@@ -58,6 +65,7 @@ export const appConfig: ApplicationConfig = {
     KeycloakBearerInterceptorProvider, // Provides Keycloak Bearer Interceptor
     KeycloakService, // Service for Keycloak
     provideRouter(routes),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    AuthInterceptorProvider
   ]
 };

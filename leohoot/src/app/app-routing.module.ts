@@ -77,7 +77,13 @@ export const routes: Routes = [
       roles: [Role.Student]
     } 
   },
-  { path: 'quizOverview', component: QuizOverviewComponent },
+  { 
+    path: 'quizOverview', 
+    component: QuizOverviewComponent,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Student]
+    }
+  },
   { 
     path: 'questionPreview', 
     component: QuestionPreviewComponent,

@@ -25,7 +25,7 @@ public class UserController : Controller
     public UserController(IUnitOfWork unitOfWork, IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
-        _jwtSettings = configuration.GetSection("JwtSettings");
+        _jwtSettings = configuration.GetSection("JwtSettingsIntern");
     }
 
     [HttpPost]
@@ -89,7 +89,7 @@ public class UserController : Controller
             password: password,
             salt: salt,
             prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
+            iterationCount: 300000,
             numBytesRequested: 256 / 8)
         );
     }

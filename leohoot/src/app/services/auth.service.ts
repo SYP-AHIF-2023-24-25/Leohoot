@@ -74,15 +74,19 @@ export class LoginService {
         return expirationDate < new Date();
     }
 
-    getUserName(): string {
-        let token: string | null | undefined = "";
+    getToken(): string | null | undefined{
         if (this.isLoggedInIntern())
         {
-            token = localStorage.getItem('token');
+            return localStorage.getItem('token');
         } else if (this.isLoggedInKeycloak())
         {
-            token = this.keycloakService.getKeycloakInstance().token;
+            return this.keycloakService.getKeycloakInstance().token;
         }
+        return null;
+    }
+
+    getUserName(): string {
+        let token: string | null | undefined = this.getToken();
         const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
         var username = this.isLoggedInIntern() ? decoded.username : decoded.preferred_username;
         return username

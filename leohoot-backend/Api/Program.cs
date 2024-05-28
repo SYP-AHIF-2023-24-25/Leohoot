@@ -39,24 +39,36 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.Configure<LeohootSettings>(builder.Configuration.GetSection("LeohootSettings"));
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var jwtSettingsIntern = builder.Configuration.GetSection("JwtSettingsIntern");
+var jwtSettingsKeycloak = builder.Configuration.GetSection("JwtSettingsKeycloak");
 builder.Services.AddAuthentication(opt =>
-{
-    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["validIssuer"],
-        ValidAudience = jwtSettings["validAudience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value!))
-    };
-});
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })/*.AddJwtBearer("Intern", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettingsIntern["validIssuer"],
+            ValidAudience = jwtSettingsIntern["validAudience"],
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettingsIntern.GetSection("securityKey").Value!))
+        };
+    })*/.AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = false,
+            ValidIssuer = jwtSettingsKeycloak["validIssuer"]
+        };
+    });
 
 var app = builder.Build();
 
