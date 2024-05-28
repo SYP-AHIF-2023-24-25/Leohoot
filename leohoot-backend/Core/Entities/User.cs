@@ -12,4 +12,6 @@ public class User: EntityObject
     public required string Username { get; set; }
     [MaxLength(256)]
     public required string Password { get; set; }
+    
+    public required byte[] Salt { get; set; }
 }

@@ -31,17 +31,12 @@ export class LoginService {
             await this.router.navigate(['/quizOverview']);
             await this.keycloakService.login();
         } else if (!loginWithKeycloak && !this.isLoggedInIntern()) {
-            this.restService.getUser(user!.username).subscribe(async data => {
-                const isAuthorized = await bcrypt.compare(user!.password, data.password);
-                if (!isAuthorized)
-                {
-                    alert("Password or Username are wrong!");
-                } else {
-                    const response: AuthResponse = await lastValueFrom(this.restService.login(user!.username, user!.password));
-                    localStorage.setItem('token', response.token);
-                    await this.router.navigate(['/quizOverview']);
-                }
-            });
+          const response: AuthResponse = await lastValueFrom(this.restService.login(user!.username, user!.password));
+          if (!response.isAuthSuccessful) {
+            alert(response.errorMessage);
+          } else {
+            localStorage.setItem('token', response.token);
+          }
         }
     }
 
@@ -59,14 +54,12 @@ export class LoginService {
 
     async signup(user: User): Promise<void>
     {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(user.password, salt);
-        const response: AuthResponse = await lastValueFrom(this.restService.signup(user.username, hashedPassword));
-        if (!response.isAuthSuccessful) {
-            alert("Username already exists");
-        } else {
-            localStorage.setItem('token', response.token);
-        }
+      const response: AuthResponse = await lastValueFrom(this.restService.signup(user.username, user.password));
+      if (!response.isAuthSuccessful) {
+        alert("Username already exists");
+      } else {
+        localStorage.setItem('token', response.token);
+      }
     }
 
     public isInternTokenExpired(): boolean {
@@ -74,11 +67,11 @@ export class LoginService {
         if (!token) {
           return true;
         }
-    
+
         const decoded: JwtPayload = jwtDecode(token);
         const expirationDate = new Date(0);
         expirationDate.setUTCSeconds(decoded.exp!);
-    
+
         return expirationDate < new Date();
     }
 
