@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240526171410_init")]
+    [Migration("20240527072444_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -188,10 +188,6 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp(6)");
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
-
-                    b.Property<byte[]>("Salt")
-                        .IsRequired()
-                        .HasColumnType("longblob");
 
                     b.Property<string>("Username")
                         .IsRequired()
