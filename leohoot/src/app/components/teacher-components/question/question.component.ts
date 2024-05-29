@@ -71,11 +71,9 @@ export class QuestionComponent {
       this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
         this.currentQuestion = response;
         this.correctAnswersCount = this.currentQuestion.answers.filter(answer => answer.isCorrect).length;
-        this.currentQuestion.answers = this.currentQuestion.answers.sort(() => Math.random() - 0.5);
         this.startTimer();
       });
     });
-    console.log(this.currentQuestion.imageName);
   }
 
   startTimer() {

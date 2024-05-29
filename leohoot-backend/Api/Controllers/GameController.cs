@@ -133,6 +133,22 @@ public class GameController : Controller
         }
         game.ClearCurrentAnswers();
         var nextQuestion = game.Quiz.Questions.SingleOrDefault(q => q.QuestionNumber == game.CurrentQuestion!.QuestionNumber + 1);
+        
+        if (nextQuestion != null)
+        {
+            var shuffledAnswers = nextQuestion.Answers.OrderBy(a => Guid.NewGuid()).ToList();
+            nextQuestion = new QuestionDto(
+                nextQuestion.QuestionNumber, 
+                nextQuestion.QuestionText, 
+                nextQuestion.AnswerTimeInSeconds, 
+                shuffledAnswers, 
+                nextQuestion.ImageName, 
+                nextQuestion.PreviewTime,
+                nextQuestion.Snapshot,
+                nextQuestion.ShowMultipleChoice
+            );
+        }
+
         game.CurrentQuestion = nextQuestion!;
         await _unitOfWork.SaveChangesAsync();
             
