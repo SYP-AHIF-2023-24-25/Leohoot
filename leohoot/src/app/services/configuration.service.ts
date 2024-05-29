@@ -14,7 +14,8 @@ export class ConfigurationService {
     description: "",
     creator: this.loginService.getUserName(),
     questions: [],
-    imageName: ""
+    imageName: "",
+    tags: []
   };
 
   updateQuestion(question: QuestionTeacher) {
@@ -52,6 +53,7 @@ export class ConfigurationService {
     this.quiz.description = quiz.description;
     this.quiz.questions = quiz.questions;
     this.quiz.imageName = quiz.imageName;
+    this.quiz.tags = quiz.tags;
   }
 
   deleteQuestion(questionId: number) {
@@ -67,7 +69,8 @@ export class ConfigurationService {
       description: "",
       creator: "sampleUser",
       questions: [],
-      imageName: ""
+      imageName: "",
+      tags: []
     };
   }
 }

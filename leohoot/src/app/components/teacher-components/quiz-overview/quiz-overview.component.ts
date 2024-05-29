@@ -29,6 +29,7 @@ export class QuizOverviewComponent {
   async ngOnInit() {
     if (this.loginService.isLoggedIn()){
       this.restservice.getAllQuizzes().subscribe((data) => {
+        console.log(data);
         this.quizzes = data;
         this.filteredQuizzes = this.quizzes;
       });
