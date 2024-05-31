@@ -17,8 +17,31 @@ export class QuestionPreviewComponent {
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
 
+  connectionSubscription: Subscription;
+  gameCanceled: boolean = true;
+
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    
+    this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
+      {
+        alert("Delete Game (Connection Closed)");
+        this.deleteGame();
+      } );
+  }
+
+  deleteGame() {
+    this.connectionSubscription.unsubscribe();
+
+    if (this.gameCanceled) {
+      this.signalRService.connection.send("gameEnded", this.gameId);
+
+      this.restservice.deleteGame(this.gameId).subscribe(() => {
+        this.router.navigate(['/quizOverview']);
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.deleteGame();
   }
 
   ngOnInit() {
@@ -41,6 +64,7 @@ export class QuestionPreviewComponent {
       if (
         currTime == this.question.previewTime
       ) {
+        this.gameCanceled = false;
         this.obsTimer.unsubscribe();
         this.signalRService.connection.send("sendToNextQuestion", this.gameId);
         this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});

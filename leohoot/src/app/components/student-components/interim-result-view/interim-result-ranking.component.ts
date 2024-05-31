@@ -44,8 +44,15 @@ export class InterimResultRankingComponent {
         };
         this.router.navigate(['/answerView'], { queryParams });
       }
-
     });
+
+    this.signalRService.connection.on("gameEnded", (gameId: number) => {
+      if (gameId == this.gameId) {
+        alert("Game was canceled by the teacher");
+        this.router.navigate(['/gameLogin'], { queryParams: { gameId: this.gameId } });
+      }
+    });
+
     this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
       this.question = data;
    } );

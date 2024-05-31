@@ -41,6 +41,13 @@ export class AnswerViewComponent {
         this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
       }
     });
+
+    this.signalRService.connection.on("gameEnded", (gameId: number) => {
+      if (gameId == this.gameId) {
+        alert("Game was canceled by the teacher");
+        this.router.navigate(['/gameLogin'], { queryParams: { gameId: this.gameId } });
+      }
+    });
   }
 
   getParams() {
