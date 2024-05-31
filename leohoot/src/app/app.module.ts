@@ -73,7 +73,7 @@ import { LoginOptionsComponent } from './components/teacher-components/login-opt
         NgxCaptureModule
     ],
     providers: [
-        ...appConfig.providers
+        ...appConfig.providers,
     ],
     bootstrap: [AppComponent],
 })

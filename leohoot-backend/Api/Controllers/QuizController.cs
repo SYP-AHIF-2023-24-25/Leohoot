@@ -15,10 +15,12 @@ using Core.Contracts;
 using Microsoft.Extensions.Options;
 using Core.DataTransferObjects;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
+//[Authorize]
 [ApiController]
 public class QuizController : Controller
 {

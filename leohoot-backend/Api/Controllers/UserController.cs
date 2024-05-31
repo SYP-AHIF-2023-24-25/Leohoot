@@ -25,16 +25,19 @@ public class UserController : Controller
     public UserController(IUnitOfWork unitOfWork, IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
-        _jwtSettings = configuration.GetSection("JwtSettings");
+        _jwtSettings = configuration.GetSection("JwtSettingsIntern");
     }
 
     [HttpPost]
     public async Task<AuthResponseDto> AddNewUser(UserDto userDto)
     {
+        byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
+        var hashedPassword = HashPassword(userDto.Password, salt);
         var user = new User
         {
             Username = userDto.Username,
-            Password = userDto.Password
+            Password = hashedPassword,
+            Salt = salt
         };
         try
         {
@@ -45,24 +48,26 @@ public class UserController : Controller
         {
             return new AuthResponseDto(false, "This username already exists", null);
         }
-        return new AuthResponseDto(true, null, GenerateToken(userDto));
+        return new AuthResponseDto(true, null, GenerateToken(user));
     }
 
     [HttpPut("login")]
-    public AuthResponseDto Login(UserDto userDto)
+    public async Task<AuthResponseDto> Login(UserDto userDto)
     {
-        var token = GenerateToken(userDto);
-        return new AuthResponseDto(true, null, token);
+        var user = await _unitOfWork.Users.GetUserByUsername(userDto.Username);
+        if (user != null)
+        {
+            var hashedPassword = HashPassword(userDto.Password, user.Salt);
+            if (user.Password == hashedPassword)
+            {
+                var token = GenerateToken(user);
+                return new AuthResponseDto(true, null, token);
+            }
+        }
+        return new AuthResponseDto(false, "Wrong password or username!", null);
     }
 
-    [HttpGet("{username}")]
-    public async Task<User?> GetUser(string username)
-    {
-        var user = await _unitOfWork.Users.GetUserByUsername(username);
-        return user;
-    }
-
-    private string? GenerateToken(UserDto user)
+    private string? GenerateToken(User user)
     {
         var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value!);
         var secret = new SymmetricSecurityKey(key);
@@ -76,5 +81,16 @@ public class UserController : Controller
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings["expiryInMinutes"])),
                 signingCredentials: signingCredentials)
        );
+    }
+
+    private string HashPassword(string password, byte[] salt)
+    {
+        return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 300000,
+            numBytesRequested: 256 / 8)
+        );
     }
 }
