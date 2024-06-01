@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { Mode } from '../../../model/mode';
@@ -85,6 +85,12 @@ export class QuestionComponent {
   ngOnDestroy(): void {
     this.deleteGame();
   }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
+    this.deleteGame();
+  }
+
 
   getParams() {
     this.route.queryParams.subscribe(params => {

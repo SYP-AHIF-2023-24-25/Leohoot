@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Mode } from '../../../model/mode';
 import { User } from '../../../model/user';
@@ -49,6 +49,11 @@ export class RankingComponent {
   }
 
   ngOnDestroy(): void {
+    this.deleteGame();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
     this.deleteGame();
   }
 

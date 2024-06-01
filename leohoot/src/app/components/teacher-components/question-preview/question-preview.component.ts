@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {QuestionTeacher} from "../../../model/question-teacher";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../../services/rest.service";
@@ -47,6 +47,11 @@ export class QuestionPreviewComponent {
 
   ngOnInit() {
     this.getParams();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
+    this.deleteGame();
   }
 
   getParams() {
