@@ -50,9 +50,9 @@ export class QuestionComponent {
 
       this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
       {
-        alert("Delete Game (Connection Closed)");
+        alert("Ending Game (No Players left)");
         this.deleteGame();
-      } );
+      });
   }
 
   ngOnInit(): void {
@@ -71,9 +71,10 @@ export class QuestionComponent {
   deleteGame() {
     clearTimeout(this.questionTimeout);
     this.connectionSubscription.unsubscribe();
+    this.obsTimer.unsubscribe();
 
     if (this.gameCanceled) {
-      this.signalRService.connection.send("gameEnded", this.gameId);
+      this.signalRService.connection.send("cancelGame", this.gameId);
 
       this.restservice.deleteGame(this.gameId).subscribe(() => {
         this.router.navigate(['/quizOverview']);

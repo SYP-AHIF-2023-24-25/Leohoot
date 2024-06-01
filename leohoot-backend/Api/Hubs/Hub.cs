@@ -34,4 +34,9 @@ public class LeohootHub : Hub
     public async Task SendToNextQuestion(int gameId){
         await Clients.All.SendAsync("nextQuestion", gameId);
     }
+
+    public async Task CancelGame(int gameId)
+    {
+        await Clients.All.SendAsync("gameEnded", gameId);
+    }
 }

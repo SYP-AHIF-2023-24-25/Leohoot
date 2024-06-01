@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SignalRService } from '../../../services/signalr.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-student-waiting-page',
@@ -10,6 +11,7 @@ export class WaitingPageComponent {
   gameId!: number;
   points: number = 0;
   username: string = sessionStorage.getItem("username") || "test";
+  gameEndedSubscription: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
     this.route.queryParams.subscribe(params => {
@@ -22,5 +24,17 @@ export class WaitingPageComponent {
         });
       }
     });
+
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+      if (gameId === this.gameId) {
+        alert("Game was canceled by the teacher");
+        this.router.navigate(['/gameLogin']);
+      }
+    });
+  }
+
+    
+  ngOnDestroy() {
+    this.gameEndedSubscription.unsubscribe();
   }
 }

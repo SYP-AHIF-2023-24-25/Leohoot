@@ -10,7 +10,7 @@ export class SignalRService {
   connection!: signalR.HubConnection;
   connectionClosedSubject = new Subject<void>();
   connectionClosed$: Observable<void> = this.connectionClosedSubject.asObservable();
-
+  gameEnded$ = new Subject<number>();
 
   constructor() {
     this.buildConnection();
@@ -24,8 +24,11 @@ export class SignalRService {
     this.connection.onclose((error) => {
       this.connectionClosedSubject.next();
     });
-  
 
+    this.connection.on("gameEnded", (gameId: number) => {
+      this.gameEnded$.next(gameId);
+    });
+  
     this.connection.start()
       .then(() => {
         console.log("Connection started");
