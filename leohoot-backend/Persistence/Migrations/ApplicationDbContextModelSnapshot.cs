@@ -215,6 +215,10 @@ namespace Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(30)

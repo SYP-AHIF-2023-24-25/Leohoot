@@ -67,7 +67,7 @@ export class ConfigurationService {
     this.quiz = {
       title: "",
       description: "",
-      creator: "sampleUser",
+      creator: this.loginService.getUserName(),
       questions: [],
       imageName: "",
       tags: []

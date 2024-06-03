@@ -19,7 +19,7 @@ export class LoginService {
 
     isLoggedIn = () => this.isLoggedInIntern() || this.isLoggedInKeycloak();
 
-    constructor(private keycloakService: KeycloakService, private restService: RestService, private router: Router)
+    constructor(private keycloakService: KeycloakService, private restService: RestService)
     {
 
     }
@@ -28,8 +28,7 @@ export class LoginService {
     {
         if (loginWithKeycloak && !this.isLoggedInKeycloak())
         {
-            await this.router.navigate(['/quizOverview']);
-            await this.keycloakService.login();
+          await this.keycloakService.login();
         } else if (!loginWithKeycloak && !this.isLoggedInIntern()) {
           const response: AuthResponse = await lastValueFrom(this.restService.login(user!.username, user!.password));
           if (!response.isAuthSuccessful) {

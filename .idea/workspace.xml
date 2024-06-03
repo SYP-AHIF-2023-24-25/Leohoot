@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b33f556-65f6-44ac-8511-5ef4eed100ca" name="Changes" comment="Merged remote into local">
-      <change beforePath="$PROJECT_DIR$/leohoot/src/app/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/leohoot/src/app/services/auth.service.ts" afterDir="false" />
-    </list>
+    <list default="true" id="9b33f556-65f6-44ac-8511-5ef4eed100ca" name="Changes" comment="Merged remote into local" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,23 +24,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "sophie",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/sophiehaider/Documents/Schule/HTL-Leonding-4/Repos/SYP/Leohoot",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/sophiehaider/Documents/Schule/HTL-Leonding-4/Repos/SYP/Leohoot/leohoot/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;sophie&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sophiehaider/Documents/Schule/HTL-Leonding-4/Repos/SYP/Leohoot&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/sophiehaider/Documents/Schule/HTL-Leonding-4/Repos/SYP/Leohoot/leohoot/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -49,7 +50,7 @@
       <option name="presentableId" value="Default" />
       <updated>1708962916231</updated>
       <workItem from="1708962917188" duration="109000" />
-      <workItem from="1716902595899" duration="395000" />
+      <workItem from="1716902595899" duration="597000" />
     </task>
     <task id="LOCAL-00001" summary="Merged remote into local">
       <option name="closed" value="true" />
