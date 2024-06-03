@@ -32,7 +32,10 @@ import { LoginViewComponent } from './components/teacher-components/login-view/l
 import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
 import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: 
@@ -70,10 +73,14 @@ import { LoginOptionsComponent } from './components/teacher-components/login-opt
         NgApexchartsModule, 
         CommonModule, 
         DragDropModule, 
-        NgxCaptureModule
+        NgxCaptureModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        BrowserAnimationsModule
     ],
     providers: [
         ...appConfig.providers,
+        provideAnimationsAsync(),
     ],
     bootstrap: [AppComponent],
 })

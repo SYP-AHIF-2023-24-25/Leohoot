@@ -10,6 +10,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
 
+
 @Component({
   selector: 'app-design-quiz',
   templateUrl: './quiz-maker.component.html'
@@ -208,5 +209,28 @@ export class QuizMakerComponent {
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  isDropdownVisible = false;
+
+  items = [
+    { id: 'checkbox-item-4', label: 'Default checkbox', checked: false },
+    { id: 'checkbox-item-5', label: 'Checked state', checked: true },
+    { id: 'checkbox-item-6', label: 'Default checkbox', checked: false },
+  ];
+
+  toggleDropdown() {
+    this.isDropdownVisible = !this.isDropdownVisible;
+  }
+
+  tags = ['Tag1', 'Tag2', 'Tag3'];
+  selectedTags = [];
+
+  newTag: string = '';
+
+  addTag() {
+    if (this.newTag && !this.tags.includes(this.newTag)) {
+      this.tags.push(this.newTag);
+    }
   }
 }
