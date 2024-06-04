@@ -68,7 +68,9 @@ export class QuizMakerComponent {
                 }
               }
             });
-            
+
+            console.log(quiz);
+
             this.configurationService.setQuiz(quiz);
 
             this.title = this.configurationService.getQuiz().title;
@@ -77,6 +79,8 @@ export class QuizMakerComponent {
 
             this.imageUrl = this.configurationService.getQuiz().imageName;
             this.selectedTags = this.configurationService.getQuiz().tags;
+
+            console.log(this.selectedTags);
           });
         }
       }
@@ -249,9 +253,7 @@ export class QuizMakerComponent {
     this.tags = [];
     this.restService.getAllTags().subscribe(data => {
       data.forEach((i) => {
-        let currentTag = this.selectedTags.find(item => item.name === i.name);
-  
-        if (currentTag) {
+        if (this.selectedTags.find(item => item.name === i.name)) {
           this.tags.push({ tag: i, checked: true });
         } else {
           this.tags.push({ tag: i, checked: false });
