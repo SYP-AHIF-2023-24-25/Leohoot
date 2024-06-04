@@ -12,14 +12,10 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:leohoot-backend/Persistence/Migrations/20240603060739_init.Designer.cs
-    [Migration("20240603060739_init")]
-    partial class init
-========
+
     [Migration("20240604193627_InitialCreate")]
     partial class InitialCreate
->>>>>>>> victoria:leohoot-backend/Persistence/Migrations/20240604193627_InitialCreate.Designer.cs
-    {
+        {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
