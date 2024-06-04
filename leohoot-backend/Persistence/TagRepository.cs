@@ -23,6 +23,7 @@ public class TagRepository: GenericRepository<Tag>, ITagRepository
     public async Task<List<TagDto>> GetAllTagsAsync()
     {
         return await _tags
+                        .OrderBy(tag => tag.Name)   
                         .Select(tag => new TagDto(tag.Name))
                         .ToListAsync();
     }
