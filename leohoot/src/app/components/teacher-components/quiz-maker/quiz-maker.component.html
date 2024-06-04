@@ -163,7 +163,11 @@
                                 <input name="description" type="description" placeholder="Description" [(ngModel)]="description" required class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center placeholder:text-base focus:ring-2 focus:ring-inset">
                               </div> 
                             </form>  
-                            <div class="mx-9 mt-3">  
+                            <div class="mx-9 mt-5">
+                              <p class="text-sm text-white">*Answers will be stored in a random order, changing with each game.</p>
+                              <p class="text-sm text-white">*Always save your changes before playing the demo view.</p>
+                            </div>
+                            <div class="mx-9 mt-3 absolute">  
                               <button (click)="toggleDropdown()" class="text-white w-52 bg-hooti-yellow focus:ring-4 focus:outline-none rounded-lg text-lg px-5 py-2.5 text-center inline-flex items-center" type="button">
                                 Add Tags
                                 <svg class="w-2.5 h-2.5 ml-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -192,10 +196,6 @@
                                   </button>
                                 </div>      
                               </div>
-                            </div>
-                            <div class="mx-9 mt-5">
-                              <p class="text-sm text-white">*Answers will be stored in a random order, changing with each game.</p>
-                              <p class="text-sm text-white">*Always save your changes before playing the demo view.</p>
                             </div>
                           </div>
                           <div *ngIf="!imageUrl" class="flex ">

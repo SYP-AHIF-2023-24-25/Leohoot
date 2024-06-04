@@ -68,9 +68,7 @@ export class QuizMakerComponent {
                 }
               }
             });
-
-            console.log(quiz);
-
+            
             this.configurationService.setQuiz(quiz);
 
             this.title = this.configurationService.getQuiz().title;
@@ -79,8 +77,6 @@ export class QuizMakerComponent {
 
             this.imageUrl = this.configurationService.getQuiz().imageName;
             this.selectedTags = this.configurationService.getQuiz().tags;
-
-            console.log(this.selectedTags);
           });
         }
       }
