@@ -147,11 +147,7 @@ public class QuizController : Controller
         {
             return Results.NotFound("Quiz not found");
         }
-
-        var tags = quiz.Tags.ToList();
-
-        tags.ForEach(tag => tag.QuizId = null);
-
+        
         _unitOfWork.Quizzes.Remove(quiz);
         await _unitOfWork.SaveChangesAsync();
 

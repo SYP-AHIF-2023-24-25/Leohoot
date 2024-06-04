@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240528142347_init")]
-    partial class init
+    [Migration("20240604193627_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -181,9 +181,6 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("QuizId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -192,8 +189,6 @@ namespace Persistence.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuizId");
 
                     b.ToTable("Tags");
                 });
@@ -218,6 +213,10 @@ namespace Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -229,6 +228,21 @@ namespace Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("QuizTag", b =>
+                {
+                    b.Property<int>("QuizzesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("QuizzesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("QuizTag", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Answer", b =>
@@ -253,11 +267,19 @@ namespace Persistence.Migrations
                     b.Navigation("Quiz");
                 });
 
-            modelBuilder.Entity("Core.Entities.Tag", b =>
+            modelBuilder.Entity("QuizTag", b =>
                 {
                     b.HasOne("Core.Entities.Quiz", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("QuizId");
+                        .WithMany()
+                        .HasForeignKey("QuizzesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.Question", b =>
@@ -268,8 +290,6 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
-
-                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

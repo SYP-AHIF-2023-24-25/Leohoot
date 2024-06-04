@@ -37,4 +37,12 @@ public sealed class ApplicationDbContext : DbContext
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
     }
+
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Quiz>()
+            .HasMany(q => q.Tags)
+            .WithMany(t => t.Quizzes)
+            .UsingEntity(j => j.ToTable("QuizTag"));
+    }
 }
