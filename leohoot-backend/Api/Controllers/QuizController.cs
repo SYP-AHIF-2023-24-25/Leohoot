@@ -142,14 +142,19 @@ public class QuizController : Controller
     [HttpDelete("{quizId:int}")]
     public async Task<IResult> DeleteQuiz(int quizId)
     {
-        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+       var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
         if (quiz == null)
         {
             return Results.NotFound("Quiz not found");
         }
 
+        var tags = quiz.Tags.ToList();
+
+        tags.ForEach(tag => tag.QuizId = null);
+
         _unitOfWork.Quizzes.Remove(quiz);
         await _unitOfWork.SaveChangesAsync();
+
         return Results.Ok();
     }
 

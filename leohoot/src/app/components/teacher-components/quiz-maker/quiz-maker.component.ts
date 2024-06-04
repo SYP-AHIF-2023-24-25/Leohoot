@@ -9,7 +9,12 @@ import { Mode } from 'src/app/model/mode';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
+import { Tag } from 'src/app/model/tag';
 
+interface ListItems {
+  tag: Tag;
+  checked: boolean;
+}
 
 @Component({
   selector: 'app-design-quiz',
@@ -21,6 +26,10 @@ export class QuizMakerComponent {
   title: string = "";
   description: string | undefined;
   imageUrl: string | undefined;
+  selectedTags: Tag[] = [];
+  newTag: string = '';
+  tags: ListItems[] = [];
+  searchQuery = '';
 
   constructor(
       private restService: RestService, 
@@ -35,6 +44,9 @@ export class QuizMakerComponent {
     this.description = this.configurationService.getQuiz().description;
     this.title = this.configurationService.getQuiz().title;
     this.imageUrl = this.configurationService.getQuiz().imageName;
+    this.selectedTags = this.configurationService.getQuiz().tags;
+
+    this.refreshTags();
   }
 
   getParams() {
@@ -64,6 +76,7 @@ export class QuizMakerComponent {
             this.existingQuestions = this.configurationService.getQuestions();
 
             this.imageUrl = this.configurationService.getQuiz().imageName;
+            this.selectedTags = this.configurationService.getQuiz().tags;
           });
         }
       }
@@ -72,7 +85,6 @@ export class QuizMakerComponent {
 
   getImageFromServer(imageUrl: string) {
     this.imageUrl = this.restService.getImage(imageUrl);   
-    console.log(this.imageUrl)
   }
 
   onQuestionCreate() {
@@ -81,7 +93,9 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
+    this.updateSelectedTags();
+
+    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
     if (this.imageUrl){
       this.configurationService.addImage(this.imageUrl);
     }
@@ -94,9 +108,10 @@ export class QuizMakerComponent {
   }
 
   saveQuiz() {
-    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
+    this.updateSelectedTags();
+
+    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
     const quiz = this.configurationService.getQuiz();
-    console.log(quiz);
 
     quiz.questions =  quiz.questions.map(question => ({
       ...question,
@@ -193,7 +208,8 @@ export class QuizMakerComponent {
       quizId: this.quizId
     };
 
-    this.configurationService.setQuizTitleDescriptionAndImage(this.title, this.description ? this.description : '');
+    this.updateSelectedTags();
+    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
 
     this.router.navigate(['/quizMakerQuestions'], { queryParams });
   }
@@ -213,24 +229,42 @@ export class QuizMakerComponent {
 
   isDropdownVisible = false;
 
-  items = [
-    { id: 'checkbox-item-4', label: 'Default checkbox', checked: false },
-    { id: 'checkbox-item-5', label: 'Checked state', checked: true },
-    { id: 'checkbox-item-6', label: 'Default checkbox', checked: false },
-  ];
-
   toggleDropdown() {
     this.isDropdownVisible = !this.isDropdownVisible;
   }
 
-  tags = ['Tag1', 'Tag2', 'Tag3'];
-  selectedTags = [];
-
-  newTag: string = '';
-
   addTag() {
-    if (this.newTag && !this.tags.includes(this.newTag)) {
-      this.tags.push(this.newTag);
+    if (this.newTag !== '' && !this.tags.some(item => item.tag.name === this.newTag)) {
+      const tag: Tag = {name: this.newTag};
+
+      this.restService.addTag(tag).subscribe(data => {
+        this.updateSelectedTags();
+        this.refreshTags();
+      });
+      this.newTag = '';
     }
+  }
+
+  refreshTags() {
+    this.tags = [];
+    this.restService.getAllTags().subscribe(data => {
+      data.forEach((i) => {
+        let currentTag = this.selectedTags.find(item => item.name === i.name);
+  
+        if (currentTag) {
+          this.tags.push({ tag: i, checked: true });
+        } else {
+          this.tags.push({ tag: i, checked: false });
+        }
+      });
+    });
+  }
+
+  filteredItems() {
+    return this.tags.filter(item => item.tag.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  }
+
+  updateSelectedTags() {
+    this.selectedTags = this.tags.filter(item => item.checked).map(item => item.tag);
   }
 }

@@ -3,6 +3,7 @@ import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { QuestionComponent } from '../components/teacher-components/question/question.component';
 import { LoginService } from './auth.service';
+import { Tag } from '../model/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +44,10 @@ export class ConfigurationService {
     return this.quiz.questions;
   }
 
-  setQuizTitleDescriptionAndImage(quizTitle: string, quizDescription: string) {
+  setQuizTitleDescriptionAndTags(quizTitle: string, quizDescription: string, quizTags: Tag[]) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
+    this.quiz.tags = quizTags;
   }
 
   setQuiz(quiz: Quiz) {
