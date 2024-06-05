@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.SignalR;
 using Api.Hubs;
 using Persistence;
 using Core;
+using Core.Contracts;
+using Core.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers;
@@ -14,18 +16,18 @@ namespace Api.Controllers;
 [ApiController]
 public class GameController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
     public static IHubContext<LeohootHub>? HubContext { get; set; }
 
-    public GameController(ApplicationDbContext context)
+    public GameController(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
     
     [HttpPost("{quizId:int}")]
     public async Task<int> AddNewGame(int quizId)
     {
-        var gameId = await Repository.GetInstance().AddNewGame(quizId, _context);
+        var gameId = await Repository.GetInstance().AddNewGame(quizId, _unitOfWork);
         return gameId;
     }
 
@@ -131,8 +133,24 @@ public class GameController : Controller
         }
         game.ClearCurrentAnswers();
         var nextQuestion = game.Quiz.Questions.SingleOrDefault(q => q.QuestionNumber == game.CurrentQuestion!.QuestionNumber + 1);
+        
+        if (nextQuestion != null)
+        {
+            var shuffledAnswers = nextQuestion.Answers.OrderBy(a => Guid.NewGuid()).ToList();
+            nextQuestion = new QuestionDto(
+                nextQuestion.QuestionNumber, 
+                nextQuestion.QuestionText, 
+                nextQuestion.AnswerTimeInSeconds, 
+                shuffledAnswers, 
+                nextQuestion.ImageName, 
+                nextQuestion.PreviewTime,
+                nextQuestion.Snapshot,
+                nextQuestion.ShowMultipleChoice
+            );
+        }
+
         game.CurrentQuestion = nextQuestion!;
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
             
         return Results.Ok(nextQuestion);
     }

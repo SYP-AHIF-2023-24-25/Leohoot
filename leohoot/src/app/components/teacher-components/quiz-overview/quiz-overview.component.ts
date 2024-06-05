@@ -6,6 +6,9 @@ import {RestService} from "../../../services/rest.service";
 import {SignalRService} from "../../../services/signalr.service";
 import {Quiz} from "../../../model/quiz";
 import { ConfigurationService } from 'src/app/services/configuration.service';
+import { KeycloakService } from 'keycloak-angular';
+import { LoginService } from 'src/app/services/auth.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-quiz-overview',
@@ -15,17 +18,30 @@ import { ConfigurationService } from 'src/app/services/configuration.service';
 export class QuizOverviewComponent {
   quizzes: Quiz[] = [];
   filteredQuizzes: Quiz[] = [];
+  isDropdownOpen = false;
+  loggedIn = () => this.loginService.isLoggedIn();
+  protected readonly input = input;
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService, private configurationService: ConfigurationService) {
+  constructor(private router: Router, private restservice: RestService, private signalRService: SignalRService, private loginService: LoginService) {
+    console.log(this.loginService.getToken());
   }
 
-  ngOnInit() {
-    this.restservice.getAllQuizzes().subscribe((data) => {
-      this.quizzes = data;
-      this.filteredQuizzes = this.quizzes;
+  async ngOnInit() {
+    if (this.loginService.isLoggedIn()){
+      this.restservice.getAllQuizzes().subscribe((data) => {
+        console.log(data);
+        this.quizzes = data;
+        this.filteredQuizzes = this.quizzes;
+      });
+    }
+  }
 
-      console.log(this.quizzes)
-    });
+  async login(loginWithKeycloak: boolean) {
+    await this.loginService.login(loginWithKeycloak);
+  }
+
+  async logout() {
+    await this.loginService.logout();
   }
 
   goToWaitingroom(quizId: number) {
@@ -38,14 +54,9 @@ export class QuizOverviewComponent {
 
   deleteQuiz(quizId: number) {
     this.restservice.deleteQuiz(quizId).subscribe(() => {
-      console.log('Quiz deleted successfully');
       location.reload();
-    }, error => {
-      console.error('Error occurred while deleting quiz:', error);
     });
   }
-
-  protected readonly input = input;
 
   search(input: string) {
     if (!input) {
@@ -56,5 +67,9 @@ export class QuizOverviewComponent {
     this.filteredQuizzes = this.quizzes.filter(
       quiz => quiz?.title.toLowerCase().includes(input.toLowerCase()) || quiz?.description.toLowerCase().includes(input.toLowerCase())
     );
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }

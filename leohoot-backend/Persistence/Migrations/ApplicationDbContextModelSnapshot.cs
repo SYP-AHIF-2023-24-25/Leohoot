@@ -22,7 +22,7 @@ namespace Persistence.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Answer", b =>
+            modelBuilder.Entity("Core.Entities.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,13 +32,21 @@ namespace Persistence.Migrations
 
                     b.Property<string>("AnswerText")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
                     b.HasKey("Id");
 
@@ -47,7 +55,27 @@ namespace Persistence.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("Core.Question", b =>
+            modelBuilder.Entity("Core.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Core.Entities.Question", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +87,8 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<int>("PreviewTime")
                         .HasColumnType("int");
@@ -69,16 +98,25 @@ namespace Persistence.Migrations
 
                     b.Property<string>("QuestionText")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<int>("QuizId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
                     b.Property<bool?>("ShowMultipleChoice")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Snapshot")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
@@ -87,7 +125,7 @@ namespace Persistence.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("Core.Quiz", b =>
+            modelBuilder.Entity("Core.Entities.Quiz", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,26 +136,61 @@ namespace Persistence.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CreatorName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(800)
+                        .HasColumnType("varchar(800)");
 
                     b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
 
                     b.ToTable("Quizzes");
                 });
 
-            modelBuilder.Entity("Core.User", b =>
+            modelBuilder.Entity("Core.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,33 +200,51 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("RowVersion"));
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Image", b =>
+            modelBuilder.Entity("QuizTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("QuizzesId")
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("QuizzesId", "TagsId");
 
-                    b.ToTable("Images");
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("QuizTag", (string)null);
                 });
 
-            modelBuilder.Entity("Core.Answer", b =>
+            modelBuilder.Entity("Core.Entities.Answer", b =>
                 {
-                    b.HasOne("Core.Question", "Question")
+                    b.HasOne("Core.Entities.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -162,9 +253,9 @@ namespace Persistence.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("Core.Question", b =>
+            modelBuilder.Entity("Core.Entities.Question", b =>
                 {
-                    b.HasOne("Core.Quiz", "Quiz")
+                    b.HasOne("Core.Entities.Quiz", "Quiz")
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -173,23 +264,27 @@ namespace Persistence.Migrations
                     b.Navigation("Quiz");
                 });
 
-            modelBuilder.Entity("Core.Quiz", b =>
+            modelBuilder.Entity("QuizTag", b =>
                 {
-                    b.HasOne("Core.User", "Creator")
+                    b.HasOne("Core.Entities.Quiz", null)
                         .WithMany()
-                        .HasForeignKey("CreatorId")
+                        .HasForeignKey("QuizzesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Creator");
+                    b.HasOne("Core.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Core.Question", b =>
+            modelBuilder.Entity("Core.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("Core.Quiz", b =>
+            modelBuilder.Entity("Core.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
                 });

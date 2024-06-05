@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {QuestionTeacher} from "../../../model/question-teacher";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../../services/rest.service";
@@ -17,12 +17,41 @@ export class QuestionPreviewComponent {
   currTime: number = 0;
   obsTimer: Subscription = new Subscription();
 
+  connectionSubscription: Subscription;
+  gameCanceled: boolean = true;
+
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    
+    this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
+      {
+        alert("Ending Game (No Players left)");
+        this.deleteGame();
+      } );
+  }
+
+  deleteGame() {
+    this.connectionSubscription.unsubscribe();
+    this.obsTimer.unsubscribe();
+
+    if (this.gameCanceled) {
+      this.signalRService.connection.send("cancelGame", this.gameId);
+
+      this.restservice.deleteGame(this.gameId).subscribe(() => {
+        this.router.navigate(['/quizOverview']);
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.deleteGame();
   }
 
   ngOnInit() {
     this.getParams();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
+    this.deleteGame();
   }
 
   getParams() {
@@ -41,6 +70,7 @@ export class QuestionPreviewComponent {
       if (
         currTime == this.question.previewTime
       ) {
+        this.gameCanceled = false;
         this.obsTimer.unsubscribe();
         this.signalRService.connection.send("sendToNextQuestion", this.gameId);
         this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});

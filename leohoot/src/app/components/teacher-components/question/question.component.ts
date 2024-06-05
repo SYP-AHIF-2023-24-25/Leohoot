@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { Mode } from '../../../model/mode';
@@ -38,8 +38,21 @@ export class QuestionComponent {
   correctAnswersCount: number = 0;
   gameId: number = 0;
   quizId: number = -1;
+  questionTimeout: any;
+  connectionSubscription: Subscription;
+  gameCanceled: boolean = true;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+      this.questionTimeout = setTimeout(() => {
+        alert("Question timeout! Ending this game.");
+        this.deleteGame();
+      }, 10 * 60 * 60 * 1000);
+
+      this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
+      {
+        alert("Ending Game (No Players left)");
+        this.deleteGame();
+      });
   }
 
   ngOnInit(): void {
@@ -54,6 +67,30 @@ export class QuestionComponent {
       this.answerCount = answerCount;
     });
   }
+
+  deleteGame() {
+    clearTimeout(this.questionTimeout);
+    this.connectionSubscription.unsubscribe();
+    this.obsTimer.unsubscribe();
+
+    if (this.gameCanceled) {
+      this.signalRService.connection.send("cancelGame", this.gameId);
+
+      this.restservice.deleteGame(this.gameId).subscribe(() => {
+        this.router.navigate(['/quizOverview']);
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.deleteGame();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: Event) {
+    this.deleteGame();
+  }
+
 
   getParams() {
     this.route.queryParams.subscribe(params => {
@@ -71,11 +108,9 @@ export class QuestionComponent {
       this.restservice.getQuestionTeacher(this.gameId).subscribe(response => {
         this.currentQuestion = response;
         this.correctAnswersCount = this.currentQuestion.answers.filter(answer => answer.isCorrect).length;
-        this.currentQuestion.answers = this.currentQuestion.answers.sort(() => Math.random() - 0.5);
         this.startTimer();
       });
     });
-    console.log(this.currentQuestion.imageName);
   }
 
   startTimer() {
@@ -91,6 +126,7 @@ export class QuestionComponent {
   }
 
   showCorrectAnswer() {
+    console.log("showCorrectAnswer", this.gameCanceled);
     this.signalRService.connection.send("sendEndLoading", this.gameId);
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
@@ -98,6 +134,8 @@ export class QuestionComponent {
   }
 
   nextQuestion() {
+    this.gameCanceled = false;
+
     if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
       this.router.navigate(['/statistic'], { queryParams: { gameId: this.gameId } });
     } else if (this.mode == Mode.GAME_MODE) {

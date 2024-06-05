@@ -27,12 +27,61 @@ import { CommonModule } from '@angular/common';
 import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
 import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
-
+import { appConfig } from './app.config';
+import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
+import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
+import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
+import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-    declarations: [AppComponent, WaitingroomComponent, RankingComponent, AnswerViewComponent, QuestionComponent, InterimResultRankingComponent, LoadingScreenComponent, GameLoginComponent, GameUserLoginComponent, WaitingPageComponent, QuizMakerComponent, StatisticComponent, QuestionPreviewComponent, QuizOverviewComponent, QuizMakerQuestionsComponent, QuizMakerSidebarComponent, QuizMakerSidebarItemComponent],
-    imports: [BrowserModule, AppRoutingModule, FormsModule, QRCodeModule, NgxQrcodeStylingModule, HttpClientModule, NgApexchartsModule, CommonModule, DragDropModule, NgxCaptureModule],
-    providers: [],
+    declarations: 
+    [
+        AppComponent, 
+        WaitingroomComponent, 
+        RankingComponent, 
+        AnswerViewComponent, 
+        QuestionComponent, 
+        InterimResultRankingComponent, 
+        LoadingScreenComponent, 
+        GameLoginComponent, 
+        GameUserLoginComponent, 
+        WaitingPageComponent, 
+        QuizMakerComponent, 
+        StatisticComponent, 
+        QuestionPreviewComponent, 
+        QuizOverviewComponent, 
+        QuizMakerQuestionsComponent, 
+        QuizMakerSidebarComponent, 
+        QuizMakerSidebarItemComponent, 
+        LoginViewComponent, 
+        SignupViewComponent,
+        ValidatePasswordDirective,
+        LoginOptionsComponent
+    ],
+    imports: 
+    [
+        BrowserModule, 
+        AppRoutingModule, 
+        FormsModule, 
+        QRCodeModule, 
+        NgxQrcodeStylingModule, 
+        HttpClientModule, 
+        NgApexchartsModule, 
+        CommonModule, 
+        DragDropModule, 
+        NgxCaptureModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        BrowserAnimationsModule
+    ],
+    providers: [
+        ...appConfig.providers,
+        provideAnimationsAsync(),
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

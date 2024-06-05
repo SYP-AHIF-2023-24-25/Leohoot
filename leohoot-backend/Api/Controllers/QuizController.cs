@@ -11,50 +11,48 @@ using System.Net.Http.Headers;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Core.Contracts;
 using Microsoft.Extensions.Options;
+using Core.DataTransferObjects;
+using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
+//[Authorize]
 [ApiController]
 public class QuizController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly LeohootSettings _settings;
 
-    public QuizController(ApplicationDbContext context, IOptions<LeohootSettings> settings)
+    public QuizController(IUnitOfWork unitOfWork, IOptions<LeohootSettings> settings)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
         _settings = settings.Value;
     }
     
     [HttpGet("{quizId:int}")]
     public async Task<QuizDto?> GetQuizById(int quizId)
     {
-        return await _context.GetQuiz(quizId);
+        return await _unitOfWork.Quizzes.GetQuizDto(quizId);
     }
 
     [HttpGet]
     public async Task<List<QuizDto>> GetAllQuizzes()
     {
-        return await _context.GetAllQuizzes();
+        return await _unitOfWork.Quizzes.GetAllQuizzes();
     }
     
     [HttpPost]
     public async Task<IResult> PostNewQuiz(QuizPostDto quizDto)
     {
-        var creator = _context.Users.FirstOrDefault(u => u.Username == quizDto.Creator);
-
-        if (creator == null)
-        {
-            Console.WriteLine("Creator not found");
-             return Results.NotFound($"/api/quizzes/");
-        }
-
         var quiz = new Quiz
         {
             Title = quizDto.Title,
             Description = quizDto.Description,
-            Creator = creator,
+            CreatorName = quizDto.Creator,
             Questions = quizDto.Questions.Select(q => new Question
             {
                 QuestionNumber = q.QuestionNumber,
@@ -73,15 +71,26 @@ public class QuizController : Controller
             ImageName = quizDto.ImageName
         };
 
-        _context.Quizzes.Add(quiz);
-        await _context.SaveChangesAsync();
+        foreach (var tagDto in quizDto.Tags)
+        {
+            var tag = await _unitOfWork.Tags.GetTagByName(tagDto.Name);
+            if (tag == null)
+            {
+                tag = new Tag { Name = tagDto.Name };
+                await _unitOfWork.Tags.AddAsync(tag);
+            }
+            quiz.Tags.Add(tag);
+        }
+
+        await _unitOfWork.Quizzes.AddAsync(quiz);
+        await _unitOfWork.SaveChangesAsync();
         return Results.Created($"/api/quizzes/{quiz.Id}", quiz.Id);
     }
 
     [HttpPut("{quizId:int}")]
     public async Task<IResult> UpdateQuiz(int quizId, QuizPostDto quizDto)
     {
-        var existingQuiz = await _context.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+        var existingQuiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
         if (existingQuiz == null)
         {
             return Results.NotFound("Quiz not found");
@@ -110,21 +119,38 @@ public class QuizController : Controller
             }).ToList();
         }
 
-        await _context.SaveChangesAsync();
+        if (quizDto.Tags.Count == 0){
+            existingQuiz.Tags.Clear();
+        } else {
+            existingQuiz.Tags.Clear();
+             foreach (var tagDto in quizDto.Tags)
+            {
+                var tag = await _unitOfWork.Tags.GetTagByName(tagDto.Name);
+                if (tag == null)
+                {
+                    tag = new Tag { Name = tagDto.Name };
+                    await _unitOfWork.Tags.AddAsync(tag);
+                }
+                existingQuiz.Tags.Add(tag);
+            }
+        }
+
+        await _unitOfWork.SaveChangesAsync();
         return Results.Ok(existingQuiz);
     }
 
     [HttpDelete("{quizId:int}")]
     public async Task<IResult> DeleteQuiz(int quizId)
     {
-        var quiz = await _context.Quizzes.Where(q => q.Id == quizId).FirstOrDefaultAsync();
+       var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
         if (quiz == null)
         {
             return Results.NotFound("Quiz not found");
         }
+        
+        _unitOfWork.Quizzes.Remove(quiz);
+        await _unitOfWork.SaveChangesAsync();
 
-        _context.Quizzes.Remove(quiz);
-        await _context.SaveChangesAsync();
         return Results.Ok();
     }
 
@@ -132,10 +158,10 @@ public class QuizController : Controller
     public async Task<IResult> InitQuizzes()
     {
         var quizzes = Importer.ImportQuizzes();
-        _context.Database.EnsureDeleted();
-        _context.Database.EnsureCreated();
-        _context.Quizzes.AddRange(quizzes);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.DeleteDatabaseAsync();
+        await _unitOfWork.CreateDatabaseAsync();
+        await _unitOfWork.Quizzes.AddRangeAsync(quizzes);
+        await _unitOfWork.SaveChangesAsync();
         return Results.Ok();
     }
 
@@ -143,8 +169,8 @@ public class QuizController : Controller
     public async Task<IResult> UploadImage(IFormFile image)
     {
         var imageRow = new Image();
-        await _context.Images.AddAsync(imageRow);
-        await _context.SaveChangesAsync();
+        await _unitOfWork.Images.AddAsync(imageRow);
+        await _unitOfWork.SaveChangesAsync();
 
         var nextVal = imageRow.Id.ToString().PadLeft(2, '0');
         var newImageName = $"{nextVal}_{image.FileName}";
@@ -163,5 +189,102 @@ public class QuizController : Controller
         }
 
         return Results.Created($"/cdn/images/{newImageName}", newImageName);
-    }    
+    } 
+     [HttpGet("tags")]
+    public async Task<List<TagDto>> GetTags()
+    {
+        return await _unitOfWork.Tags.GetAllTagsAsync();
+    } 
+
+    [HttpGet("tags/{tagName}")]
+    public async Task<TagDto?> GetTagByName(string tagName)
+    {
+        var tag = await _unitOfWork.Tags.GetTagByName(tagName);
+        if (tag == null)
+        {
+            return null;
+        }
+        return new TagDto(tag.Name);
+    }
+
+    [HttpPost("tags")]
+    public async Task<IResult> AddTag(TagDto tagDto)
+    {
+        var tag = await _unitOfWork.Tags.GetTagByName(tagDto.Name);
+        if (tag != null)
+        {
+            return Results.BadRequest("Tag already exists");
+        }
+
+        tag = new Tag { Name = tagDto.Name };
+        await _unitOfWork.Tags.AddAsync(tag);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Created($"/api/quizzes/tags/{tag.Name}", tag.Name);
+    }
+
+    [HttpDelete("tags/{tagName}")]
+    public async Task<IResult> DeleteTag(string tagName)
+    {
+        var tag = await _unitOfWork.Tags.GetTagByName(tagName);
+        if (tag == null)
+        {
+            return Results.NotFound("Tag not found");
+        }
+
+        _unitOfWork.Tags.Remove(tag);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Ok();
+    }
+
+    [HttpGet("{quizId}/tags")]
+    public async Task<List<TagDto>> GetTagsForQuiz(int quizId)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return new List<TagDto>();
+        }
+
+        return quiz.Tags.Select(t => new TagDto(t.Name)).ToList();
+    }
+
+    [HttpPost("{quizId}/tags")]
+    public async Task<IResult> AddTagToQuiz(int quizId, TagDto tagDto)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        var tag = await _unitOfWork.Tags.GetTagByName(tagDto.Name);
+        if (tag == null)
+        {
+            return Results.NotFound("Tag not found");
+        }
+
+        quiz.Tags.Add(tag);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Created($"/api/quizzes/{quizId}/tags/{tag.Name}", tag.Name);
+    }
+
+    [HttpDelete("{quizId}/tags/{tagName}")]
+    public async Task<IResult> RemoveTagFromQuiz(int quizId, string tagName)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        var tag = await _unitOfWork.Tags.GetTagByName(tagName);
+        if (tag == null)
+        {
+            return Results.NotFound("Tag not found");
+        }
+
+        quiz.Tags.Remove(tag);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Ok();
+    }
 }

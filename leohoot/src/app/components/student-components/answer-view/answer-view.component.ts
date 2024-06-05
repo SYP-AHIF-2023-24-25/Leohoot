@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {RestService} from "../../../services/rest.service";
 import { SignalRService } from '../../../services/signalr.service';
 import { QuestionStudent } from 'src/app/model/question-student';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-answer-view',
@@ -29,8 +30,15 @@ export class AnswerViewComponent {
     'assets/images/bird.png'
   ]
   points: number = 0;
+  gameEndedSubscription: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+      if (gameId === this.gameId) {
+        alert("Game was canceled by the teacher");
+        this.router.navigate(['/gameLogin']);
+      }
+    });
   }
 
   ngOnInit() {
@@ -43,6 +51,10 @@ export class AnswerViewComponent {
     });
   }
 
+  ngOnDestroy() {
+    this.gameEndedSubscription.unsubscribe();
+  }
+  
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {

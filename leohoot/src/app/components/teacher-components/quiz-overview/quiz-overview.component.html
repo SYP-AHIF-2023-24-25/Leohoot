@@ -5,13 +5,14 @@
           <div class="flex items-center pl-7">
               <button routerLink="/quizOverview"><img class="max-h-16" src="assets/images/hootiFaceIcon.ico" alt="hooti"></button>
               <button routerLink="/quizOverview" class="flex items-center text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Quizzes</button>
-              <button routerLink="/gameLogin" class="" ><p class="text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Join Quiz</p></button>
+              <button routerLink="/gameLogin" class="flex items-center text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Join Quiz</button>
+              <button routerLink="/quizMaker" class="flex items-center text-xl font-bold md:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-4">Maker</button>
           </div>
         <div class="text-2xl font-bold md:text-4xl text-center mt-2.5">
           Quizzes
         </div>
         <div class="flex justify-end items-center">
-            <button class="items-center justify-center font-bold rounded-lg bg-hooti-yellow mx-2 text-white text-xl h-10 w-32">Login</button>
+            <button class="items-center justify-center font-bold rounded-lg bg-hooti-yellow mx-2 text-white text-xl h-10 w-32" (click)="logout()">Logout</button>
         </div>
       </div>
     </div>
@@ -33,6 +34,7 @@
           </form>
           </section>
       </div>
+    <div [hidden]="loggedIn" class="text-white font-bold my-10 text-lg">Login to see Quizzes!</div>
     <div
       *ngFor="
           let quiz of filteredQuizzes;

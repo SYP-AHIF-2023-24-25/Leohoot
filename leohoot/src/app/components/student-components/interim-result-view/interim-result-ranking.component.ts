@@ -4,6 +4,7 @@ import {RestService} from "../../../services/rest.service";
 import { SignalRService } from '../../../services/signalr.service';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { QuestionStudent } from 'src/app/model/question-student';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-students-mobile-ranking',
@@ -14,6 +15,8 @@ export class InterimResultRankingComponent {
   gameId!: number;
   username: string = sessionStorage.getItem("username") || "test";
   question!: QuestionStudent;
+  gameEndedRegistered = false;
+  gameEndedSubscription: Subscription;
 
 
   trueOrFalse = [
@@ -29,7 +32,12 @@ export class InterimResultRankingComponent {
   }
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+      if (gameId === this.gameId) {
+        alert("Game was canceled by the teacher");
+        this.router.navigate(['/gameLogin']);
+      }
+    });
   }
 
   ngOnInit() {
@@ -37,18 +45,22 @@ export class InterimResultRankingComponent {
 
     this.signalRService.connection.on("nextQuestion", (gameId: number) => {
       console.log("nextQuestion");
-      if (gameId == this.gameId)
+      if (gameId === this.gameId)
       {
         const queryParams = {
           gameId: this.gameId
         };
         this.router.navigate(['/answerView'], { queryParams });
       }
-
     });
+
     this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
       this.question = data;
    } );
+  }
+
+  ngOnDestroy() {
+    this.gameEndedSubscription.unsubscribe();
   }
 
   getParams() {

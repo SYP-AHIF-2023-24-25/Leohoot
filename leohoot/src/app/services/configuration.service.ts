@@ -2,17 +2,21 @@ import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { QuestionComponent } from '../components/teacher-components/question/question.component';
+import { LoginService } from './auth.service';
+import { Tag } from '../model/tag';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationService {
+  constructor(private loginService: LoginService) { }
   quiz: Quiz = {
     title: "",
     description: "",
-    creator: "sampleUser",
+    creator: this.loginService.getUserName(),
     questions: [],
-    imageName: ""
+    imageName: "",
+    tags: []
   };
 
   updateQuestion(question: QuestionTeacher) {
@@ -40,9 +44,10 @@ export class ConfigurationService {
     return this.quiz.questions;
   }
 
-  setQuizTitleDescriptionAndImage(quizTitle: string, quizDescription: string) {
+  setQuizTitleDescriptionAndTags(quizTitle: string, quizDescription: string, quizTags: Tag[]) {
     this.quiz.title = quizTitle;
     this.quiz.description = quizDescription;
+    this.quiz.tags = quizTags;
   }
 
   setQuiz(quiz: Quiz) {
@@ -50,6 +55,7 @@ export class ConfigurationService {
     this.quiz.description = quiz.description;
     this.quiz.questions = quiz.questions;
     this.quiz.imageName = quiz.imageName;
+    this.quiz.tags = quiz.tags;
   }
 
   deleteQuestion(questionId: number) {
@@ -63,9 +69,10 @@ export class ConfigurationService {
     this.quiz = {
       title: "",
       description: "",
-      creator: "sampleUser",
+      creator: this.loginService.getUserName(),
       questions: [],
-      imageName: ""
+      imageName: "",
+      tags: []
     };
   }
 }

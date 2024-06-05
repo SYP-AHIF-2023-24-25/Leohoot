@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using Core.Entities;
+using Core.DataTransferObjects;
 
 namespace Core;
 
@@ -21,7 +23,16 @@ public class Game
     {
         GameId = gameId;
         Quiz = quiz;
-        CurrentQuestion = question;
+        CurrentQuestion = new QuestionDto (
+            question.QuestionNumber,
+            question.QuestionText,
+            question.AnswerTimeInSeconds,
+            question.Answers.OrderBy(a => Guid.NewGuid()).ToList(),
+            question.ImageName,
+            question.PreviewTime,
+            question.Snapshot,
+            question.ShowMultipleChoice
+        );
 
         Statistic = new Statistic();
 
