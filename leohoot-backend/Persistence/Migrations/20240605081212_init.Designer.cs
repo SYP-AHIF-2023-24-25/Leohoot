@@ -12,10 +12,9 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-
-    [Migration("20240604193627_InitialCreate")]
-    partial class InitialCreate
-        {
+    [Migration("20240605081212_init")]
+    partial class init
+    {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
