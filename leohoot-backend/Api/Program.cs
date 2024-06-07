@@ -45,7 +45,7 @@ builder.Services.AddAuthentication(opt =>
     {
         opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })/*.AddJwtBearer("Intern", options =>
+    }).AddJwtBearer("Intern", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -58,7 +58,7 @@ builder.Services.AddAuthentication(opt =>
             IssuerSigningKey =
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettingsIntern.GetSection("securityKey").Value!))
         };
-    })*/.AddJwtBearer(options =>
+    })/*.AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(opt =>
             ValidateIssuerSigningKey = false,
             ValidIssuer = jwtSettingsKeycloak["validIssuer"]
         };
-    });
+    })*/;
 
 var app = builder.Build();
 

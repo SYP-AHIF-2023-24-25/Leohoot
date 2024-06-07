@@ -10,7 +10,7 @@ public class Importer
 {
     public static List<Quiz> ImportQuizzes()
     {
-        string jsonString = File.ReadAllText("../Api/Files/quizzes.json");
+        string jsonString = File.ReadAllText("Files/quizzes.json");
         var quizzes =  JsonSerializer.Deserialize<List<Quiz>>(jsonString) ?? [];
         return quizzes;
     }

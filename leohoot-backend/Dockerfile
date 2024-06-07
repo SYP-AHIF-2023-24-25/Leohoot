@@ -8,7 +8,7 @@ RUN dotnet publish ./Api/Api.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY ./Api/Files/ .
+COPY ./Api/Files/ ./Files
 EXPOSE 80
 EXPOSE 443
 ENV ASPNETCORE_ENVIRONMENT=Production

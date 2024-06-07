@@ -8,6 +8,7 @@ using Persistence;
 using Core;
 using Core.Contracts;
 using Core.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers;
@@ -24,6 +25,7 @@ public class GameController : Controller
         _unitOfWork = unitOfWork;
     }
     
+    [Authorize(AuthenticationSchemes = "Intern")]
     [HttpPost("{quizId:int}")]
     public async Task<int> AddNewGame(int quizId)
     {
@@ -83,6 +85,7 @@ public class GameController : Controller
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
     }
     
+    [Authorize(AuthenticationSchemes = "Intern")]
     [HttpGet("{gameId:int}/currentQuestion/teacher")]
     public IResult GetCurrentQuestionOfGameTeacher (int gameId)
     {
@@ -123,6 +126,7 @@ public class GameController : Controller
         return Results.Ok(questionStudent);
     }
     
+    [Authorize(AuthenticationSchemes = "Intern")]
     [HttpPut("{gameId:int}/currentQuestion")]
     public async Task<IResult> NextQuestion (int gameId)
     {
@@ -162,10 +166,11 @@ public class GameController : Controller
         if (int.TryParse(gameId, out var result))
         {
             game = Repository.GetInstance().GetGameById(result);
-        };
+        }
         return game != null;
     }
     
+    [Authorize(AuthenticationSchemes = "Intern")]
     [HttpDelete("{gameId:int}")]
     public IResult DeleteGame(int gameId)
     {

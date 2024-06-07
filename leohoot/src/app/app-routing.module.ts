@@ -28,9 +28,21 @@ export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
   { path: 'login', component: LoginViewComponent},
   { path: 'answerView', component: AnswerViewComponent },
-  { path: 'signup', component: SignupViewComponent},
+  { 
+    path: 'signup', 
+    component: SignupViewComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    }
+  },
   { path: 'interimResult', component: InterimResultRankingComponent },
-  { path: 'loginOptions', component: LoginOptionsComponent},
+  { 
+    path: 'loginOptions', 
+    component: LoginOptionsComponent,
+    canActivate: [AuthGuard], data: { 
+      roles: [Role.Student]
+    }
+  },
   { 
     path: 'ranking', 
     component: RankingComponent,

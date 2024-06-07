@@ -7,6 +7,7 @@ using Core;
 using Core.Contracts;
 using Core.DataTransferObjects;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,8 @@ public class UserController : Controller
         _unitOfWork = unitOfWork;
         _jwtSettings = configuration.GetSection("JwtSettingsIntern");
     }
-
+    
+    [Authorize(AuthenticationSchemes = "Intern")]
     [HttpPost]
     public async Task<AuthResponseDto> AddNewUser(UserDto userDto)
     {
