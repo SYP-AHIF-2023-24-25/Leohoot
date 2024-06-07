@@ -22,7 +22,7 @@ export class WaitingroomComponent {
         this.quizId = parseInt(params['quizId']);
         this.restService.getNewGameId(this.quizId).subscribe((response) =>
         {
-          this.qrCodeData = `https://leohoot.sophiehaider.com/gameLogin?gameId=${response}`;
+          this.qrCodeData = `https://leohoot.sophiehaider.com/gameUserLogin?gameId=${response}`;
           this.qrCodeTitle = "Scan the QR code to join the game!";
           this.gamePin = response;
         });
