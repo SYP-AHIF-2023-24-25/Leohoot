@@ -64,7 +64,7 @@
                   <div class="grid grid-cols-2">
                       <div class="font-bold text-xl mb-2 pt-2 items-center">{{ quiz.title }}</div>
                       <div class="flex justify-end items-center ">
-                          <button class="bg-hooti-yellow text-xl rounded-xl pb-1 pl-4 cursor-pointer pr-4 text-white text-end font-bold" (click)="goToWaitingroom(i + 1)">
+                          <button class="bg-hooti-yellow text-xl rounded-xl pb-1 pl-4 cursor-pointer pr-4 text-white text-end font-bold" (click)="goToWaitingroom(quiz.id!)">
                               Start
                           </button>
                       </div>

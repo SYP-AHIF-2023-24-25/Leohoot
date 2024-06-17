@@ -23,16 +23,12 @@ export class QuizOverviewComponent {
   protected readonly input = input;
 
   constructor(private router: Router, private restservice: RestService, private signalRService: SignalRService, private loginService: LoginService) {
-    console.log(this.loginService.getToken());
+
   }
 
   async ngOnInit() {
     if (this.loginService.isLoggedIn()){
-      this.restservice.getAllQuizzes().subscribe((data) => {
-        console.log(data);
-        this.quizzes = data;
-        this.filteredQuizzes = this.quizzes;
-      });
+      this.refetchQuestions();
     }
   }
 
@@ -54,7 +50,14 @@ export class QuizOverviewComponent {
 
   deleteQuiz(quizId: number) {
     this.restservice.deleteQuiz(quizId).subscribe(() => {
-      location.reload();
+      this.refetchQuestions();
+    });
+  }
+
+  refetchQuestions() {
+    this.restservice.getAllQuizzes().subscribe((data) => {
+      this.quizzes = data;
+      this.filteredQuizzes = data;
     });
   }
 
