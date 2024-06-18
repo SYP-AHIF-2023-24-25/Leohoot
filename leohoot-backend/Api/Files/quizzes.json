@@ -240,8 +240,295 @@
         "ImageName": "assets/images/triangle.png",
         "ShowMultipleChoice": true
       }
+    ],
+    "Tags": [
+      {
+        "Name": "AM"
+      }
+    ]
+  },
+  {
+    "Title": "Advanced LINQ Quiz",
+    "Description": "This is a challenging quiz to test your advanced LINQ knowledge and skills.",
+    "CreatorName": "victoria",
+    "Questions": [
+      {
+        "QuestionText": "Welcher LINQ-Operator wird verwendet, um eine Aggregation durchzuführen und die Summe der Elemente zu berechnen?",
+        "QuestionNumber": 1,
+        "PreviewTime": 7,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "Aggregate",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Sum",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Average",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Count",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welche der folgenden Aussagen trifft auf LINQ zu?",
+        "QuestionNumber": 2,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 20,
+        "Answers": [
+          {
+            "AnswerText": "LINQ kann nur mit SQL-Datenbanken verwendet werden",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "LINQ kann sowohl mit SQL-Datenbanken als auch mit In-Memory-Datenquellen wie Arrays oder Listen verwendet werden",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "LINQ kann nur mit XML-Daten verwendet werden",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "LINQ kann nur mit Webservices verwendet werden",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welches Ergebnis liefert der folgende LINQ-Ausdruck?",
+        "QuestionNumber": 3,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 25,
+        "ImageName": "assets/images/linq-question4.png",
+        "Answers": [
+          {
+            "AnswerText": "\"mango\", \"orange\" }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ \"apple\", \"banana\", \"mango\" }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ \"apple\", \"banana\", \"mango\", \"orange\" }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ \"banana\", \"mango\", \"orange\" }",
+            "IsCorrect": true
+          }
+        ]
+      },
+      {
+        "QuestionText": "Was ist der Rückgabewert des folgenden LINQ-Ausdrucks?",
+        "QuestionNumber": 4,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 20,
+        "ImageName": "assets/images/linq-question5.png",
+        "Answers": [
+          {
+            "AnswerText": "banana",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "abacus",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "blueberry",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "chimpanzee",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welches Ergebnis liefert der folgende LINQ-Ausdruck?",
+        "QuestionNumber": 5,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 15,
+        "ImageName": "assets/images/linq-question1.png",
+        "Answers": [
+          {
+            "AnswerText": "{ 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ 2, 4, 6, 8, 10 }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ 4, 16, 36, 64, 100 }",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "{ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 }",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welche der folgenden LINQ-Methoden können verwendet werden, um die Anzahl der Elemente in einer Sammlung zu ermitteln?",
+        "QuestionNumber": 6,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 10,
+        "Answers": [
+          {
+            "AnswerText": "Count",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Sum",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Length",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Aggregate",
+            "IsCorrect": false
+          }
+        ],
+        "ShowMultipleChoice": true
+      },
+      {
+        "QuestionText": "Welcher LINQ-Operator wird verwendet, um Elemente zu gruppieren?",
+        "QuestionNumber": 7,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 10,
+        "Answers": [
+          {
+            "AnswerText": "GroupBy",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Join",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "Where",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "SelectMany",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welches Ergebnis liefert der folgende LINQ-Ausdruck?",
+        "QuestionNumber": 8,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 25,
+        "ImageName": "assets/images/linq-question6.png",
+        "Answers": [
+          {
+            "AnswerText": "{ Age = 25, Names = [\"Bob\", \"David\"] }",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "{ Age = 30, Names = [\"Alice\"] }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ Age = 25, Names = [\"David\", \"Bob\"] }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ Age = 35, Names = [\"Charlie\"] }",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welcher LINQ-Operator wird verwendet, um eine absteigende Sortierung zu erreichen?",
+        "QuestionNumber": 9,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 15,
+        "Answers": [
+          {
+            "AnswerText": "OrderBy",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "ThenBy",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "OrderByDescending",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Reverse",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welches Ergebnis liefert der folgende LINQ-Ausdruck?",
+        "QuestionNumber": 10,
+        "PreviewTime": 3,
+        "AnswerTimeInSeconds": 20,
+        "ImageName": "assets/images/linq-question8.png",
+        "Answers": [
+          {
+            "AnswerText": "{ 3, 7 }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ 21, 18 }",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "{ 9, 14 }",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "{ 14, 18 }",
+            "IsCorrect": false
+          }
+        ]
+      },
+      {
+        "QuestionText": "Welche der folgenden LINQ-Methoden können verwendet werden, um eine Sammlung nach einem bestimmten Kriterium zu sortieren?",
+        "QuestionNumber": 11,
+        "PreviewTime": 5,
+        "AnswerTimeInSeconds": 25,
+        "Answers": [
+          {
+            "AnswerText": "OrderBy",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "Where",
+            "IsCorrect": false
+          },
+          {
+            "AnswerText": "ThenBy",
+            "IsCorrect": true
+          },
+          {
+            "AnswerText": "GroupBy",
+            "IsCorrect": false
+          }
+        ],
+        "ShowMultipleChoice": true
+      }
+    ],
+    "Tags": [
+      {
+        "Name": "POSE"
+      }
     ]
   }
-  
 ]
 

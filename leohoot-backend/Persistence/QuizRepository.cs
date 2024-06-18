@@ -86,7 +86,11 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
 
     public async Task<Quiz?> GetQuiz(int quizId)
     {
-        var quiz = await _quizzes.SingleOrDefaultAsync(quiz => quiz.Id == quizId);
+        var quiz = await _quizzes
+        .Include(q => q.Questions)
+        .ThenInclude(q => q.Answers)
+        .Include(q => q.Tags)
+        .SingleOrDefaultAsync(quiz => quiz.Id == quizId);
         return quiz;
     }
 

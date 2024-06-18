@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
-[Authorize(AuthenticationSchemes = "Intern")]
+//[Authorize(AuthenticationSchemes = "Intern")]
 [ApiController]
 public class QuizController : Controller
 {
@@ -136,7 +136,9 @@ public class QuizController : Controller
         }
 
         await _unitOfWork.SaveChangesAsync();
-        return Results.Ok(existingQuiz);
+
+        var updatedQuiz = await _unitOfWork.Quizzes.GetQuizDto(quizId);
+        return Results.Ok(updatedQuiz);
     }
 
     [HttpDelete("{quizId:int}")]
