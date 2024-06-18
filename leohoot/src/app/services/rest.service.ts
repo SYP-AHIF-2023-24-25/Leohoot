@@ -63,8 +63,8 @@ export class RestService {
     return this.httpClient.post<number>(`${RestService.apiUrl}quizzes`, quiz);
   }
 
-  updateQuiz(id: number, quiz: Quiz): Observable<void> {
-    return this.httpClient.put<void>(`${RestService.apiUrl}quizzes/${id}`, quiz);
+  updateQuiz(id: number, quiz: Quiz): Observable<Quiz> {
+    return this.httpClient.put<Quiz>(`${RestService.apiUrl}quizzes/${id}`, quiz);
   }
 
   getQuizById(id: number): Observable<Quiz> {

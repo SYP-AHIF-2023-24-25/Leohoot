@@ -125,6 +125,7 @@ export class QuizMakerQuestionsComponent {
 
     this.configurationService.addQuestion(this.question);
     this.initQuestion = false;
+    console.log(this.configurationService.getQuestions());
   }
 
   async onQuizTitle() {

@@ -146,11 +146,7 @@ export class QuestionComponent {
           this.restservice.deleteGame(this.gameId).subscribe(() => {
             this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId, mode: Mode.TEACHER_DEMO_MODE } });
           });
-        }
-        this.restservice.deleteGame(this.gameId).subscribe(() => {
-          this.router.navigate(['/quizMaker']);
-        });
-        
+        }        
       } else {
         this.restservice.nextQuestion(this.gameId).subscribe(() => {
           window.location.reload();

@@ -45,7 +45,7 @@ export class QuizOverviewComponent {
   }
 
   goToQuizMaker(quizId: number) {
-    this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId} });
+    this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId, edit: true} });
   }
 
   deleteQuiz(quizId: number) {

@@ -41,6 +41,7 @@ export class QuizMakerComponent {
     ) {
     this.getParams();
     this.refetchQuestions();
+    
     this.description = this.configurationService.getQuiz().description;
     this.title = this.configurationService.getQuiz().title;
     this.imageUrl = this.configurationService.getQuiz().imageName;
@@ -56,28 +57,32 @@ export class QuizMakerComponent {
       }
 
       if (typeof params['quizId'] !== 'undefined') {
-        this.quizId = Number.parseInt(params['quizId']);
+        this.quizId = Number.parseInt(params['quizId'])
 
-        if (typeof params['mode'] !== undefined) {
-          this.restService.getQuizById(this.quizId).subscribe(quiz => {
-            quiz.questions.forEach(question => {
-              const missingAnswersCount = 4 - question.answers.length;
-              if (missingAnswersCount > 0) {
-                for (let i = 0; i < missingAnswersCount; i++) {
-                  question.answers.push({ answerText: '', isCorrect: false });
+        if (typeof params['edit'] !== undefined || typeof params['mode'] !== 'undefined') {
+          if (params['edit'] === 'true' || params['mode'] === '0') {
+            this.restService.getQuizById(this.quizId).subscribe(quiz => {
+              console.log(quiz)
+              quiz.questions.forEach(question => {
+                const missingAnswersCount = 4 - question.answers.length;
+                if (missingAnswersCount > 0) {
+                  for (let i = 0; i < missingAnswersCount; i++) {
+                    question.answers.push({ answerText: '', isCorrect: false });
+                  }
                 }
-              }
+              });
+
+             this.configurationService.setQuiz(quiz);
+
+              this.title = this.configurationService.getQuiz().title;
+              this.description = this.configurationService.getQuiz().description;
+              this.existingQuestions = this.configurationService.getQuestions();
+
+              this.imageUrl = this.configurationService.getQuiz().imageName;
+              this.selectedTags = this.configurationService.getQuiz().tags;
             });
-            
-            this.configurationService.setQuiz(quiz);
+          }
 
-            this.title = this.configurationService.getQuiz().title;
-            this.description = this.configurationService.getQuiz().description;
-            this.existingQuestions = this.configurationService.getQuestions();
-
-            this.imageUrl = this.configurationService.getQuiz().imageName;
-            this.selectedTags = this.configurationService.getQuiz().tags;
-          });
         }
       }
     });
@@ -105,6 +110,7 @@ export class QuizMakerComponent {
 
   refetchQuestions() {
     this.existingQuestions = this.configurationService.getQuestions();
+    console.log(this.existingQuestions)
   }
 
   saveQuiz() {
@@ -124,7 +130,9 @@ export class QuizMakerComponent {
         alert('Quiz saved successfully.');
       });
     } else {
-      this.restService.updateQuiz(this.quizId, quiz);
+      this.restService.updateQuiz(this.quizId, quiz).subscribe(data => {
+        console.log(data);
+      });
       alert('Quiz updated successfully.');
     }
   }
@@ -201,7 +209,7 @@ export class QuizMakerComponent {
     this.refetchQuestions();
   }
 
-  onQuestionEdit(questionNumber: number) {
+  onQuestionEdit(questionNumber: number | QuestionTeacher) {
     const queryParams = {
       quizName: this.title,
       questionNumber: questionNumber,
