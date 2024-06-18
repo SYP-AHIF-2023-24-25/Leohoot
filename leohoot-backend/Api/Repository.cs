@@ -43,7 +43,6 @@ public class Repository
     {
         int gameId;
         QuizDto? quiz = await uow.Quizzes.GetQuizDto(quizId);
-
         long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         int seed = (timestamp.ToString() + quiz!.Id).GetHashCode();
         Random random = new Random(seed);
