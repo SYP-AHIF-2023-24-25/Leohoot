@@ -1,23 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDragPlaceholder,
-  CdkDropList,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxCaptureService } from "ngx-capture";
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-maker-questions',
   templateUrl: './quiz-maker-questions.component.html',
-  styleUrls: ['./quiz-maker-questions.component.css'] 
+  styleUrls: ['./quiz-maker-questions.component.css']
 })
 
 export class QuizMakerQuestionsComponent {
@@ -36,7 +28,7 @@ export class QuizMakerQuestionsComponent {
   };
 
   quizTitle: string = '';
-  quizId: number | undefined; 
+  quizId: number | undefined;
 
   @ViewChild('questionScreen', { static: true }) screen: any;
 
@@ -80,8 +72,8 @@ export class QuizMakerQuestionsComponent {
   }
 
   validateQuestion() {
-    if (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText) 
-    || this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText) 
+    if (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)
+    || this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)
     || this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)) {
       return false;
     }
@@ -97,20 +89,20 @@ export class QuizMakerQuestionsComponent {
       this.toggleMobileMenu();
     }
     if (this.initQuestion === false
-      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) 
-        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
+      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
+        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
 
         await this.createQuestionSnapshot();
-     
+
         this.initNewQuestion();
     } else {
       if (this.validateQuestion() == false){
         alert('Please fill in all necessary fields and save the question.');
       } else {
         alert('Save the question first before adding a new one.')
-      } 
-    }   
+      }
+    }
   }
 
   async onQuestionAdd() {
@@ -120,7 +112,7 @@ export class QuizMakerQuestionsComponent {
       alert('Please fill in all necessary fields to save the question. (no whitespaces allowed)');
       return;
     }
-    
+
     await this.createQuestionSnapshot();
 
     this.configurationService.addQuestion(this.question);
@@ -129,9 +121,9 @@ export class QuizMakerQuestionsComponent {
   }
 
   async onQuizTitle() {
-    if (this.initQuestion === false 
-    || (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText) 
-       && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText) 
+    if (this.initQuestion === false
+    || (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)
+       && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)
        && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText))) {
         await this.createQuestionSnapshot();
 
@@ -155,15 +147,15 @@ export class QuizMakerQuestionsComponent {
       this.question = searchResult;
     } else {
       if (this.initQuestion === false && this.validateQuestion()
-      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) 
-        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)) 
+      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
+        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
-          await this.createQuestionSnapshot(); 
+          await this.createQuestionSnapshot();
 
           this.question = data as QuestionTeacher;
           this.initQuestion = false;
         } else {
-          alert('Please fill in all necessary fields and save the question.');         
+          alert('Please fill in all necessary fields and save the question.');
         }
     }
   }
@@ -180,7 +172,7 @@ export class QuizMakerQuestionsComponent {
         const reader = new FileReader();
         reader.onload = (e) => {
           const imageString = e.target?.result as string;
-          
+
           const extension = file.name.split('.').pop();
           let questionNumber = this.question.questionNumber;
           if (this.question.questionNumber === 0) {
@@ -191,7 +183,7 @@ export class QuizMakerQuestionsComponent {
 
           this.uploadImage(imageString, fileName).subscribe(data => {
             this.getImageFromServer(data);
-          });          
+          });
         };
         reader.readAsDataURL(file);
       } else {
@@ -203,16 +195,16 @@ export class QuizMakerQuestionsComponent {
   }
 
   getImageFromServer(imageUrl: string) {
-    this.question.imageName = this.restService.getImage(imageUrl);   
+    this.question.imageName = this.restService.getImage(imageUrl);
   }
 
   uploadImage(imageString: string, fileName: string) {
     const imageBlob = this.dataURItoBlob(imageString);
-  
+
     const formData = new FormData();
-  
+
     formData.append('image', imageBlob, fileName);
-    
+
     return this.restService.addImage(formData);
   }
 
@@ -223,25 +215,25 @@ export class QuizMakerQuestionsComponent {
     for (let i = 0; i < byteString.length; i++) {
       int8Array[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([int8Array], { type: 'image/jpeg' });  
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
   async createQuestionSnapshot() {
     this.loading = true;
     await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
       let questionNumber = this.question.questionNumber;
-      
+
       if (this.question.questionNumber === 0) {
         questionNumber = this.configurationService.getQuestions().length + 1;
       }
       const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
-  
+
       const data = await this.uploadImage(img!, fileName).toPromise();
       this.question.snapshot = this.restService.getImage(data!);
-      
+
       this.loading = false;
     });
-  }  
+  }
 
   onDeleteImage(){
     this.question.imageName = undefined;

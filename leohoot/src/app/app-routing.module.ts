@@ -1,107 +1,104 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AnswerViewComponent} from "./components/student-components/answer-view/answer-view.component";
-import {RankingComponent} from './components/teacher-components/ranking/ranking.component';
-import {QuestionComponent} from './components/teacher-components/question/question.component';
-import {WaitingroomComponent} from './components/teacher-components/waitingroom/waitingroom.component';
+import {AnswerViewComponent} from "./screens/student-screens/answer-view/answer-view.component";
+import {RankingComponent} from './screens/teacher-screens/ranking/ranking.component';
+import {QuestionComponent} from './screens/teacher-screens/question/question.component';
+import {WaitingroomComponent} from './screens/teacher-screens/waitingroom/waitingroom.component';
 import {
   InterimResultRankingComponent
-} from "./components/student-components/interim-result-view/interim-result-ranking.component";
-import {LoadingScreenComponent} from './components/student-components/loading-screen/loading-screen.component'
-import {GameLoginComponent} from './components/student-components/game-login/game-login.component';
-import {GameUserLoginComponent} from './components/student-components/game-user-login/game-user-login.component';
+} from "./screens/student-screens/interim-result-view/interim-result-ranking.component";
+import {LoadingScreenComponent} from './screens/student-screens/loading-screen/loading-screen.component'
+import {GameLoginComponent} from './screens/student-screens/game-login/game-login.component';
+import {GameUserLoginComponent} from './screens/student-screens/game-user-login/game-user-login.component';
 import {
   WaitingPageComponent
-} from './components/student-components/waiting-page/waiting-page.component';
-import {QuizMakerComponent} from './components/teacher-components/quiz-maker/quiz-maker.component';
-import {StatisticComponent} from './components/teacher-components/statistic/statistic.component';
-import {QuizOverviewComponent} from './components/teacher-components/quiz-overview/quiz-overview.component';
-import {QuestionPreviewComponent} from './components/teacher-components/question-preview/question-preview.component';
-import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
+} from './screens/student-screens/waiting-page/waiting-page.component';
+import {QuizMakerComponent} from './screens/teacher-screens/quiz-maker/quiz-maker.component';
+import {StatisticComponent} from './screens/teacher-screens/statistic/statistic.component';
+import {QuizOverviewComponent} from './screens/teacher-screens/quiz-overview/quiz-overview.component';
+import {QuestionPreviewComponent} from './screens/teacher-screens/question-preview/question-preview.component';
+import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
-import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
-import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
-import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
+import { LoginViewComponent } from './screens/teacher-screens/login-view/login-view.component';
+import { SignupViewComponent } from './screens/teacher-screens/signup-view/signup-view.component';
+import { LoginOptionsComponent } from './screens/teacher-screens/login-options/login-options.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
   { path: 'login', component: LoginViewComponent},
   { path: 'answerView', component: AnswerViewComponent },
-  { 
-    path: 'signup', 
+  {
+    path: 'signup',
     component: SignupViewComponent,
-    canActivate: [AuthGuard], data: { 
+    /*canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    }
+    }*/
   },
   { path: 'interimResult', component: InterimResultRankingComponent },
-  { 
-    path: 'loginOptions', 
-    component: LoginOptionsComponent,
-    canActivate: [AuthGuard], data: { 
-      roles: [Role.Student]
-    }
+  {
+    path: 'loginOptions',
+    component: LoginOptionsComponent
   },
-  { 
-    path: 'ranking', 
+  {
+    path: 'ranking',
     component: RankingComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
     }
   },
-  { 
-    path: 'question', 
+  {
+    path: 'question',
     component: QuestionComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
     }
   },
-  { 
-    path: 'waitingroom', 
+  {
+    path: 'waitingroom',
     component: WaitingroomComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    } 
+    }
   },
   { path: 'loadingScreen', component: LoadingScreenComponent },
   { path: 'gameLogin', component: GameLoginComponent },
   { path: 'gameUserLogin', component: GameUserLoginComponent },
   { path: 'waitingPage', component: WaitingPageComponent } ,
-  { 
-    path: 'statistic', 
+  {
+    path: 'statistic',
     component: StatisticComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    } 
+    }
   },
-  { 
-    path: 'quizMaker', 
+  {
+    path: 'quizMaker',
     component: QuizMakerComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    } 
+    }
   },
   {
     path: 'quizMakerQuestions',
     component: QuizMakerQuestionsComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    } 
+    }
   },
-  { 
-    path: 'quizOverview', 
+  {
+    path: 'quizOverview',
     component: QuizOverviewComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Student]
     }
   },
-  { 
-    path: 'questionPreview', 
+  {
+    path: 'questionPreview',
     component: QuestionPreviewComponent,
-    canActivate: [AuthGuard], data: { 
+    canActivate: [AuthGuard], data: {
       roles: [Role.Student]
-    } 
+    }
   },
 ];
 

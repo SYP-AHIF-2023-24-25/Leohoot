@@ -3,7 +3,7 @@ import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { QuestionComponent } from '../components/teacher-components/question/question.component';
+import { QuestionComponent } from '../screens/teacher-screens/question/question.component';
 import { QuestionStudent } from '../model/question-student';
 import { Player } from '../model/player';
 import { Statistic } from '../model/statistic';
@@ -19,7 +19,7 @@ import { Tag } from '../model/tag';
 export class RestService {
   public static apiUrl: string = `${environment.apiUrl}/api/`;
   public static cdnUrl: string = `${environment.cdnUrl}/cdn/`;
-  
+
   constructor(private httpClient: HttpClient) { }
 
   getQuestionTeacher(gameId: number): Observable<QuestionTeacher> {
@@ -123,7 +123,9 @@ export class RestService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-    return this.httpClient.put<AuthResponse>(`${RestService.apiUrl}users/login`, {username: username, password: password});
+    console.log(username, password)
+    console.log(RestService.apiUrl)
+    return this.httpClient.put<AuthResponse>(`http://localhost:5000/users/login`, {username: username, password: password});
   }
 
   getUser(username: string): Observable<User> {

@@ -10,78 +10,84 @@ import { NgxCaptureModule } from "ngx-capture";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WaitingroomComponent } from './components/teacher-components/waitingroom/waitingroom.component';
-import { RankingComponent } from './components/teacher-components/ranking/ranking.component';
-import { QuestionComponent } from './components/teacher-components/question/question.component';
-import { AnswerViewComponent } from './components/student-components/answer-view/answer-view.component';
-import { InterimResultRankingComponent } from './components/student-components/interim-result-view/interim-result-ranking.component';
-import { LoadingScreenComponent } from './components/student-components/loading-screen/loading-screen.component';
-import { GameLoginComponent } from './components/student-components/game-login/game-login.component';
-import { GameUserLoginComponent } from './components/student-components/game-user-login/game-user-login.component';
-import { WaitingPageComponent } from './components/student-components/waiting-page/waiting-page.component';
-import { QuizMakerComponent } from './components/teacher-components/quiz-maker/quiz-maker.component';
-import { QuizMakerQuestionsComponent } from './components/teacher-components/quiz-maker-questions/quiz-maker-questions.component';
-import { QuizMakerSidebarComponent } from './components/teacher-components/quiz-maker-sidebar/quiz-maker-sidebar.component';
-import { QuizMakerSidebarItemComponent } from './components/teacher-components/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
-import { CommonModule } from '@angular/common';
-import { StatisticComponent } from './components/teacher-components/statistic/statistic.component';
-import { QuizOverviewComponent } from './components/teacher-components/quiz-overview/quiz-overview.component';
-import { QuestionPreviewComponent } from './components/teacher-components/question-preview/question-preview.component';
+import { WaitingroomComponent } from './screens/teacher-screens/waitingroom/waitingroom.component';
+import { RankingComponent } from './screens/teacher-screens/ranking/ranking.component';
+import { QuestionComponent } from './screens/teacher-screens/question/question.component';
+import { AnswerViewComponent } from './screens/student-screens/answer-view/answer-view.component';
+import { InterimResultRankingComponent } from './screens/student-screens/interim-result-view/interim-result-ranking.component';
+import { LoadingScreenComponent } from './screens/student-screens/loading-screen/loading-screen.component';
+import { GameLoginComponent } from './screens/student-screens/game-login/game-login.component';
+import { GameUserLoginComponent } from './screens/student-screens/game-user-login/game-user-login.component';
+import { WaitingPageComponent } from './screens/student-screens/waiting-page/waiting-page.component';
+import { QuizMakerComponent } from './screens/teacher-screens/quiz-maker/quiz-maker.component';
+import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
+import { QuizMakerSidebarComponent } from './components/quiz-maker/quiz-maker-sidebar/quiz-maker-sidebar.component';
+import { QuizMakerSidebarItemComponent } from './components/quiz-maker/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
+import { CommonModule, NgOptimizedImage } from "@angular/common";
+import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
+import { QuizOverviewComponent } from './screens/teacher-screens/quiz-overview/quiz-overview.component';
+import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
-import { LoginViewComponent } from './components/teacher-components/login-view/login-view.component';
-import { SignupViewComponent } from './components/teacher-components/signup-view/signup-view.component';
+import { LoginViewComponent } from './screens/teacher-screens/login-view/login-view.component';
+import { SignupViewComponent } from './screens/teacher-screens/signup-view/signup-view.component';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
-import { LoginOptionsComponent } from './components/teacher-components/login-options/login-options.component';
+import { LoginOptionsComponent } from './screens/teacher-screens/login-options/login-options.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GameInfosComponent } from "./components/waitingroom/game-infos/game-infos.component";
+import { TopThreeComponent } from "./components/statistics/top-three/top-three.component";
+import { HeaderComponent } from "./components/general-components/header/header.component";
+import { StatisticOverviewComponent } from "./components/statistics/statistic-overview/statistic-overview.component";
+import { ButtonComponent } from "./components/general-components/button/button.component";
 
 @NgModule({
-    declarations: 
-    [
-        AppComponent, 
-        WaitingroomComponent, 
-        RankingComponent, 
-        AnswerViewComponent, 
-        QuestionComponent, 
-        InterimResultRankingComponent, 
-        LoadingScreenComponent, 
-        GameLoginComponent, 
-        GameUserLoginComponent, 
-        WaitingPageComponent, 
-        QuizMakerComponent, 
-        StatisticComponent, 
-        QuestionPreviewComponent, 
-        QuizOverviewComponent, 
-        QuizMakerQuestionsComponent, 
-        QuizMakerSidebarComponent, 
-        QuizMakerSidebarItemComponent, 
-        LoginViewComponent, 
-        SignupViewComponent,
-        ValidatePasswordDirective,
-        LoginOptionsComponent
-    ],
-    imports: 
-    [
-        BrowserModule, 
-        AppRoutingModule, 
-        FormsModule, 
-        QRCodeModule, 
-        NgxQrcodeStylingModule, 
-        HttpClientModule, 
-        NgApexchartsModule, 
-        CommonModule, 
-        DragDropModule, 
-        NgxCaptureModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        BrowserAnimationsModule
-    ],
-    providers: [
-        ...appConfig.providers,
-        provideAnimationsAsync(),
-    ],
-    bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    WaitingroomComponent,
+    RankingComponent,
+    AnswerViewComponent,
+    QuestionComponent,
+    InterimResultRankingComponent,
+    LoadingScreenComponent,
+    GameLoginComponent,
+    GameUserLoginComponent,
+    WaitingPageComponent,
+    QuizMakerComponent,
+    StatisticComponent,
+    QuestionPreviewComponent,
+    QuizOverviewComponent,
+    QuizMakerQuestionsComponent,
+    QuizMakerSidebarComponent,
+    QuizMakerSidebarItemComponent,
+    LoginViewComponent,
+    SignupViewComponent,
+    ValidatePasswordDirective,
+    LoginOptionsComponent,
+    GameInfosComponent,
+    TopThreeComponent,
+    HeaderComponent,
+    StatisticOverviewComponent,
+    ButtonComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    QRCodeModule,
+    NgxQrcodeStylingModule,
+    HttpClientModule,
+    NgApexchartsModule,
+    CommonModule,
+    DragDropModule,
+    NgxCaptureModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
+    NgOptimizedImage,
+  ],
+  providers: [...appConfig.providers, provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

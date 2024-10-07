@@ -1,14 +1,11 @@
 import { Injectable } from "@angular/core";
 import { User } from "../model/user";
-import { BlobOptions } from "buffer";
 import { KeycloakService } from "keycloak-angular";
 import { RestService } from "./rest.service";
 import { lastValueFrom } from 'rxjs';
 import { AuthResponse } from "../model/auth-response";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "../model/jwt-payload";
-import { Router } from "@angular/router";
-import * as bcrypt from 'bcryptjs';
 
 @Injectable({
     providedIn: 'root'

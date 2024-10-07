@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Quiz } from '../model/quiz';
 import { QuestionTeacher } from '../model/question-teacher';
-import { QuestionComponent } from '../components/teacher-components/question/question.component';
+import { QuestionComponent } from '../screens/teacher-screens/question/question.component';
 import { LoginService } from './auth.service';
 import { Tag } from '../model/tag';
 
