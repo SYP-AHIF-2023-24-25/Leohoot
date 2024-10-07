@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent } from 'ng-apexcharts';
-import { Statistic } from 'src/app/model/statistic';
-import { RestService } from 'src/app/services/rest.service';
-import { SignalRService } from 'src/app/services/signalr.service';
-import { Chart} from "../../../model/chart";
+import { Component, Input, ViewChild } from "@angular/core";
+import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent } from "ng-apexcharts";
+import { Statistic } from "../../../model/statistic";
+import { Chart } from "../../../model/chart";
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -15,38 +12,29 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-statistic',
-  templateUrl: './statistic.component.html',
-  styleUrls : [],
+  selector: 'app-statistic-overview',
+  templateUrl: './statistic-overview.component.html',
 })
-export class StatisticComponent {
-  gameId!: number;
-  statistic!: Statistic;
-  charts: Chart[] = [];
-
-  displayStatistics: boolean = false;
+export class StatisticOverviewComponent {
+  @Input() statistic!: Statistic;
+  @Input() gameId!: number;
 
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-
-  }
+  displayStatistics: boolean = false;
+  charts: Chart[] = [];
 
   ngOnInit(): void {
     this.initChart();
-    this.route.queryParams.subscribe(params => {
-      if (typeof params['gameId'] !== 'undefined') {
-        this.gameId = parseInt(params['gameId']);
-      }
-      this.restservice.getGameStatistics(this.gameId).subscribe((data) => {
-        this.statistic = data;
-        console.log(this.statistic);
-        this.calculateResults();
-      });
-    });
+    this.calculateResults();
   }
-
+  showStatistics() {
+    this.displayStatistics = !this.displayStatistics;
+  }
+  truncateText(text: string, maxLength: number): string {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  }
   initChart() {
     this.chartOptions = {
       series: [0, 0],
@@ -71,10 +59,6 @@ export class StatisticComponent {
     };
   }
 
-  showStatistics() {
-    this.displayStatistics = !this.displayStatistics;
-  }
-
   calculateResults() {
     for (let questionNumber = 1; questionNumber <= this.statistic.questionTexts.length; questionNumber++) {
       let chart: Chart = {
@@ -97,9 +81,5 @@ export class StatisticComponent {
       this.charts.push(chart);
     }
     console.log(this.charts);
-  }
-
-  truncateText(text: string, maxLength: number): string {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 }
