@@ -13,7 +13,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     keycloak.init({
       config: {
         url: 'https://auth.htl-leonding.ac.at', // URL of the Keycloak server
-        realm: 'htl-leonding', // Realm to be used in Keycloak
+        realm: 'htlleonding', // Realm to be used in Keycloak
         clientId: 'htlleonding-service' // Client ID for the application in Keycloak,
       },
       initOptions: {
@@ -31,9 +31,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       // Prefix for the Bearer token
       bearerPrefix: 'Bearer',
       // URLs excluded from Bearer token addition (empty by default)
-      bearerExcludedUrls: [
-        "/api/.*"
-      ]
+      //bearerExcludedUrls: []
     });
 }
 
@@ -52,12 +50,6 @@ const KeycloakInitializerProvider: Provider = {
   deps: [KeycloakService]
 }
 
-const AuthInterceptorProvider: Provider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: AuthInterceptorService,
-  multi: true
-};
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withInterceptorsFromDi()), // Provides HttpClient with interceptors
@@ -65,7 +57,6 @@ export const appConfig: ApplicationConfig = {
     KeycloakBearerInterceptorProvider, // Provides Keycloak Bearer Interceptor
     KeycloakService, // Service for Keycloak
     provideRouter(routes),
-    provideAnimationsAsync(),
-    AuthInterceptorProvider
+    provideAnimationsAsync()
   ]
 };
