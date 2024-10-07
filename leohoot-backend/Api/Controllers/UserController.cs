@@ -17,6 +17,7 @@ using Persistence;
 namespace Api.Controllers;
 
 [Route("api/users")]
+[AllowAnonymous]
 [ApiController]
 public class UserController : Controller
 {
@@ -29,7 +30,7 @@ public class UserController : Controller
         _jwtSettings = configuration.GetSection("JwtSettingsIntern");
     }
     
-    [Authorize(AuthenticationSchemes = "Intern")]
+    [Authorize]
     [HttpPost]
     public async Task<AuthResponseDto> AddNewUser(UserDto userDto)
     {
@@ -46,7 +47,7 @@ public class UserController : Controller
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
-        catch (DbUpdateException e)
+        catch (DbUpdateException )
         {
             return new AuthResponseDto(false, "This username already exists", null);
         }
@@ -56,6 +57,7 @@ public class UserController : Controller
     [HttpPut("login")]
     public async Task<AuthResponseDto> Login(UserDto userDto)
     {
+        Console.WriteLine("login");
         var user = await _unitOfWork.Users.GetUserByUsername(userDto.Username);
         if (user != null)
         {

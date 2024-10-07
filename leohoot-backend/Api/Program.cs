@@ -1,16 +1,9 @@
-using System.Text;
-using Api;
 using Api.Hubs;
 using Api.Controllers;
-using Base.Persistence;
 using Core.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
@@ -23,9 +16,7 @@ builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", b => b
-        .WithOrigins("http://localhost:4200")
-        .WithOrigins("http://140.238.173.82:8000")
-        .WithOrigins("https://leohoot.sophiehaider.com")
+        .WithOrigins("http://localhost:4200", "http://140.238.173.82:8000","https://leohoot.sophiehaider.com")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
@@ -39,40 +30,27 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.Configure<LeohootSettings>(builder.Configuration.GetSection("LeohootSettings"));
 
-var jwtSettingsIntern = builder.Configuration.GetSection("JwtSettingsIntern");
-var jwtSettingsKeycloak = builder.Configuration.GetSection("JwtSettingsKeycloak");
-builder.Services.AddAuthentication(opt =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    }).AddJwtBearer("Intern", options =>
-    {
+        options.MetadataAddress
+            = "https://auth.htl-leonding.ac.at/realms/htlleonding/.well-known/openid-configuration";
+        options.Authority = "https://auth.htl-leonding.ac.at/realms/htlleonding";
+        options.Audience = "htlleonding-service";
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettingsIntern["validIssuer"],
-            ValidAudience = jwtSettingsIntern["validAudience"],
-            IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettingsIntern.GetSection("securityKey").Value!))
-        };
-    })/*.AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
             ValidateIssuer = true,
             ValidateAudience = false,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = false,
-            ValidIssuer = jwtSettingsKeycloak["validIssuer"]
+            ClockSkew = TimeSpan.FromMinutes(1)
         };
-    })*/;
+        options.RequireHttpsMetadata = false;
+    });
 
 var app = builder.Build();
 
-
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -86,6 +64,5 @@ GameController.HubContext = app.Services.GetRequiredService<IHubContext<LeohootH
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.UseCors("CorsPolicy");
 app.MapHub<LeohootHub>("/hub");
 app.Run();

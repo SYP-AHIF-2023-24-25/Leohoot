@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers;
 
+[AllowAnonymous]
 [Route("api/games")]
 [ApiController]
 public class GameController : Controller
@@ -25,7 +26,7 @@ public class GameController : Controller
         _unitOfWork = unitOfWork;
     }
     
-    [Authorize(AuthenticationSchemes = "Intern")]
+    [Authorize]
     [HttpPost("{quizId:int}")]
     public async Task<int> AddNewGame(int quizId)
     {
@@ -85,7 +86,7 @@ public class GameController : Controller
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
     }
     
-    [Authorize(AuthenticationSchemes = "Intern")]
+    [Authorize]
     [HttpGet("{gameId:int}/currentQuestion/teacher")]
     public IResult GetCurrentQuestionOfGameTeacher (int gameId)
     {
@@ -126,7 +127,7 @@ public class GameController : Controller
         return Results.Ok(questionStudent);
     }
     
-    [Authorize(AuthenticationSchemes = "Intern")]
+    [Authorize]
     [HttpPut("{gameId:int}/currentQuestion")]
     public async Task<IResult> NextQuestion (int gameId)
     {
@@ -170,7 +171,7 @@ public class GameController : Controller
         return game != null;
     }
     
-    [Authorize(AuthenticationSchemes = "Intern")]
+    [Authorize]
     [HttpDelete("{gameId:int}")]
     public IResult DeleteGame(int gameId)
     {
