@@ -20,26 +20,11 @@ import {QuestionPreviewComponent} from './screens/teacher-screens/question-previ
 import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
-import { LoginViewComponent } from './screens/teacher-screens/login-view/login-view.component';
-import { SignupViewComponent } from './screens/teacher-screens/signup-view/signup-view.component';
-import { LoginOptionsComponent } from './screens/teacher-screens/login-options/login-options.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
-  { path: 'login', component: LoginViewComponent},
   { path: 'answerView', component: AnswerViewComponent },
-  {
-    path: 'signup',
-    component: SignupViewComponent,
-    /*canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
-    }*/
-  },
   { path: 'interimResult', component: InterimResultRankingComponent },
-  {
-    path: 'loginOptions',
-    component: LoginOptionsComponent
-  },
   {
     path: 'ranking',
     component: RankingComponent,

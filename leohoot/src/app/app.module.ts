@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxCaptureModule } from "ngx-capture";
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WaitingroomComponent } from './screens/teacher-screens/waitingroom/waitingroom.component';
@@ -28,10 +27,7 @@ import { StatisticComponent } from './screens/teacher-screens/statistic/statisti
 import { QuizOverviewComponent } from './screens/teacher-screens/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
-import { LoginViewComponent } from './screens/teacher-screens/login-view/login-view.component';
-import { SignupViewComponent } from './screens/teacher-screens/signup-view/signup-view.component';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
-import { LoginOptionsComponent } from './screens/teacher-screens/login-options/login-options.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
@@ -61,10 +57,7 @@ import { ButtonComponent } from "./components/general-components/button/button.c
     QuizMakerQuestionsComponent,
     QuizMakerSidebarComponent,
     QuizMakerSidebarItemComponent,
-    LoginViewComponent,
-    SignupViewComponent,
     ValidatePasswordDirective,
-    LoginOptionsComponent,
     GameInfosComponent,
     TopThreeComponent,
     HeaderComponent,
