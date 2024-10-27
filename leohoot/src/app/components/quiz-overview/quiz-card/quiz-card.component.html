@@ -1,0 +1,41 @@
+<div class="relative max-w-md md:rounded-xl rounded-md overflow-hidden shadow-lg bg-white">
+  <button class="absolute top-2 left-2 w-10" (click)="deleteQuiz(quiz.id!)">
+    <img src="assets/images/bin-black.png" alt="delete">
+  </button>
+  <button class="absolute top-2 right-4 w-9" (click)="goToQuizMaker(quiz.id!)">
+    <img src="assets/images/edit.png" alt="edit">
+  </button>
+  <div
+    *ngIf="quiz.imageName"
+    class="flex items-center justify-center"
+  >
+    <img class="w-full max-h-64 object-cover" src="{{ quiz.imageName }}" alt="{{ quiz.imageName }}"/></div>
+  <div
+    *ngIf="!quiz.imageName"
+    class="flex items-center justify-center"
+  >
+    <img class="w-full max-h-64 object-cover" src="/assets/images/noImage.png" alt="no image"/></div>
+  <div class="px-6 py-4 items-stretch grid grid-rows-2 gap-2">
+    <div class="grid grid-cols-2">
+      <div class="font-bold text-xl mb-2 pt-2 items-center">{{ quiz.title }}</div>
+      <div class="flex justify-end items-center ">
+        <button class="bg-hooti-yellow text-xl rounded-xl pb-1 pl-4 cursor-pointer pr-4 text-white text-end font-bold" (click)="goToWaitingroom(quiz.id!)">
+          Start
+        </button>
+      </div>
+    </div>
+    <div class="h-full">{{quiz.description}}</div>
+  </div>
+  <div class="px-6 pt-4 pb-2 flex justify-between items-center">
+    <div class="flex items-center">
+      <img class="w-10 h-10 rounded-full mr-4" src="/assets/images/hootiFaceIcon.ico" alt="Picture">
+      <div class="text-sm">
+        <p class="text-gray-900 leading-none">{{ quiz.creator }}</p>
+      </div>
+    </div>
+    <div class="flex justify-end items-center">
+      <div class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-bold ml-2 mr-2 text-end">?</div>
+      <div class="text-end">{{ quiz.questions.length }}</div>
+    </div>
+  </div>
+</div>

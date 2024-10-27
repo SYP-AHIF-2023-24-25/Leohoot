@@ -1,14 +1,9 @@
-import {Component, input, InputFunction} from '@angular/core';
-import {QuestionTeacher} from "../../../model/question-teacher";
-import {Subscription} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, input} from '@angular/core';
+import {Router} from "@angular/router";
 import {RestService} from "../../../services/rest.service";
 import {SignalRService} from "../../../services/signalr.service";
 import {Quiz} from "../../../model/quiz";
-import { ConfigurationService } from 'src/app/services/configuration.service';
-import { KeycloakService } from 'keycloak-angular';
 import { LoginService } from 'src/app/services/auth.service';
-import { log } from 'console';
 
 @Component({
   selector: 'app-quiz-overview',
@@ -18,40 +13,16 @@ import { log } from 'console';
 export class QuizOverviewComponent {
   quizzes: Quiz[] = [];
   filteredQuizzes: Quiz[] = [];
-  isDropdownOpen = false;
   loggedIn = () => this.loginService.isLoggedIn();
   protected readonly input = input;
 
   constructor(private router: Router, private restservice: RestService, private signalRService: SignalRService, private loginService: LoginService) {
-    console.log(loginService.getToken())
   }
 
   async ngOnInit() {
     if (this.loginService.isLoggedIn()){
       this.refetchQuestions();
     }
-  }
-
-  async login(loginWithKeycloak: boolean) {
-    await this.loginService.login(loginWithKeycloak);
-  }
-
-  async logout() {
-    await this.loginService.logout();
-  }
-
-  goToWaitingroom(quizId: number) {
-    this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
-  }
-
-  goToQuizMaker(quizId: number) {
-    this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId, edit: true} });
-  }
-
-  deleteQuiz(quizId: number) {
-    this.restservice.deleteQuiz(quizId).subscribe(() => {
-      this.refetchQuestions();
-    });
   }
 
   refetchQuestions() {
@@ -72,7 +43,9 @@ export class QuizOverviewComponent {
     );
   }
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  setQuiz(data: Quiz[]) {
+    this.filteredQuizzes = data;
+    this.quizzes = data;
+    console.log(this.quizzes);
   }
 }
