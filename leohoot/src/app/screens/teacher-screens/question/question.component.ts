@@ -23,11 +23,11 @@ export class QuestionComponent {
   gameId: number = 0;
   quizId: number = -1;
   questionTimeout: any;
-  //connectionSubscription: Subscription;
+  connectionSubscription: Subscription;
   gameCanceled: boolean = true;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-      /*this.questionTimeout = setTimeout(async () => {
+      this.questionTimeout = setTimeout(async () => {
         alert("Question timeout! Ending this game.");
         await this.deleteGame();
       }, 10 * 60 * 60 * 1000);
@@ -36,7 +36,7 @@ export class QuestionComponent {
       {
         alert("Ending Game (No Players left)");
         await this.deleteGame();
-      });*/
+      });
   }
 
   ngOnInit(): void {
@@ -54,7 +54,7 @@ export class QuestionComponent {
 
   async deleteGame() {
     clearTimeout(this.questionTimeout);
-    //this.connectionSubscription.unsubscribe();
+    this.connectionSubscription.unsubscribe();
     this.obsTimer.unsubscribe();
 
     if (this.gameCanceled) {
@@ -103,7 +103,7 @@ export class QuestionComponent {
       if (
         currTime == this.currentQuestion.answerTimeInSeconds
       ) {
-        //await this.showCorrectAnswer();
+        await this.showCorrectAnswer();
       }
       this.currTime = currTime;
     });
