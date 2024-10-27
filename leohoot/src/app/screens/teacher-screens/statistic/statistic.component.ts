@@ -28,7 +28,6 @@ export class StatisticComponent {
   }
 
   public async navigateBack() {
-    console.log(this.router)
     await this.router.navigate(['/quizOverview'])
   }
 }
