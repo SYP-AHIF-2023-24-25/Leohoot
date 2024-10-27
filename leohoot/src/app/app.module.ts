@@ -45,6 +45,7 @@ import { NavbarComponent } from "./components/general-components/navbar/navbar.c
 import { CountdownComponent } from "./components/general-components/countdown/countdown.component";
 import { AnswerButtonComponent } from "./components/question/answer-button/answer-button.component";
 import { OptionalImageComponent } from "./components/question/optional-image/optional-image.component";
+import { FooterStudentComponent } from "./components/general-components/footer-student/footer-student.component";
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { OptionalImageComponent } from "./components/question/optional-image/opt
     NavbarComponent,
     CountdownComponent,
     AnswerButtonComponent,
-    OptionalImageComponent
+    OptionalImageComponent,
+    FooterStudentComponent,
   ],
   imports: [
     BrowserModule,
