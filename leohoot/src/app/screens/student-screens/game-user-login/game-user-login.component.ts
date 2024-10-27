@@ -22,14 +22,14 @@ export class GameUserLoginComponent {
         alert(`Username ${name} is already taken`);
       });
 
-      this.signalRService.connection.on("registeredUserSuccess", (gameId, name) => {
+      this.signalRService.connection.on("registeredUserSuccess", async (gameId, name) => {
         sessionStorage.setItem("username", name);
-        this.router.navigate(['/waitingPage'], { queryParams: { gameId: gameId } });
+        await this.router.navigate(['/waitingPage'], { queryParams: { gameId: gameId } });
       });
     });
   }
 
-  addUser(){
-    this.signalRService.connection.send("registerUser", this.gameId, this.username);
+  async addUser(){
+    await this.signalRService.connection.send("registerUser", this.gameId, this.username);
   }
 }

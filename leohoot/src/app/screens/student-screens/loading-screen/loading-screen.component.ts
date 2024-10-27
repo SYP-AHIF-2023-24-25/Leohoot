@@ -18,21 +18,21 @@ export class LoadingScreenComponent {
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.getParams();
-    this.signalRService.connection.on("endLoading", (gameId: number) => {
+    this.signalRService.connection.on("endLoading", async (gameId: number) => {
       if (gameId == this.gameId) {
-        this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
+        await this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
       }
     });
 
-    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {
         alert("Game was canceled by the teacher");
-        this.router.navigate(['/gameLogin']);
+        await this.router.navigate(['/gameLogin']);
       }
     });
   }
 
-  
+
   ngOnDestroy() {
     this.gameEndedSubscription.unsubscribe();
   }

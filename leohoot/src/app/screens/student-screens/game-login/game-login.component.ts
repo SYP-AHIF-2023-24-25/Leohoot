@@ -15,9 +15,9 @@ export class GameLoginComponent {
   }
 
   enteredGamePin(){
-    this.restservice.doesGameExist(this.gameId).subscribe((exists) => {
+    this.restservice.doesGameExist(this.gameId).subscribe(async (exists) => {
       if(exists){
-        this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
+        await this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
       } else {
         alert("This game does not exist");
       }

@@ -17,24 +17,26 @@ export class WaitingPageComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
-        this.signalRService.connection.on("nextQuestion", (gameId: number) => {
+        this.signalRService.connection.on("nextQuestion", async (gameId: number) => {
           if (gameId == this.gameId) {
-            this.router.navigate(['/answerView'], { queryParams: { gameId: this.gameId }});
+            await this.router.navigate(['/answerView'], { queryParams: { gameId: this.gameId }});
           }
         });
       }
     });
 
-    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {
         alert("Game was canceled by the teacher");
-        this.router.navigate(['/gameLogin']);
+        await this.router.navigate(['/gameLogin']);
       }
     });
   }
 
-    
+
   ngOnDestroy() {
     this.gameEndedSubscription.unsubscribe();
   }
+
+  protected readonly parseInt = parseInt;
 }

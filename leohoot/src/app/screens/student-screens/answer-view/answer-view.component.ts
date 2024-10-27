@@ -34,10 +34,10 @@ export class AnswerViewComponent {
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
-      /*if (gameId === this.gameId) {
+      if (gameId === this.gameId) {
         alert("Game was canceled by the teacher");
         await this.router.navigate(['/gameLogin']);
-      }*/
+      }
     });
   }
 
