@@ -11,13 +11,7 @@
     <div class="text-white pt-5 mb-24 xl:col-span-11 lg:col-span-9 md:col-span-6 sm:col-span-4 text-center text-6xl">
       LEOHOOT
     </div>
-    <button type="button" class="bg-white ml-6 py-3 px-7 text-xl rounded shadow" (click)="startGame()">
-      <div class="flex">
-        <img ngSrc="../../../../assets/images/play-button.png" alt="Play Icon" class="play-icon w-5" height="512"
-             width="512">
-        <span class="mx-2">start</span>
-      </div>
-    </button>
+    <app-button (click)="startGame()" text="Start"></app-button>
   </div>
   <div class="mx-48 rounded mb-10">
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8" >
