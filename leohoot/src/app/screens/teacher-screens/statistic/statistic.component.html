@@ -1,8 +1,10 @@
 <div class="flex flex-col bg-background-blue min-h-screen" *ngIf="statistic">
-    <app-header [title]="statistic.quizName"/>
+  <app-header [title]="statistic.quizName"/>
+  <div class="container mx-auto">
     <div class="flex justify-end">
       <app-button (click)="navigateBack()" text="Back"/>
     </div>
     <app-top-three [statistic]="statistic"></app-top-three>
     <app-statistic-overview [statistic]="statistic" [gameId]="gameId"/>
+  </div>
 </div>
