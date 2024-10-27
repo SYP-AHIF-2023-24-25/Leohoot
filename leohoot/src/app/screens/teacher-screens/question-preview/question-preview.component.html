@@ -1,21 +1,12 @@
 <div class="flex flex-col content-center justify-center bg-background-blue min-h-screen" *ngIf="question">
-  <div class="bg-white pb-2 text-center">
+  <div class="bg-white p-2 text-center">
     <div class="container mx-auto p-2">
       <div class="text-3xl font-bold md:text-5xl">
         <p class="text-center">{{ question.questionText }}</p>
       </div>
     </div>
   </div>
-  <div
-    class="my-5 inline-flex h-12 w-12 items-center justify-center self-center rounded-full bg-white text-base font-bold text-black drop-shadow-lg md:h-20 md:w-20 md:text-3xl"
-  >
-    {{
-      question.previewTime - currTime
-    }}
+  <div class="flex self-center">
+    <app-countdown [time]="question.previewTime - currTime"/>
   </div>
-  <!--div id="footer" class="grid grid-cols-1 p-3 px-12">
-    <div class="h-6 mt-6 w-full justify-end rounded-full bg-neutral-200 dark:bg-neutral-600">
-      <div class="h-6 bg-button-yellow rounded-full" style="width:40%"></div> //< w-{{question.previewTime}} >
-    </div>
-  </div-->
 </div>

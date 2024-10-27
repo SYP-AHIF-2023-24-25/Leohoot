@@ -21,28 +21,27 @@ export class QuestionPreviewComponent {
   gameCanceled: boolean = true;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
+    this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(async () =>
       {
         alert("Ending Game (No Players left)");
-        this.deleteGame();
+        await this.deleteGame();
       } );
   }
 
-  deleteGame() {
+  async deleteGame() {
     this.connectionSubscription.unsubscribe();
     this.obsTimer.unsubscribe();
 
     if (this.gameCanceled) {
-      this.signalRService.connection.send("cancelGame", this.gameId);
-
-      this.restservice.deleteGame(this.gameId).subscribe(() => {
-        this.router.navigate(['/quizOverview']);
+      await this.signalRService.connection.send("cancelGame", this.gameId);
+      this.restservice.deleteGame(this.gameId).subscribe(async () => {
+        await this.router.navigate(['/quizOverview']);
       });
     }
   }
 
-  ngOnDestroy(): void {
-    this.deleteGame();
+  async ngOnDestroy() {
+    await this.deleteGame();
   }
 
   ngOnInit() {
@@ -50,8 +49,8 @@ export class QuestionPreviewComponent {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  handleBeforeUnload(event: Event) {
-    this.deleteGame();
+  async handleBeforeUnload(event: Event) {
+    await this.deleteGame();
   }
 
   getParams() {
@@ -66,14 +65,14 @@ export class QuestionPreviewComponent {
     });
   }
   startTimer() {
-    this.obsTimer = timer(0, 1000).subscribe((currTime) => {
+    this.obsTimer = timer(0, 1000).subscribe(async (currTime) => {
       if (
         currTime == this.question.previewTime
       ) {
         this.gameCanceled = false;
         this.obsTimer.unsubscribe();
-        this.signalRService.connection.send("sendToNextQuestion", this.gameId);
-        this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});
+        await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
+        await this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});
       }
       this.currTime = currTime;
     });
