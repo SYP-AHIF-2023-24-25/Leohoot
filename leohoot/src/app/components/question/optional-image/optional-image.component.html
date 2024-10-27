@@ -1,0 +1,15 @@
+
+<div
+  *ngIf="imageUrl"
+  class="flex items-center justify-center"
+>
+  <img
+    class="max-h-80"
+    src="{{ imageUrl }}"
+    alt="{{ imageUrl }}"
+  />
+</div>
+<div
+  *ngIf="!imageUrl"
+  class="my-20"
+></div>
