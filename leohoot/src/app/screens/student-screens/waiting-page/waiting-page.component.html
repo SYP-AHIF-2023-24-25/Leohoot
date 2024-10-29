@@ -1,4 +1,4 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<!-- <div class="flex flex-col bg-background-blue min-h-screen">
   <app-header title="You're in!"/>
   <div class="container mx-auto p-2 text-center max-w-screen-2xl max-h-screen flex-1">
     <div class=" rounded-md col-auto row-auto mb-3 md:mb-10 lg:mb-24 grid-rows-2 mt-3 grid grid-cols-1 gap-2 mx-auto">
@@ -11,5 +11,18 @@
       </div>
     </div>
   </div>
-  <app-footer-student [username]="username" [points]="points"/>
+
+</div> -->
+
+<div class="flex flex-col bg-background-blue min-h-screen">
+  <app-header title="Ready to start?" />
+  <div class="flex-1 container mx-auto flex items-center justify-center">
+    <div class="flex flex-col items-center">
+      <img src="assets/images/hooti.ico" class="md:w-80 md:h-80 w-36 h-36" />
+      <p class="mt-4 mb-10 text-center text-2xl md:text-4xl font-bold leading-9 tracking-tight text-white">Leohoot</p>
+      <p class="mt-4 mb-10 text-center text-xl md:text-2xl leading-9 tracking-tight text-white">You’re in, see your name on screen?</p>
+    </div>
+  </div>
+  <app-footer-student [username]="username" [points]="points" />
 </div>
+

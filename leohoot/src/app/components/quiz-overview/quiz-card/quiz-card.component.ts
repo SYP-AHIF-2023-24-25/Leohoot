@@ -15,7 +15,7 @@ export class QuizCardComponent {
   }
 
   async goToWaitingroom(quizId: number) {
-    await this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId} });
+    await this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId } });
   }
   async goToQuizMaker(quizId: number) {
     await this.router.navigate(['/quizMaker'], { queryParams: { quizId:  quizId, edit: true} });
