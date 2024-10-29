@@ -24,7 +24,7 @@ export const AuthGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
       return true;
     }
     const leoUser = await createLeoUser(keycloakService);
-    return requiredRoles.some((role) => leoUser.hasRole(role) || leoUser.username === "if200148");
+    return requiredRoles.some((role) => leoUser.hasRole(role) || leoUser.username === "if200148" || leoUser.username === "if200196" || leoUser.username === "if200127");
   }
   return false;
 };
