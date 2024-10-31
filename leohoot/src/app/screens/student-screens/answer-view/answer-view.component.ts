@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class AnswerViewComponent {
   gameId!: number;
-  question!: QuestionStudent;
+  // question!: QuestionStudent;
   username: string = sessionStorage.getItem("username") || "test";
   questionIsFinished: boolean = false;
   buttons!: boolean[];
@@ -30,46 +30,41 @@ export class AnswerViewComponent {
     'assets/images/bird.png'
   ]
   points: number = 0;
-  gameEndedSubscription: Subscription;
+  // gameEndedSubscription: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
-      if (gameId === this.gameId) {
-        alert("Game was canceled by the teacher");
-        await this.router.navigate(['/gameLogin']);
-      }
-    });
-  }
+  // constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+  //   this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
+  //     if (gameId === this.gameId) {
+  //       alert("Game was canceled by the teacher");
+  //       await this.router.navigate(['/gameLogin']);
+  //     }
+  //   });
+  // }
 
   ngOnInit() {
     this.getParams();
-    this.signalRService.connection.on("endLoading", async (gameId: number) => {
-      if (gameId == this.gameId)
-      {
-        await this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
-      }
-    });
   }
 
-  ngOnDestroy() {
-    this.gameEndedSubscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.gameEndedSubscription.unsubscribe();
+  // }
 
   getParams() {
-    this.route.queryParams.subscribe(params => {
-      if (typeof params['gameId'] !== 'undefined') {
-        this.gameId = parseInt(params['gameId']);
-      }
-      this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
-        this.question = data;
-        this.generateButtons();
-      });
-    });
+    // this.route.queryParams.subscribe(params => {
+      // if (typeof params['gameId'] !== 'undefined') {
+      //   this.gameId = parseInt(params['gameId']);
+      // }
+      // this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
+      //   this.question = data;
+      //   this.generateButtons();
+      // });
+      this.generateButtons();
+    // });
   }
 
   generateButtons() {
     this.buttons = [];
-    for (let i = 0; i < this.question!.numberOfAnswers!; i++) {
+    for (let i = 0; i < 4; i++) {
       this.buttons.push(false);
     }
   }
@@ -79,8 +74,8 @@ export class AnswerViewComponent {
   }
 
   confirmAnswers() {
-    this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
-      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId } });
-    });
+    // this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
+    //   await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId } });
+    // });
   }
 }

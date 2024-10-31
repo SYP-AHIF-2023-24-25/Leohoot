@@ -1,27 +1,30 @@
-<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="question">
-  <app-header title="QuestionTeacher {{question.questionNumber}} of {{question.quizLength}}"/>
-   <div class="container mx-auto p-2 flex-1">
-     <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
-       <div *ngFor="
-            let buttonClicked of buttons;
-            index as i">
-         <div
-           *ngIf="!buttonClicked" (click)="addToAnswer(i)"
-           class="{{colors[i]}} flex justify-center items-center w-full h-40 rounded-lg md:text-2xl text-base
-               font-bold px-4 text-white drop-shadow-lg lg:h-80 md:h-56 align-middle">
-           <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40" alt="Icon">
-         </div>
-         <div
-           *ngIf="buttonClicked" (click)="addToAnswer(i)"
-           class="{{colors[i]}} flex justify-center items-center w-full h-40 rounded-lg border-8 border-white md:text-2xl text-base
-               font-bold px-4 text-white drop-shadow-lg lg:h-80 md:h-56 align-middle">
-           <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40" alt="Icon">
-         </div>
-       </div>
-       <div class="flex justify-end col-span-2">
-         <app-button text="Confirm" (click)="confirmAnswers()"/>
-       </div>
+<div class="flex flex-col bg-background-blue min-h-screen">
+  <div class="grid grid-cols-2 items-center justify-center bg-white drop-shadow-lg text-2xl font-bold md:text-4xl p-5">
+    <div>Question 1/4</div>
+    <div class="flex justify-end lg:mr-4">
+      <img (click)="showQuestion()" src="/assets/images/info.png" class="w-8 h-8 lg:w-12 lg:h-12" alt="Icon">
+    </div>
+  </div>  
+    <div class="flex-1 w-full mx-auto flex items-center justify-center">
+    <div class="grid grid-cols-2 gap-2 w-full mx-5 md:mx-10 lg:mx-14">
+      <div *ngFor="let buttonClicked of buttons; index as i" class="">
+        <div *ngIf="!buttonClicked" (click)="addToAnswer(i)"
+            class="{{colors[i]}} flex justify-center items-center w-full h-52 lg:h-72 md:h-64 rounded-lg md:text-2xl text-base
+                    font-bold px-4 text-white drop-shadow-lg align-middle">
+          <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40" alt="Icon">
+        </div>
+        <div *ngIf="buttonClicked" (click)="addToAnswer(i)"
+            class="{{colors[i]}} flex justify-center items-center w-full h-52 lg:h-72 md:h-64 rounded-lg border-8 border-white md:text-2xl text-base
+                    font-bold px-4 text-white drop-shadow-lg align-middle">
+          <img src="{{icons[i]}}" class="h-24 w-24 lg:h-40 lg:w-40" alt="Icon">
+        </div>  
       </div>
-   </div>
+      <div class="flex justify-end col-span-2">
+        <button class="w-24 my-4 rounded-md bg-white p-2 text-black font-bold md:w-28" (click)="confirmAnswers()">Done</button>
+      </div>
+
+    </div>
+</div>
+
   <app-footer-student [username]="username" [points]="points"/>
 </div>
