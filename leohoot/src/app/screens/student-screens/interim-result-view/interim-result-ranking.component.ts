@@ -17,19 +17,7 @@ export class InterimResultRankingComponent {
   question!: QuestionStudent;
   gameEndedRegistered = false;
   gameEndedSubscription: Subscription;
-
-
-  trueOrFalse = [
-    'assets/images/true.png',
-    'assets/images/false.png'
-  ]
-
-  isRightAnswer(currentPoints: number) {
-    if(currentPoints > 0) {
-      return this.trueOrFalse.at(0);
-    }
-    return this.trueOrFalse.at(1);
-  }
+  rightAnswer: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
@@ -50,13 +38,15 @@ export class InterimResultRankingComponent {
         const queryParams = {
           gameId: this.gameId
         };
-        this.router.navigate(['/answerView'], { queryParams });
+        this.router.navigate(['/questionPreviewLoadingScreen'], { queryParams });
       }
     });
 
     this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
       this.question = data;
-   } );
+      this.rightAnswer = this.question.points > 0;
+   });
+
   }
 
   ngOnDestroy() {
