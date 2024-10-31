@@ -110,7 +110,7 @@ export class QuestionComponent {
   }
 
   async showCorrectAnswer() {
-    await this.signalRService.connection.send("sendEndLoading", this.gameId);
+    await this.signalRService.connection.send("questionFinished", this.gameId);
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
     this.audio.pause();

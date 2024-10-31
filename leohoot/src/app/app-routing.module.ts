@@ -7,7 +7,7 @@ import {WaitingroomComponent} from './screens/teacher-screens/waitingroom/waitin
 import {
   InterimResultRankingComponent
 } from "./screens/student-screens/interim-result-view/interim-result-ranking.component";
-import {LoadingScreenComponent} from './screens/student-screens/loading-screen/loading-screen.component'
+import {GameLoadingScreen} from './screens/student-screens/game-loading-screen/game-loading-screen.component'
 import {GameLoginComponent} from './screens/student-screens/game-login/game-login.component';
 import {GameUserLoginComponent} from './screens/student-screens/game-user-login/game-user-login.component';
 import {
@@ -46,7 +46,6 @@ export const routes: Routes = [
       roles: [Role.Student]
     }
   },
-  { path: 'loadingScreen', component: LoadingScreenComponent },
   { path: 'gameLogin', component: GameLoginComponent },
   { path: 'gameUserLogin', component: GameUserLoginComponent },
   { path: 'waitingPage', component: WaitingPageComponent } ,
@@ -85,6 +84,13 @@ export const routes: Routes = [
       roles: [Role.Student]
     }
   },
+  {
+    path: 'loadingScreen',
+    component: GameLoadingScreen,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Student]
+    }
+  }
 ];
 
 @NgModule({

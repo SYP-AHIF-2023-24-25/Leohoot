@@ -31,14 +31,14 @@ export class InterimResultRankingComponent {
   ngOnInit() {
     this.getParams();
 
-    this.signalRService.connection.on("nextQuestion", (gameId: number) => {
+    this.signalRService.connection.on("nextQuestion", async (gameId: number) => {
       console.log("nextQuestion");
       if (gameId === this.gameId)
       {
         const queryParams = {
           gameId: this.gameId
         };
-        this.router.navigate(['/questionPreviewLoadingScreen'], { queryParams });
+        this.router.navigate(['/loadingScreen'], { queryParams });
       }
     });
 

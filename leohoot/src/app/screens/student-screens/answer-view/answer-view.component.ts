@@ -58,13 +58,12 @@ export class AnswerViewComponent {
         this.question = data;
         this.generateButtons();
       });
-      this.generateButtons();
     });
   }
 
   generateButtons() {
     this.buttons = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < this.question!.numberOfAnswers!; i++) {
       this.buttons.push(false);
     }
   }

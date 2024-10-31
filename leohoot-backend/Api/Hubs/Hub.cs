@@ -24,16 +24,16 @@ public class LeohootHub : Hub
 
     public async Task StartGame(int gameId) => await Clients.All.SendAsync("startedGame", gameId);
 
-    public async Task SendEndLoading(int gameId)
+    public async Task QuestionFinished(int gameId)
     {
         var game = Repository.GetInstance().GetGameById(gameId);
         game!.UpdatePoints();
-        await Clients.All.SendAsync("endLoading", gameId);
+        await Clients.All.SendAsync("questionFinished", gameId);
     }
 
-    public async Task SendToNextQuestion(int gameId){
-        await Clients.All.SendAsync("nextQuestion", gameId);
-    }
+    public async Task SendToNextQuestion(int gameId) => await Clients.All.SendAsync("nextQuestion", gameId);
+
+    public async Task FinishPreview(int gameId) => await Clients.All.SendAsync("previewFinished", gameId);
 
     public async Task CancelGame(int gameId)
     {

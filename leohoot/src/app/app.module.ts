@@ -14,7 +14,7 @@ import { RankingComponent } from './screens/teacher-screens/ranking/ranking.comp
 import { QuestionComponent } from './screens/teacher-screens/question/question.component';
 import { AnswerViewComponent } from './screens/student-screens/answer-view/answer-view.component';
 import { InterimResultRankingComponent } from './screens/student-screens/interim-result-view/interim-result-ranking.component';
-import { LoadingScreenComponent } from './screens/student-screens/loading-screen/loading-screen.component';
+import { GameLoadingScreen } from './screens/student-screens/game-loading-screen/game-loading-screen.component';
 import { GameLoginComponent } from './screens/student-screens/game-login/game-login.component';
 import { GameUserLoginComponent } from './screens/student-screens/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './screens/student-screens/waiting-page/waiting-page.component';
@@ -46,6 +46,7 @@ import { CountdownComponent } from "./components/general-components/countdown/co
 import { AnswerButtonComponent } from "./components/question/answer-button/answer-button.component";
 import { OptionalImageComponent } from "./components/question/optional-image/optional-image.component";
 import { FooterStudentComponent } from "./components/general-components/footer-student/footer-student.component";
+import { LoadingScreenComponent } from "./components/general-components/loading-screen/loading-screen.component";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import { FooterStudentComponent } from "./components/general-components/footer-s
     AnswerViewComponent,
     QuestionComponent,
     InterimResultRankingComponent,
-    LoadingScreenComponent,
+    GameLoadingScreen,
     GameLoginComponent,
     GameUserLoginComponent,
     WaitingPageComponent,
@@ -97,7 +98,8 @@ import { FooterStudentComponent } from "./components/general-components/footer-s
     MatSelectModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
-  ],
+    LoadingScreenComponent
+],
   providers: [...appConfig.providers, provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })

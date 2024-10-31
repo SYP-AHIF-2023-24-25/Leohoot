@@ -1,4 +1,4 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="question">
   <div class="grid grid-cols-2 items-center justify-center bg-white drop-shadow-lg text-2xl font-bold md:text-4xl p-5">
     <div>Question {{question.questionNumber}}/{{question.quizLength}}</div>
     <div class="flex justify-end lg:mr-4">
@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-    <div class="flex-1 w-full mx-auto flex items-center justify-center">
+  <div class="flex-1 w-full mx-auto flex items-center justify-center">
     <div class="grid grid-cols-2 gap-2 w-full mx-5 md:mx-10 lg:mx-14">
       <div *ngFor="let buttonClicked of buttons; index as i" class="">
         <div *ngIf="!buttonClicked" (click)="addToAnswer(i)"

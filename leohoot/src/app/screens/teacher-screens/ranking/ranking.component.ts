@@ -71,8 +71,13 @@ export class RankingComponent {
     });
   }
 
-  nextQuestion() {
+  async nextQuestion() {
     this.gameCanceled = false;
+    await this.signalRService.connection.send("finishPreview", this.gameId);
+
+    await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
+
+    console.log("Next question");
     this.restservice.nextQuestion(this.gameId).subscribe(() =>
     {
       const queryParams = {

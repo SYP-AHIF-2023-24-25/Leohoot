@@ -17,9 +17,9 @@ export class WaitingPageComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
-        this.signalRService.connection.on("nextQuestion", async (gameId: number) => {
+        this.signalRService.connection.on("startedGame", async (gameId: number) => {
           if (gameId == this.gameId) {
-            await this.router.navigate(['/answerView'], { queryParams: { gameId: this.gameId }});
+            await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId }});
           }
         });
       }

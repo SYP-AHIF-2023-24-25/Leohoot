@@ -243,10 +243,7 @@
         </main>
       </div>
       </div>
-      <div *ngIf="loading" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-        <div class="spinner inline-block animate-spin rounded-full w-16 h-16 border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white" role="status" aria-label="loading">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <p class="text-white ml-4">Loading...</p>
+      <div *ngIf="loading">
+          <app-loading-screen></app-loading-screen>
       </div>
 </div>
