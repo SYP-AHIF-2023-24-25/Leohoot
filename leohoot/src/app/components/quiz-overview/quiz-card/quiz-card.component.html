@@ -2,7 +2,7 @@
   <button class="absolute top-2 left-2 w-10" (click)="deleteQuiz(quiz.id!)">
     <img src="assets/images/bin-black.png" alt="delete">
   </button>
-  <button class="absolute top-2 right-4 w-9" (click)="goToQuizMaker(quiz.id!)">
+  <button *ngIf="ownQuiz" class="absolute top-2 right-4 w-9" (click)="goToQuizMaker(quiz.id!)">
     <img src="assets/images/edit.png" alt="edit">
   </button>
   <div
