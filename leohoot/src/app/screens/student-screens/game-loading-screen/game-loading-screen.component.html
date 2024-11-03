@@ -1,4 +1,4 @@
-<div class="flex flex-col bg-background-blue min-h-screen">
+<div class="flex flex-col bg-background-blue min-h-screen" *ngIf="question">
   <app-header title="Question {{question.questionNumber}} of {{question.quizLength}}"/>
   <app-loading-screen class="flex-1" [isLoading]="true" loadingText="{{loadingText}}"></app-loading-screen>
   <app-footer-student [username]="username" [points]="question.points"/>

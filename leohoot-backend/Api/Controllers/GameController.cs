@@ -138,6 +138,7 @@ public class GameController : Controller
         {
             return Results.NotFound("Game not found");
         }
+        
         var questionStudent = new QuestionStudentDto(
             game.CurrentQuestion.QuestionNumber, 
             game.CurrentQuestion.QuestionText,

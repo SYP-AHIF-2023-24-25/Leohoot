@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(120); // Extend client timeout if needed
+    options.KeepAliveInterval = TimeSpan.FromSeconds(30);      // Server-side keep-alive ping
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", b => b

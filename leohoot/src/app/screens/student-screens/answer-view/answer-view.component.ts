@@ -29,7 +29,6 @@ export class AnswerViewComponent {
     'assets/images/crab.png',
     'assets/images/bird.png'
   ]
-  points: number = 0;
   gameEndedSubscription: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
