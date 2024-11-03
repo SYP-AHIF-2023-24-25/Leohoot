@@ -35,6 +35,15 @@ public class LeohootHub : Hub
 
     public async Task FinishPreview(int gameId) => await Clients.All.SendAsync("previewFinished", gameId);
 
+    public async Task FinishGame(int gameId) => await Clients.All.SendAsync("gameFinished", gameId);
+
+    public async Task DeleteUser(int gameId, string username)
+    {
+        var game = Repository.GetInstance().GetGameById(gameId);
+        game!.DeleteUser(username);
+        await Clients.All.SendAsync("deletedUser", gameId, username);
+    }
+
     public async Task CancelGame(int gameId)
     {
         await Clients.All.SendAsync("gameEnded", gameId);

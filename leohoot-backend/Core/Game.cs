@@ -51,6 +51,11 @@ public class Game
         return false;
     }
 
+    public void DeleteUser(string username)
+    {
+        _players.RemoveAll(user => user.Username == username);
+    }
+
     public int GetPointsByUsername(string username)
     {
         return _players.Find(user => user.Username == username)!.Score;

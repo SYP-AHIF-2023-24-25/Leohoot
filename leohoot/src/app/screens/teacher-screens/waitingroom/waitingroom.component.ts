@@ -44,7 +44,8 @@ export class WaitingroomComponent {
     this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
   }
 
-  onDeletePerson(user: Player) {
+  async onDeletePerson(user: Player) {
     this.users = this.users.filter(p => p !== user);
+    await this.signalRService.connection.invoke("deleteUser", this.gamePin, user.username);
   }
 }
