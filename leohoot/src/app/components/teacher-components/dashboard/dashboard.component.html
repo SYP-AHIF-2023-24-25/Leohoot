@@ -1,0 +1,92 @@
+<div class="flex min-h-screen bg-background-blue">
+  <aside class="w-1/4 bg-white p-4 text-center max-h-full flex flex-col justify-between">
+      <div class="flex flex-col">
+        <img src="assets/images/hootiFaceIcon.ico" alt="hooti" class="w-16 h-16 mb-4 items-start">
+        <button routerLink="/quizOverview" class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded">
+          <span class="material-icons mr-2">home</span> Home
+        </button>
+        <button routerLink="/favorites" class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded">
+          <span class="material-icons mr-2">star</span> Favorites
+        </button>
+        <button (click)="toggleOwnQuizzes()" class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded">
+          <span class="material-icons mr-2">quiz</span> {{ viewOwnQuizzes ? 'All Quizzes' : 'Own Quizzes' }}
+        </button>
+      </div>
+
+    <button routerLink="/quizMaker" class="mt-4 w-full p-2 bg-hooti-yellow text-white rounded">
+      New Quiz
+    </button>
+  </aside>
+
+
+  <div class="flex flex-col w-3/4">
+    <div class="flex items-center bg-design-quiz-blue p-4 text-white">
+      <span class="material-icons text-2xl mr-2">search</span>
+
+      <input
+        type="text"
+        placeholder="Search..."
+        [(ngModel)]="searchText"
+        (input)="search(searchText)"
+        class="p-2 w-full rounded-lg bg-white text-gray-800"
+      />
+
+      <div class="relative ml-4">
+        <button class="flex items-center" (click)="toggleDropdown()">
+          <span class="material-icons text-2xl mr-1">account_circle</span>
+          {{ username }}
+          <span class="material-icons ml-1">expand_more</span>
+        </button>
+
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10"
+        >
+          <button class="block w-full text-black text-left p-2 hover:bg-gray-100 hover:rounded-lg">Your Profile</button>
+          <button class="block w-full text-black text-left p-2 hover:bg-gray-100 hover:rounded-lg" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <main class="p-6">
+      <div class="flex space-x-2 mb-4">
+        <span *ngFor="let tag of tags" class="px-3 py-1 bg-gray-300 rounded-full text-sm">{{ tag.name }}</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div
+          *ngFor="let quiz of filteredQuizzes"
+          class="p-4 bg-white rounded-lg shadow-lg flex flex-col items-center"
+        >
+          <img
+            *ngIf="quiz.imageName"
+            [src]="quiz.imageName"
+            alt="Quiz Image"
+            class="w-24 h-24 mb-2"
+          />
+          <img
+            *ngIf="!quiz.imageName"
+            src="assets/images/noImage.png"
+            alt="No image"
+            class="w-24 h-24 mb-2"
+          />
+
+          <h3 class="text-lg font-bold mb-1">{{ quiz.title }}</h3>
+          <div class="flex space-x-2 mb-2">
+            <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag }}</span>
+          </div>
+
+          <div class="flex justify-between items-center w-full mt-auto">
+            <div class="flex items-center">
+              <img src="assets/images/hootiFaceIcon.ico" alt="creator" class="w-8 h-8 rounded-full mr-2" />
+              <p class="text-gray-700 text-sm">{{ quiz.creator }}</p>
+            </div>
+            <div class="flex items-center">
+              <span class="text-gray-700 text-sm">{{ quiz.questions.length }} questions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
