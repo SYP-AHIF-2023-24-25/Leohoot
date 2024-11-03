@@ -74,7 +74,7 @@ export class AnswerViewComponent {
 
   confirmAnswers() {
     this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
-      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId } });
+      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Already finished?" } });
     });
   }
 

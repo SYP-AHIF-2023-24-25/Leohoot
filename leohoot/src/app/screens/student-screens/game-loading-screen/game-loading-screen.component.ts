@@ -15,6 +15,7 @@ export class GameLoadingScreen {
   question!: QuestionStudent;
   username: string = sessionStorage.getItem("username") || "test";
   gameEndedSubscription: Subscription;
+  loadingText: string = "Waiting for the teacher to start the game...";
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.getParams();

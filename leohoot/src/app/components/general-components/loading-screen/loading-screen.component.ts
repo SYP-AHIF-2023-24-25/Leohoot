@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading-screen',
@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './loading-screen.component.html'
 })
 export class LoadingScreenComponent {
-
+  @Input() isLoading: boolean = true;
+  @Input() loadingText: string = "Loading...";
 }
