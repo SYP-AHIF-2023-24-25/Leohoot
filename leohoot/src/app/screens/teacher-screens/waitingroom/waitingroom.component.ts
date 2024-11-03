@@ -31,6 +31,7 @@ export class WaitingroomComponent {
   }
 
   ngOnInit() {
+    this.users.push({username: "TestUser", score: 0});
     this.signalRService.connection.on("registeredUser", (gamePin, name) => {
       if (gamePin == this.gamePin)
       {
@@ -42,5 +43,9 @@ export class WaitingroomComponent {
   startGame(){
     this.signalRService.connection.invoke("startGame", this.gamePin);
     this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
+  }
+
+  onDeletePerson(user: Player) {
+    this.users = this.users.filter(p => p !== user);
   }
 }

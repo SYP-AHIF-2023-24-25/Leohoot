@@ -1,0 +1,21 @@
+<div
+  class="flex justify-between items-center bg-white border border-gray-300 shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow duration-200"
+>
+  <!-- Name text with truncation -->
+  <span
+    class="text-lg font-medium text-gray-800 truncate"
+    [title]="name"
+  >
+    {{ name }}
+  </span>
+
+  <!-- Bin icon -->
+  <button
+    class="ml-4"
+    aria-label="Delete"
+    (click)="onDelete()"
+  >
+    <!-- Using an SVG icon for the bin, but you can use any icon library -->
+    <img src="assets/images/bin-black.png" class="w-6 h-6 hover:w-7 hover:h-7" alt="Delete">
+  </button>
+</div>
