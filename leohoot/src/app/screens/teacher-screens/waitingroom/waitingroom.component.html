@@ -2,7 +2,7 @@
   <div class="pt-14 mx-40 md:mx-40 lg:mx-52 xl:mx-72">
     <div class="grid grid-cols-12 row-auto col-auto">
       <app-game-infos [gamePin]="gamePin" class="col-span-8"></app-game-infos>
-      <div class="col-span-3 justify-self-end">
+      <div class="pl-5 col-span-3 justify-self-end">
         <qrcode [cssClass]="'center'" [scale]="5" [elementType]="'url'" [margin]="3" [qrdata]="qrCodeData" [title]="qrCodeTitle" [errorCorrectionLevel]="'Q'"></qrcode>
       </div>
     </div>
@@ -12,27 +12,18 @@
     <div class="text-white pt-5 mb-24 xl:col-span-11 lg:col-span-9 md:col-span-6 sm:col-span-4 text-center text-6xl">
       Leohoot
     </div>
-    <app-button (click)="startGame()" text="Start"></app-button>
+    <button type="button" class="h-16 my-10 rounded-md bg-white p-2 text-black font-bold w-28" (click)="startGame()">
+      <div class="flex">
+        <img src="/assets/images/play-button.png" alt="Play Icon" class="play-icon w-5">
+        <span class="mx-4 text-lg">Start</span>
+      </div>
+    </button>
   </div>
-  <div class="px-16 max-w mx-auto grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
+  <div class="px-16 max-w mx-auto grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
       <app-user-card
       *ngFor="let user of users"
       [name]="user.username"
       (delete)="onDeletePerson(user)"
     ></app-user-card>
   </div>
-
-  <!-- *ngFor="let person of people"  <div class="mx-48 rounded mb-10">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
-      <!-- *ngFor="let user of users; let i = index"  -->
-     <!-- <div 
-     class="relative grid grid-cols-2 items-center bg-ranking-blue p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
-        <p class="text-xl text-gray-800 font-semibold flex items-center">
-          Victoria <!-- {{ user.username }} -->
-        <!-- </p>
-        <button (click)="removeUser(0)" class="justify-self-end text-white p-2 hover:bg-gray-400 transition-colors">
-          <img src="assets/images/bin.png" class="w-6 h-6" alt="Delete">
-        </button>
-      </div> --> -->
-    <!-- </div> -->
 </div>

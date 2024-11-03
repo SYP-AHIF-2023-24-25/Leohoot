@@ -31,7 +31,6 @@ export class WaitingroomComponent {
   }
 
   ngOnInit() {
-    this.users.push({username: "TestUser", score: 0});
     this.signalRService.connection.on("registeredUser", (gamePin, name) => {
       if (gamePin == this.gamePin)
       {
