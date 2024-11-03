@@ -120,6 +120,7 @@ export class QuestionComponent {
     this.gameCanceled = false;
 
     if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength && this.mode == Mode.GAME_MODE) {
+      await this.signalRService.connection.send("finishGame", this.gameId);
       await this.router.navigate(['/statistic'], { queryParams: { gameId: this.gameId } });
     } else if (this.mode == Mode.GAME_MODE) {
       await this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });

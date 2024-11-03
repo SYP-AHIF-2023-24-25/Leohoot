@@ -1,0 +1,20 @@
+<div class="flex flex-col bg-background-blue min-h-screen">
+    <div class="flex items-center justify-items-center bg-white drop-shadow-lg text-2xl font-bold md:text-4xl p-5">
+      <div>{{ playerResult.quizTitle }}</div>
+    </div>
+    <div class="container mx-auto flex-1 flex flex-col items-center justify-center">
+      <div class="text-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl mt-10">
+        Game Ended!
+      </div>
+  
+      <div class="my-6 lg:my-8 flex justify-center">
+        <img src="/assets/images/medal.png" class="md:w-60 md:h-60 lg:128 w-48 h-48" alt="Medal">
+      </div>
+  
+      <div class="text-center text-white font-semibold text-xl md:text-2xl lg:text-3xl mt-5">
+        You’ve reached the {{ playerResult.ranking }}<sup>{{ getRankingSuffix(playerResult.ranking) }}</sup> place out of {{ playerResult.playerCount }} players!
+      </div>
+    </div>
+    <app-footer-student [username]="username" [points]="playerResult.points"></app-footer-student>
+  </div>
+  

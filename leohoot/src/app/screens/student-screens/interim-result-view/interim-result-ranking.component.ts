@@ -42,9 +42,16 @@ export class InterimResultRankingComponent {
       }
     });
 
+    this.signalRService.connection.on("gameFinished", async (gameId: number) => {
+      if (gameId === this.gameId)
+      {
+        this.router.navigate(['/resultView'], { queryParams: { gameId: this.gameId } });
+      }
+    });
+
     this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
       this.question = data;
-      this.rightAnswer = this.question.points > 0;
+      this.rightAnswer = this.question.currentPoints > 0;
    });
 
   }

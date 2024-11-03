@@ -20,6 +20,7 @@ import {QuestionPreviewComponent} from './screens/teacher-screens/question-previ
 import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
+import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
@@ -87,6 +88,13 @@ export const routes: Routes = [
   {
     path: 'loadingScreen',
     component: GameLoadingScreen,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Student]
+    }
+  },
+  {
+    path: 'resultView',
+    component: ResultViewComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Student]
     }

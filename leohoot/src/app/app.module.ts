@@ -48,6 +48,7 @@ import { OptionalImageComponent } from "./components/question/optional-image/opt
 import { FooterStudentComponent } from "./components/general-components/footer-student/footer-student.component";
 import { LoadingScreenComponent } from "./components/general-components/loading-screen/loading-screen.component";
 import { UserCardComponent } from './components/waitingroom/user-card/user-card.component';
+import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { UserCardComponent } from './components/waitingroom/user-card/user-card.
     AnswerButtonComponent,
     OptionalImageComponent,
     FooterStudentComponent,
-    UserCardComponent
+    UserCardComponent,
+    ResultViewComponent,
   ],
   imports: [
     BrowserModule,
