@@ -20,12 +20,14 @@ import {QuestionPreviewComponent} from './screens/teacher-screens/question-previ
 import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
+import {DashboardComponent} from "./components/teacher-components/dashboard/dashboard.component";
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
   { path: 'answerView', component: AnswerViewComponent },
   { path: 'interimResult', component: InterimResultRankingComponent },
+  {path:'dashboard', component: DashboardComponent},
   {
     path: 'ranking',
     component: RankingComponent,
