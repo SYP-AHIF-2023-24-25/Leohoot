@@ -1,31 +1,29 @@
 <div class="bg-background-blue min-h-screen" *ngIf="gamePin > 0">
   <div class="pt-14 mx-40 md:mx-40 lg:mx-52 xl:mx-72">
     <div class="grid grid-cols-12 row-auto col-auto">
-      <app-game-infos [gamePin]="gamePin" class="col-span-8"/>
-      <div class="col-span-3 justify-self-end">
-        <qrcode [cssClass]="'center'" [scale]="5" [elementType]="'url'" [margin]="3"  [qrdata]="qrCodeData" [title]="qrCodeTitle" [errorCorrectionLevel]="'Q'"></qrcode>
+      <app-game-infos [gamePin]="gamePin" class="col-span-8"></app-game-infos>
+      <div class="pl-5 col-span-3 justify-self-end">
+        <qrcode [cssClass]="'center'" [scale]="5" [elementType]="'url'" [margin]="3" [qrdata]="qrCodeData" [title]="qrCodeTitle" [errorCorrectionLevel]="'Q'"></qrcode>
       </div>
     </div>
   </div>
+  
   <div class="mt-28 mx-28 mb-2 grid grid-cols-5 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 xl:grid-cols-12">
     <div class="text-white pt-5 mb-24 xl:col-span-11 lg:col-span-9 md:col-span-6 sm:col-span-4 text-center text-6xl">
-      LEOHOOT
+      Leohoot
     </div>
-    <button type="button" class="bg-white ml-6 py-3 px-7 text-xl rounded shadow" (click)="startGame()">
+    <button type="button" class="h-16 my-10 rounded-md bg-white p-2 text-black font-bold w-28" (click)="startGame()">
       <div class="flex">
-        <img ngSrc="../../../../assets/images/play-button.png" alt="Play Icon" class="play-icon w-5" height="512"
-             width="512">
-        <span class="mx-2">start</span>
+        <img src="/assets/images/play-button.png" alt="Play Icon" class="play-icon w-5">
+        <span class="mx-4 text-lg">Start</span>
       </div>
     </button>
   </div>
-  <div class="mx-48 rounded mb-10">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8" >
-      <div *ngFor="let user of users;">
-          <div class="bg-blue-400 p-2 rounded-lg shadow" >
-            <p class="xl:text-2xl lg:text-xl md:text-lg sm:text-md text-center text-white">{{user.username}}</p>
-          </div>
-      </div>
-    </div>
+  <div class="px-16 max-w mx-auto grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
+      <app-user-card
+      *ngFor="let user of users"
+      [name]="user.username"
+      (delete)="onDeletePerson(user)"
+    ></app-user-card>
   </div>
 </div>

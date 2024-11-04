@@ -1,91 +1,11 @@
 <div class="flex flex-col bg-background-blue min-h-screen">
-  <nav class="bg-white text-center drop-shadow-lg relative">
-    <div class="container mx-auto p-2">
-      <div class="grid grid-cols-3 ">
-          <div class="flex items-center">
-              <button routerLink="/dashboard"><img class="max-h-16" src="assets/images/hootiFaceIcon.ico" alt="hooti"></button>
-              <button routerLink="/dashboard" class="flex items-center text-lg font-bold lg:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-3 lg:p-4 ">></button>
-              <button routerLink="/gameLogin" class="flex items-center text-lg font-bold lg:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-3 lg:p-4 ">Join Quiz</button>
-              <button routerLink="/quizMaker" class="flex items-center text-lg font-bold lg:text-2xl text-center hover:bg-hooti-yellow hover:text-white p-3 lg:p-4">Maker</button>
-          </div>
-        <div class="mt-2.5 items-center align-middle">
-          <div class="text-center text-3xl font-bold lg:text-4xl ">
-            Quizzes
-          </div>
-        </div>
-        <div class="flex justify-end items-center">
-            <button class="items-center justify-center font-bold rounded-lg bg-hooti-yellow mx-2 text-white text-xl h-10 w-32" (click)="logout()">Logout</button>
-        </div>
-      </div>
-    </div>
-  </nav>
+  <app-navbar/>
   <div class="container grid md:grid-cols-3 grid-auto mx-auto mt-4 w-full">
-      <div class="col-span-3">
-          <section>
-          <form class="mx-auto max-w-lg">
-              <label for="default-search" class="mb-2 text-sm font-medium text-white sr-only">Search</label>
-              <div class="relative">
-                  <input (submit)="search(filter.value)" type="search" id="default-search" class="block w-full p-3 ps-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" #filter placeholder="Search Quiz" required />
-                  <button type="submit" (click)="search(filter.value)" class="absolute top-0 end-0 pl-4.5 p-4 text-sm font-medium h-full text-white bg-hooti-yellow rounded-e-lg">
-                      <svg class="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 20 20">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                      </svg>
-                      <span class="sr-only">Search</span>
-                  </button>
-              </div>
-          </form>
-          </section>
-      </div>
-    <div [hidden]="loggedIn" class="text-white font-bold my-10 text-lg">Login to see Quizzes!</div>
-    <div
-      *ngFor="
-          let quiz of filteredQuizzes;
-          index as i
-        "
-    >
-      <div class="p-5 pl-10">
-          <div class="relative max-w-md md:rounded-xl rounded-md overflow-hidden shadow-lg bg-white">
-            <button class="absolute top-2 left-2 w-10" (click)="deleteQuiz(quiz.id!)">
-              <img src="assets/images/bin-black.png" alt="delete">
-            </button>
-            <button class="absolute top-2 right-4 w-9" (click)="goToQuizMaker(quiz.id!)">
-              <img src="assets/images/edit.png" alt="edit">
-            </button>
-            <div
-              *ngIf="quiz.imageName"
-              class="flex items-center justify-center"
-            >
-              <img class="w-full max-h-64 object-cover" src="{{ quiz.imageName }}" alt="{{ quiz.imageName }}"/></div>
-            <div
-              *ngIf="!quiz.imageName"
-              class="flex items-center justify-center"
-            >
-              <img class="w-full max-h-64 object-cover" src="/assets/images/noImage.png" alt="no image"/></div>
-              <div class="px-6 py-4 items-stretch grid grid-rows-2 gap-2">
-                  <div class="grid grid-cols-2">
-                      <div class="font-bold text-xl mb-2 pt-2 items-center">{{ quiz.title }}</div>
-                      <div class="flex justify-end items-center ">
-                          <button class="bg-hooti-yellow text-xl rounded-xl pb-1 pl-4 cursor-pointer pr-4 text-white text-end font-bold" (click)="goToWaitingroom(quiz.id!)">
-                              Start
-                          </button>
-                      </div>
-                  </div>
-                      <div class="h-full">{{quiz.description}}</div>
-              </div>
-              <div class="px-6 pt-4 pb-2 flex justify-between items-center">
-                <div class="flex items-center">
-                  <img class="w-10 h-10 rounded-full mr-4" src="/assets/images/hootiFaceIcon.ico" alt="Picture">
-                  <div class="text-sm">
-                    <p class="text-gray-900 leading-none">{{ quiz.creator }}</p>
-                  </div>
-                </div>
-                <div class="flex justify-end items-center">
-                  <div class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-bold ml-2 mr-2 text-end">?</div>
-                  <div class="text-end">{{ quiz.questions.length }}</div>
-                </div>
-              </div>
-          </div>
-        </div>
+    <div class="col-span-3 p-3">
+        <app-search-bar [search]="search.bind(this)"/>
+    </div>
+    <div *ngFor="let quiz of filteredQuizzes;index as i">
+      <app-quiz-card [quiz]="quiz" [setQuiz]="setQuiz.bind(this)"/>
+    </div>
   </div>
-</div>
 </div>

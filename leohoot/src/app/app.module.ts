@@ -14,7 +14,7 @@ import { RankingComponent } from './screens/teacher-screens/ranking/ranking.comp
 import { QuestionComponent } from './screens/teacher-screens/question/question.component';
 import { AnswerViewComponent } from './screens/student-screens/answer-view/answer-view.component';
 import { InterimResultRankingComponent } from './screens/student-screens/interim-result-view/interim-result-ranking.component';
-import { LoadingScreenComponent } from './screens/student-screens/loading-screen/loading-screen.component';
+import { GameLoadingScreen } from './screens/student-screens/game-loading-screen/game-loading-screen.component';
 import { GameLoginComponent } from './screens/student-screens/game-login/game-login.component';
 import { GameUserLoginComponent } from './screens/student-screens/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './screens/student-screens/waiting-page/waiting-page.component';
@@ -37,6 +37,18 @@ import { TopThreeComponent } from "./components/statistics/top-three/top-three.c
 import { HeaderComponent } from "./components/general-components/header/header.component";
 import { StatisticOverviewComponent } from "./components/statistics/statistic-overview/statistic-overview.component";
 import { ButtonComponent } from "./components/general-components/button/button.component";
+import { RankingListComponent } from "./components/ranking/ranking-list/ranking-list.component";
+import { FooterComponent } from "./components/general-components/footer/footer.component";
+import { QuizCardComponent } from "./components/quiz-overview/quiz-card/quiz-card.component";
+import { SearchBarComponent } from "./components/quiz-overview/search-bar/search-bar.component";
+import { NavbarComponent } from "./components/general-components/navbar/navbar.component";
+import { CountdownComponent } from "./components/general-components/countdown/countdown.component";
+import { AnswerButtonComponent } from "./components/question/answer-button/answer-button.component";
+import { OptionalImageComponent } from "./components/question/optional-image/optional-image.component";
+import { FooterStudentComponent } from "./components/general-components/footer-student/footer-student.component";
+import { LoadingScreenComponent } from "./components/general-components/loading-screen/loading-screen.component";
+import { UserCardComponent } from './components/waitingroom/user-card/user-card.component';
+import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +58,7 @@ import { ButtonComponent } from "./components/general-components/button/button.c
     AnswerViewComponent,
     QuestionComponent,
     InterimResultRankingComponent,
-    LoadingScreenComponent,
+    GameLoadingScreen,
     GameLoginComponent,
     GameUserLoginComponent,
     WaitingPageComponent,
@@ -62,7 +74,18 @@ import { ButtonComponent } from "./components/general-components/button/button.c
     TopThreeComponent,
     HeaderComponent,
     StatisticOverviewComponent,
-    ButtonComponent
+    ButtonComponent,
+    RankingListComponent,
+    FooterComponent,
+    QuizCardComponent,
+    SearchBarComponent,
+    NavbarComponent,
+    CountdownComponent,
+    AnswerButtonComponent,
+    OptionalImageComponent,
+    FooterStudentComponent,
+    UserCardComponent,
+    ResultViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,7 +102,8 @@ import { ButtonComponent } from "./components/general-components/button/button.c
     MatSelectModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
-  ],
+    LoadingScreenComponent
+],
   providers: [...appConfig.providers, provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })

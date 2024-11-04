@@ -29,32 +29,25 @@ export class AnswerViewComponent {
     'assets/images/crab.png',
     'assets/images/bird.png'
   ]
-  points: number = 0;
   gameEndedSubscription: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
-    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
+    this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {
         alert("Game was canceled by the teacher");
-        this.router.navigate(['/gameLogin']);
+        await this.router.navigate(['/gameLogin']);
       }
     });
   }
 
   ngOnInit() {
     this.getParams();
-    this.signalRService.connection.on("endLoading", (gameId: number) => {
-      if (gameId == this.gameId)
-      {
-        this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
-      }
-    });
   }
 
   ngOnDestroy() {
     this.gameEndedSubscription.unsubscribe();
   }
-  
+
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
@@ -79,8 +72,18 @@ export class AnswerViewComponent {
   }
 
   confirmAnswers() {
-    this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe((response) => {
-      this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId } });
+    this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
+      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Already finished?" } });
     });
+  }
+
+  isModalVisible: boolean = false;
+
+  showQuestion() {
+    this.isModalVisible = true;
+  }
+
+  closeModal() {
+    this.isModalVisible = false;
   }
 }

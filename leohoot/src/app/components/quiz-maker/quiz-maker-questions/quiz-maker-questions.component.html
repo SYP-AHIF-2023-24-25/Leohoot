@@ -177,7 +177,7 @@
                       <label for="dropzone-file">
                         <img [src]="question.imageName" class="flex flex-col items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
                         <div class="flex items-center justify-center mt-2">
-                          <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onDeleteImage()"><img src="/src/assets/images/bin.png" class="w-5 h-5"></button>
+                          <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onDeleteImage()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
                         </div>
                       </label>
                     </div>
@@ -243,10 +243,7 @@
         </main>
       </div>
       </div>
-      <div *ngIf="loading" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-        <div class="spinner inline-block animate-spin rounded-full w-16 h-16 border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white" role="status" aria-label="loading">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <p class="text-white ml-4">Loading...</p>
+      <div *ngIf="loading">
+        <app-loading-screen [isLoading]="loading" loadingText="Updating..."></app-loading-screen>
       </div>
 </div>

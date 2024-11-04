@@ -1,0 +1,19 @@
+<div *ngFor="let user of ranking.players; index as i">
+  <div class="grid grid-cols-12 gap-3 items-center bg-ranking-blue p-4 rounded-xl">
+    <div class="col-span-1 flex items-center">
+      <div class="h-8 w-8 md:h-12 md:w-12 bg-button-yellow text-black font-bold text-lg md:text-xl flex items-center justify-center rounded-xl">
+        {{i+1}}
+      </div>
+    </div>
+    <div class="col-span-10">
+      <div class="flex text-xl font-bold text-gray-800 items-center">
+        {{user.username}}
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="text-xl leading-6 font-bold text-gray-800 text-right">
+        {{user.score}}
+      </div>
+    </div>
+  </div>
+</div>
