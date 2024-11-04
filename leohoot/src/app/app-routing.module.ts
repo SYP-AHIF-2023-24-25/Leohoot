@@ -30,21 +30,21 @@ export const routes: Routes = [
     path: 'ranking',
     component: RankingComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'question',
     component: QuestionComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'waitingroom',
     component: WaitingroomComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   { path: 'gameLogin', component: GameLoginComponent },
@@ -54,35 +54,35 @@ export const routes: Routes = [
     path: 'statistic',
     component: StatisticComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'quizMaker',
     component: QuizMakerComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'quizMakerQuestions',
     component: QuizMakerQuestionsComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'quizOverview',
     component: QuizOverviewComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {
     path: 'questionPreview',
     component: QuestionPreviewComponent,
     canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
+      roles: [Role.Teacher]
     }
   },
   {

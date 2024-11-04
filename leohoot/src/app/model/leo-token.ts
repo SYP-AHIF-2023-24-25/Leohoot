@@ -55,7 +55,7 @@ function getValues(token: JwtPayload): IValues {
   trySetValue<string>("given_name", value => values.firstName = value, defaultConverter);
   trySetValue<string>("family_name", value => values.lastName = value, defaultConverter);
   trySetValue<string>("preferred_username", value => values.username = value, defaultConverter);
-  trySetValue("LDAP_ENTRY_DN", value => values.role = value, ldapToRole);
+  trySetValue("ldap_entry_dn", value => values.role = value, ldapToRole);
 
   return values;
 
