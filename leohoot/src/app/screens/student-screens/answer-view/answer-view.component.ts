@@ -29,7 +29,6 @@ export class AnswerViewComponent {
     'assets/images/crab.png',
     'assets/images/bird.png'
   ]
-  points: number = 0;
   gameEndedSubscription: Subscription;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
@@ -43,12 +42,6 @@ export class AnswerViewComponent {
 
   ngOnInit() {
     this.getParams();
-    this.signalRService.connection.on("endLoading", async (gameId: number) => {
-      if (gameId == this.gameId)
-      {
-        await this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
-      }
-    });
   }
 
   ngOnDestroy() {
@@ -80,7 +73,17 @@ export class AnswerViewComponent {
 
   confirmAnswers() {
     this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
-      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId } });
+      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Already finished?" } });
     });
+  }
+
+  isModalVisible: boolean = false;
+
+  showQuestion() {
+    this.isModalVisible = true;
+  }
+
+  closeModal() {
+    this.isModalVisible = false;
   }
 }

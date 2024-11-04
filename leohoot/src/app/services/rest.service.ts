@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment.development';
 import { AuthResponse } from '../model/auth-response';
 import { User } from '../model/user';
 import { Tag } from '../model/tag';
+import { PlayerResult } from '../model/player-result';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,10 @@ export class RestService {
 
   getGameStatistics(gameId: number): Observable<Statistic> {
     return this.httpClient.get<Statistic>(`${RestService.apiUrl}games/${gameId}/statistic`);
+  }
+
+  getResults(gameId: number, username: string): Observable<PlayerResult> {
+    return this.httpClient.get<PlayerResult>(`${RestService.apiUrl}games/${gameId}/playerResult?username=${username}`);
   }
 
   getNewGameId(quizId: number): Observable<number> {

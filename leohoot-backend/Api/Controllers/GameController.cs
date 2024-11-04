@@ -85,6 +85,27 @@ public class GameController : Controller
             )).ToArray();
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
     }
+
+    [HttpGet("{gameId:int}/playerResult")]
+    public IResult GetPlayerResult(int gameId, string username) 
+    {
+        var game = Repository.GetInstance().GetGameById(gameId);
+        if (game == null)
+        {
+            return Results.NotFound("Game not found");
+        }
+        var ranking = game.GetRanking(game.PlayerCount);
+        
+
+        var playerResult = new PlayerResultDto(
+            game.Quiz.Title,
+            game.GetPointsByUsername(username),
+            ranking.ToList().FindIndex(p => p.Username == username) + 1,
+            game.PlayerCount
+        );
+
+        return Results.Ok(playerResult);
+    }
     
     [Authorize]
     [HttpGet("{gameId:int}/currentQuestion/teacher")]
@@ -117,6 +138,7 @@ public class GameController : Controller
         {
             return Results.NotFound("Game not found");
         }
+        
         var questionStudent = new QuestionStudentDto(
             game.CurrentQuestion.QuestionNumber, 
             game.CurrentQuestion.QuestionText,

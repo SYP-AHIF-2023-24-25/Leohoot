@@ -71,7 +71,7 @@ export class QuestionPreviewComponent {
       ) {
         this.gameCanceled = false;
         this.obsTimer.unsubscribe();
-        await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
+        await this.signalRService.connection.send("finishPreview", this.gameId);
         await this.router.navigate(['/question'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE }});
       }
       this.currTime = currTime;

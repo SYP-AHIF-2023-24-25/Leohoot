@@ -6,23 +6,31 @@ import { QuestionStudent } from '../../../model/question-student';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-loading-screen',
-  templateUrl: './loading-screen.component.html',
+  selector: 'app-game-loading-screen',
+  templateUrl: './game-loading-screen.component.html',
   styleUrls: []
 })
-export class LoadingScreenComponent {
+export class GameLoadingScreen {
   gameId!: number;
   question!: QuestionStudent;
   username: string = sessionStorage.getItem("username") || "test";
   gameEndedSubscription: Subscription;
+  loadingText: string = "Waiting for the teacher to start the game...";
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.getParams();
-    this.signalRService.connection.on("endLoading", async (gameId: number) => {
+    
+    this.signalRService.connection.on("questionFinished", async (gameId: number) => {
       if (gameId == this.gameId) {
         await this.router.navigate(['/interimResult'], { queryParams: { gameId: this.gameId } });
       }
     });
+
+    this.signalRService.connection.on("previewFinished", async (gameId: number) => {
+      if(gameId == this.gameId) {
+        await this.router.navigate(['/answerView'], { queryParams: { gameId: this.gameId } });
+      }
+    })
 
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {

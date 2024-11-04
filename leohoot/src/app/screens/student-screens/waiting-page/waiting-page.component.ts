@@ -17,9 +17,16 @@ export class WaitingPageComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
-        this.signalRService.connection.on("nextQuestion", async (gameId: number) => {
+        this.signalRService.connection.on("startedGame", async (gameId: number) => {
           if (gameId == this.gameId) {
-            await this.router.navigate(['/answerView'], { queryParams: { gameId: this.gameId }});
+            await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Read the question carefully?"}});
+          }
+        });
+
+        this.signalRService.connection.on("deletedUser", async (gameId: number, name: string) => {
+          if (gameId == this.gameId && name == this.username) {
+            alert("You were kicked from the game");
+            await this.router.navigate(['/gameLogin']);
           }
         });
       }
@@ -36,6 +43,9 @@ export class WaitingPageComponent {
 
   ngOnDestroy() {
     this.gameEndedSubscription.unsubscribe();
+    this.signalRService.connection.off("deletedUser");
+    this.signalRService.connection.off("startedGame");
+
   }
 
   protected readonly parseInt = parseInt;
