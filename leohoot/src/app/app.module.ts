@@ -49,6 +49,7 @@ import { FooterStudentComponent } from "./components/general-components/footer-s
 import { LoadingScreenComponent } from "./components/general-components/loading-screen/loading-screen.component";
 import { UserCardComponent } from './components/waitingroom/user-card/user-card.component';
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
+import { HeaderStudentComponent } from "./components/general-components/header-student/header-student.component";
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { ResultViewComponent } from './screens/student-screens/result-view/resul
     FooterStudentComponent,
     UserCardComponent,
     ResultViewComponent,
+    HeaderStudentComponent
   ],
   imports: [
     BrowserModule,
