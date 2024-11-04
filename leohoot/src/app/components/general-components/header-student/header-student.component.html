@@ -1,0 +1,6 @@
+<div class="grid grid-cols-2 items-center justify-center bg-white drop-shadow-lg text-2xl font-bold md:text-4xl p-5">
+  <div>{{title}}</div>
+  <div class="flex justify-end lg:mr-4" *ngIf="showQuestion">
+    <img (click)="showQuestion()" src="/assets/images/info.png" class="w-8 h-8 lg:w-12 lg:h-12" alt="Icon">
+  </div>
+</div>
