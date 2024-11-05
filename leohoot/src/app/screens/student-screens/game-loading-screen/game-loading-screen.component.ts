@@ -15,7 +15,7 @@ export class GameLoadingScreen {
   question!: QuestionStudent;
   username: string = sessionStorage.getItem("username") || "test";
   gameEndedSubscription: Subscription;
-  loadingText: string = "Waiting for the teacher to start the game...";
+  loadingText: string | undefined;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.getParams();
@@ -52,6 +52,9 @@ export class GameLoadingScreen {
         this.restservice.getQuestionStudent(this.gameId, this.username).subscribe((data) => {
           this.question = data;
         });
+      }
+      if (typeof params['loadingText'] !== 'undefined') {
+        this.loadingText = params['loadingText'];
       }
     });
   }

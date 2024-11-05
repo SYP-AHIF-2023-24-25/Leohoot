@@ -26,7 +26,7 @@ export class QuestionPreviewComponent {
         alert("Ending Game (No Players left)");
         await this.deleteGame();
       } );
-  }
+    }
 
   async deleteGame() {
     this.connectionSubscription.unsubscribe();
@@ -46,6 +46,7 @@ export class QuestionPreviewComponent {
 
   ngOnInit() {
     this.getParams();
+    
   }
 
   @HostListener('window:beforeunload', ['$event'])

@@ -73,17 +73,18 @@ export class RankingComponent {
 
   async nextQuestion() {
     this.gameCanceled = false;
-    await this.signalRService.connection.send("finishPreview", this.gameId);
 
-    await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
+    console.log("Starting preview for next question");
+    this.signalRService.connection.send("startPreview", this.gameId);
 
-    console.log("Next question");
-    this.restservice.nextQuestion(this.gameId).subscribe(() =>
+    
+    this.restservice.nextQuestion(this.gameId).subscribe(async () =>
     {
       const queryParams = {
         gameId: this.gameId,
         mode: Mode.GAME_MODE
       };
+  
       this.router.navigate(['/questionPreview'], { queryParams });
     });
   }

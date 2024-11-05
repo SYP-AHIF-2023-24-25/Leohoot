@@ -11,6 +11,7 @@ export class SignalRService {
   connectionClosedSubject = new Subject<void>();
   connectionClosed$: Observable<void> = this.connectionClosedSubject.asObservable();
   gameEnded$ = new Subject<number>();
+  previewStarted$ = new Subject<number>(); 
 
   constructor() {
     this.buildConnection();
@@ -42,6 +43,10 @@ export class SignalRService {
       this.connectionClosedSubject.next();
     });
 
+    this.connection.on("previewStarted", (gameId: number) => {
+      this.previewStarted$.next(gameId);  // Emit previewStarted event to subscribers
+    });
+
     this.connection.on("gameEnded", (gameId: number) => {
       this.gameEnded$.next(gameId);
     });
@@ -51,14 +56,16 @@ export class SignalRService {
   }
 
   
-  private startConnection() {
+  private startConnection(retryCount: number = 0) {
     this.connection.start()
       .then(() => {
         console.log("Connection started");
       })
       .catch(err => {
-        console.log('Error while establishing connection, retrying...', err);
-        setTimeout(() => this.startConnection(), 5000);  // Retry if connection fails initially
+        console.log(`Error establishing connection, retry #${retryCount + 1}...`, err);
+        const delay = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff
+        setTimeout(() => this.startConnection(retryCount + 1), delay);
       });
   }
+  
 }

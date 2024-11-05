@@ -30,8 +30,8 @@ public class LeohootHub : Hub
         game!.UpdatePoints();
         await Clients.All.SendAsync("questionFinished", gameId);
     }
-
-    public async Task SendToNextQuestion(int gameId) => await Clients.All.SendAsync("nextQuestion", gameId);
+    
+    public async Task StartPreview(int gameId) => await Clients.All.SendAsync("previewStarted", gameId);
 
     public async Task FinishPreview(int gameId) => await Clients.All.SendAsync("previewFinished", gameId);
 

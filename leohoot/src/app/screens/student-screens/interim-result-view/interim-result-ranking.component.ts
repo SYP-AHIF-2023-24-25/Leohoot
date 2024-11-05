@@ -17,6 +17,7 @@ export class InterimResultRankingComponent {
   question!: QuestionStudent;
   gameEndedRegistered = false;
   gameEndedSubscription: Subscription;
+  previewStartedSubscription: Subscription;
   rightAnswer: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
@@ -26,22 +27,19 @@ export class InterimResultRankingComponent {
         this.router.navigate(['/gameLogin']);
       }
     });
+
+    this.previewStartedSubscription = this.signalRService.previewStarted$.subscribe((gameId: number) => {
+      console.log(`Preview started event received in Angular for gameId: ${gameId}`);
+
+      if (gameId === this.gameId) {
+        console.log("Preview started event received in component.");
+        this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Already know the answer?" } });
+      }
+    });
   }
 
   ngOnInit() {
     this.getParams();
-
-    this.signalRService.connection.on("nextQuestion", async (gameId: number) => {
-      console.log("nextQuestion");
-      if (gameId === this.gameId)
-      {
-        const queryParams = {
-          gameId: this.gameId,
-          loadingText: "Read the question carefully?"
-        };
-        this.router.navigate(['/loadingScreen'], { queryParams });
-      }
-    });
 
     this.signalRService.connection.on("gameFinished", async (gameId: number) => {
       if (gameId === this.gameId)
@@ -59,6 +57,7 @@ export class InterimResultRankingComponent {
 
   ngOnDestroy() {
     this.gameEndedSubscription.unsubscribe();
+    this.previewStartedSubscription.unsubscribe();
   }
 
   getParams() {
