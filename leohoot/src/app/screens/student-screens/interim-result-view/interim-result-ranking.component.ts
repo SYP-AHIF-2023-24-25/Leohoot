@@ -37,7 +37,7 @@ export class InterimResultRankingComponent {
       {
         const queryParams = {
           gameId: this.gameId,
-          loadingText: "Read the question carefully?"
+          loadingText: "Know the answer?"
         };
         this.router.navigate(['/loadingScreen'], { queryParams });
       }

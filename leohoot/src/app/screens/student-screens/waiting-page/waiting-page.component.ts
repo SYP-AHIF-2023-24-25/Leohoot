@@ -19,7 +19,7 @@ export class WaitingPageComponent {
         this.gameId = parseInt(params['gameId']);
         this.signalRService.connection.on("startedGame", async (gameId: number) => {
           if (gameId == this.gameId) {
-            await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Read the question carefully?"}});
+            await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Ready to start the game?" } });
           }
         });
 
