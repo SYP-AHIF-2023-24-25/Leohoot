@@ -73,7 +73,7 @@ export class RankingComponent {
 
   async nextQuestion() {
     this.gameCanceled = false;
-    await this.signalRService.connection.send("finishPreview", this.gameId);
+   // await this.signalRService.connection.send("finishPreview", this.gameId);
 
     await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
 

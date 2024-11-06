@@ -53,6 +53,9 @@ export class GameLoadingScreen {
           this.question = data;
         });
       }
+      if (typeof params['loadingText'] !== 'undefined') {
+        this.loadingText = params['loadingText'];
+      }
     });
   }
 }
