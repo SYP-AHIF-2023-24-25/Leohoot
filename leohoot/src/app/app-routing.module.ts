@@ -89,17 +89,11 @@ export const routes: Routes = [
   },
   {
     path: 'loadingScreen',
-    component: GameLoadingScreen,
-    canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
-    }
+    component: GameLoadingScreen
   },
   {
     path: 'resultView',
-    component: ResultViewComponent,
-    canActivate: [AuthGuard], data: {
-      roles: [Role.Student]
-    }
+    component: ResultViewComponent
   }
 ];
 
