@@ -19,7 +19,7 @@ export class GameLoginComponent {
       if(exists){
         await this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
       } else {
-        alert("This game does not exist");
+        alert("This game does not");
       }
     });
   }
