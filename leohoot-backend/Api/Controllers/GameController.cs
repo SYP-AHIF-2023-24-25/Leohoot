@@ -33,7 +33,8 @@ public class GameController : Controller
         var gameId = await Repository.GetInstance().AddNewGame(quizId, _unitOfWork);
         return gameId;
     }
-
+    
+    [AllowAnonymous]
     [HttpGet("{gameId:int}")]
     public IResult GetQuizNumberByGameId(int gameId)
     {
@@ -45,6 +46,7 @@ public class GameController : Controller
         return Results.Ok(game.Quiz.Id);
     }
     
+    [AllowAnonymous]
     [HttpPost("{gameId}/answers")]
     public async Task AddNewAnswerToGame(int gameId, AnswerPostDto body)
     {
@@ -52,6 +54,7 @@ public class GameController : Controller
         await HubContext!.Clients.All.SendAsync("updateAnswerCount", count.AnswerCount, count.IsFinished);
     }
     
+    [AllowAnonymous]
     [HttpGet("{gameId:int}/ranking")]
     public IResult GetRankingOfGame(int gameId)
     {
@@ -63,6 +66,7 @@ public class GameController : Controller
         return Results.Ok(new RankingDto(game.Ranking.ToArray(), game.CurrentQuestion.QuestionNumber, game.Quiz.Questions.Count));
     }
     
+    [AllowAnonymous]
     [HttpGet("{gameId:int}/statistic")]
     public IResult GetStatisticOfGame(int gameId) 
     {
@@ -86,6 +90,7 @@ public class GameController : Controller
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
     }
 
+    [AllowAnonymous]
     [HttpGet("{gameId:int}/playerResult")]
     public IResult GetPlayerResult(int gameId, string username) 
     {
@@ -130,6 +135,7 @@ public class GameController : Controller
         return Results.Ok(question);
     }
     
+    [AllowAnonymous]
     [HttpGet("{gameId:int}/currentQuestion/student")]
     public IResult GetCurrentQuestionOfGameStudent (int gameId, string username)
     {
@@ -150,6 +156,7 @@ public class GameController : Controller
     }
     
     [Authorize]
+    [AllowAnonymous]
     [HttpPut("{gameId:int}/currentQuestion")]
     public async Task<IResult> NextQuestion (int gameId)
     {
@@ -183,6 +190,7 @@ public class GameController : Controller
     }
     
     [HttpGet("{gameId}/exists")]
+    [AllowAnonymous]
     public bool DoesGameExist(string gameId)
     {
         Game? game = null;
@@ -194,6 +202,7 @@ public class GameController : Controller
     }
     
     [Authorize]
+    [AllowAnonymous]
     [HttpDelete("{gameId:int}")]
     public IResult DeleteGame(int gameId)
     {
