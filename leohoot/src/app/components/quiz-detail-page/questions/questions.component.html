@@ -1,0 +1,26 @@
+<div class="bg-white rounded-2xl m-10">
+  <div *ngFor="let question of questions" class="grid grid-cols-4 items-center space-x-5 p-5">
+    <div class="col-span-1">
+      <img
+        *ngIf="question.imageName"
+        [src]="question.imageName"
+        alt="quiz image"
+        class="w-full max-w-100 max-h-72 h-auto object-contain"
+      />
+      <img
+        *ngIf="!question.imageName"
+        src="/assets/images/noImage.png"
+        alt="quiz image"
+        class="w-full max-w-100 max-h-72 h-auto object-contain"
+      />
+    </div>
+    <div class="col-span-3">
+      <div class="font-bold text-base">{{question?.questionText}}</div>
+      <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0">
+        <div *ngFor="let answer of question?.answers; index as i" class="flex items-center justify-between {{colors[i]}} p-3 rounded-md text-white font-bold">
+          <span>{{answer.answerText}}</span>
+          <img *ngIf="answer.isCorrect" src="assets/images/check-mark-white.png" alt="correct answer" class="w-5 h-5">
+        </div>
+      </div>
+    </div>
+  </div>

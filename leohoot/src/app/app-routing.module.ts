@@ -22,6 +22,7 @@ import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
 import {DashboardComponent} from "./components/teacher-components/dashboard/dashboard.component";
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
+import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-page/quiz-detail-page.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
@@ -83,6 +84,13 @@ export const routes: Routes = [
   {
     path: 'questionPreview',
     component: QuestionPreviewComponent,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
+  },
+  {
+    path: 'quizDetails',
+    component: QuizDetailPageComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Teacher]
     }

@@ -24,6 +24,9 @@ export class QuizCardComponent {
     }
   }
 
+  async goToDetailPage(quizId: number) {
+    await this.router.navigate(['/quizDetails'], { queryParams: { quizId:  quizId } });
+  }
   async goToWaitingroom(quizId: number) {
     await this.router.navigate(['/waitingroom'], { queryParams: { quizId:  quizId } });
   }
@@ -37,6 +40,6 @@ export class QuizCardComponent {
           this.setQuiz(data)
         });
       });
-    } 
+    }
   }
 }
