@@ -1,0 +1,37 @@
+<div class="grid grid-cols-3 items-center space-x-10 p-10">
+  <div class="col-span-1">
+    <img
+      *ngIf="selectedQuiz?.imageName"
+      [src]="selectedQuiz?.imageName"
+      alt="quiz image"
+      class="w-full max-w-100 max-h-72 h-auto object-contain"
+    />
+    <img
+      *ngIf="!selectedQuiz?.imageName"
+      src="/assets/images/noImage.png"
+      alt="quiz image"
+      class="w-full max-w-100 max-h-72 h-auto object-contain"
+    />
+  </div>
+  <div class="col-span-2">
+    <div class="grid grid-cols-4 items-center space-y-3 text-white text-base">
+      <div class="col-span-1 font-bold">Creator:</div>
+      <div class="col-span-3 flex items-center justify-between">
+        <span>{{selectedQuiz?.creator}}</span>
+        <img src="assets/images/play-button-white.png" alt="Play" class="w-10 h-10" (click)="startGame()">
+      </div>
+      <div class="col-span-1 font-bold">Duration:</div>
+      <div class="col-span-3">{{Math.floor(duration/60)}} min {{duration%60}} s</div>
+      <div class="col-span-1 font-bold">Tags</div>
+      <div class="col-span-3">
+        <div class="flex flex-wrap gap-2">
+          <div class="bg-tags py-2 px-5 rounded-lg font-extrabold" *ngFor="let tag of selectedQuiz?.tags">
+            {{ tag?.name }}
+          </div>
+        </div>
+      </div>
+      <div class="col-span-1 font-bold">Description:</div>
+      <div class="col-span-3">{{selectedQuiz?.description}}</div>
+    </div>
+  </div>
+</div>
