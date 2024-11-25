@@ -27,6 +27,18 @@ export class HeaderDetailsComponent {
       });
     }
   }
+  async duplicateQuiz() {
+    if (confirm("Are you sure you want to duplicate this quiz?")) {
+      const quizClone = this.quiz;
+      if (quizClone) {
+        quizClone.id = undefined;
+        quizClone.creator = this.username;
+        this.restService.addQuiz(quizClone).subscribe((id) => {
+          this.router.navigate(['/quizDetails'], { queryParams: { quizId:  id } });
+        })
+      }
+    }
+  }
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
