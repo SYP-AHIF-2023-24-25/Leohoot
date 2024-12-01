@@ -228,8 +228,8 @@ export class QuizMakerComponent {
 
   playDemoView()
   {
-    this.restService.getNewGameId(this.quizId!).subscribe(data => {
-      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
+    this.restService.getNewGameId(this.quizId!).subscribe(async data => {
+      await this.router.navigate(['/questionPreview'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId} });
     });
   }
 

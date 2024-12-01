@@ -39,9 +39,9 @@ export class WaitingroomComponent {
     });
   }
 
-  startGame(){
-    this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
+  async startGame(){
+    await this.signalRService.connection.invoke("startGame", this.gamePin);
+    await this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
   }
 
   async onDeletePerson(user: Player) {
