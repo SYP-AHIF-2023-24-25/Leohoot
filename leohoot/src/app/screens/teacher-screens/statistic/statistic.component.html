@@ -4,7 +4,9 @@
     <div class="flex justify-end">
       <app-button (click)="navigateBack()" text="Back"/>
     </div>
-    <app-top-three [statistic]="statistic"></app-top-three>
+    <div class="flex justify-center pb-5">
+      <app-top-three [statistic]="statistic" class="h-60"></app-top-three>
+    </div>
     <app-statistic-overview [statistic]="statistic" [gameId]="gameId"/>
   </div>
 </div>
