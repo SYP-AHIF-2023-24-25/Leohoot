@@ -122,10 +122,12 @@ public class Game
 
     public Player[] GetRanking(int numberOfPlayers)
     {
-        var ranking = _players.Take(numberOfPlayers).ToList();
+        var ranking = _players
+            .OrderByDescending(u => u.Score)
+            .Take(numberOfPlayers).ToList();
         while (ranking.Count < 3) {
             ranking.Add(new Player("", 0));
         }
-        return ranking.OrderByDescending(u => u.Score).ToArray();
+        return ranking.ToArray();
     }
 }
