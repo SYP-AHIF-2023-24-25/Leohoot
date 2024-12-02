@@ -21,260 +21,282 @@ interface ListItems {
   templateUrl: './quiz-maker.component.html'
 })
 export class QuizMakerComponent {
-  quizId: number | undefined;
-  existingQuestions: QuestionTeacher[] = [];
-  title: string = "";
-  description: string | undefined;
-  imageUrl: string | undefined;
-  selectedTags: Tag[] = [];
-  newTag: string = '';
-  tags: ListItems[] = [];
-  searchQuery = '';
+  quizId: number = 0;
+  quiz?: Quiz;
+  username: string = "";
 
-  constructor(
-      private restService: RestService,
-      private router: Router,
-      private route: ActivatedRoute,
-      private signalRService: SignalRService,
-      private configurationService: ConfigurationService,
-      private loginService: LoginService
-    ) {
-    this.getParams();
-    this.refetchQuestions();
+  constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService) {
 
-    this.description = this.configurationService.getQuiz().description;
-    this.title = this.configurationService.getQuiz().title;
-    this.imageUrl = this.configurationService.getQuiz().imageName;
-    this.selectedTags = this.configurationService.getQuiz().tags;
-
-    this.refreshTags();
   }
-
-  getParams() {
-    this.route.queryParams.subscribe(params => {
-      if (typeof params['quizName'] !== 'undefined') {
-        this.title = params['quizName'];
-      }
-
+  ngOnInit() {
+    this.route.queryParams.subscribe(async params => {
       if (typeof params['quizId'] !== 'undefined') {
-        this.quizId = Number.parseInt(params['quizId'])
-
-        if (typeof params['edit'] !== undefined || typeof params['mode'] !== 'undefined') {
-          if (params['edit'] === 'true' || params['mode'] === '0') {
-            this.restService.getQuizById(this.quizId).subscribe(quiz => {
-              console.log(quiz)
-              quiz.questions.forEach(question => {
-                const missingAnswersCount = 4 - question.answers.length;
-                if (missingAnswersCount > 0) {
-                  for (let i = 0; i < missingAnswersCount; i++) {
-                    question.answers.push({ answerText: '', isCorrect: false });
-                  }
-                }
-              });
-
-             this.configurationService.setQuiz(quiz);
-
-              this.title = this.configurationService.getQuiz().title;
-              this.description = this.configurationService.getQuiz().description;
-              this.existingQuestions = this.configurationService.getQuestions();
-
-              this.imageUrl = this.configurationService.getQuiz().imageName;
-              this.selectedTags = this.configurationService.getQuiz().tags;
-            });
-          }
-
-        }
+        this.quizId = parseInt(params['quizId']);
+        await this.getQuiz()
       }
-    });
+    })
+    this.username = this.loginService.getUserName()
   }
 
-  getImageFromServer(imageUrl: string) {
-    this.imageUrl = this.restService.getImage(imageUrl);
+  async getQuiz() {
+    this.restService.getQuizById(this.quizId).subscribe((data) => {
+      this.quiz = data;
+    })
   }
+  // quizId: number | undefined;
+  // existingQuestions: QuestionTeacher[] = [];
+  // title: string = "";
+  // description: string | undefined;
+  // imageUrl: string | undefined;
+  // selectedTags: Tag[] = [];
+  // newTag: string = '';
+  // tags: ListItems[] = [];
+  // searchQuery = '';
 
-  onQuestionCreate() {
-    const queryParams = {
-      quizName: this.title,
-      quizId: this.quizId
-    };
+  // constructor(
+  //     private restService: RestService,
+  //     private router: Router,
+  //     private route: ActivatedRoute,
+  //     private signalRService: SignalRService,
+  //     private configurationService: ConfigurationService,
+  //     private loginService: LoginService
+  //   ) {
+  //   this.getParams();
+  //   this.refetchQuestions();
 
-    this.updateSelectedTags();
+  //   this.description = this.configurationService.getQuiz().description;
+  //   this.title = this.configurationService.getQuiz().title;
+  //   this.imageUrl = this.configurationService.getQuiz().imageName;
+  //   this.selectedTags = this.configurationService.getQuiz().tags;
 
-    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
-    if (this.imageUrl){
-      this.configurationService.addImage(this.imageUrl);
-    }
+  //   this.refreshTags();
+  // }
 
-    this.router.navigate(['/quizMakerQuestions'], { queryParams });
-  }
+  // getParams() {
+  //   this.route.queryParams.subscribe(params => {
+  //     if (typeof params['quizName'] !== 'undefined') {
+  //       this.title = params['quizName'];
+  //     }
 
-  refetchQuestions() {
-    this.existingQuestions = this.configurationService.getQuestions();
-    console.log(this.existingQuestions)
-  }
+  //     if (typeof params['quizId'] !== 'undefined') {
+  //       this.quizId = Number.parseInt(params['quizId'])
 
-  saveQuiz() {
-    this.updateSelectedTags();
+  //       if (typeof params['edit'] !== undefined || typeof params['mode'] !== 'undefined') {
+  //         if (params['edit'] === 'true' || params['mode'] === '0') {
+  //           this.restService.getQuizById(this.quizId).subscribe(quiz => {
+  //             console.log(quiz)
+  //             quiz.questions.forEach(question => {
+  //               const missingAnswersCount = 4 - question.answers.length;
+  //               if (missingAnswersCount > 0) {
+  //                 for (let i = 0; i < missingAnswersCount; i++) {
+  //                   question.answers.push({ answerText: '', isCorrect: false });
+  //                 }
+  //               }
+  //             });
 
-    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
-    const quiz = this.configurationService.getQuiz();
+  //            this.configurationService.setQuiz(quiz);
 
-    quiz.questions =  quiz.questions.map(question => ({
-      ...question,
-      answers: question.answers.filter(answer => answer.answerText !== '')
-    }));
+  //             this.title = this.configurationService.getQuiz().title;
+  //             this.description = this.configurationService.getQuiz().description;
+  //             this.existingQuestions = this.configurationService.getQuestions();
 
-    if (this.quizId === undefined){
-      this.restService.addQuiz(quiz).subscribe(data => {
-        this.quizId = data;
-        alert('Quiz saved successfully.');
-      });
-    } else {
-      this.restService.updateQuiz(this.quizId, quiz).subscribe(data => {
-        console.log(data);
-      });
-      alert('Quiz updated successfully.');
-    }
-  }
+  //             this.imageUrl = this.configurationService.getQuiz().imageName;
+  //             this.selectedTags = this.configurationService.getQuiz().tags;
+  //           });
+  //         }
 
-  handleFileInput(event: any) {
-    const files = event?.target?.files;
-    if (files && files.length > 0) {
-      const file = files.item(0);
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const imageString = e.target?.result as string;
+  //       }
+  //     }
+  //   });
+  // }
 
-          const extension = file.name.split('.').pop();
-          const fileName = `quizImage.${extension}`;
+  // getImageFromServer(imageUrl: string) {
+  //   this.imageUrl = this.restService.getImage(imageUrl);
+  // }
 
-          this.uploadImage(imageString, fileName).subscribe(data => {
-            this.getImageFromServer(data);
-          });
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert('Please select an image file.')
-      }
-    } else {
-      alert('Please select an image file.')
-    }
-  }
+  // onQuestionCreate() {
+  //   const queryParams = {
+  //     quizName: this.title,
+  //     quizId: this.quizId
+  //   };
 
-  uploadImage(imageString: string, fileName: string) {
-    const imageBlob = this.dataURItoBlob(imageString);
+  //   this.updateSelectedTags();
 
-    const formData = new FormData();
+  //   this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
+  //   if (this.imageUrl){
+  //     this.configurationService.addImage(this.imageUrl);
+  //   }
 
-    formData.append('image', imageBlob, fileName);
+  //   this.router.navigate(['/quizMakerQuestions'], { queryParams });
+  // }
 
-    return this.restService.addImage(formData);
-  }
+  // refetchQuestions() {
+  //   this.existingQuestions = this.configurationService.getQuestions();
+  //   console.log(this.existingQuestions)
+  // }
 
-  dataURItoBlob(dataURI: string) {
-    const byteString = window.atob(dataURI.split(',')[1]);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: 'image/jpeg' });
-    return blob;
-  }
+  // saveQuiz() {
+  //   this.updateSelectedTags();
 
-  async onClose(){
-    if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
-      this.configurationService.clearQuiz();
-      if (this.quizId) {
-        await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
-      } else {
-        await this.router.navigate(['/quizOverview'])
-      }
-    }
-  }
+  //   this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
+  //   const quiz = this.configurationService.getQuiz();
 
-  onImageDelete(){
-    this.imageUrl = undefined;
-  }
+  //   quiz.questions =  quiz.questions.map(question => ({
+  //     ...question,
+  //     answers: question.answers.filter(answer => answer.answerText !== '')
+  //   }));
 
-  drop(event: CdkDragDrop<QuestionTeacher[]>) {
-    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
-    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
-    this.refetchQuestions();
-  }
+  //   if (this.quizId === undefined){
+  //     this.restService.addQuiz(quiz).subscribe(data => {
+  //       this.quizId = data;
+  //       alert('Quiz saved successfully.');
+  //     });
+  //   } else {
+  //     this.restService.updateQuiz(this.quizId, quiz).subscribe(data => {
+  //       console.log(data);
+  //     });
+  //     alert('Quiz updated successfully.');
+  //   }
+  // }
 
-  truncateText(text: string, maxLength: number): string {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-  }
+  // handleFileInput(event: any) {
+  //   const files = event?.target?.files;
+  //   if (files && files.length > 0) {
+  //     const file = files.item(0);
+  //     if (file && file.type.startsWith('image/')) {
+  //       const reader = new FileReader();
+  //       reader.onload = (e) => {
+  //         const imageString = e.target?.result as string;
 
-  onQuestionDelete(id: number) {
-    this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();
-  }
+  //         const extension = file.name.split('.').pop();
+  //         const fileName = `quizImage.${extension}`;
 
-  onQuestionEdit(questionNumber: number | QuestionTeacher) {
-    const queryParams = {
-      quizName: this.title,
-      questionNumber: questionNumber,
-      quizId: this.quizId
-    };
+  //         this.uploadImage(imageString, fileName).subscribe(data => {
+  //           this.getImageFromServer(data);
+  //         });
+  //       };
+  //       reader.readAsDataURL(file);
+  //     } else {
+  //       alert('Please select an image file.')
+  //     }
+  //   } else {
+  //     alert('Please select an image file.')
+  //   }
+  // }
 
-    this.updateSelectedTags();
-    this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
+  // uploadImage(imageString: string, fileName: string) {
+  //   const imageBlob = this.dataURItoBlob(imageString);
 
-    this.router.navigate(['/quizMakerQuestions'], { queryParams });
-  }
+  //   const formData = new FormData();
 
-  playDemoView()
-  {
-    this.restService.getNewGameId(this.quizId!).subscribe(data => {
-      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
-    });
-  }
+  //   formData.append('image', imageBlob, fileName);
 
-  isMobileMenuOpen = false;
+  //   return this.restService.addImage(formData);
+  // }
 
-  toggleMobileMenu() {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
+  // dataURItoBlob(dataURI: string) {
+  //   const byteString = window.atob(dataURI.split(',')[1]);
+  //   const arrayBuffer = new ArrayBuffer(byteString.length);
+  //   const int8Array = new Uint8Array(arrayBuffer);
+  //   for (let i = 0; i < byteString.length; i++) {
+  //     int8Array[i] = byteString.charCodeAt(i);
+  //   }
+  //   const blob = new Blob([int8Array], { type: 'image/jpeg' });
+  //   return blob;
+  // }
 
-  isDropdownVisible = false;
+  // async onClose(){
+  //   if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
+  //     this.configurationService.clearQuiz();
+  //     if (this.quizId) {
+  //       await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
+  //     } else {
+  //       await this.router.navigate(['/quizOverview'])
+  //     }
+  //   }
+  // }
 
-  toggleDropdown() {
-    this.isDropdownVisible = !this.isDropdownVisible;
-  }
+  // onImageDelete(){
+  //   this.imageUrl = undefined;
+  // }
 
-  addTag() {
-    if (this.newTag !== '' && !this.tags.some(item => item.tag.name === this.newTag)) {
-      const tag: Tag = {name: this.newTag};
+  // drop(event: CdkDragDrop<QuestionTeacher[]>) {
+  //   moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
+  //   this.configurationService.changeOrderOfQuestions(this.existingQuestions);
+  //   this.refetchQuestions();
+  // }
 
-      this.restService.addTag(tag).subscribe(data => {
-        this.updateSelectedTags();
-        this.refreshTags();
-      });
-      this.newTag = '';
-    }
-  }
+  // truncateText(text: string, maxLength: number): string {
+  //   return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  // }
 
-  refreshTags() {
-    this.tags = [];
-    this.restService.getAllTags().subscribe(data => {
-      data.forEach((i) => {
-        if (this.selectedTags.find(item => item.name === i.name)) {
-          this.tags.push({ tag: i, checked: true });
-        } else {
-          this.tags.push({ tag: i, checked: false });
-        }
-      });
-    });
-  }
+  // onQuestionDelete(id: number) {
+  //   this.configurationService.deleteQuestion(id);
+  //   this.refetchQuestions();
+  // }
 
-  filteredItems() {
-    return this.tags.filter(item => item.tag.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
-  }
+  // onQuestionEdit(questionNumber: number | QuestionTeacher) {
+  //   const queryParams = {
+  //     quizName: this.title,
+  //     questionNumber: questionNumber,
+  //     quizId: this.quizId
+  //   };
 
-  updateSelectedTags() {
-    this.selectedTags = this.tags.filter(item => item.checked).map(item => item.tag);
-  }
+  //   this.updateSelectedTags();
+  //   this.configurationService.setQuizTitleDescriptionAndTags(this.title, this.description ? this.description : '', this.selectedTags);
+
+  //   this.router.navigate(['/quizMakerQuestions'], { queryParams });
+  // }
+
+  // playDemoView()
+  // {
+  //   this.restService.getNewGameId(this.quizId!).subscribe(data => {
+  //     this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
+  //   });
+  // }
+
+  // isMobileMenuOpen = false;
+
+  // toggleMobileMenu() {
+  //   this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  // }
+
+  // isDropdownVisible = false;
+
+  // toggleDropdown() {
+  //   this.isDropdownVisible = !this.isDropdownVisible;
+  // }
+
+  // addTag() {
+  //   if (this.newTag !== '' && !this.tags.some(item => item.tag.name === this.newTag)) {
+  //     const tag: Tag = {name: this.newTag};
+
+  //     this.restService.addTag(tag).subscribe(data => {
+  //       this.updateSelectedTags();
+  //       this.refreshTags();
+  //     });
+  //     this.newTag = '';
+  //   }
+  // }
+
+  // refreshTags() {
+  //   this.tags = [];
+  //   this.restService.getAllTags().subscribe(data => {
+  //     data.forEach((i) => {
+  //       if (this.selectedTags.find(item => item.name === i.name)) {
+  //         this.tags.push({ tag: i, checked: true });
+  //       } else {
+  //         this.tags.push({ tag: i, checked: false });
+  //       }
+  //     });
+  //   });
+  // }
+
+  // filteredItems() {
+  //   return this.tags.filter(item => item.tag.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  // }
+
+  // updateSelectedTags() {
+  //   this.selectedTags = this.tags.filter(item => item.checked).map(item => item.tag);
+  // }
 }

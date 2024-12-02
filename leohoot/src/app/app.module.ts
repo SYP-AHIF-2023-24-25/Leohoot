@@ -54,6 +54,7 @@ import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-p
 import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-details/header-details.component";
 import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
+import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmaker/header-quizmaker.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { QuestionsComponent } from "./components/quiz-detail-page/questions/ques
     QuizDetailPageComponent,
     HeaderDetailsComponent,
     QuizDetailsComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    HeaderQuizmakerComponent
   ],
   imports: [
     BrowserModule,
