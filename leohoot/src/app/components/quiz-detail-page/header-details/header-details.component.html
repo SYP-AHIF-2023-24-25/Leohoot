@@ -1,11 +1,11 @@
 <div class="bg-background-blue-dark p-3 flex items-center justify-between">
   <div class="flex items-center space-x-4">
-    <div class="text-3xl font-bold text-white">{{quiz?.title}}</div>
+    <div class="text-3xl font-bold text-white pl-4">{{quiz?.title}}</div>
   </div>
   <div class="flex items-center space-x-4">
-    <img src="assets/images/duplicate.png" alt="duplicate" class="w-6 h-6">
-    <img *ngIf="quiz?.creator === username" src="assets/images/edit.png" alt="edit" class="w-6 h-6" (click)="editQuiz()">
-    <img *ngIf="quiz?.creator === username" src="assets/images/bin.png" alt="delete" class="w-6 h-6" (click)="deleteQuiz()">
+    <img src="assets/images/duplicate.png" alt="duplicate" class="w-6 h-6 hover:w-7 hover:h-7">
+    <img *ngIf="quiz?.creator === username" src="assets/images/edit.png" alt="edit" class="w-6 h-6 hover:w-7 hover:h-7" (click)="editQuiz()">
+    <img *ngIf="quiz?.creator === username" src="assets/images/bin.png" alt="delete" class="w-6 h-6 hover:w-7 hover:h-7" (click)="deleteQuiz()">
     <div class="w-px h-6 bg-white"></div>
     <img src="assets/images/user.png" alt="user" class="w-6 h-6">
     <div class="text-xl text-white">{{username}}</div>
