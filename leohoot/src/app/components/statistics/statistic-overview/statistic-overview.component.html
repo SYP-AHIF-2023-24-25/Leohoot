@@ -38,7 +38,7 @@
             <div *ngIf="chartOptions" class="w-96">
               <apx-chart
                 *ngIf="chartOptions.chart && chartOptions.responsive"
-                [series]="[chart.correctAnswersInPercentage, chart.incorrectAnswersInPercentage]"
+                [series]="[chart.correctAnswersInPercentage, chart.incorrectAnswersInPercentage, chart.notGivenAnswersInPercentage]"
                 [chart]="chartOptions.chart"
                 [labels]="chartOptions.labels"
                 [responsive]="chartOptions.responsive"

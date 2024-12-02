@@ -22,7 +22,7 @@ export class StatisticOverviewComponent {
   @ViewChild("chart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
-  displayStatistics: boolean = false;
+  displayStatistics: boolean = true;
   charts: Chart[] = [];
 
   ngOnInit(): void {
@@ -37,12 +37,12 @@ export class StatisticOverviewComponent {
   }
   initChart() {
     this.chartOptions = {
-      series: [0, 0],
+      series: [0, 0, 0],
       chart: {
         type: "donut"
       },
-      colors: ["#8AE67C", "#FF6F61",],
-      labels: ["correct", "incorrect"],
+      colors: ["#8AE67C", "#FF6F61", "#9ca3af"],
+      labels: ["correct", "incorrect", "not given"],
       responsive: [
         {
           breakpoint: 480,
@@ -61,21 +61,26 @@ export class StatisticOverviewComponent {
 
   calculateResults() {
     for (let questionNumber = 1; questionNumber <= this.statistic.questionTexts.length; questionNumber++) {
+      console.log(this.statistic.questionTexts[questionNumber], "Question");
       let chart: Chart = {
         questionNumber: questionNumber,
-        questionText: this.truncateText(this.statistic.questionTexts[questionNumber - 1].questionText, 20),
+        questionText: this.statistic.questionTexts[questionNumber - 1].questionText,
         totalAnswers: this.statistic.playerCount,
         correctAnswers: 0,
-        incorrectAnswers: 3,
+        notGivenAnswers: this.statistic.playerCount,
+        incorrectAnswers: 0,
         correctAnswersInPercentage: 0,
-        incorrectAnswersInPercentage: 100
+        notGivenAnswersInPercentage: 100,
+        incorrectAnswersInPercentage: 0,
       };
 
       if (this.statistic.questionAnswers[questionNumber]) {
-        chart.correctAnswers = this.statistic.questionAnswers[questionNumber].filter((answer) => answer === true).length;
-        chart.incorrectAnswers = chart.totalAnswers - chart.correctAnswers;
+        chart.correctAnswers = this.statistic.questionAnswers[questionNumber].filter((answer) => answer).length;
+        chart.incorrectAnswers = this.statistic.questionAnswers[questionNumber].filter((answer) => !answer).length;
+        chart.notGivenAnswers = chart.totalAnswers - chart.incorrectAnswers - chart.correctAnswers;
         chart.correctAnswersInPercentage = chart.correctAnswers / chart.totalAnswers * 100;
         chart.incorrectAnswersInPercentage = chart.incorrectAnswers / chart.totalAnswers * 100;
+        chart.notGivenAnswersInPercentage = chart.notGivenAnswers / chart.totalAnswers * 100;
       }
 
       this.charts.push(chart);
