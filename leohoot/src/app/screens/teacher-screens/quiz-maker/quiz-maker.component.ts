@@ -25,9 +25,10 @@ export class QuizMakerComponent {
   quiz?: Quiz;
   username: string = "";
 
-  constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService) {
+  constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService) {
 
   }
+  
   ngOnInit() {
     this.route.queryParams.subscribe(async params => {
       if (typeof params['quizId'] !== 'undefined') {
@@ -35,6 +36,7 @@ export class QuizMakerComponent {
         await this.getQuiz()
       }
     })
+    this.quiz = this.configurationService.getQuiz();
     this.username = this.loginService.getUserName()
   }
 

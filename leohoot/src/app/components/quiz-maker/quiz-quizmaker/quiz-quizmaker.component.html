@@ -1,0 +1,55 @@
+<div class="grid grid-cols-3 items-center space-x-10 p-10">
+    <div class="col-span-1">
+      <div *ngIf="quiz?.imageName">
+        <img
+          [src]="quiz?.imageName"
+          alt="quiz image"
+          class="w-full max-w-100 max-h-72 h-auto object-contain"
+        />
+      </div>
+      <div *ngIf="!quiz?.imageName">
+        <app-upload-image (imageUploaded)="quiz?.imageName"></app-upload-image>
+      </div>
+    </div>
+    <div class="col-span-2">
+      <div class="grid grid-cols-5 items-center space-y-4 ml-4 text-white text-base">
+        <div class="col-span-1 flex items-center font-bold h-11">Quiz Title:</div>
+        <div class="col-span-4 flex items-center justify-between">
+          <input
+            name="title"
+            type="text"
+            placeholder="Quiz Title"
+            [(ngModel)]="quizTitle"
+            (ngModelChange)="updateQuizTitle($event)"
+            required
+            class="block w-full max-w-128 h-11 rounded-md border-0 py-1.5 pl-2 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
+          />
+         
+          <img
+            src="assets/images/play-button-white.png"
+            alt="Play"
+            class="w-12 h-12"
+            (click)="playDemoMode()"
+          />
+        </div>
+  
+        <div class="col-span-1 flex items-center font-bold h-32">Description:</div>
+        <div class="col-span-4 flex items-center justify-between">
+          <textarea
+            name="description"
+            placeholder="Description"
+            [(ngModel)]="description"
+            (ngModelChange)="updateQuizDescription($event)"
+            required
+            class="block w-full h-32 max-w-128 rounded-md border-0 py-2 px-3 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
+          ></textarea>
+        </div>
+  
+        <div class="col-span-1 flex items-center font-bold h-11">Tags:</div>
+        <div class="col-span-4">
+          <app-tags-quizmaker></app-tags-quizmaker>
+        </div>
+      </div>
+    </div>
+  </div>
+  
