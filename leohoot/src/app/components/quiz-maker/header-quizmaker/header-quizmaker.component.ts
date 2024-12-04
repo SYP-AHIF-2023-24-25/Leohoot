@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
@@ -11,7 +11,9 @@ import { RestService } from 'src/app/services/rest.service';
 export class HeaderQuizmakerComponent {
     @Input() quiz?: Quiz;
     @Input() username: string = "";
-    @Input() quizId: number = 0;
+    @Input() quizId: number = -1;
+
+    @Output() saveQuiz = new EventEmitter<string>();
   
     isDropdownOpen: boolean = false;
   
@@ -21,12 +23,14 @@ export class HeaderQuizmakerComponent {
     async editQuiz() {
       //await this.router.navigate(['/quizMaker'], { queryParams: { quizId:  this.quiz?.id, edit: true} });
     }
-    async saveQuiz() {
-      // if (confirm("Are you sure you want to delete this quiz?")) {
-      //   this.restService.deleteQuiz(this.quiz?.id!).subscribe(() => {
-      //     this.router.navigate(['/quizOverview'])
-      //   });
-      // }
+    async save() {
+      if(this.quizId === -1){
+        if (this.quiz?.title === '' || this.quiz?.description === '') {
+          alert('Please enter a title and description for the quiz.');
+          return;
+        }
+        this.saveQuiz.emit('saveQuiz');
+      }
     }
     toggleDropdown(): void {
       this.isDropdownOpen = !this.isDropdownOpen;

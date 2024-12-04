@@ -25,7 +25,6 @@ export class QuizQuizmakerComponent {
     if (this.quiz) {
       this.quiz.title = title;
     }
-    console.log(this.quiz);
   }
 
   updateQuizDescription(desc: string) {

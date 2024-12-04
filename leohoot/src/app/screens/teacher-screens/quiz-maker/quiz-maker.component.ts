@@ -21,14 +21,14 @@ interface ListItems {
   templateUrl: './quiz-maker.component.html'
 })
 export class QuizMakerComponent {
-  quizId: number = 0;
+  quizId: number = -1;
   quiz?: Quiz;
   username: string = "";
 
   constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService) {
 
   }
-  
+
   ngOnInit() {
     this.route.queryParams.subscribe(async params => {
       if (typeof params['quizId'] !== 'undefined') {
@@ -44,6 +44,28 @@ export class QuizMakerComponent {
     this.restService.getQuizById(this.quizId).subscribe((data) => {
       this.quiz = data;
     })
+  }
+
+  saveQuiz() {
+   //TODO TAGS
+    this.configurationService.setQuiz(this.quiz!);
+    
+    this.quiz!.questions =  this.quiz!.questions.map(question => ({
+      ...question,
+      answers: question.answers.filter(answer => answer.answerText !== '')
+    }));
+
+    if (this.quizId === -1){
+      this.restService.addQuiz(this.quiz!).subscribe(data => {
+        this.quizId = data;
+        alert('Quiz saved successfully.');
+      });
+    } else {
+      this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
+        console.log(data);
+      });
+      alert('Quiz updated successfully.');
+    }
   }
   // quizId: number | undefined;
   // existingQuestions: QuestionTeacher[] = [];

@@ -11,7 +11,7 @@
 
     <!-- Add Question Button -->
     <div class="flex justify-center">
-        <button [disabled]="quiz?.description === '' || quiz?.title === ''" class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white font-bold h-10 w-full max-w-full disabled:bg-gray-400">
+        <button [disabled]="quiz?.description === '' || quiz?.title === ''" (click)="addQuestion()" class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white font-bold h-10 w-full max-w-full disabled:bg-gray-400">
             New Question
         </button>
     </div>
