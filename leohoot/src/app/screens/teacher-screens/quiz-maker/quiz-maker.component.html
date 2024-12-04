@@ -1,10 +1,9 @@
 <div class="grid grid-cols-5">
   <div class="col-span-1 bg-white">
-
+    <app-sidebar-quizmaker [newQuiz]="quiz" [quizId]="quizId"></app-sidebar-quizmaker>
   </div>
   <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
-    <app-header-quizmaker [username]="username" [quiz]="quiz"/>
-    <!--<app-quiz-details [quiz]="quiz"/>
-    <app-questions [questions]="quiz?.questions"/> -->
+    <app-header-quizmaker [username]="username" [quiz]="quiz" [quizId]="quizId"/>
+    <app-quiz-quizmaker [newQuiz]="quiz"/>
   </div>
 </div>

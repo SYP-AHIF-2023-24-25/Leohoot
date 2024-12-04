@@ -3,16 +3,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxCaptureService } from 'ngx-capture';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
+import { Quiz } from 'src/app/model/quiz';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-quiz-maker-sidebar',
-  templateUrl: './quiz-maker-sidebar.component.html',
-  styleUrl: './quiz-maker-sidebar.component.css'
+  templateUrl: './quiz-maker-sidebar.component.html'
 })
 export class QuizMakerSidebarComponent {
+
+
+
   @Input() quizTitle: string | undefined;
   @Input() initQuestion: boolean | undefined;
 

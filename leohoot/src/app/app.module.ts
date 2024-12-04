@@ -55,6 +55,10 @@ import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-det
 import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmaker/header-quizmaker.component';
+import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/quiz-quizmaker.component';
+import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
+import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
+import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +101,11 @@ import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmak
     HeaderDetailsComponent,
     QuizDetailsComponent,
     QuestionsComponent,
-    HeaderQuizmakerComponent
+    HeaderQuizmakerComponent,
+    QuizQuizmakerComponent,
+    UploadImageComponent,
+    TagsQuizmakerComponent,
+    SidebarQuizmakerComponent
   ],
   imports: [
     BrowserModule,

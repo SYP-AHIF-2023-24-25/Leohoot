@@ -1,0 +1,33 @@
+<div class="flex flex-col space-y-6 p-4 bg-white w-full max-w-sm">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between">
+        <!-- Back Button -->
+        <div class="flex items-center">
+            <img src="assets/images/back.png" 
+                 alt="go back" 
+                 class="transition-transform duration-200 transform hover:scale-110 w-7 h-7">
+        </div>
+    </div>
+
+    <!-- Add Question Button -->
+    <div class="flex justify-center">
+        <button [disabled]="quiz?.description === '' || quiz?.title === ''" class="flex items-center justify-center rounded-lg bg-hooti-yellow text-white font-bold h-10 w-full max-w-full disabled:bg-gray-400">
+            New Question
+        </button>
+    </div>
+
+    <!-- List of Questions -->
+    <div class="space-y-4">
+        <div class="overflow-y-auto">
+            <ul role="list" class="flex flex-1 flex-col gap-y-48 overflow-y-auto" style="max-height: calc(100vh - 200px);">
+                <li>
+                    <!-- <ul cdkDropList class="-mx-2 space-y-3" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
+                        <li *ngFor="let existingQuestion of existingQuestions;" cdkDrag (click)="onQuestionSelect(existingQuestion)">
+                            <app-quiz-maker-sidebar-item [existingQuestion]="existingQuestion" (onDelete)="onQuestionDelete($event)"></app-quiz-maker-sidebar-item>
+                        </li>                                 
+                    </ul>  -->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
