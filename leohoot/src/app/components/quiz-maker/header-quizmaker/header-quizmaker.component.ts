@@ -11,6 +11,7 @@ import { RestService } from 'src/app/services/rest.service';
 export class HeaderQuizmakerComponent {
     @Input() quiz?: Quiz;
     @Input() username: string = "";
+    @Input() quizId: number = 0;
   
     isDropdownOpen: boolean = false;
   
