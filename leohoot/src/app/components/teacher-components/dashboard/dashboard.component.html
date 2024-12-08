@@ -60,6 +60,8 @@
           *ngFor="let quiz of filteredQuizzes"
           class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
         >
+        
+        <div (click)="viewQuizDetails(quiz)">
           <img
             *ngIf="quiz.imageName"
             [src]="quiz.imageName"
@@ -73,11 +75,11 @@
             class="w-full h-56 object-cover mb-2"
           />
           <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
-          <div class="flex flex-wrap gap-2 mb-2 justify-center">
+          <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
             <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
           </div>
-          <div class="flex justify-between items-center w-full mt-auto">
-            <div class="flex items-center rounded-lg">
+          <div class="flex justify-between w-full mt-auto">
+            <div class="flex justify-start items-center rounded-lg">
               <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
               <div class="text-md">{{quiz.creator}}</div>
             </div>
@@ -87,8 +89,10 @@
               <div class="text-end">{{ quiz.questions.length }}</div>
             </div>
           </div>
+        </div>  
         </div>
-      </div>
+        </div>
+      
     </main>
   </div>
 </div>

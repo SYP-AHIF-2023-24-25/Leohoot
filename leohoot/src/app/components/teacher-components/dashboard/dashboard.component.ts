@@ -2,20 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Quiz } from "../../../model/quiz";
 import { RestService } from "../../../services/rest.service";
-import { RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { LoginService } from "../../../services/auth.service";
-import { NgForOf, NgIf } from "@angular/common";
 import { Tag } from "../../../model/tag";
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterLink,
-    NgIf,
-    NgForOf
-  ],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
@@ -29,7 +21,7 @@ export class DashboardComponent {
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
 
-  constructor(private restService: RestService, private loginService: LoginService) {}
+  constructor(private restService: RestService, private loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchQuizzes();
@@ -57,7 +49,9 @@ export class DashboardComponent {
   }
   
   
-  
+  viewQuizDetails(quiz: Quiz): void {
+    this.router.navigate(['/quizDetails'], { queryParams: { quizId: quiz.id } });
+  }
   
 
   fetchQuizzes(): void {
