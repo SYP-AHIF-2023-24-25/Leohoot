@@ -31,4 +31,12 @@ export class QuizDetailPageComponent {
       this.quiz = data;
     })
   }
+
+  toggleHome() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  toggleOwnQuizzes() {
+    this.router.navigate(['/dashboard'], { queryParams: { viewOwnQuizzes: true } });
+  }
 }

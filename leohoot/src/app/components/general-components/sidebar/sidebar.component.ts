@@ -19,10 +19,12 @@ export class SidebarComponent {
   }
 
   toggleHome(): void {
+    this.selectedItem = "home";
     this.home.emit();
   }
 
   toggleOwnQuizzes(): void {
+    this.selectedItem = "ownQuizzes";
     this.ownQuizzes.emit();
   }
 

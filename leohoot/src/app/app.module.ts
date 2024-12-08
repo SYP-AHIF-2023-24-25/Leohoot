@@ -55,7 +55,7 @@ import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-det
 import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [

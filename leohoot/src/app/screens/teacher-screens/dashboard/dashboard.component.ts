@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Quiz } from "../../../model/quiz";
 import { RestService } from "../../../services/rest.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Route, Router } from "@angular/router";
 import { LoginService } from "../../../services/auth.service";
 import { Tag } from "../../../model/tag";
 
@@ -19,13 +19,23 @@ export class DashboardComponent {
   username = this.loginService.getUserName();
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
-  viewOwnQuizzes = false;
+  viewOwnQuizzes: boolean = false;
 
-  constructor(private restService: RestService, private loginService: LoginService, private router: Router) {}
+  constructor(private restService: RestService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.fetchQuizzes();
     this.loadTags();
+
+   this.route.queryParams.subscribe(params => {
+      console.log(params);
+      if (typeof params['viewOwnQuizzes'] !== 'undefined') {
+        console.log('View own quizzes');
+        console.log(this.viewOwnQuizzes);
+       this.viewOwnQuizzes = true;
+       this.filteredQuizzes = this.quizzes.filter(quiz => quiz.creator === this.username);
+      }
+    });
   }
   
   filterQuizzes(): void {

@@ -23,7 +23,7 @@ import { Role } from './model/leo-token';
 
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-page/quiz-detail-page.component";
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
