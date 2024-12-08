@@ -50,6 +50,10 @@ import { LoadingScreenComponent } from "./components/general-components/loading-
 import { UserCardComponent } from './components/waitingroom/user-card/user-card.component';
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 import { HeaderStudentComponent } from "./components/general-components/header-student/header-student.component";
+import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-page/quiz-detail-page.component";
+import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-details/header-details.component";
+import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
+import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 
 @NgModule({
   declarations: [
@@ -87,7 +91,11 @@ import { HeaderStudentComponent } from "./components/general-components/header-s
     FooterStudentComponent,
     UserCardComponent,
     ResultViewComponent,
-    HeaderStudentComponent
+    HeaderStudentComponent,
+    QuizDetailPageComponent,
+    HeaderDetailsComponent,
+    QuizDetailsComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,

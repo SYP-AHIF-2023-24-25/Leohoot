@@ -189,8 +189,8 @@ public class GameController : Controller
         return Results.Ok(nextQuestion);
     }
     
-    [HttpGet("{gameId}/exists")]
     [AllowAnonymous]
+    [HttpGet("{gameId}/exists")]
     public bool DoesGameExist(string gameId)
     {
         Game? game = null;
@@ -202,7 +202,6 @@ public class GameController : Controller
     }
     
     [Authorize]
-    [AllowAnonymous]
     [HttpDelete("{gameId:int}")]
     public IResult DeleteGame(int gameId)
     {

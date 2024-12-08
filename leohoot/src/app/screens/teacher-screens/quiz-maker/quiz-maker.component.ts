@@ -32,16 +32,16 @@ export class QuizMakerComponent {
   searchQuery = '';
 
   constructor(
-      private restService: RestService, 
-      private router: Router, 
-      private route: ActivatedRoute, 
-      private signalRService: SignalRService,  
+      private restService: RestService,
+      private router: Router,
+      private route: ActivatedRoute,
+      private signalRService: SignalRService,
       private configurationService: ConfigurationService,
       private loginService: LoginService
     ) {
     this.getParams();
     this.refetchQuestions();
-    
+
     this.description = this.configurationService.getQuiz().description;
     this.title = this.configurationService.getQuiz().title;
     this.imageUrl = this.configurationService.getQuiz().imageName;
@@ -89,7 +89,7 @@ export class QuizMakerComponent {
   }
 
   getImageFromServer(imageUrl: string) {
-    this.imageUrl = this.restService.getImage(imageUrl);   
+    this.imageUrl = this.restService.getImage(imageUrl);
   }
 
   onQuestionCreate() {
@@ -145,13 +145,13 @@ export class QuizMakerComponent {
         const reader = new FileReader();
         reader.onload = (e) => {
           const imageString = e.target?.result as string;
-          
+
           const extension = file.name.split('.').pop();
           const fileName = `quizImage.${extension}`;
 
           this.uploadImage(imageString, fileName).subscribe(data => {
             this.getImageFromServer(data);
-          });          
+          });
         };
         reader.readAsDataURL(file);
       } else {
@@ -164,11 +164,11 @@ export class QuizMakerComponent {
 
   uploadImage(imageString: string, fileName: string) {
     const imageBlob = this.dataURItoBlob(imageString);
-  
+
     const formData = new FormData();
-  
+
     formData.append('image', imageBlob, fileName);
-    
+
     return this.restService.addImage(formData);
   }
 
@@ -179,14 +179,18 @@ export class QuizMakerComponent {
     for (let i = 0; i < byteString.length; i++) {
       int8Array[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([int8Array], { type: 'image/jpeg' });  
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
 
-  onClose(){
+  async onClose(){
     if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
       this.configurationService.clearQuiz();
-      this.router.navigate(['/quizOverview']);
+      if (this.quizId) {
+        await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
+      } else {
+        await this.router.navigate(['/quizOverview'])
+      }
     }
   }
 

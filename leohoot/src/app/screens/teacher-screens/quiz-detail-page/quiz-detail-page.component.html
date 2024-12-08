@@ -1,0 +1,10 @@
+<div class="grid grid-cols-5">
+  <div class="col-span-1 bg-white">
+
+  </div>
+  <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
+    <app-header-details [username]="username" [quiz]="quiz"/>
+    <app-quiz-details [quiz]="quiz"/>
+    <app-questions [questions]="quiz?.questions"/>
+  </div>
+</div>

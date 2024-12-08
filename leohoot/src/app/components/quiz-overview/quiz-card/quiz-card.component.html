@@ -1,4 +1,4 @@
-<div class="relative max-w-md md:rounded-xl rounded-md overflow-hidden shadow-lg bg-white">
+<div class="relative max-w-md md:rounded-xl rounded-md overflow-hidden shadow-lg bg-white" (click)="goToDetailPage(quiz.id!)">
   <button class="absolute top-2 left-2 w-10" (click)="deleteQuiz(quiz.id!)">
     <img src="assets/images/bin-black.png" alt="delete">
   </button>

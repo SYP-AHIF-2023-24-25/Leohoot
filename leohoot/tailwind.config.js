@@ -17,11 +17,13 @@ module.exports = {
         "button-blue": "#38bdf8",
         "user-orange": "#fcb30a",
         "background-blue": "#0788b0",
+        "background-blue-dark": "#067a9e",
         "pastel-lila": "#D4B0F9",
         "background-blue-light": "#cde7ef",
         "ranking-blue": "#9CCFDF",
         "design-quiz-blue": "#39A0C0",
-        "design-quiz-hover": "#62C6E4"
+        "design-quiz-hover": "#62C6E4",
+        "tags": "#83a9b5"
       },
       spacing: {
         '128': '32rem',
