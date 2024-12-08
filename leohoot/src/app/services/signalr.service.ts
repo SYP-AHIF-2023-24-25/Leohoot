@@ -14,28 +14,27 @@ export class SignalRService {
 
   constructor() {
     this.buildConnection();
-   }
+    this.monitorAppState(); // Monitor app state for better handling of background behavior
+  }
 
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/hub`, { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
-      .withAutomaticReconnect([0, 2000, 10000, 30000])  // Specify retry intervals
+      .withAutomaticReconnect([0, 2000, 10000, 30000]) // Retry intervals
       .build();
 
-    // Set keep-alive interval in buildConnection method
-      this.connection.serverTimeoutInMilliseconds = 60000;  // Default is 30,000 ms (30 seconds)
-      this.connection.keepAliveIntervalInMilliseconds = 15000;  // Set ping interval
+    // Adjust keep-alive settings for mobile devices
+    this.connection.serverTimeoutInMilliseconds = 10000; // 10 seconds
+    this.connection.keepAliveIntervalInMilliseconds = 5000; // 5 seconds
 
-      this.connection.onreconnecting(error => {
-        console.log('Connection lost, trying to reconnect...', error);
-      });
-      
-      this.connection.onreconnected(connectionId => {
-        console.log('Connection reestablished:', connectionId);
-        // Optionally trigger any sync needed after reconnection
-      });
-      
-  
+    this.connection.onreconnecting(error => {
+      console.log('Connection lost, trying to reconnect...', error);
+    });
+
+    this.connection.onreconnected(connectionId => {
+      console.log('Connection reestablished:', connectionId);
+    });
+
     // Handle connection lifecycle
     this.connection.onclose((error) => {
       console.log('Connection closed:', error);
@@ -45,12 +44,11 @@ export class SignalRService {
     this.connection.on("gameEnded", (gameId: number) => {
       this.gameEnded$.next(gameId);
     });
-  
+
     // Start connection with retry logic
     this.startConnection();
   }
 
-  
   private startConnection() {
     this.connection.start()
       .then(() => {
@@ -58,7 +56,24 @@ export class SignalRService {
       })
       .catch(err => {
         console.log('Error while establishing connection, retrying...', err);
-        setTimeout(() => this.startConnection(), 5000);  // Retry if connection fails initially
+        setTimeout(() => this.startConnection(), 5000); // Retry if connection fails initially
       });
+  }
+
+  // Monitor app visibility and handle reconnection when the app is brought back to foreground
+  private monitorAppState() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.log('App is in background or screen is off');
+        // Optionally pause actions or notify server about background state
+      } else {
+        console.log('App is active');
+        // Reconnect if the connection is closed
+        if (this.connection.state === signalR.HubConnectionState.Disconnected) {
+          console.log('Reconnecting SignalR connection...');
+          this.startConnection();
+        }
+      }
+    });
   }
 }
