@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {Quiz} from "../../../model/quiz";
-import {RestService} from "../../../services/rest.service";
-import {RouterLink} from "@angular/router";
-import {LoginService} from "../../../services/auth.service";
-import {NgForOf, NgIf} from "@angular/common";
-import {Tag} from "../../../model/tag";
+import { FormsModule } from "@angular/forms";
+import { Quiz } from "../../../model/quiz";
+import { RestService } from "../../../services/rest.service";
+import { RouterLink } from "@angular/router";
+import { LoginService } from "../../../services/auth.service";
+import { NgForOf, NgIf } from "@angular/common";
+import { Tag } from "../../../model/tag";
 
 @Component({
   selector: 'app-dashboard',
@@ -27,11 +27,13 @@ export class DashboardComponent {
   username = this.loginService.getUserName();
   viewOwnQuizzes: boolean = false;
   tags: Tag[] = [];
+  selectedTags: Tag[] = [];
 
   constructor(private restService: RestService, private loginService: LoginService) {}
 
   ngOnInit(): void {
     this.fetchQuizzes();
+    this.loadTags();
   }
 
   toggleOwnQuizzes(): void {
@@ -40,12 +42,23 @@ export class DashboardComponent {
   }
 
   filterQuizzes(): void {
-    if (this.viewOwnQuizzes) {
-      this.filteredQuizzes = this.quizzes.filter((quiz) => quiz.creator === this.username);
-    } else {
-      this.filteredQuizzes = this.quizzes;
-    }
+    this.filteredQuizzes = this.quizzes.filter(quiz => {
+      const matchesSearchText = quiz.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        quiz.description.toLowerCase().includes(this.searchText.toLowerCase());
+  
+      if (this.selectedTags.length > 0) {
+        return matchesSearchText && this.selectedTags.every(tag =>
+          quiz.tags.some(qTag => qTag.name === tag.name)
+        );
+      } else {
+        return matchesSearchText;
+      }
+    });
   }
+  
+  
+  
+  
 
   fetchQuizzes(): void {
     this.restService.getAllQuizzes().subscribe((data: Quiz[]) => {
@@ -63,6 +76,7 @@ export class DashboardComponent {
       quiz.title.toLowerCase().includes(input.toLowerCase()) ||
       quiz.description.toLowerCase().includes(input.toLowerCase())
     );
+    this.filterQuizzes(); // Apply tag filtering after search
   }
 
   toggleDropdown(): void {
@@ -86,5 +100,15 @@ export class DashboardComponent {
         console.error('Failed to load tags:', error);
       }
     );
+  }
+
+  toggleTagSelection(tag: Tag): void {
+    const index = this.selectedTags.findIndex(selectedTag => selectedTag.name === tag.name);
+    if (index === -1) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags.splice(index, 1);
+    }
+    this.filterQuizzes();
   }
 }

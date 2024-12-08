@@ -112,7 +112,8 @@ import { QuestionsComponent } from "./components/quiz-detail-page/questions/ques
     MatSelectModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
-    LoadingScreenComponent
+    LoadingScreenComponent,
+    CommonModule
 ],
   providers: [...appConfig.providers, provideAnimationsAsync()],
   bootstrap: [AppComponent],
