@@ -20,9 +20,10 @@ import {QuestionPreviewComponent} from './screens/teacher-screens/question-previ
 import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
-import {DashboardComponent} from "./components/teacher-components/dashboard/dashboard.component";
+
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-page/quiz-detail-page.component";
+import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },

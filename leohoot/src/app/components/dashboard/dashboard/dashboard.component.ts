@@ -17,9 +17,9 @@ export class DashboardComponent {
   isDropdownOpen = false;
   loggedIn = () => this.loginService.isLoggedIn();
   username = this.loginService.getUserName();
-  viewOwnQuizzes: boolean = false;
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
+  viewOwnQuizzes = false;
 
   constructor(private restService: RestService, private loginService: LoginService, private router: Router) {}
 
@@ -27,12 +27,7 @@ export class DashboardComponent {
     this.fetchQuizzes();
     this.loadTags();
   }
-
-  toggleOwnQuizzes(): void {
-    this.viewOwnQuizzes = !this.viewOwnQuizzes;
-    this.filterQuizzes();
-  }
-
+  
   filterQuizzes(): void {
     this.filteredQuizzes = this.quizzes.filter(quiz => {
       const matchesSearchText = quiz.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
@@ -47,8 +42,21 @@ export class DashboardComponent {
       }
     });
   }
+
+  toggleHome(): void {
+    this.viewOwnQuizzes = false;
+    this.filteredQuizzes = this.quizzes;
+  }
   
+  toggleOwnQuizzes(): void {
+    this.viewOwnQuizzes = !this.viewOwnQuizzes;
+    this.filteredQuizzes = this.quizzes.filter(quiz => quiz.creator === this.username);
+  }
   
+  // toggleFavoriteQuizzes(): void {
+  //   this.filteredQuizzes = this.quizzes.filter(quiz => quiz.favorites.includes(this.username));
+  // }
+
   viewQuizDetails(quiz: Quiz): void {
     this.router.navigate(['/quizDetails'], { queryParams: { quizId: quiz.id } });
   }
