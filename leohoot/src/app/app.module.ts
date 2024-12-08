@@ -59,6 +59,7 @@ import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/q
 import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
 import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
 import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
+import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizm
     QuizQuizmakerComponent,
     UploadImageComponent,
     TagsQuizmakerComponent,
-    SidebarQuizmakerComponent
+    SidebarQuizmakerComponent,
+    QuestionQuizmakerComponent
   ],
   imports: [
     BrowserModule,

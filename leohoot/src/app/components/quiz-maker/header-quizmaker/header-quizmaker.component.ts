@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -12,6 +13,20 @@ export class HeaderQuizmakerComponent {
     @Input() quiz?: Quiz;
     @Input() username: string = "";
     @Input() quizId: number = -1;
+    @Input() question:QuestionTeacher = {
+      questionText: 'New Question',
+      answerTimeInSeconds: 0,
+      previewTime: 0,
+      answers: [],
+      questionNumber: 0,
+      imageName: undefined,
+      snapshot: undefined,
+      showMultipleChoice: false
+    };
+
+    @Input() editMode: boolean = false;
+    @Output() changeEditMode = new EventEmitter<string>();
+
 
     @Output() saveQuiz = new EventEmitter<string>();
   
@@ -21,7 +36,12 @@ export class HeaderQuizmakerComponent {
     }
   
     async editQuiz() {
-      //await this.router.navigate(['/quizMaker'], { queryParams: { quizId:  this.quiz?.id, edit: true} });
+      if (this.editMode && this.question.questionNumber === 0){
+        alert('Please add a question before editing the quiz.');
+      } else if (this.editMode && this.question.questionNumber !== 0){
+        this.changeEditMode.emit('editQuiz');
+        this.saveQuiz.emit('saveQuiz');
+      }      
     }
     async save() {
       if(this.quizId === -1){

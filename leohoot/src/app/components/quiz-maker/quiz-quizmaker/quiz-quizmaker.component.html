@@ -7,7 +7,7 @@
           class="w-full max-w-100 max-h-72 h-auto object-contain"
         />
       </div>
-      <div *ngIf="!quiz?.imageName">
+      <div *ngIf="!quiz?.imageName" class="mt-10 mr-10">
         <app-upload-image (imageUploaded)="quiz?.imageName"></app-upload-image>
       </div>
     </div>

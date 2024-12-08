@@ -1,9 +1,13 @@
 <div class="grid grid-cols-5">
   <div class="col-span-1 bg-white">
-    <app-sidebar-quizmaker [newQuiz]="quiz" [quizId]="quizId" (saveQuiz)="saveQuiz()"></app-sidebar-quizmaker>
+    <app-sidebar-quizmaker [newQuiz]="quiz" [quizId]="quizId" (saveQuiz)="saveQuiz()" (changeEditMode)="changeEditMode()" [initQuestion]="initQuestion" (onDisplay)="displayQuestion($event)" (onInitNewQuestion)="initNewQuestion()"></app-sidebar-quizmaker>
   </div>
   <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
-    <app-header-quizmaker [username]="username" [quiz]="quiz" [quizId]="quizId" (saveQuiz)="saveQuiz()"/>
-    <app-quiz-quizmaker [newQuiz]="quiz" />
+    <app-header-quizmaker [username]="username" [quiz]="quiz" [question]="question" [editMode]="editMode" [quizId]="quizId" (changeEditMode)="changeEditMode()"/>
+    <app-quiz-quizmaker *ngIf="!editMode" [newQuiz]="quiz" />
+    <app-question-quizmaker *ngIf="editMode" [newQuiz]="quiz" [quizId]="quizId" [question]="question" (questionChange)="updateQuestion($event)" (createSnapshot)="createQuestionSnapshot()" (addQuestion)="onQuestionAdd()"  (questionAdded)="onQuestionAdded()"></app-question-quizmaker>
+  </div>
+  <div *ngIf="loading">
+    <app-loading-screen [isLoading]="loading" loadingText="Updating..."></app-loading-screen>
   </div>
 </div>

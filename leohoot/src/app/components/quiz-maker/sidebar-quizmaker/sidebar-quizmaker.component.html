@@ -21,11 +21,11 @@
         <div class="overflow-y-auto">
             <ul role="list" class="flex flex-1 flex-col gap-y-48 overflow-y-auto" style="max-height: calc(100vh - 200px);">
                 <li>
-                    <!-- <ul cdkDropList class="-mx-2 space-y-3" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
+                    <ul cdkDropList class="-mx-2 space-y-3" (cdkDropListDropped)="drop($event)" [cdkDropListData]="existingQuestions">
                         <li *ngFor="let existingQuestion of existingQuestions;" cdkDrag (click)="onQuestionSelect(existingQuestion)">
                             <app-quiz-maker-sidebar-item [existingQuestion]="existingQuestion" (onDelete)="onQuestionDelete($event)"></app-quiz-maker-sidebar-item>
                         </li>                                 
-                    </ul>  -->
+                    </ul> 
                 </li>
             </ul>
         </div>
