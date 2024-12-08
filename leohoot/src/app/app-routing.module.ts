@@ -15,7 +15,6 @@ import {
 } from './screens/student-screens/waiting-page/waiting-page.component';
 import {QuizMakerComponent} from './screens/teacher-screens/quiz-maker/quiz-maker.component';
 import {StatisticComponent} from './screens/teacher-screens/statistic/statistic.component';
-import {QuizOverviewComponent} from './screens/teacher-screens/quiz-overview/quiz-overview.component';
 import {QuestionPreviewComponent} from './screens/teacher-screens/question-preview/question-preview.component';
 import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
@@ -26,10 +25,9 @@ import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-p
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/quizOverview', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'answerView', component: AnswerViewComponent },
   { path: 'interimResult', component: InterimResultRankingComponent },
-  {path:'dashboard', component: DashboardComponent},
   {
     path: 'ranking',
     component: RankingComponent,
@@ -76,8 +74,8 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'quizOverview',
-    component: QuizOverviewComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Teacher]
     }

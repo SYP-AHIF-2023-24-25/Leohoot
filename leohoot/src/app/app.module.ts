@@ -24,7 +24,6 @@ import { QuizMakerSidebarComponent } from './components/quiz-maker/quiz-maker-si
 import { QuizMakerSidebarItemComponent } from './components/quiz-maker/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
-import { QuizOverviewComponent } from './screens/teacher-screens/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
@@ -72,7 +71,6 @@ import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboar
     QuizMakerComponent,
     StatisticComponent,
     QuestionPreviewComponent,
-    QuizOverviewComponent,
     QuizMakerQuestionsComponent,
     QuizMakerSidebarComponent,
     QuizMakerSidebarItemComponent,
