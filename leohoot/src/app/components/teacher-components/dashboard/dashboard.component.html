@@ -21,7 +21,7 @@
   <!-- Main Content -->
   <div class="flex flex-col flex-1">
     <!-- Header -->
-    <div class="flex flex-wrap items-center bg-design-quiz-blue p-4 text-white">
+    <div class="flex flex-wrap items-center bg-background-blue-dark p-4 text-white">
       <div class="flex-1 flex items-center">
         <span class="material-icons text-2xl mr-2">search</span>
         <input
@@ -47,40 +47,38 @@
         </div>
       </div>
     </div>
-
+    
     <main class="p-4 sm:p-6">
       <div class="flex flex-wrap gap-2 mb-4">
         <span *ngFor="let tag of tags" class="px-3 py-1 bg-gray-300 rounded-full text-sm">{{ tag.name }}</span>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div
           *ngFor="let quiz of filteredQuizzes"
-          class="p-4 bg-white rounded-lg shadow-lg flex flex-col items-center"
+          class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
         >
           <img
             *ngIf="quiz.imageName"
             [src]="quiz.imageName"
             alt="Quiz Image"
-            class="w-24 h-24 mb-2"
+            class="w-full h-56 object-cover mb-2"
           />
           <img
             *ngIf="!quiz.imageName"
             src="assets/images/noImage.png"
             alt="No image"
-            class="w-24 h-24 mb-2"
+            class="w-full h-56 object-cover mb-2"
           />
-          <h3 class="text-lg font-bold mb-1 text-center">{{ quiz.title }}</h3>
+          <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
           <div class="flex flex-wrap gap-2 mb-2 justify-center">
             <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
           </div>
           <div class="flex justify-between items-center w-full mt-auto">
-            <!-- Icon und Username vertikal korrekt zentriert -->
-            <div class="flex items-center gap-2">
-              <img src="assets/images/hootiFaceIcon.ico" alt="creator" class="w-8 h-8 rounded-full" />
-              <p class="text-gray-700 leading-none">{{ quiz.creator }}</p>
+            <div class="flex items-center rounded-lg">
+              <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
+              <div class="text-md">{{quiz.creator}}</div>
             </div>
             
-            <!-- Fragenanzahl rechts ausgerichtet -->
             <div class="flex justify-end items-center ">
               <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
               <div class="text-end">{{ quiz.questions.length }}</div>
