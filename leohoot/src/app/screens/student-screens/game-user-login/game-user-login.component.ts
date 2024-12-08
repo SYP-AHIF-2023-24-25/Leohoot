@@ -19,7 +19,7 @@ export class GameUserLoginComponent {
         this.gameId = parseInt(params['gameId']);
       }
       this.signalRService.connection.on("registeredUserFailed", (name) => {
-        alert(`Username ${name} is already taken`);
+        alert(`Username is already taken`);
       });
 
       this.signalRService.connection.on("registeredUserSuccess", async (gameId, name) => {

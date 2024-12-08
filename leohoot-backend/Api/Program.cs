@@ -14,9 +14,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSignalR(options =>
 {
-    options.ClientTimeoutInterval = TimeSpan.FromSeconds(120); // Extend client timeout if needed
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(10); // Extend client timeout if needed
     options.KeepAliveInterval = TimeSpan.FromSeconds(30);      // Server-side keep-alive ping
 });
+//builder.Services.AddSignalR().AddMessagePackProtocol();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", b => b

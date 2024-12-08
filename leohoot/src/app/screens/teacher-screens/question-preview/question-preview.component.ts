@@ -35,7 +35,7 @@ export class QuestionPreviewComponent {
     if (this.gameCanceled) {
       await this.signalRService.connection.send("cancelGame", this.gameId);
       this.restservice.deleteGame(this.gameId).subscribe(async () => {
-        await this.router.navigate(['/quizOverview']);
+        await this.router.navigate(['/dashboard']);
       });
     }
   }

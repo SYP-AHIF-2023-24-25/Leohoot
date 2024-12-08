@@ -28,6 +28,6 @@ export class StatisticComponent {
   }
 
   public async navigateBack() {
-    await this.router.navigate(['/quizOverview'])
+    await this.router.navigate(['/dashboard']);
   }
 }
