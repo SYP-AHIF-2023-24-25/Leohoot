@@ -25,14 +25,14 @@ public class LeohootHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        Console.WriteLine($"Client connected: {Context.ConnectionId}");
+        // Console.WriteLine($"Client connected: {Context.ConnectionId}");
         // Optionally handle initial state synchronization here
         await base.OnConnectedAsync();
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        Console.WriteLine($"Client disconnected: {Context.ConnectionId}. Reason: {exception?.Message}");
+        // Console.WriteLine($"Client disconnected: {Context.ConnectionId}. Reason: {exception?.Message}");
         // Handle any cleanup if necessary
         await base.OnDisconnectedAsync(exception);
     }

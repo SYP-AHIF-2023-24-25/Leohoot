@@ -28,16 +28,16 @@ export class SignalRService {
     this.connection.keepAliveIntervalInMilliseconds = 5000; // 5 seconds
 
     this.connection.onreconnecting(error => {
-      console.log('Connection lost, trying to reconnect...', error);
+      // console.log('Connection lost, trying to reconnect...', error);
     });
 
     this.connection.onreconnected(connectionId => {
-      console.log('Connection reestablished:', connectionId);
+      // console.log('Connection reestablished:', connectionId);
     });
 
     // Handle connection lifecycle
     this.connection.onclose((error) => {
-      console.log('Connection closed:', error);
+      // console.log('Connection closed:', error);
       this.connectionClosedSubject.next();
     });
 
@@ -55,7 +55,7 @@ export class SignalRService {
         console.log("Connection started");
       })
       .catch(err => {
-        console.log('Error while establishing connection, retrying...', err);
+        // console.log('Error while establishing connection, retrying...', err);
         setTimeout(() => this.startConnection(), 5000); // Retry if connection fails initially
       });
   }
@@ -64,13 +64,13 @@ export class SignalRService {
   private monitorAppState() {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        console.log('App is in background or screen is off');
+        // console.log('App is in background or screen is off');
         // Optionally pause actions or notify server about background state
       } else {
-        console.log('App is active');
+        // console.log('App is active');
         // Reconnect if the connection is closed
         if (this.connection.state === signalR.HubConnectionState.Disconnected) {
-          console.log('Reconnecting SignalR connection...');
+          // console.log('Reconnecting SignalR connection...');
           this.startConnection();
         }
       }

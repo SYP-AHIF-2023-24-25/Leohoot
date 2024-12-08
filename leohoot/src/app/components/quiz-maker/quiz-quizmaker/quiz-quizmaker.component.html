@@ -8,7 +8,7 @@
         />
       </div>
       <div *ngIf="!quiz?.imageName" class="mt-10 mr-10">
-        <app-upload-image (imageUploaded)="quiz?.imageName"></app-upload-image>
+        <app-upload-image [question]="null" (imageUploaded)="onImageUploaded($event)"></app-upload-image>
       </div>
     </div>
     <div class="col-span-2">

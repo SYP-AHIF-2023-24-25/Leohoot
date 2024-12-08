@@ -105,7 +105,7 @@
               <div class="flex items-center justify-center">
                 <div class="w-128 my-16">
                   <div *ngIf="!question.imageName">
-                   <app-upload-image (imageUploaded)="question.imageName = $event"></app-upload-image>
+                   <app-upload-image [question]="question" (imageUploaded)="question.imageName = $event"></app-upload-image>
                   </div>
 
                   <div *ngIf="question.imageName" class="flex flex-col items-center justify-center h-72 my-5">

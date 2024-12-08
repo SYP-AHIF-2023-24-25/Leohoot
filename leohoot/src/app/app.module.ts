@@ -107,7 +107,7 @@ import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboar
     UploadImageComponent,
     TagsQuizmakerComponent,
     SidebarQuizmakerComponent,
-    QuestionQuizmakerComponent
+    QuestionQuizmakerComponent,
     SidebarComponent,
     DashboardComponent
   ],

@@ -41,13 +41,14 @@ export class QuizMakerComponent {
     showMultipleChoice: false
   };
   
-  @ViewChild('questionScreen', { static: true }) screen: any;
+  @ViewChild('questionScreen', { static: false }) screen: any;
   @ViewChild(SidebarQuizmakerComponent) sidebarComponent!: SidebarQuizmakerComponent;
 
 
   constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService) {
 
   }
+
 
   ngOnInit() {
     this.route.queryParams.subscribe(async params => {
@@ -66,6 +67,10 @@ export class QuizMakerComponent {
     })
   }
 
+  close(){
+    //TODO
+  }
+
   updateQuestion(updatedQuestion: QuestionTeacher) {
     this.question = updatedQuestion;
     console.log('Current question updated:', this.question);
@@ -80,21 +85,32 @@ export class QuizMakerComponent {
       answers: question.answers.filter(answer => answer.answerText !== '')
     }));
 
-    // if (this.quizId === -1){
-    //   this.restService.addQuiz(this.quiz!).subscribe(data => {
-    //     this.quizId = data;
-    //     //alert('Quiz saved successfully.');
-    //   });
-    // } else {
-    //   this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
-    //     console.log(data);
-    //   });
-    //   //alert('Quiz updated successfully.');
-    // }
+    if (this.quizId === -1){
+      this.restService.addQuiz(this.quiz!).subscribe(data => {
+        this.quizId = data;
+       
+        //alert('Quiz saved successfully.');
+      });
+    } else {
+      this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
+        console.log(data);
+      });
+      //alert('Quiz updated successfully.');
+    }
   }
 
   changeEditMode() {
-    this.editMode = !this.editMode;
+    if (this.editMode && this.initQuestion === false && this.validateQuestion()){
+      this.editMode = !this.editMode;
+      this.saveQuiz();
+      console.log(this.editMode);
+    } else if (this.editMode && this.initQuestion === false && this.validateQuestion() == false){
+      alert('Please fill in all necessary fields.');
+    } else if (this.editMode && this.initQuestion === true && this.validateQuestion() == false){
+      alert('Please fill in all necessary fields and add the question.');
+    } else if (this.editMode === false){
+      this.editMode = !this.editMode;
+    }
   }
 
   initNewQuestion() {
@@ -114,27 +130,35 @@ export class QuizMakerComponent {
 
     this.initQuestion = true;
   }
+
   async createQuestionSnapshot() {
+    if (!this.screen) {
+      console.error('ViewChild screen is undefined');
+      return;
+    }
+  
     this.loading = true;
-    await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
-      let questionNumber = this.question.questionNumber;
-
-      if (this.question.questionNumber === 0) {
-        questionNumber = this.configurationService.getQuestions().length + 1;
-      }
-      const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
-
-      const data = await null;//this.uploadImage(img!, fileName).toPromise();
-      this.question.snapshot = this.restService.getImage(data!);
-
+  
+    try {
+      const img = await this.captureService.getImage(this.screen, true).toPromise();
+      let questionNumber = this.question.questionNumber || this.configurationService.getQuestions().length + 1;
+      const fileName = `snapshot_${questionNumber.toString().padStart(2, '0')}.png`;
+  
+      // const data = await this.uploadImage(img!, fileName).toPromise();
+      // this.question.snapshot = this.restService.getImage(data!);
+  
       this.loading = false;
-    });
+    } catch (error) {
+      console.error('Error capturing snapshot:', error);
+      this.loading = false;
+    }
   }
 
   async onQuestionCreate() {
     // if (this.isMobileMenuOpen) {
     //   this.toggleMobileMenu();
     // }
+    console.log(this.initQuestion);
     if (this.initQuestion === false
       || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
@@ -152,23 +176,11 @@ export class QuizMakerComponent {
     }
   }
 
-  async onQuestionAdd() {
-    const isQuestionValid = this.validateQuestion();
-
-    if (!isQuestionValid) {
-      alert('Please fill in all necessary fields to save the question. (no whitespaces allowed)');
-      return;
-    }
-
-    await this.createQuestionSnapshot();
-
-    this.configurationService.addQuestion(this.question);
-    this.initQuestion = false;
-    console.log(this.configurationService.getQuestions());
-  }
-
   onQuestionAdded() {
+    console.log('fetch questions added');
     this.sidebarComponent.refetchQuestions();
+    this.initQuestion = false;
+    console.log(this.editMode);
   }
   
 
@@ -182,11 +194,14 @@ export class QuizMakerComponent {
       if (!searchResult) {
         alert('Question not found');
         return
-      }
+      }  
       this.question = searchResult;
+      console.log(this.question);
+      this.editMode = true;
+      console.log(this.editMode);
     } else {
       if (this.initQuestion === false && this.validateQuestion()
-      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
+      && this.editMode === true || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
         && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
         && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
           await this.createQuestionSnapshot();

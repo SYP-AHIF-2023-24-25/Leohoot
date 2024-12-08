@@ -20,7 +20,12 @@ export class QuizQuizmakerComponent {
       this.description = value.description || '';
     }
   }
-
+  onImageUploaded(imageName: string): void {
+    if (this.quiz) {
+      this.quiz.imageName = imageName;
+    }
+  }
+  
   updateQuizTitle(title: string) {
     if (this.quiz) {
       this.quiz.title = title;
@@ -34,7 +39,7 @@ export class QuizQuizmakerComponent {
   }
 
   playDemoMode() {
-    // Your play demo logic
+    //TODO
   }
 }
 

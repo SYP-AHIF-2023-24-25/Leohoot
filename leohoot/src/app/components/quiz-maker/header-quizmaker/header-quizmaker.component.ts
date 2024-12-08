@@ -27,7 +27,6 @@ export class HeaderQuizmakerComponent {
     @Input() editMode: boolean = false;
     @Output() changeEditMode = new EventEmitter<string>();
 
-
     @Output() saveQuiz = new EventEmitter<string>();
   
     isDropdownOpen: boolean = false;
@@ -36,11 +35,8 @@ export class HeaderQuizmakerComponent {
     }
   
     async editQuiz() {
-      if (this.editMode && this.question.questionNumber === 0){
-        alert('Please add a question before editing the quiz.');
-      } else if (this.editMode && this.question.questionNumber !== 0){
+      if (this.editMode){
         this.changeEditMode.emit('editQuiz');
-        this.saveQuiz.emit('saveQuiz');
       }      
     }
     async save() {

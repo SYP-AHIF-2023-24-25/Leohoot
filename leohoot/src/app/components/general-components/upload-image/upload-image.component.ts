@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -10,6 +10,7 @@ export class UploadImageComponent {
   imageUrl: string | undefined;
 
   @Output() imageUploaded = new EventEmitter<string>();
+  @Input() question: any;
 
   constructor(private restService: RestService) {}
 
@@ -18,10 +19,13 @@ export class UploadImageComponent {
   }
 
   getImageFromServer(imageUrl: string) {
-    this.imageUrl = this.restService.getImage(imageUrl);
+    if(this.question){
+      this.question.imageUrl = this.restService.getImage(imageUrl);
+    }
+   
   }
 
-  handleFileInput(event: any) {
+  handleFileInput(event: any): void {
     const files = event?.target?.files;
     if (files && files.length > 0) {
       const file = files.item(0);
@@ -29,22 +33,40 @@ export class UploadImageComponent {
         const reader = new FileReader();
         reader.onload = (e) => {
           const imageString = e.target?.result as string;
-
           const extension = file.name.split('.').pop();
-          const fileName = `quizImage.${extension}`;
 
-          this.uploadImage(imageString, fileName).subscribe(data => {
+          // Dynamically determine the file name based on input requirements
+          const fileName = this.generateFileName(extension);
+
+          // Upload the image
+          this.uploadImage(imageString, fileName).subscribe((data: string) => {
             this.getImageFromServer(data);
-            this.imageUploaded.emit(data);
+            this.imageUploaded.emit(data); // Emit the uploaded image name
           });
         };
         reader.readAsDataURL(file);
       } else {
-        alert('Please select an image file.')
+        alert('Please select an image file.');
       }
     } else {
-      alert('Please select an image file.')
+      alert('Please select an image file.');
     }
+  }
+
+  private generateFileName(extension: string): string {
+    // Example logic for generating the filename
+    const questionNumber = this.getQuestionNumber();
+    return questionNumber
+      ? `questionImage_${questionNumber.toString().padStart(2, '0')}.${extension}`
+      : `quizImage.${extension}`;
+  }
+
+  private getQuestionNumber(): number | null {
+    // Mock logic to determine question number (replace with your actual logic)
+    if (this.question && this.question.questionNumber > 0) {
+      return this.question.questionNumber;
+    }
+    return null;
   }
   
   uploadImage(imageString: string, fileName: string) {

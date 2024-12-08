@@ -16,20 +16,23 @@ import { SignalRService } from 'src/app/services/signalr.service';
 export class SidebarQuizmakerComponent {
   @Input() quizTitle: string | undefined;
   @Input() initQuestion: boolean | undefined;
+  @Input() editMode: boolean = false;
 
   @Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
-  @Output() onDisplay = new EventEmitter<QuestionTeacher>();
+  @Output() onDisplay = new EventEmitter<number>();
 
   //existingQuestions: QuestionTeacher[] = [];
   quiz: Quiz | undefined;
 
-  @Input() quizId: number = -1;
+  @Input() quizId: number | undefined;
 
   @Input()
   set newQuiz(value: Quiz | undefined) {
     this.quiz = value;
   }
+
+  @Output() close = new EventEmitter<void>();
 
   @Output() saveQuiz = new EventEmitter<string>();
   @Output() changeEditMode = new EventEmitter<string>();
@@ -43,6 +46,10 @@ export class SidebarQuizmakerComponent {
     this.refetchQuestions();
   }
 
+  leaveQuizmaker() {
+    this.close.emit();
+  }
+
   drop(event: CdkDragDrop<QuestionTeacher[]>) {
     moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
     this.configurationService.changeOrderOfQuestions(this.existingQuestions);
@@ -54,18 +61,21 @@ export class SidebarQuizmakerComponent {
     this.existingQuestions = this.configurationService.getQuestions();
   }
   
-  addQuestion(){
+  createQuestion(){
     //quiz not saved to db yet
-    if(this.quizId === -1){
+    if(this.quizId === -1 && this.editMode === false){
+      console.log('quiz not saved to db yet');
+      this.changeEditMode.emit('addQuestion');
+      this.saveQuiz.emit('saveQuiz');
+      return;
+    } else if (this.editMode === false){
       this.changeEditMode.emit('addQuestion');
     }
-    this.saveQuiz.emit('saveQuiz');
     this.onCreate.emit();
-
   }
 
   onQuestionSelect(question: QuestionTeacher) {
-    this.onDisplay.emit(question);
+    this.onDisplay.emit(question.questionNumber);
   }
   
   onQuestionDelete(id: number) {

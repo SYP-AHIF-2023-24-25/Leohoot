@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Quiz } from 'src/app/model/quiz';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,9 +13,9 @@ import { SignalRService } from 'src/app/services/signalr.service';
 })
 export class QuestionQuizmakerComponent {
   quiz: Quiz | undefined;
-  initQuestion: boolean = false;
+  @Input() initQuestion: boolean = false;
   loading: boolean = false;
-  @ViewChild('questionScreen', { static: true }) screen: any;
+  @ViewChild('questionScreen', { static: false }) screen: any;
 
   @Input() question: QuestionTeacher = {
     questionText: 'New Question',
@@ -43,8 +43,20 @@ export class QuestionQuizmakerComponent {
   emitChanges() {
     this.questionChange.emit(this.question);
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['question']) {
+      console.log('Question updated:', this.question);
+    }
+  }
+  
 
-  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
+  updateQuestion(newQuestion: QuestionTeacher) {
+    this.question = newQuestion;
+    this.cdr.detectChanges(); // Erzwingt das Aktualisieren des Templates
+  }
+  
+
+  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
   }
 
   ngOnInit() {
@@ -87,6 +99,7 @@ export class QuestionQuizmakerComponent {
       return;
     }
 
+    console.log("xreate snapshot")
     await this.createQuestionSnapshot();
 
     console.log(this.question);
@@ -111,19 +124,6 @@ export class QuestionQuizmakerComponent {
 
       this.loading = false;
     });
-  }
-
-  async onEditQuiz() {
-    if (this.initQuestion === false
-    || (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)
-       && this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)
-       && this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText))) {
-        await this.createSnapshot.emit()
-
-        // this.router.navigate(['/quizMaker'], {queryParams: {quizName: this.quizTitle, quizId: this.quizId}});
-    } else if (this.validateQuestion() === false) {
-      alert('Please fill in all necessary fields and save the question first.');
-    }
   }
 
   validateQuestion() {
