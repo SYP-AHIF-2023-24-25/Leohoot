@@ -24,7 +24,6 @@ import { QuizMakerSidebarComponent } from './components/quiz-maker/quiz-maker-si
 import { QuizMakerSidebarItemComponent } from './components/quiz-maker/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
-import { QuizOverviewComponent } from './screens/teacher-screens/quiz-overview/quiz-overview.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
 import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
@@ -54,6 +53,8 @@ import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-p
 import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-details/header-details.component";
 import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
+import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
+import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,6 @@ import { QuestionsComponent } from "./components/quiz-detail-page/questions/ques
     QuizMakerComponent,
     StatisticComponent,
     QuestionPreviewComponent,
-    QuizOverviewComponent,
     QuizMakerQuestionsComponent,
     QuizMakerSidebarComponent,
     QuizMakerSidebarItemComponent,
@@ -95,7 +95,9 @@ import { QuestionsComponent } from "./components/quiz-detail-page/questions/ques
     QuizDetailPageComponent,
     HeaderDetailsComponent,
     QuizDetailsComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    SidebarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +114,8 @@ import { QuestionsComponent } from "./components/quiz-detail-page/questions/ques
     MatSelectModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
-    LoadingScreenComponent
+    LoadingScreenComponent,
+    CommonModule
 ],
   providers: [...appConfig.providers, provideAnimationsAsync()],
   bootstrap: [AppComponent],

@@ -61,7 +61,7 @@ export class QuestionComponent {
       await this.signalRService.connection.send("cancelGame", this.gameId);
 
       this.restservice.deleteGame(this.gameId).subscribe(() => {
-        this.router.navigate(['/quizOverview']);
+        this.router.navigate(['/dashboard']);
       });
     }
   }

@@ -23,7 +23,7 @@ export class HeaderDetailsComponent {
   async deleteQuiz() {
     if (confirm("Are you sure you want to delete this quiz?")) {
       this.restService.deleteQuiz(this.quiz?.id!).subscribe(() => {
-        this.router.navigate(['/quizOverview'])
+        this.router.navigate(['/dashboard'])
       });
     }
   }

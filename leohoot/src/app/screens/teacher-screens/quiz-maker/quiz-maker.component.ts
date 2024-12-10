@@ -189,7 +189,7 @@ export class QuizMakerComponent {
       if (this.quizId) {
         await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
       } else {
-        await this.router.navigate(['/quizOverview'])
+        await this.router.navigate(['/dashboard']);
       }
     }
   }

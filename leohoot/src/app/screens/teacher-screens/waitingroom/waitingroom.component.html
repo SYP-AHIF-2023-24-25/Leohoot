@@ -8,19 +8,32 @@
     </div>
   </div>
   
-  <div class="mt-28 mx-28 mb-2 grid grid-cols-5 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-10 xl:grid-cols-12">
-    <div class="text-white pt-5 mb-24 xl:col-span-11 lg:col-span-9 md:col-span-6 sm:col-span-4 text-center text-6xl">
+  <div class="mt-28 mx-28 mb-8 flex items-center justify-between">
+    <!-- User Count -->
+    <div class="flex items-center justify-cente text-white font-bold w-24 h-24 ">
+      <div class="text-center">
+        <div class="text-4xl">{{ users.length }}</div>
+        <div class="text-lg">Players</div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="text-white text-center text-6xl font-bold">
       Leohoot
     </div>
-    <button type="button" class="h-16 my-10 rounded-md bg-white p-2 text-black font-bold w-28" (click)="startGame()">
-      <div class="flex">
-        <img src="/assets/images/play-button.png" alt="Play Icon" class="play-icon w-5">
-        <span class="mx-4 text-lg">Start</span>
-      </div>
+
+    <!-- Start Button -->
+    <button
+      type="button"
+      class="h-16 rounded-md bg-white p-2 text-black font-bold w-28 flex items-center justify-center shadow-lg"
+      (click)="startGame()"
+    >
+      <img src="/assets/images/play-button.png" alt="Play Icon" class="play-icon w-5 mr-2">
+      <span class="text-lg">Start</span>
     </button>
   </div>
   <div class="px-16 max-w mx-auto grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
-      <app-user-card
+    <app-user-card
       *ngFor="let user of users"
       [name]="user.username"
       (delete)="onDeletePerson(user)"
