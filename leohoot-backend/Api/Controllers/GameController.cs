@@ -140,8 +140,16 @@ public class GameController : Controller
     public IResult GetAnswersOfQuestion(int gameId)
     {
         var game = Repository.GetInstance().GetGameById(gameId);
-        var answers = game?.Statistic.QuestionAnswers[game.CurrentQuestion.QuestionNumber].CountPerAnswer;
-        return Results.Ok(answers);
+        try
+        {
+            var answers = game?.Statistic.QuestionAnswers[game.CurrentQuestion.QuestionNumber].CountPerAnswer;
+            return Results.Ok(answers);
+        }
+        catch
+        {
+            return Results.NotFound();
+        }
+        
     }
     
     [AllowAnonymous]

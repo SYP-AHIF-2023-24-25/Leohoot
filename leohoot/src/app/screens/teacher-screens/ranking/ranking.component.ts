@@ -60,7 +60,7 @@ export class RankingComponent {
   getParams() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
-        this.gameId = params['gameId'];
+        this.gameId = parseInt(params['gameId']);
       }
       if (typeof params['mode'] !== 'undefined') {
         this.mode = params['mode'];
@@ -75,6 +75,7 @@ export class RankingComponent {
     this.gameCanceled = false;
    // await this.signalRService.connection.send("finishPreview", this.gameId);
 
+    console.log(this.gameId, typeof this.gameId);
     await this.signalRService.connection.send("sendToNextQuestion", this.gameId);
 
     console.log("Next question");

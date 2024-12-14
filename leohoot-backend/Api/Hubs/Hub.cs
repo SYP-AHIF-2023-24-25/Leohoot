@@ -32,9 +32,17 @@ public class LeohootHub : Hub
         await Clients.All.SendAsync("questionFinished", gameId);
     }
 
-    public async Task SendToNextQuestion(int gameId) => await Clients.All.SendAsync("nextQuestion", gameId);
+    public async Task SendToNextQuestion(int gameId)
+    {
+        Console.WriteLine("Next question: " + gameId);
+        await Clients.All.SendAsync("nextQuestion", gameId);
+    }
 
-    public async Task FinishPreview(int gameId) => await Clients.All.SendAsync("previewFinished", gameId);
+    public async Task FinishPreview(int gameId)
+    {
+        Console.WriteLine("Finished Preview");
+        await Clients.All.SendAsync("previewFinished", gameId);
+    }
 
     public async Task FinishGame(int gameId) => await Clients.All.SendAsync("gameFinished", gameId);
 
