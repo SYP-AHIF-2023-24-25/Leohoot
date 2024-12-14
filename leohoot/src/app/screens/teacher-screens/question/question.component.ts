@@ -25,6 +25,7 @@ export class QuestionComponent {
   questionTimeout: any;
   connectionSubscription: Subscription;
   gameCanceled: boolean = true;
+  answerCounts?: number[];
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
       this.questionTimeout = setTimeout(async () => {
@@ -111,6 +112,9 @@ export class QuestionComponent {
 
   async showCorrectAnswer() {
     await this.signalRService.connection.send("questionFinished", this.gameId);
+    this.restservice.getAnswers(this.gameId).subscribe((answerCounts) => {
+      this.answerCounts = answerCounts;
+    })
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
     this.audio.pause();

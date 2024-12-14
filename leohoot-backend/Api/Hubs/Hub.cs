@@ -22,20 +22,6 @@ public class LeohootHub : Hub
         }    
         await Clients.Caller.SendAsync("registeredSuccessfully", gameId, username);
     }
-
-    public override async Task OnConnectedAsync()
-    {
-        Console.WriteLine($"Client connected: {Context.ConnectionId}");
-        // Optionally handle initial state synchronization here
-        await base.OnConnectedAsync();
-    }
-
-    public override async Task OnDisconnectedAsync(Exception? exception)
-    {
-        Console.WriteLine($"Client disconnected: {Context.ConnectionId}. Reason: {exception?.Message}");
-        // Handle any cleanup if necessary
-        await base.OnDisconnectedAsync(exception);
-    }
     
     public async Task StartGame(int gameId) => await Clients.All.SendAsync("startedGame", gameId);
 

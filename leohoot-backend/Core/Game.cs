@@ -93,31 +93,18 @@ public class Game
     public void AddAnswer(int quizId, bool[] answers, string username)
     {
         int score = 0;
-        bool isCorrect = IsAnswerCorrect(answers);
+        var isCorrect = IsAnswerCorrect(answers);
         var currentCorrectAnswers = _currentAnswers.FindAll(answer => answer.Score > 0).ToList();
         if (isCorrect)
         {
             score = 1000 - 1000/_players.Count*currentCorrectAnswers.Count;
         }
         _currentAnswers.Add(new Player(username, score));
-        AddAnswerToStatistic(CurrentQuestion!.QuestionNumber, isCorrect);
+        Statistic.AddAnswerToStatistic(CurrentQuestion!.QuestionNumber, answers, isCorrect);
     }
-
     private bool IsAnswerCorrect(bool[] answers)
     {
         return !answers.Where((t, i) => t != CurrentQuestion!.Answers[i].IsCorrect).Any();
-    }
-
-    private void AddAnswerToStatistic(int questionNumber, bool isCorrect)
-    {
-        if (Statistic.QuestionAnswers.ContainsKey(questionNumber))
-        {
-            Statistic.QuestionAnswers[questionNumber].Add(isCorrect);
-        }
-        else
-        {
-            Statistic.QuestionAnswers.TryAdd(questionNumber, new List<bool> {isCorrect});
-        }
     }
 
     public Player[] GetRanking(int numberOfPlayers)

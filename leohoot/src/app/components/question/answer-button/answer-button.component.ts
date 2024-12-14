@@ -9,6 +9,7 @@ export class AnswerButtonComponent {
   @Input() questionIsFinished: boolean = false;
   @Input() answer?: Answer
   @Input() answerIndex: number = 0;
+  @Input() answerCounts?: number[]
 
   colors = [
     'bg-button-yellow',
