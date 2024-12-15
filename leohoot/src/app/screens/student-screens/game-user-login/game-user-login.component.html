@@ -7,13 +7,13 @@
 
         <form #usernameForm="ngForm" class="space-y-6 bg-white mx-4 py-5 px-5 rounded">
             <div>
-                <input id="username" name="username" type="username" placeholder="Nickname" [(ngModel)]="username" #nickname="ngModel" required minlength="3" class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-12 md:text-2xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center md:placeholder:text-lg focus:ring-2 focus:ring-inset">
+                <input id="username" name="username" type="username" placeholder="Nickname" [(ngModel)]="username" #nickname="ngModel" required minlength="3" maxlength="15" class="block w-full rounded-md border-0 py-1.5 pl-2 md:h-12 md:text-2xl text-gray-900 text-center shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:text-center md:placeholder:text-lg focus:ring-2 focus:ring-inset">
                 <p [hidden]="!nickname.hasError('minlength')" class="text-gray-400">
                     Nickname must be at least 3 characters long.
                 </p>
             </div>
             <div>
-                <div *ngIf="usernameForm.form.valid === false; then disableButton else button">
+                <div *ngIf="!usernameForm.form.valid; then disableButton else button">
                 </div>
                 <div>
                   <ng-template #disableButton>
