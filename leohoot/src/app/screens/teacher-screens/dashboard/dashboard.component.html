@@ -63,17 +63,18 @@
           >
 
           <div (click)="viewQuizDetails(quiz)">
-            <img
+           
+              <img
               *ngIf="quiz.imageName"
               [src]="quiz.imageName"
               alt="Quiz Image"
-              class="w-full h-56 object-cover mb-2"
+              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
             />
             <img
               *ngIf="!quiz.imageName"
               src="assets/images/noImage.png"
               alt="No image"
-              class="w-full h-56 object-cover mb-2"
+              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
             />
             <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
             <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
