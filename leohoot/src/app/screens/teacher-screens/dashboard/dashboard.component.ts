@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Quiz } from "../../../model/quiz";
 import { RestService } from "../../../services/rest.service";
@@ -20,12 +20,15 @@ export class DashboardComponent {
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
   viewOwnQuizzes: boolean = false;
+  isSidebarVisible = false;
+  screenIsLarge = false;
 
   constructor(private restService: RestService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.fetchQuizzes();
     this.loadTags();
+    this.checkScreenSize();
 
    this.route.queryParams.subscribe(params => {
       console.log(params);
@@ -37,12 +40,12 @@ export class DashboardComponent {
       }
     });
   }
-  
+
   filterQuizzes(): void {
     this.filteredQuizzes = this.quizzes.filter(quiz => {
       const matchesSearchText = quiz.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
         quiz.description.toLowerCase().includes(this.searchText.toLowerCase());
-  
+
       if (this.selectedTags.length > 0) {
         return matchesSearchText && this.selectedTags.every(tag =>
           quiz.tags.some(qTag => qTag.name === tag.name)
@@ -57,12 +60,12 @@ export class DashboardComponent {
     this.viewOwnQuizzes = false;
     this.filteredQuizzes = this.quizzes;
   }
-  
+
   toggleOwnQuizzes(): void {
     this.viewOwnQuizzes = !this.viewOwnQuizzes;
     this.filteredQuizzes = this.quizzes.filter(quiz => quiz.creator === this.username);
   }
-  
+
   // toggleFavoriteQuizzes(): void {
   //   this.filteredQuizzes = this.quizzes.filter(quiz => quiz.favorites.includes(this.username));
   // }
@@ -70,7 +73,7 @@ export class DashboardComponent {
   viewQuizDetails(quiz: Quiz): void {
     this.router.navigate(['/quizDetails'], { queryParams: { quizId: quiz.id } });
   }
-  
+
 
   fetchQuizzes(): void {
     this.restService.getAllQuizzes().subscribe((data: Quiz[]) => {
@@ -122,5 +125,18 @@ export class DashboardComponent {
       this.selectedTags.splice(index, 1);
     }
     this.filterQuizzes();
+  }
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.screenIsLarge = window.innerWidth >= 1024;
+    if (this.screenIsLarge) {
+      this.isSidebarVisible = false;
+    }
   }
 }

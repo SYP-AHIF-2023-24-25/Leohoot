@@ -8,11 +8,13 @@ import { Output } from '@angular/core';
   templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent {
-  selectedItem: string = ''; 
+  selectedItem: string = '';
 
   @Output() home = new EventEmitter<void>();
   @Output() ownQuizzes = new EventEmitter<void>();
   @Output() favorites = new EventEmitter<void>();
+
+  @Input() toggleSidebar?: () => void;
 
   ngInit(){
     this.selectedItem = "home";
@@ -33,6 +35,7 @@ export class SidebarComponent {
   // }
 
   selectItem(item: string): void {
+    console.log(this.toggleSidebar, "sidebar")
     this.selectedItem = item;
   }
 
