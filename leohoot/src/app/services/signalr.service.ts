@@ -21,6 +21,8 @@ export class SignalRService {
       .withUrl(`${environment.apiUrl}/hub`, { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
       .withAutomaticReconnect()
       .build();
+    this.connection.serverTimeoutInMilliseconds = 30000;
+    this.connection.keepAliveIntervalInMilliseconds = 10000;
 
     this.connection.on("gameEnded", (gameId: number) => {
       this.gameEnded$.next(gameId);
