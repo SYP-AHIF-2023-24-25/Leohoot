@@ -7,14 +7,14 @@
 
 <div
   *ngIf="answer && questionIsFinished"
-  class="{{answer.isCorrect ? colors[answerIndex] : 'bg-gray-400'}} flex items-center justify-between h-full rounded-lg lg:text-3xl text-lg font-bold px-4 text-white shadow-lg drop-shadow-lg md:text-xl"
+  class="{{answer.isCorrect ? colors[answerIndex] : 'bg-gray-400'}} flex items-center justify-between h-full rounded-lg lg:text-3xl text-lg font-bold px-4 text-white shadow-lg drop-shadow-lg md:text-xl {{answer.isCorrect ? 'border-8 border-white': ''}}"
 >
   <div class="flex items-center">
     <img src="{{icons[answerIndex]}}" class="h-8 w-8 md:h-14 md:w-14 lg:h-20 lg:w-20 m-5" alt="Icon">
     <span>{{ answer.answerText }}</span>
   </div>
-  <div *ngIf="answerCounts"
+  <div
     class="flex items-center justify-center text-center m-5 rounded-full md:h-14 md:w-14 lg:h-20 lg:w-20 bg-black bg-opacity-30 flex-shrink-0">
-    {{answerCounts[answerIndex]}}
+    {{answerCounts ? answerCounts[answerIndex]: 0}}
   </div>
 </div>
