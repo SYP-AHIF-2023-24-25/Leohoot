@@ -14,30 +14,16 @@ export class SignalRService {
 
   constructor() {
     this.buildConnection();
-    this.monitorAppState(); // Monitor app state for better handling of background behavior
+    this.monitorAppState();
   }
 
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/hub`, { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
-      .withAutomaticReconnect([0, 2000, 10000, 30000]) // Retry intervals
+      .withAutomaticReconnect([0, 2000, 10000, 30000])
       .build();
 
-    // Adjust keep-alive settings for mobile devices
-    this.connection.serverTimeoutInMilliseconds = 10000; // 10 seconds
-    this.connection.keepAliveIntervalInMilliseconds = 5000; // 5 seconds
-
-    this.connection.onreconnecting(error => {
-      // console.log('Connection lost, trying to reconnect...', error);
-    });
-
-    this.connection.onreconnected(connectionId => {
-      // console.log('Connection reestablished:', connectionId);
-    });
-
-    // Handle connection lifecycle
     this.connection.onclose((error) => {
-      // console.log('Connection closed:', error);
       this.connectionClosedSubject.next();
     });
 
@@ -45,7 +31,6 @@ export class SignalRService {
       this.gameEnded$.next(gameId);
     });
 
-    // Start connection with retry logic
     this.startConnection();
   }
 
@@ -55,22 +40,15 @@ export class SignalRService {
         console.log("Connection started");
       })
       .catch(err => {
-        // console.log('Error while establishing connection, retrying...', err);
-        setTimeout(() => this.startConnection(), 5000); // Retry if connection fails initially
+        setTimeout(() => this.startConnection(), 5000);
       });
   }
 
-  // Monitor app visibility and handle reconnection when the app is brought back to foreground
   private monitorAppState() {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        // console.log('App is in background or screen is off');
-        // Optionally pause actions or notify server about background state
       } else {
-        // console.log('App is active');
-        // Reconnect if the connection is closed
         if (this.connection.state === signalR.HubConnectionState.Disconnected) {
-          // console.log('Reconnecting SignalR connection...');
           this.startConnection();
         }
       }

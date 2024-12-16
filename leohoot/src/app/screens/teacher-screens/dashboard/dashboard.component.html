@@ -52,18 +52,19 @@
               *ngIf="quiz.imageName"
               [src]="quiz.imageName"
               alt="Quiz Image"
-              class="w-full h-56 object-cover mb-2"
+              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
             />
             <img
               *ngIf="!quiz.imageName"
               src="assets/images/noImage.png"
               alt="No image"
-              class="w-full h-56 object-cover mb-2"
+              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
             />
             <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
             <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
               <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
             </div>
+            
             <div class="flex justify-between w-full mt-auto">
               <div class="flex justify-start items-center rounded-lg">
                 <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">

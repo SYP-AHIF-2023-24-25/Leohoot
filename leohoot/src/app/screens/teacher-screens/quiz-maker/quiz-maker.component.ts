@@ -55,6 +55,7 @@ export class QuizMakerComponent {
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = parseInt(params['quizId']);
         await this.getQuiz()
+
       }
     })
     this.quiz = this.configurationService.getQuiz();
@@ -62,13 +63,32 @@ export class QuizMakerComponent {
   }
 
   async getQuiz() {
-    this.restService.getQuizById(this.quizId).subscribe((data) => {
-      this.quiz = data;
-    })
-  }
+    this.restService.getQuizById(this.quizId).subscribe(quiz => {
+      console.log(quiz)
+      quiz.questions.forEach(question => {
+        const missingAnswersCount = 4 - question.answers.length;
+        if (missingAnswersCount > 0) {
+          for (let i = 0; i < missingAnswersCount; i++) {
+            question.answers.push({ answerText: '', isCorrect: false });
+          }
+        }
+      });
+      this.quiz = quiz;
+      this.configurationService.setQuiz(quiz);
+      this.sidebarComponent.refetchQuestions();
+  });
+}
 
-  close(){
-    //TODO
+  async close(){
+    if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
+      this.configurationService.clearQuiz();
+      await this.router.navigate(['/dashboard']);
+      // if (this.quizId) {
+      //   await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
+      // } else {
+      //   await this.router.navigate(['/quizOverview'])
+      // }
+    }
   }
 
   updateQuestion(updatedQuestion: QuestionTeacher) {
