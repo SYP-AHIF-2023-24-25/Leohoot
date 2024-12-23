@@ -34,7 +34,11 @@ public class Game
             question.ShowMultipleChoice
         );
 
-        Statistic = new Statistic();
+        Statistic = new Statistic
+        {
+            QuizName = quiz.Title,
+            StartTime = DateTime.Now
+        };
 
         _players = [];
         _currentAnswers = [];
@@ -46,6 +50,7 @@ public class Game
         if (_players.Find(user => user.Username == username) == null)
         {
             _players.Add(new Player(username, 0));
+            Statistic.StudentsCount++;
             return true;
         }
         return false;
@@ -90,7 +95,7 @@ public class Game
         _currentAnswers.Clear();
     }
 
-    public void AddAnswer(int quizId, bool[] answers, string username)
+    public void AddAnswer(bool[] answers, string username)
     {
         int score = 0;
         var isCorrect = IsAnswerCorrect(answers);
@@ -100,7 +105,44 @@ public class Game
             score = 1000 - 1000/_players.Count*currentCorrectAnswers.Count;
         }
         _currentAnswers.Add(new Player(username, score));
-        Statistic.AddAnswerToStatistic(CurrentQuestion!.QuestionNumber, answers, isCorrect);
+        AddAnswerToStatistic(CurrentQuestion, answers, username);
+    }
+    
+    private void AddAnswerToStatistic(QuestionDto question, bool[] answers, string username)
+    {
+        var foundQuestion = Statistic.Questions.SingleOrDefault(q => q.QuestionNumber == question.QuestionNumber);
+        if (foundQuestion != null)
+        {
+            for (var i = 0; i < answers.Length; i++) 
+            {
+                if (answers[i])
+                {
+                    foundQuestion.Answers[i].UserNames.Add(username);
+                }
+            }
+        }
+        else
+        {
+            var questionStatistic = new StatisticQuestion
+            {
+                QuestionNumber = question.QuestionNumber,
+                QuestionText = question.QuestionText
+            };
+            for(var i = 0; i < answers.Length; i++)
+            {
+                var answerStatistic = new StatisticAnswers
+                {
+                    AnswerText = question.Answers[i].AnswerText,
+                    IsCorrect = question.Answers[i].IsCorrect,
+                };
+                if (answers[i])
+                {
+                    answerStatistic.UserNames.Add(username);
+                }
+                questionStatistic.Answers.Add(answerStatistic);
+            }
+            Statistic.Questions.Add(questionStatistic);
+        }
     }
     private bool IsAnswerCorrect(bool[] answers)
     {
