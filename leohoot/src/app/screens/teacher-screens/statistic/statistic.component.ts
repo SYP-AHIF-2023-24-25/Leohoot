@@ -24,6 +24,7 @@ export class StatisticComponent {
           console.log(data.questionAnswers, "data")
           this.statistic = data;
         });
+        this.restservice.postStatistics(this.gameId).subscribe((data) => {})
       }
     });
   }

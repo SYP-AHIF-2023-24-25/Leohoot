@@ -140,4 +140,8 @@ export class RestService {
   getUser(username: string): Observable<User> {
     return this.httpClient.get<User>(`${RestService.apiUrl}users/${username}`);
   }
+
+  postStatistics(gameId: number): Observable<Object> {
+    return this.httpClient.post(`${RestService.apiUrl}games/${gameId}/statistic`, {});
+  }
 }

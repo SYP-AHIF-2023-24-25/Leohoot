@@ -4,6 +4,7 @@ using Api.Hubs;
 using Core;
 using Core.Contracts;
 using Core.DataTransferObjects;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers;
@@ -36,6 +37,7 @@ public class GameController : Controller
         var game = Repository.GetInstance().GetGameById(gameId);
         if (game == null)
         {
+            
             return Results.NotFound("Game not found");
         }
         return Results.Ok(game.Quiz.Id);
@@ -91,6 +93,21 @@ public class GameController : Controller
             q.ShowMultipleChoice
             )).ToArray();
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
+    }
+    
+    [Authorize]
+    [HttpPost("{gameId:int}/statistic")]
+    public async Task<IResult> PostStatisticsOfGame(int gameId)
+    {
+        var game = Repository.GetInstance().GetGameById(gameId);
+        if (game != null)
+        {
+            game.Statistic.EndTime = DateTime.Now;
+            await _unitOfWork.Statistics.AddAsync(game.Statistic);
+            await _unitOfWork.SaveChangesAsync();
+            return Results.Ok();
+        }
+        return Results.NotFound("Game not found");
     }
 
     [AllowAnonymous]
@@ -207,7 +224,6 @@ public class GameController : Controller
         }
 
         game.CurrentQuestion = nextQuestion!;
-        await _unitOfWork.SaveChangesAsync();
             
         return Results.Ok(nextQuestion);
     }
