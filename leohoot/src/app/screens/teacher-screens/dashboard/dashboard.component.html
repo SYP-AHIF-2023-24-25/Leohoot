@@ -1,13 +1,28 @@
 
 <div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
     <!-- Sidebar -->
-    <app-sidebar class="lg:w-1/5" (home)="toggleHome()" (ownQuizzes)="toggleOwnQuizzes()"></app-sidebar>
-    <!-- Main Content -->
+    <app-sidebar
+      class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"
+      (home)="toggleHome()"
+      (ownQuizzes)="toggleOwnQuizzes()">
+    </app-sidebar>
+    <app-sidebar
+      *ngIf="isSidebarVisible && !screenIsLarge"
+      class="w-1/2 bg-white fixed lg:relative z-50"
+      [toggleSidebar]="toggleSidebar.bind(this)">
+    </app-sidebar>
+
+  <!-- Main Content -->
     <div class="flex flex-col flex-1">
       <!-- Header -->
-      
+
     <div class="flex items-center justify-between bg-background-blue-dark p-4 text-white">
         <!-- Suchfeldbereich -->
+        <div class="lg:hidden flex items-center pr-4">
+          <button (click)="toggleSidebar()" class="text-white">
+            <span class="material-icons text-3xl">menu</span>
+          </button>
+        </div>
         <div class="flex items-center flex-grow mr-4"> <!-- Hier: flex-grow und margin nach rechts -->
           <span class="material-icons text-2xl mr-2">search</span>
           <input
@@ -18,7 +33,7 @@
             class="p-2 rounded-lg flex-grow bg-white border-white text-gray-800"
           />
         </div>
-      
+
         <!-- Login und Dropdownbereich -->
         <div class="flex items-center space-x-2">
           <img src="assets/images/user.png" alt="user" class="w-6 h-6">
@@ -31,9 +46,9 @@
           </div>
         </div>
       </div>
-      
-      
-      
+
+
+
       <main class="p-4 sm:p-6">
         <div class="flex flex-wrap gap-2 mb-4">
           <span *ngFor="let tag of tags">
@@ -46,9 +61,10 @@
             *ngFor="let quiz of filteredQuizzes"
             class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
           >
-          
+
           <div (click)="viewQuizDetails(quiz)">
-            <img
+           
+              <img
               *ngIf="quiz.imageName"
               [src]="quiz.imageName"
               alt="Quiz Image"
@@ -70,17 +86,16 @@
                 <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
                 <div class="text-md">{{quiz.creator}}</div>
               </div>
-              
+
               <div class="flex justify-end items-center ">
                 <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
                 <div class="text-end">{{ quiz.questions.length }}</div>
               </div>
             </div>
-          </div>  
           </div>
           </div>
-        
+          </div>
+
       </main>
     </div>
   </div>
-  

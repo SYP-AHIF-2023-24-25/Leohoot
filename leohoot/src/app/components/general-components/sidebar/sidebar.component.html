@@ -1,18 +1,25 @@
 <aside class="bg-white p-4 text-center min-h-screen flex flex-col justify-between">
     <div class="flex flex-col mb-auto">
         <!-- Logo und Navigations-Buttons -->
-        <img src="assets/images/hootiFaceIcon.ico" alt="hooti" class="w-16 h-16 mb-4 mx-auto">
-        
-        <button 
-        (click)="toggleHome()" 
+      <div class="flex flex-auto justify-between items-start">
+      <button *ngIf="toggleSidebar" (click)="toggleSidebar()" class="text-black">
+        <span class="material-icons text-3xl">close</span>
+      </button>
+      <img src="assets/images/hootiFaceIcon.ico" alt="hooti" class="w-16 h-16 mb-4 mx-auto">
+    </div>
+
+
+
+      <button
+        (click)="toggleHome()"
         class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded"
         [ngClass]="{'bg-gray-300': selectedItem === 'home'}"
         (click)="selectItem('home')">
         <span class="material-icons mr-2">home</span> Home
       </button>
-        
-        <!-- <button 
-        (click)="toggleFavorites()" 
+
+        <!-- <button
+        (click)="toggleFavorites()"
         class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded"
         [ngClass]="{'bg-gray-300': selectedItem === 'favorites'}"
         (click)="selectItem('favorites')">
@@ -20,15 +27,15 @@
         </button> -->
 
         <!-- Own Quizzes Button -->
-        <button 
-        (click)="toggleOwnQuizzes()" 
+        <button
+        (click)="toggleOwnQuizzes()"
         class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded"
         [ngClass]="{'bg-gray-300': selectedItem === 'ownQuizzes'}"
         (click)="selectItem('ownQuizzes')">
         <span class="material-icons mr-2">quiz</span> {{ 'Own Quizzes' }}
         </button>
     </div>
-    
+
     <!-- "New Quiz" Button -->
     <button routerLink="/quizMaker" class="mt-4 w-full p-2 bg-hooti-yellow text-white rounded">
         New Quiz

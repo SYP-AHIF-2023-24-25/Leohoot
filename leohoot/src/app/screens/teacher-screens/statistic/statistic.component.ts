@@ -21,6 +21,7 @@ export class StatisticComponent {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
         this.restservice.getGameStatistics(this.gameId).subscribe((data) => {
+          console.log(data.questionAnswers, "data")
           this.statistic = data;
         });
       }

@@ -15,6 +15,7 @@ export class WaitingroomComponent {
   gamePin: number = 0;
   quizId: number = 1;
   users: Player[] = [];
+  isQrFullscreen = false;
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
     this.route.queryParams.subscribe(params => {
@@ -39,13 +40,20 @@ export class WaitingroomComponent {
     });
   }
 
-  startGame(){
-    this.signalRService.connection.invoke("startGame", this.gamePin);
-    this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
+  async startGame(){
+    await this.signalRService.connection.invoke("startGame", this.gamePin);
+    await this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gamePin , mode: 1} });
   }
 
   async onDeletePerson(user: Player) {
     this.users = this.users.filter(p => p !== user);
     await this.signalRService.connection.invoke("deleteUser", this.gamePin, user.username);
+  }
+  showQrFullscreen(): void {
+    this.isQrFullscreen = true;
+  }
+
+  closeQrFullscreen(): void {
+    this.isQrFullscreen = false;
   }
 }

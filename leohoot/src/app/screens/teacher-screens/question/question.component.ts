@@ -25,6 +25,7 @@ export class QuestionComponent {
   questionTimeout: any;
   connectionSubscription: Subscription;
   gameCanceled: boolean = true;
+  answerCounts?: number[];
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
       this.questionTimeout = setTimeout(async () => {
@@ -111,6 +112,9 @@ export class QuestionComponent {
 
   async showCorrectAnswer() {
     await this.signalRService.connection.send("questionFinished", this.gameId);
+    this.restservice.getAnswers(this.gameId).subscribe((answerCounts) => {
+      this.answerCounts = answerCounts;
+    })
     this.questionIsFinished = true;
     this.obsTimer.unsubscribe();
     this.audio.pause();
@@ -126,14 +130,12 @@ export class QuestionComponent {
       await this.router.navigate(['/ranking'], { queryParams: { gameId: this.gameId, mode: Mode.GAME_MODE } });
     } else {
       if (this.currentQuestion.questionNumber === this.currentQuestion.quizLength) {
-        if (this.quizId !== -1) {
-          this.restservice.deleteGame(this.gameId).subscribe(() => {
-            this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId, mode: Mode.TEACHER_DEMO_MODE } });
-          });
-        }
+        this.restservice.deleteGame(this.gameId).subscribe(() => {
+          this.router.navigate(['/quizMaker'], { queryParams: { quizId: this.quizId, mode: Mode.TEACHER_DEMO_MODE } });
+        });
       } else {
-        this.restservice.nextQuestion(this.gameId).subscribe(() => {
-          window.location.reload();
+        this.restservice.nextQuestion(this.gameId).subscribe(async () => {
+          await this.router.navigate(['/questionPreview'], { queryParams: { gameId: this.gameId, mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId }, });
         });
       }
     }

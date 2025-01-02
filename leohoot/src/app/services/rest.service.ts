@@ -35,6 +35,10 @@ export class RestService {
     return this.httpClient.post<boolean>(`${RestService.apiUrl}games/${gameId}/answers`, {answers: buttons, username: username});
   }
 
+  getAnswers(gameId: number): Observable<number[]> {
+    return this.httpClient.get<number[]>(`${RestService.apiUrl}games/${gameId}/answers`);
+  }
+
   getRanking(gameId: number): Observable<Ranking> {
     return this.httpClient.get<Ranking>(`${RestService.apiUrl}games/${gameId}/ranking`);
   }

@@ -75,7 +75,7 @@ public class GameController : Controller
         {
             return Results.NotFound("Game not found");
         }
-        var questionAnswers = game.Statistic.QuestionAnswers;
+        var questionAnswers = game.Statistic.QuestionAnswers.ToDictionary(q => q.Key, q => q.Value.AllAnswers);
         var topThreePlayers = game.GetRanking(3);
         QuestionDto[] questions = game.Quiz.Questions.Select(q => new QuestionDto(
             q.QuestionNumber, 
@@ -133,6 +133,23 @@ public class GameController : Controller
             game.CurrentQuestion.ShowMultipleChoice,
             game.Quiz.Questions.Count);
         return Results.Ok(question);
+    }
+
+    [Authorize]
+    [HttpGet("{gameId:int}/answers")]
+    public IResult GetAnswersOfQuestion(int gameId)
+    {
+        var game = Repository.GetInstance().GetGameById(gameId);
+        try
+        {
+            var answers = game?.Statistic.QuestionAnswers[game.CurrentQuestion.QuestionNumber].CountPerAnswer;
+            return Results.Ok(answers);
+        }
+        catch
+        {
+            return Results.NotFound();
+        }
+        
     }
     
     [AllowAnonymous]
