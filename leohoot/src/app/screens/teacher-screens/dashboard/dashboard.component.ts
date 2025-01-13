@@ -1,10 +1,10 @@
 import { Component, HostListener } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { Quiz } from "../../../model/quiz";
 import { RestService } from "../../../services/rest.service";
-import { ActivatedRoute, Route, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoginService } from "../../../services/auth.service";
 import { Tag } from "../../../model/tag";
+import { DashboardSectionType } from "../../../model/dashboard-section-type";
 
 @Component({
   selector: 'app-dashboard',
@@ -14,31 +14,24 @@ export class DashboardComponent {
   quizzes: Quiz[] = [];
   filteredQuizzes: Quiz[] = [];
   searchText = '';
-  isDropdownOpen = false;
-  loggedIn = () => this.loginService.isLoggedIn();
   username = this.loginService.getUserName();
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
-  viewOwnQuizzes: boolean = false;
   isSidebarVisible = false;
   screenIsLarge = false;
+  ownQuizzesSelected: boolean = false;
 
   constructor(private restService: RestService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.fetchQuizzes();
-    this.loadTags();
-    this.checkScreenSize();
+      this.loadTags();
+      this.screenIsLarge = window.innerWidth >= 1024;
 
-   this.route.queryParams.subscribe(params => {
-      console.log(params);
-      if (typeof params['viewOwnQuizzes'] !== 'undefined') {
-        console.log('View own quizzes');
-        console.log(this.viewOwnQuizzes);
-       this.viewOwnQuizzes = true;
-       this.filteredQuizzes = this.quizzes.filter(quiz => quiz.creator === this.username);
-      }
-    });
+     this.route.queryParams.subscribe(params => {
+       let section = parseInt(params['section']);
+       this.ownQuizzesSelected = section === DashboardSectionType.OWN;
+       this.fetchQuizzes();
+     });
   }
 
   filterQuizzes(): void {
@@ -56,29 +49,17 @@ export class DashboardComponent {
     });
   }
 
-  toggleHome(): void {
-    this.viewOwnQuizzes = false;
-    this.filteredQuizzes = this.quizzes;
+  async viewQuizDetails(quiz: Quiz): Promise<void> {
+    await this.router.navigate(['/quizDetails'], { queryParams: { quizId: quiz.id } });
   }
-
-  toggleOwnQuizzes(): void {
-    this.viewOwnQuizzes = !this.viewOwnQuizzes;
-    this.filteredQuizzes = this.quizzes.filter(quiz => quiz.creator === this.username);
-  }
-
-  // toggleFavoriteQuizzes(): void {
-  //   this.filteredQuizzes = this.quizzes.filter(quiz => quiz.favorites.includes(this.username));
-  // }
-
-  viewQuizDetails(quiz: Quiz): void {
-    this.router.navigate(['/quizDetails'], { queryParams: { quizId: quiz.id } });
-  }
-
 
   fetchQuizzes(): void {
     this.restService.getAllQuizzes().subscribe((data: Quiz[]) => {
       this.quizzes = data;
-      this.filteredQuizzes = data;
+      if (this.ownQuizzesSelected) {
+        this.quizzes = data.filter(d => d.creator === this.username)
+      }
+      this.filteredQuizzes = this.quizzes;
     });
   }
 
@@ -94,17 +75,6 @@ export class DashboardComponent {
     this.filterQuizzes(); // Apply tag filtering after search
   }
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  async logout() {
-    await this.loginService.logout();
-  }
-
-  async login(loginWithKeycloak: boolean) {
-    await this.loginService.login(loginWithKeycloak);
-  }
 
   loadTags(): void {
     this.restService.getAllTags().subscribe(
@@ -131,12 +101,6 @@ export class DashboardComponent {
   }
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.checkScreenSize();
-  }
-  checkScreenSize() {
     this.screenIsLarge = window.innerWidth >= 1024;
-    if (this.screenIsLarge) {
-      this.isSidebarVisible = false;
-    }
   }
 }
