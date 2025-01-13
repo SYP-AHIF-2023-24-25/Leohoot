@@ -55,6 +55,9 @@ import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
+import { GameStatisticsComponent } from "./screens/teacher-screens/game-statistics/game-statistics.component";
+import { ProfileComponent } from "./components/general-components/profile/profile.component";
+import { StatisticDetailsComponent } from "./screens/student-screens/statistic-details/statistic-details.component";
 
 @NgModule({
   declarations: [
@@ -97,7 +100,10 @@ import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboar
     QuizDetailsComponent,
     QuestionsComponent,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    GameStatisticsComponent,
+    ProfileComponent,
+    StatisticDetailsComponent
   ],
   imports: [
     BrowserModule,

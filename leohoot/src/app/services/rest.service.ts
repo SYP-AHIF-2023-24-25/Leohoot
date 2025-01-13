@@ -13,6 +13,8 @@ import { AuthResponse } from '../model/auth-response';
 import { User } from '../model/user';
 import { Tag } from '../model/tag';
 import { PlayerResult } from '../model/player-result';
+import { StatisticOverview } from "../model/statistic-overview";
+import { StatisticDetails } from "../model/statistic-details";
 
 @Injectable({
   providedIn: 'root'
@@ -143,5 +145,13 @@ export class RestService {
 
   postStatistics(gameId: number): Observable<Object> {
     return this.httpClient.post(`${RestService.apiUrl}games/${gameId}/statistic`, {});
+  }
+
+  getStatisticsForOverview(): Observable<StatisticOverview[]> {
+    return this.httpClient.get<StatisticOverview[]>(`${RestService.apiUrl}statistics`)
+  }
+
+  getStatisticDetails(statisticId: number): Observable<any> {
+    return this.httpClient.get<any>(`${RestService.apiUrl}statistics/${statisticId}`);
   }
 }

@@ -1,0 +1,51 @@
+
+<div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
+
+  <app-sidebar class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"/>
+  <app-sidebar
+    *ngIf="isSidebarVisible && !screenIsLarge"
+    class="w-1/2 bg-white fixed lg:relative z-50"
+    [toggleSidebar]="toggleSidebar.bind(this)">
+  </app-sidebar>
+
+  <div class="flex flex-col flex-1">
+    <div class="flex items-center justify-between bg-background-blue-dark p-4 text-white h-16">
+      <div class="lg:hidden flex items-center pr-4">
+        <button (click)="toggleSidebar()" class="text-white">
+          <span class="material-icons text-3xl">menu</span>
+        </button>
+      </div>
+      <div class="flex items-center flex-grow mr-4">
+        <div class="text-xl font-bold">Statistics</div>
+      </div>
+      <app-profile/>
+    </div>
+    <main class="p-4 sm:p-6">
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-black rounded-2xl table-auto">
+          <thead class="text-white bg-gray-400">
+            <tr>
+              <th class="px-6 py-3">Start Date</th>
+              <th class="px-6 py-3">End Date</th>
+              <th class="px-6 py-3">Quiz Name</th>
+              <th class="px-6 py-3 text-center">Student Count</th>
+              <th class="px-6 py-3 text-center">Show Statistic</th>
+              <th class="px-6 py-3 text-center">Download Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let statistic of statistics" class="bg-white border-b">
+              <td class="px-6 py-3">{{statistic.startTime}}</td>
+              <td class="px-6 py-3">{{statistic.endTime}}</td>
+              <td class="px-6 py-3">{{statistic.quizName}}</td>
+              <td class="px-6 py-3 text-center">{{statistic.studentCount}}</td>
+              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="navigateToDetails(statistic.statisticId)">bar_chart</span></td>
+              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="downloadCsv(statistic.statisticId)">file_download</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
