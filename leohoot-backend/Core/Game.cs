@@ -37,7 +37,8 @@ public class Game
         Statistic = new Statistic
         {
             QuizName = quiz.Title,
-            StartTime = DateTime.Now
+            StartTime = DateTime.Now,
+            QuizId = quiz.Id
         };
 
         _players = [];

@@ -11,4 +11,5 @@ public class Statistic: EntityObject
     [MaxLength(256)]
     public required string QuizName { get; set; }
     public List<StatisticQuestion> Questions { get; set; } = [];
+    public int QuizId { get; set; }
 }

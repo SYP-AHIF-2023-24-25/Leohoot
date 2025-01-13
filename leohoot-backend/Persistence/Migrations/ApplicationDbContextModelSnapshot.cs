@@ -177,6 +177,9 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
                     b.Property<string>("QuizName")
                         .IsRequired()
                         .HasMaxLength(256)
