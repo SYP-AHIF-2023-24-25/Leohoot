@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Base.Persistence;
 using Core.Contracts;
 using Core.Entities;
@@ -52,7 +53,14 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
                         a.UserNames.Contains(user),
                         a.IsCorrect
                     )).ToList()
-                )).ToList()
+                )).ToList(),
+                false,
+                statistic.Questions.Count(q => q.Answers
+                    .All(a => 
+                        (a.IsCorrect && a.UserNames.Contains(user)) || 
+                        (!a.IsCorrect && !a.UserNames.Contains(user))
+                    )),
+                statistic.Questions.Count
             )).ToList();
 
         return new StatisticDetailsDto(statistic.QuizName, users);

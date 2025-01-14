@@ -15,6 +15,6 @@ public record AuthResponseDto(bool IsAuthSuccessful, string? ErrorMessage, strin
 public record StatisticOverviewDto(int StatisticId, string StartTime, string EndTime, double Duration, string QuizName, int StudentCount, int QuizId);
 
 public record StatisticDetailsDto(string QuizName, List<StatisticDetailsUserDto> Users);
-public record StatisticDetailsUserDto(string Username, List<StatisticDetailsQuestionDto> Questions);
+public record StatisticDetailsUserDto(string Username, List<StatisticDetailsQuestionDto> Questions, bool IsOpen, int CorrectAnswers, int QuizLength);
 public record StatisticDetailsQuestionDto(string QuestionText, List<StatisticDetailsAnswerDto> Answers);
 public record StatisticDetailsAnswerDto(string AnswerText, bool IsTicked, bool IsCorrect);
