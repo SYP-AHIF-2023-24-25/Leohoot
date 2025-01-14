@@ -1,7 +1,7 @@
 import { Component, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RestService } from "../../../services/rest.service";
-import { StatisticDetails } from "../../../model/statistic-details";
+import { StatisticDetails, StatisticQuestion, StatisticUser } from "../../../model/statistic-details";
 
 @Component({
   selector: 'app-statistic-details',
@@ -23,8 +23,19 @@ export class StatisticDetailsComponent {
     })
   }
 
+  colors = [
+    'bg-button-yellow',
+    'bg-green-400',
+    'bg-rose-400',
+    'bg-blue-400',
+  ];
+
   toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
+  }
+
+  toggleOnOpen(user: StatisticUser){
+    user.isOpen = !user.isOpen;
   }
 
   @HostListener('window:resize', ['$event'])

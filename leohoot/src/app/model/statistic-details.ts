@@ -1,16 +1,23 @@
 export interface StatisticDetails {
-  startTime: Date,
-  endTime: Date,
-  studentsCount: number,
   quizName: string,
-  quizId: number,
-  questions: {
-    questionNumber: number;
-    questionText: string;
-    answers: {
-      answerText: string;
-      userNames: string[];
-      isCorrect: boolean;
-    }
-  }
+  users: StatisticUser[]
+}
+
+export interface StatisticUser {
+  username: string,
+  isOpen: boolean,
+  questions: StatisticQuestion[],
+  correctAnswers: number,
+  quizLength: number
+}
+
+export interface StatisticQuestion {
+  questionText: string,
+  answers: StatisticAnswer[]
+}
+
+export interface StatisticAnswer {
+  answerText: string,
+  isTicked: boolean,
+  isCorrect: boolean
 }

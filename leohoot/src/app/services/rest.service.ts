@@ -151,7 +151,7 @@ export class RestService {
     return this.httpClient.get<StatisticOverview[]>(`${RestService.apiUrl}statistics`)
   }
 
-  getStatisticDetails(statisticId: number): Observable<any> {
-    return this.httpClient.get<any>(`${RestService.apiUrl}statistics/${statisticId}`);
+  getStatisticDetails(statisticId: number): Observable<StatisticDetails> {
+    return this.httpClient.get<StatisticDetails>(`${RestService.apiUrl}statistics/${statisticId}`);
   }
 }
