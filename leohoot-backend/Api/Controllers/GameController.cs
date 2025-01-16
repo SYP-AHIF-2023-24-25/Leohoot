@@ -82,17 +82,10 @@ public class GameController : Controller
                     .Select(g => g.All(a => a.IsCorrect))
                     .ToList());
         var topThreePlayers = game.GetRanking(3);
-        QuestionDto[] questions = game.Quiz.Questions.Select(q => new QuestionDto(
-            q.QuestionNumber, 
-            q.QuestionText, 
-            q.AnswerTimeInSeconds, 
-            q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
-            q.ImageName, 
-            q.PreviewTime,
-            q.Snapshot,
-            q.ShowMultipleChoice
-            )).ToArray();
-        return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
+        List<string> questionTexts = game.Quiz.Questions
+            .Select(q => q.QuestionText)
+            .ToList();
+        return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questionTexts, game.PlayerCount));
     }
     
     [Authorize]
