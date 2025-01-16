@@ -27,7 +27,7 @@ export class SidebarComponent {
   }
 
   async toggleStatistics(): Promise<void> {
-    await this.router.navigate(['/gameStatistics'])
+    await this.router.navigate(['/statisticOverview'])
     this.selectItem("statistics")
   }
 

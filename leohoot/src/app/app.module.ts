@@ -34,7 +34,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GameInfosComponent } from "./components/waitingroom/game-infos/game-infos.component";
 import { TopThreeComponent } from "./components/statistics/top-three/top-three.component";
 import { HeaderComponent } from "./components/general-components/header/header.component";
-import { StatisticOverviewComponent } from "./components/statistics/statistic-overview/statistic-overview.component";
 import { ButtonComponent } from "./components/general-components/button/button.component";
 import { RankingListComponent } from "./components/ranking/ranking-list/ranking-list.component";
 import { FooterComponent } from "./components/general-components/footer/footer.component";
@@ -55,9 +54,11 @@ import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
-import { GameStatisticsComponent } from "./screens/teacher-screens/game-statistics/game-statistics.component";
+import { StatisticOverviewComponent } from "./screens/teacher-screens/statistic-overview/statistic-overview.component";
 import { ProfileComponent } from "./components/general-components/profile/profile.component";
-import { StatisticDetailsComponent } from "./screens/student-screens/statistic-details/statistic-details.component";
+import { StudentStatisticComponent } from "./screens/teacher-screens/student-statistic/student-statistic.component";
+import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
+import { StatisticTableComponent } from "./components/statistics/statistic-table/statistic-table.component";
 
 @NgModule({
   declarations: [
@@ -101,9 +102,11 @@ import { StatisticDetailsComponent } from "./screens/student-screens/statistic-d
     QuestionsComponent,
     SidebarComponent,
     DashboardComponent,
-    GameStatisticsComponent,
+    StatisticOverviewComponent,
     ProfileComponent,
-    StatisticDetailsComponent
+    GameStatisticComponent,
+    StudentStatisticComponent,
+    StatisticTableComponent
   ],
   imports: [
     BrowserModule,

@@ -4,10 +4,10 @@ import { StatisticOverview } from "../../../model/statistic-overview";
 import { RestService } from "../../../services/rest.service";
 
 @Component({
-  selector: 'app-game-statistics',
-  templateUrl: './game-statistics.component.html',
+  selector: 'app-students-statistics',
+  templateUrl: './statistic-overview.component.html',
 })
-export class GameStatisticsComponent {
+export class StatisticOverviewComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   statistics: StatisticOverview[] = [];
@@ -28,9 +28,12 @@ export class GameStatisticsComponent {
     this.screenIsLarge = window.innerWidth >= 1024;
   }
 
-  async navigateToDetails(statisticId:number) {
-    console.log(statisticId);
-    await this.router.navigate(['/statisticDetails'], {queryParams: {statisticId: statisticId}});
+  async navigateToStudentStatistics(statisticId:number) {
+    await this.router.navigate(['/studentStatistics'], {queryParams: {statisticId: statisticId}});
+  }
+
+  async navigateToGameStatistics(statisticId:number) {
+    await this.router.navigate(['/gameStatistics'], {queryParams: {statisticId: statisticId}});
   }
 
   downloadCsv(statisticId: number): void {

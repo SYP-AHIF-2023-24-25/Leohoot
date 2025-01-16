@@ -16,12 +16,11 @@
         </button>
       </div>
       <div class="flex items-center flex-grow mr-4">
-        <div class="text-xl font-bold">Statistics</div>
+        <div class="text-xl font-bold">{{statistic.quizName}}</div>
       </div>
       <app-profile/>
     </div>
     <div *ngIf="statistic" class="p-4 sm:p-6">
-      <div class="text-white text-lg pb-3">{{statistic.quizName}}</div>
       <div *ngFor="let user of statistic.users" class="bg-white rounded-lg mb-5" (click)="toggleOnOpen(user)">
         <div class="text-lg p-3 flex items-center">
           <span *ngIf="!user.isOpen" class="material-icons text-3xl">arrow_drop_down</span>
@@ -32,12 +31,12 @@
 
         <div *ngIf="user.isOpen" class="px-4 pb-4">
           <div *ngFor="let question of user.questions">
-            <div class="text-base pb-1 pt-3">{{question.questionText}}</div>
+            <div class="text-base pb-1 pt-3 font-bold">{{question.questionText}}</div>
             <div class="grid grid-cols-2">
               <div *ngFor="let answer of question.answers; index as i" class="p-3 text-white {{!answer.isCorrect ? 'bg-gray-400' : colors[i]}} rounded-md m-1 flex items-center justify-between">
                 <div class="font-bold">{{answer.answerText}}</div>
-                <img *ngIf="answer.isCorrect && answer.isTicked" src="assets/images/checked-filled-white.png" alt="correct answer" class="w-5 h-5">
-                <img *ngIf="!answer.isCorrect && answer.isTicked" src="assets/images/cross-filled-white.png" alt="correct answer" class="w-5 h-5">
+                <img *ngIf="answer.isCorrect && answer.isTicked" src="../../../../assets/images/checked-filled-white.png" alt="correct answer" class="w-5 h-5">
+                <img *ngIf="!answer.isCorrect && answer.isTicked" src="../../../../assets/images/cross-filled-white.png" alt="correct answer" class="w-5 h-5">
               </div>
             </div>
           </div>

@@ -5,9 +5,9 @@ import { StatisticDetails, StatisticQuestion, StatisticUser } from "../../../mod
 
 @Component({
   selector: 'app-statistic-details',
-  templateUrl: './statistic-details.component.html',
+  templateUrl: './student-statistic.component.html',
 })
-export class StatisticDetailsComponent {
+export class StudentStatisticComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   statistic!: StatisticDetails;

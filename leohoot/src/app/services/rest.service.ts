@@ -45,7 +45,7 @@ export class RestService {
     return this.httpClient.get<Ranking>(`${RestService.apiUrl}games/${gameId}/ranking`);
   }
 
-  getGameStatistics(gameId: number): Observable<Statistic> {
+  getStatisticOfGame(gameId: number): Observable<Statistic> {
     return this.httpClient.get<Statistic>(`${RestService.apiUrl}games/${gameId}/statistic`);
   }
 
@@ -153,5 +153,9 @@ export class RestService {
 
   getStatisticDetails(statisticId: number): Observable<StatisticDetails> {
     return this.httpClient.get<StatisticDetails>(`${RestService.apiUrl}statistics/${statisticId}`);
+  }
+
+  getGameStatistics(statisticId: number): Observable<Statistic> {
+    return this.httpClient.get<Statistic>(`${RestService.apiUrl}statistics/${statisticId}/game`);
   }
 }

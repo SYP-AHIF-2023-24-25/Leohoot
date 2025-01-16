@@ -29,8 +29,8 @@
               <th class="px-6 py-3">End Date</th>
               <th class="px-6 py-3">Quiz Name</th>
               <th class="px-6 py-3 text-center">Student Count</th>
-              <th class="px-6 py-3 text-center">Show Statistic</th>
-              <th class="px-6 py-3 text-center">Download Details</th>
+              <th class="px-6 py-3 text-center">Show Student Statistics</th>
+              <th class="px-6 py-3 text-center">Show Game Statistics</th>
             </tr>
           </thead>
           <tbody>
@@ -39,8 +39,8 @@
               <td class="px-6 py-3">{{statistic.endTime}}</td>
               <td class="px-6 py-3">{{statistic.quizName}}</td>
               <td class="px-6 py-3 text-center">{{statistic.studentCount}}</td>
-              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="navigateToDetails(statistic.statisticId)">bar_chart</span></td>
-              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="downloadCsv(statistic.statisticId)">file_download</span></td>
+              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="navigateToStudentStatistics(statistic.statisticId)">list</span></td>
+              <td class="px-6 py-3 text-center"><span class="material-icons mr-2" (click)="navigateToGameStatistics(statistic.statisticId)">bar_chart</span></td>
             </tr>
           </tbody>
         </table>

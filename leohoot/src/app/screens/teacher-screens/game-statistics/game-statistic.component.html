@@ -1,0 +1,28 @@
+
+<div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
+
+  <app-sidebar class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"/>
+  <app-sidebar
+    *ngIf="isSidebarVisible && !screenIsLarge"
+    class="w-1/2 bg-white fixed lg:relative z-50"
+    [toggleSidebar]="toggleSidebar.bind(this)">
+  </app-sidebar>
+
+  <div class="flex flex-col flex-1">
+    <div class="flex items-center justify-between bg-background-blue-dark p-4 text-white h-16">
+      <div class="lg:hidden flex items-center pr-4">
+        <button (click)="toggleSidebar()" class="text-white">
+          <span class="material-icons text-3xl">menu</span>
+        </button>
+      </div>
+      <div class="flex items-center flex-grow mr-4">
+        <div class="text-xl font-bold">{{statistic?.quizName}}</div>
+      </div>
+      <app-profile/>
+    </div>
+    <main class="p-4 sm:p-6">
+      <app-statistic-table *ngIf="statistic" [statistic]="statistic"/>
+    </main>
+  </div>
+</div>
+

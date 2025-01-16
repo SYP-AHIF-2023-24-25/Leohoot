@@ -12,10 +12,10 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-statistic-overview',
-  templateUrl: './statistic-overview.component.html',
+  selector: 'app-statistic-table',
+  templateUrl: './statistic-table.component.html',
 })
-export class StatisticOverviewComponent {
+export class StatisticTableComponent {
   @Input() statistic!: Statistic;
   @Input() gameId!: number;
 
@@ -64,7 +64,7 @@ export class StatisticOverviewComponent {
       console.log(this.statistic.questionTexts[questionNumber], "Question");
       let chart: Chart = {
         questionNumber: questionNumber,
-        questionText: this.statistic.questionTexts[questionNumber - 1].questionText,
+        questionText: this.statistic.questionTexts[questionNumber - 1],
         totalAnswers: this.statistic.playerCount,
         correctAnswers: 0,
         notGivenAnswers: this.statistic.playerCount,
