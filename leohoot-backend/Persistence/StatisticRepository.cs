@@ -29,7 +29,7 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
             ).ToListAsync();
     }
 
-    public async Task<StatisticDetailsDto?> GetStatisticsByQuizIdAsync(int statisticId)
+    public async Task<StatisticDetailsDto?> GetStatisticsByStatisticIdAsync(int statisticId)
     {
         var statistic = await _statistics
             .Include(s => s.Questions)
@@ -60,9 +60,32 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
                         (a.IsCorrect && a.UserNames.Contains(user)) || 
                         (!a.IsCorrect && !a.UserNames.Contains(user))
                     )),
-                statistic.Questions.Count
-            )).ToList();
+                statistic.Questions.Count))
+            .OrderBy(u => u.Username)
+            .ToList();
 
         return new StatisticDetailsDto(statistic.QuizName, users);
+    }
+
+    public async Task<StatisticDto?> GetStatisticForTableByIdAsync(int statisticId)
+    {
+        var statistic = await _statistics
+            .Include(s => s.Questions)
+            .ThenInclude(s => s.Answers)
+            .SingleOrDefaultAsync(s => s.Id == statisticId);
+        if (statistic == null) return null;
+        var questionAnswers = statistic.Questions.ToDictionary(
+            q => q.QuestionNumber,
+            q => q.Answers
+                .SelectMany(a => a.UserNames.Select(u => new { Username = u, IsCorrect = a.IsCorrect }))
+                .GroupBy(a => a.Username)
+                .Select(g => g.All(a => a.IsCorrect))
+                .ToList()
+            );
+        var questionTexts = statistic.Questions
+            .Select(q => q.QuestionText)
+            .ToList();
+        return new StatisticDto(statistic.QuizName, [], questionAnswers, questionTexts, statistic.StudentsCount);
+
     }
 }

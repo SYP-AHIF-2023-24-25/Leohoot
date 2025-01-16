@@ -3,7 +3,7 @@ public record QuestionTeacherDto(int QuestionNumber, string QuestionText, int An
 public record QuestionStudentDto(int QuestionNumber, string QuestionText, int NumberOfAnswers, int CurrentPoints, int Points, int QuizLength);
 public record AnswerPostDto(bool[] Answers, string Username);
 public record PlayerResultDto(string QuizTitle, int Points, int Ranking, int PlayerCount);
-public record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, QuestionDto[] QuestionTexts, int PlayerCount);
+public record StatisticDto(string QuizName, Player[] TopThreePlayers, Dictionary<int, List<bool>> QuestionAnswers, List<string> QuestionTexts, int PlayerCount);
 public record RankingDto(Player[] Players, int QuestionNumber, int QuizLength);
 public record AnswerDto(string AnswerText, bool IsCorrect);
 public record QuestionDto(int QuestionNumber, string QuestionText, int AnswerTimeInSeconds, List<AnswerDto> Answers, string? ImageName, int PreviewTime, string? Snapshot, bool ShowMultipleChoice);

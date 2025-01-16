@@ -1,4 +1,5 @@
 using Core.Contracts;
+using Core.DataTransferObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
@@ -26,7 +27,14 @@ public class StatisticController: Controller
     [HttpGet("{quidId}")]
     public async Task<IResult> GetStatistic(int quidId)
     {
-        var statistic = await _unitOfWork.Statistics.GetStatisticsByQuizIdAsync(quidId);
+        var statistic = await _unitOfWork.Statistics.GetStatisticsByStatisticIdAsync(quidId);
+        return Results.Ok(statistic);
+    }
+
+    [HttpGet("{statisticId}/game")]
+    public async Task<IResult> GetStatisticGame(int statisticId)
+    {
+        var statistic = await _unitOfWork.Statistics.GetStatisticForTableByIdAsync(statisticId);
         return Results.Ok(statistic);
     }
 }
