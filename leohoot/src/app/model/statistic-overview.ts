@@ -1,7 +1,7 @@
 export interface StatisticOverview {
   statisticId: number;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   duration: number;
   quizName: string;
   studentCount: number;

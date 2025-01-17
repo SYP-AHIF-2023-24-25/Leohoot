@@ -11,11 +11,16 @@ export class StatisticOverviewComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   statistics: StatisticOverview[] = [];
+  filteredStatistics: StatisticOverview[] = [];
 
   constructor(private router: Router, private restService: RestService) {
     this.restService.getStatisticsForOverview().subscribe((data) => {
-      this.statistics = data;
-      console.log(this.statistics)
+      this.statistics = data.map(s => {
+        s.startTime = new Date(s.startTime)
+        s.endTime = new Date(s.endTime)
+        return {...s}
+      });
+      this.filteredStatistics = this.statistics;
     })
   }
 
@@ -36,11 +41,21 @@ export class StatisticOverviewComponent {
     await this.router.navigate(['/gameStatistics'], {queryParams: {statisticId: statisticId}});
   }
 
+  async onFilterChanged(quizName: string, startDate: string | null, endDate: string | null) {
+    const startDateDate = startDate ? new Date(startDate) : null;
+    const endDateDate = endDate ? new Date(endDate) : null;
+    this.filteredStatistics = this.statistics
+      .filter(s => {
+        return (quizName.length === 0 || s.quizName.toLowerCase().includes(quizName.toLowerCase()))
+            && (startDate === null || startDateDate! < s.startTime)
+            && (endDate === null || endDateDate! > s.endTime)
+      })
+    console.log(this.filteredStatistics)
+  }
   downloadCsv(statisticId: number): void {
     this.restService.getStatisticDetails(statisticId).subscribe((data) => {
       let headers = 'Question';
       let rows: string[] = [];
     })
-
   }
 }

@@ -20,8 +20,8 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
         return _statistics
             .Select(s => new StatisticOverviewDto(
                 s.Id,
-                $"{s.StartTime:dd.MM.yyyy hh:mm}", 
-                $"{s.EndTime:dd.MM.yyyy hh:mm}", 
+                s.StartTime, 
+                s.EndTime, 
                 0,
                 s.QuizName,
                 s.StudentsCount,

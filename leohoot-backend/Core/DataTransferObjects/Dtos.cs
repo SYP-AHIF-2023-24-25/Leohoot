@@ -12,7 +12,7 @@ public record QuizPostDto(string Title, string Description, string Creator, List
 public record UserDto(string Username, string Password);
 public record TagDto(string Name);
 public record AuthResponseDto(bool IsAuthSuccessful, string? ErrorMessage, string? Token);
-public record StatisticOverviewDto(int StatisticId, string StartTime, string EndTime, double Duration, string QuizName, int StudentCount, int QuizId);
+public record StatisticOverviewDto(int StatisticId, DateTime StartTime, DateTime EndTime, double Duration, string QuizName, int StudentCount, int QuizId);
 
 public record StatisticDetailsDto(string QuizName, List<StatisticDetailsUserDto> Users);
 public record StatisticDetailsUserDto(string Username, List<StatisticDetailsQuestionDto> Questions, bool IsOpen, int CorrectAnswers, int QuizLength);

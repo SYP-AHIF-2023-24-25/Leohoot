@@ -59,6 +59,7 @@ import { ProfileComponent } from "./components/general-components/profile/profil
 import { StudentStatisticComponent } from "./screens/teacher-screens/student-statistic/student-statistic.component";
 import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
 import { StatisticTableComponent } from "./components/statistics/statistic-table/statistic-table.component";
+import { DateRangeFilterComponent } from "./components/statistics/date-range-filter/date-range-filter.component";
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { StatisticTableComponent } from "./components/statistics/statistic-table
     ProfileComponent,
     GameStatisticComponent,
     StudentStatisticComponent,
-    StatisticTableComponent
+    StatisticTableComponent,
+    DateRangeFilterComponent
   ],
   imports: [
     BrowserModule,
