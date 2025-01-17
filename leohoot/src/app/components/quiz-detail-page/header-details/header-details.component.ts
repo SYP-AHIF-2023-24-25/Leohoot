@@ -11,6 +11,7 @@ import { LoginService } from "../../../services/auth.service";
 export class HeaderDetailsComponent {
   @Input() quiz?: Quiz;
   @Input() username: string = "";
+  @Input() toggleSidebar?: () => void;
 
   isDropdownOpen: boolean = false;
 

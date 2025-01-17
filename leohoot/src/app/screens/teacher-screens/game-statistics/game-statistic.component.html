@@ -17,7 +17,11 @@
       <div class="flex items-center flex-grow mr-4">
         <div class="text-xl font-bold">{{statistic?.quizName}}</div>
       </div>
-      <app-profile/>
+      <div class="flex items-center space-x-4">
+        <span class="material-icons">download</span>
+        <div class="w-px h-6 bg-white"></div>
+        <app-profile/>
+      </div>
     </div>
     <main class="p-4 sm:p-6">
       <app-statistic-table *ngIf="statistic" [statistic]="statistic"/>

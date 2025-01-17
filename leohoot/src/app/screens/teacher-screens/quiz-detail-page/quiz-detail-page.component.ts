@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RestService } from "../../../services/rest.service";
 import { Quiz } from "../../../model/quiz";
@@ -12,9 +12,11 @@ export class QuizDetailPageComponent {
   quizId: number = 0;
   quiz?: Quiz;
   username: string = "";
+  isSidebarVisible = false;
+  screenIsLarge = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService) {
-
+    this.screenIsLarge = window.innerWidth >= 1024;
   }
   ngOnInit() {
     this.route.queryParams.subscribe(async params => {
@@ -26,17 +28,18 @@ export class QuizDetailPageComponent {
     this.username = this.loginService.getUserName()
   }
 
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
+  }
+
   async getQuiz() {
     this.restService.getQuizById(this.quizId).subscribe((data) => {
       this.quiz = data;
     })
   }
 
-  toggleHome() {
-    this.router.navigate(['/dashboard']);
-  }
-
-  toggleOwnQuizzes() {
-    this.router.navigate(['/dashboard'], { queryParams: { viewOwnQuizzes: true } });
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenIsLarge = window.innerWidth >= 1024;
   }
 }
