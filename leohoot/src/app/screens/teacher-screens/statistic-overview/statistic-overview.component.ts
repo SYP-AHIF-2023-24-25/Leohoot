@@ -52,10 +52,4 @@ export class StatisticOverviewComponent {
       })
     console.log(this.filteredStatistics)
   }
-  downloadCsv(statisticId: number): void {
-    this.restService.getStatisticDetails(statisticId).subscribe((data) => {
-      let headers = 'Question';
-      let rows: string[] = [];
-    })
-  }
 }
