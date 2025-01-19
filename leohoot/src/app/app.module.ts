@@ -19,7 +19,6 @@ import { GameLoginComponent } from './screens/student-screens/game-login/game-lo
 import { GameUserLoginComponent } from './screens/student-screens/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './screens/student-screens/waiting-page/waiting-page.component';
 import { QuizMakerComponent } from './screens/teacher-screens/quiz-maker/quiz-maker.component';
-import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
@@ -81,7 +80,6 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     QuizMakerComponent,
     StatisticComponent,
     QuestionPreviewComponent,
-    QuizMakerQuestionsComponent,
     ValidatePasswordDirective,
     GameInfosComponent,
     TopThreeComponent,
