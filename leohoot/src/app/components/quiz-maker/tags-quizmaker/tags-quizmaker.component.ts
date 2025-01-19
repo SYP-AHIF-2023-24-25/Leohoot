@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Quiz } from 'src/app/model/quiz';
 import { Tag } from 'src/app/model/tag';
 import { RestService } from 'src/app/services/rest.service';
@@ -18,6 +18,7 @@ export class TagsQuizmakerComponent {
   }
 
   @Input() quiz: Quiz | undefined;
+  @Output() saveQuiz = new EventEmitter<void>();
 
   newTag: string = '';
   tags: ListItems[] = [];
@@ -65,6 +66,9 @@ export class TagsQuizmakerComponent {
   updateTags() {
     if (this.quiz) {
       this.quiz.tags = this.tags.filter(item => item.checked).map(item => item.tag);
+      if (this.quiz.id) {
+        this.saveQuiz.emit();
+      }
     }
   }
 }
