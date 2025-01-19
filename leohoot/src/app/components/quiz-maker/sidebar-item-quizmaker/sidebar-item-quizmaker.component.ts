@@ -3,8 +3,8 @@ import { QuestionTeacher } from 'src/app/model/question-teacher';
 
 @Component({
   selector: 'app-quiz-maker-sidebar-item',
-  templateUrl: './quiz-maker-sidebar-item.component.html',
-  styleUrl: './quiz-maker-sidebar-item.component.css'
+  templateUrl: './sidebar-item-quizmaker.component.html',
+  styleUrl: './sidebar-item-quizmaker.component.css'
 })
 export class QuizMakerSidebarItemComponent {
   @Input() existingQuestion: QuestionTeacher | undefined;

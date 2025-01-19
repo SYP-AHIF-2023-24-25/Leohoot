@@ -289,4 +289,41 @@ public class QuizController : Controller
         await _unitOfWork.SaveChangesAsync();
         return Results.Ok();
     }
+
+    [HttpPut("{quizId}/questions/{questionId}")]
+    public async Task<IResult> UpdateQuestion(int quizId, int questionId, QuestionTeacherDto questionDto)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        var question = quiz.Questions.FirstOrDefault(q => q.QuestionNumber == questionId);
+        if (question == null)
+        {
+            return Results.NotFound("Question not found");
+        }
+
+        question.QuestionNumber = questionDto.QuestionNumber;
+        question.QuestionText = questionDto.QuestionText;
+        question.AnswerTimeInSeconds = questionDto.AnswerTimeInSeconds;
+        question.ImageName = questionDto.ImageName;
+        question.Snapshot = questionDto.Snapshot;
+        question.PreviewTime = questionDto.PreviewTime;
+        question.ShowMultipleChoice = questionDto.ShowMultipleChoice;
+
+        question.Answers.Clear();
+        foreach (var answerDto in questionDto.Answers)
+        {
+            question.Answers.Add(new Answer
+            {
+                AnswerText = answerDto.AnswerText,
+                IsCorrect = answerDto.IsCorrect
+            });
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Ok();
+    }
 }

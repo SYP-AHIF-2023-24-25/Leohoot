@@ -29,50 +29,105 @@
       <app-profile/>
     </div>
     <main class="p-4 sm:p-6">
-      <div class="flex flex-wrap gap-2 mb-4">
-        <span *ngFor="let tag of tags">
-          <span (click)="toggleTagSelection(tag)" *ngIf="selectedTags.includes(tag)" class="px-3 py-1 bg-hooti-yellow text-white rounded text-lg">{{ tag.name }}</span>
-          <span (click)="toggleTagSelection(tag)" *ngIf="!selectedTags.includes(tag)" class="px-3 py-1 bg-gray-200 rounded text-lg">{{ tag.name }}</span>
-        </span>
+      <div class="filter-section mb-2">
+        <!-- Filter Header -->
+        <div 
+        class="filter-header px-3 py-1 bg-white border border-gray-300 rounded-lg shadow-md flex items-center cursor-pointer transition-all duration-300 hover:bg-gray-100" 
+        (click)="isOpen = !isOpen"
+    >
+        <img src="assets/images/filter.png" alt="filter" class="w-6 h-6 mr-4">
+        <p class="text-lg pt-3 justify-center text-gray-800 flex-grow">Filter by Tags</p>
+        <svg 
+            class="w-4 h-4 text-gray-500 transform transition-transform duration-300" 
+            [ngClass]="{'rotate-180': isOpen, 'rotate-0': !isOpen}" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+        >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </div>
+
+      
+        <!-- Filter Content -->
+        <div 
+          class="filter-content overflow-hidden transition-all duration-300 ease-in-out"
+          [ngClass]="{'max-h-60 mt-2': isOpen, 'max-h-0': !isOpen}"
+        >
+          <div class="p-4 bg-white border-t border-gray-300 rounded-b-lg">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <!-- Loop through tags -->
+              <span *ngFor="let tag of tags" class="flex items-center space-x-2">
+                <input 
+                  type="checkbox" 
+                  id="{{ tag.name }}" 
+                  [checked]="selectedTags.includes(tag)" 
+                  (change)="toggleTagSelection(tag)" 
+                  class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                />
+                <label 
+                  for="{{ tag.name }}" 
+                  class="text-sm text-gray-700 cursor-pointer hover:text-blue-600 transition-colors duration-200"
+                >
+                  {{ tag.name }}
+                </label>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
+      
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div
           *ngFor="let quiz of filteredQuizzes"
           class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
         >
           <div (click)="viewQuizDetails(quiz)">
-
-              <img
-              *ngIf="quiz.imageName"
-              [src]="quiz.imageName"
-              alt="Quiz Image"
-              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
-            />
             <img
-              *ngIf="!quiz.imageName"
-              src="assets/images/noImage.png"
-              alt="No image"
-              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
-            />
-            <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
-            <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
-              <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
+            *ngIf="quiz.imageName"
+            [src]="quiz.imageName"
+            alt="Quiz Image"
+            class="w-full h-56 object-cover mb-2 aspect-[16/9]"
+          />
+          <img
+            *ngIf="!quiz.imageName"
+            src="assets/images/noImage.png"
+            alt="No image"
+            class="w-full h-56 object-cover mb-2 aspect-[16/9]"
+          />
+          <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
+          <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
+            <span 
+              *ngFor="let tag of quiz.tags | slice:0:3" 
+              class="px-2 py-1 bg-gray-200 rounded text-sm"
+            >
+              {{ tag.name }}
+            </span>
+          
+            <!-- Show a 'more' indicator if there are more than three tags -->
+            <span 
+              *ngIf="quiz.tags.length > 3" 
+              class="px-2 py-1 bg-gray-200 rounded text-sm text-gray-500"
+            >
+              +{{ quiz.tags.length - 3 }} more
+            </span>
+          </div>
+          
+          <div class="flex justify-between w-full mt-auto">
+            <div class="flex justify-start items-center rounded-lg">
+              <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
+              <div class="text-md">{{quiz.creator}}</div>
             </div>
 
-            <div class="flex justify-between w-full mt-auto">
-              <div class="flex justify-start items-center rounded-lg">
-                <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
-                <div class="text-md">{{quiz.creator}}</div>
-              </div>
-
-              <div class="flex justify-end items-center ">
-                <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
-                <div class="text-end">{{ quiz.questions.length }}</div>
-              </div>
+            <div class="flex justify-end items-center ">
+              <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
+              <div class="text-end">{{ quiz.questions.length }}</div>
             </div>
           </div>
         </div>
       </div>
-    </main>
-  </div>
+      </div>
+      </main>
+    </div>
 </div>

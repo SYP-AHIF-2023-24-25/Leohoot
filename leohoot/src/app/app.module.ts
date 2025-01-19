@@ -19,9 +19,6 @@ import { GameLoginComponent } from './screens/student-screens/game-login/game-lo
 import { GameUserLoginComponent } from './screens/student-screens/game-user-login/game-user-login.component';
 import { WaitingPageComponent } from './screens/student-screens/waiting-page/waiting-page.component';
 import { QuizMakerComponent } from './screens/teacher-screens/quiz-maker/quiz-maker.component';
-import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
-import { QuizMakerSidebarComponent } from './components/quiz-maker/quiz-maker-sidebar/quiz-maker-sidebar.component';
-import { QuizMakerSidebarItemComponent } from './components/quiz-maker/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
 import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
@@ -56,9 +53,7 @@ import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmak
 import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/quiz-quizmaker.component';
 import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
 import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
-import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
 import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
-import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 import { StatisticOverviewComponent } from "./screens/teacher-screens/statistic-overview/statistic-overview.component";
 import { ProfileComponent } from "./components/general-components/profile/profile.component";
@@ -66,6 +61,9 @@ import { StudentStatisticComponent } from "./screens/teacher-screens/student-sta
 import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
 import { StatisticTableComponent } from "./components/statistics/statistic-table/statistic-table.component";
 import { DateRangeFilterComponent } from "./components/statistics/date-range-filter/date-range-filter.component";
+import { QuizMakerSidebarComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
+import { QuizMakerSidebarItemComponent } from './components/quiz-maker/sidebar-item-quizmaker/sidebar-item-quizmaker.component';
+import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -82,9 +80,6 @@ import { DateRangeFilterComponent } from "./components/statistics/date-range-fil
     QuizMakerComponent,
     StatisticComponent,
     QuestionPreviewComponent,
-    QuizMakerQuestionsComponent,
-    QuizMakerSidebarComponent,
-    QuizMakerSidebarItemComponent,
     ValidatePasswordDirective,
     GameInfosComponent,
     TopThreeComponent,
@@ -111,16 +106,17 @@ import { DateRangeFilterComponent } from "./components/statistics/date-range-fil
     QuizQuizmakerComponent,
     UploadImageComponent,
     TagsQuizmakerComponent,
-    SidebarQuizmakerComponent,
     QuestionQuizmakerComponent,
-    SidebarComponent,
     DashboardComponent,
     StatisticOverviewComponent,
     ProfileComponent,
     GameStatisticComponent,
     StudentStatisticComponent,
     StatisticTableComponent,
-    DateRangeFilterComponent
+    DateRangeFilterComponent,
+    QuizMakerSidebarComponent,
+    QuizMakerSidebarItemComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

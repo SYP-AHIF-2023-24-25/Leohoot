@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { parse } from 'path';
 import { Mode } from 'src/app/model/mode';
@@ -17,6 +17,7 @@ export class QuizQuizmakerComponent {
   description: string = '';
   quiz: Quiz | undefined;
   @Input() quizId: string = "";
+  @Output() saveQuiz = new EventEmitter<void>();
 
   @Input()
   set newQuiz(value: Quiz | undefined) {
@@ -36,6 +37,16 @@ export class QuizQuizmakerComponent {
     private loginService: LoginService
   ) {
   }
+
+  ngOnChanges() {
+    if (this.quiz?.id){
+      this.saveQuiz.emit();
+    }
+  }
+  autosaveQuiz(){
+    this.saveQuiz.emit();
+  }
+
   onImageUploaded(imageName: string): void {
     if (this.quiz) {
       this.quiz.imageName = imageName;
@@ -68,7 +79,9 @@ export class QuizQuizmakerComponent {
 
   async onClose(){
     if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
-      this.configurationService.clearQuiz();
+      if (this.quiz?.id){
+        this.saveQuiz.emit();
+      }
       if (this.quizId) {
         await this.router.navigate(['/dashboard'], {queryParams: {quizId: this.quizId}});
       } else {
@@ -126,8 +139,9 @@ export class QuizQuizmakerComponent {
   playDemoMode() {
     if (this.quiz?.id) {
     const id = parseInt(this.quiz.id.toString());
+    this.saveQuiz.emit();
     this.restService.getNewGameId(id).subscribe(data => {
-      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
+      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quiz?.id } });
     });
   } else {
     alert('Please save the quiz first.');

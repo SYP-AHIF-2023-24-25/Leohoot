@@ -6,6 +6,7 @@ import { NgxCaptureService } from 'ngx-capture';
 import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { NavbarComponent } from '../../general-components/navbar/navbar.component';
 
 @Component({
   selector: 'app-question-quizmaker',
@@ -13,12 +14,11 @@ import { SignalRService } from 'src/app/services/signalr.service';
 })
 export class QuestionQuizmakerComponent {
   quiz: Quiz | undefined;
-  @Input() initQuestion: boolean = false;
-  loading: boolean = false;
+
   @ViewChild('questionScreen', { static: false }) screen: any;
 
   @Input() question: QuestionTeacher = {
-    questionText: 'New Question',
+    questionText: '',
     answerTimeInSeconds: 0,
     previewTime: 0,
     answers: [],
@@ -28,7 +28,9 @@ export class QuestionQuizmakerComponent {
     showMultipleChoice: false
   };
 
+  @Input() loading: boolean = false;
   @Input() quizId: number = -1;
+  @Input() editQuizDetails: boolean = false;
 
   @Input()
   set newQuiz(value: Quiz | undefined) {
@@ -36,22 +38,45 @@ export class QuestionQuizmakerComponent {
   }
 
   @Output() createSnapshot = new EventEmitter<void>();
-  @Output() questionChange = new EventEmitter<QuestionTeacher>();
-  @Output() addQuestion = new EventEmitter<void>();
-  @Output() questionAdded = new EventEmitter<void>();
+  @Output() questionChanged = new EventEmitter<QuestionTeacher>();
+  @Output() saveQuiz = new EventEmitter<void>();
+
+  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
+  }
 
   emitChanges() {
-    this.questionChange.emit(this.question);
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['question']) {
-      console.log('Question updated:', this.question);
-    }
+    this.questionChanged.emit(this.question);
   }
 
-  updateQuestion(newQuestion: QuestionTeacher) {
-    this.question = newQuestion;
-    this.cdr.detectChanges(); // Erzwingt das Aktualisieren des Templates
+  ngInit() {
+    this.route.queryParams.subscribe(async params => {
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = parseInt(params['quizId']);
+        
+      }
+    })
+
+  }
+  
+  async displayQuestion(data: number | QuestionTeacher){
+    if (typeof data === 'number') {
+      const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
+      if (!searchResult) {
+        alert('Question not found');
+        return
+      }
+      
+        this.restService.updateQuestion(this.quizId, searchResult).subscribe(data => {
+          console.log(data);
+        });
+        this.question = searchResult;
+        const missingAnswersCount = 4 - this.question.answers.length;
+        if (missingAnswersCount > 0) {
+          for (let i = 0; i < missingAnswersCount; i++) {
+            this.question.answers.push({ answerText: '', isCorrect: false });
+          }
+        }
+    } 
   }
 
   handleFileInput(event: any) {
@@ -84,67 +109,12 @@ export class QuestionQuizmakerComponent {
     }
   }
 
-  getImageFromServer(imageUrl: string) {
-    this.question.imageName = this.restService.getImage(imageUrl);
-  }
-
-  uploadImage(imageString: string, fileName: string) {
-    const imageBlob = this.dataURItoBlob(imageString);
-
-    const formData = new FormData();
-
-    formData.append('image', imageBlob, fileName);
-
-    return this.restService.addImage(formData);
-  }
-
-  dataURItoBlob(dataURI: string) {
-    const byteString = window.atob(dataURI.split(',')[1]);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: 'image/jpeg' });
-    return blob;
-  }
-  async createQuestionSnapshot() {
-    this.loading = true;
-    await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
-      let questionNumber = this.question.questionNumber;
-
-      if (this.question.questionNumber === 0) {
-        questionNumber = this.configurationService.getQuestions().length + 1;
-      }
-      const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
-
-      const data = await this.uploadImage(img!, fileName).toPromise();
-      this.question.snapshot = this.restService.getImage(data!);
-
-      this.loading = false;
-    });
-  }
-
-  onDeleteImage(){
-    this.question.imageName = undefined;
-    this.emitChanges();
-  }
-
-
-  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
-  }
-
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = params['quizId'];
       }
-
-      if (typeof params['questionNumber'] !== 'undefined') {
-        this.displayQuestion(Number.parseInt(params['questionNumber']));
-      } else {
-        this.initNewQuestion();
-      }
+      this.initNewQuestion();
     });
   }
 
@@ -162,50 +132,15 @@ export class QuestionQuizmakerComponent {
     for (let i = 0; i < 4; i++) {
       this.question.answers.push({answerText: '', isCorrect: false});
     }
-
-    this.initQuestion = true;
   }
 
-  async onQuestionAdd() {
-
-    console.log("xreate snapshot")
-    await this.createQuestionSnapshot();
-
-    console.log(this.question);
-    this.configurationService.addQuestion(this.question);
-    this.initQuestion = false;
-    console.log(this.configurationService.getQuestions());
-    this.questionAdded.emit();
+  onDeleteImage(){
+    this.question.imageName = undefined;
+    this.emitChanges();
   }
 
   isWhitespaceString(str: string): boolean {
     return !str.trim();
-  }
-
-  async displayQuestion(data: number | QuestionTeacher) {
-    // if (this.isMobileMenuOpen) {
-    //   this.toggleMobileMenu();
-    // }
-
-    if (typeof data === 'number') {
-      const searchResult = this.configurationService.getQuestions().find(question => question.questionNumber === data);
-      if (!searchResult) {
-        alert('Question not found');
-        return
-      }
-      this.question = searchResult;
-    } else {
-      if (this.initQuestion === false || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
-        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
-        && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
-          await this.createSnapshot.emit();
-
-          this.question = data as QuestionTeacher;
-          this.initQuestion = false;
-        } else {
-          alert('Please fill in all necessary fields and save the question.');
-        }
-    }
   }
 
   arrayEqual(a: any[], b: any[]): boolean {
@@ -233,4 +168,86 @@ export class QuestionQuizmakerComponent {
   truncateText(text: string, maxLength: number): string {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
+  
+  async onQuestionAdd() {
+    this.loading = true;
+    await this.createQuestionSnapshot();
+
+    if (this.quiz) {
+      this.question.questionNumber = this.quiz.questions.length + 1;
+      this.quiz.questions.push(this.question);
+      this.emitChanges();
+      this.saveQuiz.emit();
+    }
+    this.loading = false;
+  }
+
+  validateQuestion(): boolean {
+    if (
+      (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) &&
+      this.question.answers.every(answer => answer.answerText === undefined || answer.answerText === '' || this.isWhitespaceString(answer.answerText))
+    ) {
+      return true;
+    }
+
+    if (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) {
+      return false;
+    }
+
+    for (let i = 0; i < 2; i++) {
+      const answer = this.question.answers[i];
+      if (answer.answerText === undefined || answer.answerText === '' || this.isWhitespaceString(answer.answerText)) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  getImageFromServer(imageUrl: string) {
+    this.question.imageName = this.restService.getImage(imageUrl);
+  }
+
+  uploadImage(imageString: string, fileName: string) {
+    const imageBlob = this.dataURItoBlob(imageString);
+
+    const formData = new FormData();
+
+    formData.append('image', imageBlob, fileName);
+
+    return this.restService.addImage(formData);
+  }
+
+  dataURItoBlob(dataURI: string) {
+    const byteString = window.atob(dataURI.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
+  }
+
+  async createQuestionSnapshot() {
+    this.loading = true;
+    await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
+      let questionNumber = this.question.questionNumber;
+
+      if (this.question.questionNumber === 0) {
+        questionNumber = this.quiz!.questions.length + 1;
+      }
+      const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
+
+      const data = await this.uploadImage(img!, fileName).toPromise();
+      const existingQuestion = this.quiz?.questions.find(q => q.questionNumber === this.question.questionNumber);
+      if (existingQuestion) {
+        existingQuestion.snapshot = this.restService.getImage(data!);
+      } else {
+        this.question.snapshot = this.restService.getImage(data!);
+      }
+    });
+    this.loading = false;
+  }
+  
 }

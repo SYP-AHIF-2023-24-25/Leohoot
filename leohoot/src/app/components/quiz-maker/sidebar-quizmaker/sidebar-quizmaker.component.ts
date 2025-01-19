@@ -9,20 +9,17 @@ import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
-  selector: 'app-sidebar-quizmaker',
+  selector: 'app-quiz-maker-sidebar',
   templateUrl: './sidebar-quizmaker.component.html',
   styleUrls: ['./sidebar-quizmaker.component.css']
 })
-export class SidebarQuizmakerComponent {
+export class QuizMakerSidebarComponent {
   @Input() quizTitle: string | undefined;
-  @Input() initQuestion: boolean | undefined;
-  @Input() editMode: boolean = false;
 
-  @Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
   @Output() onDisplay = new EventEmitter<number>();
+  @Output() onDeleteQuestion = new EventEmitter<number>();
 
-  //existingQuestions: QuestionTeacher[] = [];
   quiz: Quiz | undefined;
 
   @Input() quizId: number | undefined;
@@ -33,17 +30,9 @@ export class SidebarQuizmakerComponent {
   }
 
   @Output() close = new EventEmitter<void>();
-
   @Output() saveQuiz = new EventEmitter<string>();
-  @Output() changeEditMode = new EventEmitter<string>();
 
-  existingQuestions: QuestionTeacher[] = [];
-  
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
-  }
-
-  ngOnInit() {
-    this.refetchQuestions();
   }
 
   leaveQuizmaker() {
@@ -51,27 +40,16 @@ export class SidebarQuizmakerComponent {
   }
 
   drop(event: CdkDragDrop<QuestionTeacher[]>) {
-    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
-    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
-    this.refetchQuestions();
-  }
-
-
-  refetchQuestions() {
-    this.existingQuestions = this.configurationService.getQuestions();
+    if (this.quiz?.questions) {
+      moveItemInArray(this.quiz.questions, event.previousIndex, event.currentIndex);
+      this.quiz?.questions.forEach((question, index) => {
+        question.questionNumber = index + 1; 
+      });
+    }
   }
   
   createQuestion(){
-    //quiz not saved to db yet
-    if(this.quizId === -1 && this.editMode === false){
-      console.log('quiz not saved to db yet');
-      this.changeEditMode.emit('addQuestion');
-      this.saveQuiz.emit('saveQuiz');
-      return;
-    } else if (this.editMode === false){
-      this.changeEditMode.emit('addQuestion');
-    }
-    this.onCreate.emit();
+    this.onInitNewQuestion.emit();
   }
 
   onQuestionSelect(question: QuestionTeacher) {
@@ -79,19 +57,6 @@ export class SidebarQuizmakerComponent {
   }
   
   onQuestionDelete(id: number) {
-    if (this.initQuestion === true){
-      alert('Save the question first before deleting one.');
-      return;
-    }
-
-    this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();
-    
-    if (this.existingQuestions.length == 0){
-      this.onInitNewQuestion.emit();
-    } else {
-      let index = id > 2 ? id - 2 : 0;
-      this.onQuestionSelect(this.existingQuestions[index]);
-    }
+    this.onDeleteQuestion.emit(id);
   }
 }

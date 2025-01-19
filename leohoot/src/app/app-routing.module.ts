@@ -16,7 +16,6 @@ import {
 import {QuizMakerComponent} from './screens/teacher-screens/quiz-maker/quiz-maker.component';
 import {StatisticComponent} from './screens/teacher-screens/statistic/statistic.component';
 import {QuestionPreviewComponent} from './screens/teacher-screens/question-preview/question-preview.component';
-import { QuizMakerQuestionsComponent } from './components/quiz-maker/quiz-maker-questions/quiz-maker-questions.component';
 import { AuthGuard } from './model/auth-guard';
 import { Role } from './model/leo-token';
 
@@ -65,13 +64,6 @@ export const routes: Routes = [
   {
     path: 'quizMaker',
     component: QuizMakerComponent,
-    canActivate: [AuthGuard], data: {
-      roles: [Role.Teacher]
-    }
-  },
-  {
-    path: 'quizMakerQuestions',
-    component: QuizMakerQuestionsComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Teacher]
     }
