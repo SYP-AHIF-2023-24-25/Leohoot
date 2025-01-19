@@ -93,10 +93,12 @@ export class QuizMakerComponent {
       if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
       || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
         || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
+        this.saveQuiz();
         await this.router.navigate(['/dashboard']);
       }
     }
   }
+
   updateQuestion(updatedQuestion: QuestionTeacher) {
     this.question = updatedQuestion;
     console.log('Current question updated:', this.question);
