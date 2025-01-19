@@ -65,6 +65,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+
 GameController.HubContext = app.Services.GetRequiredService<IHubContext<LeohootHub>>();
 
 app.UseHttpsRedirection();
