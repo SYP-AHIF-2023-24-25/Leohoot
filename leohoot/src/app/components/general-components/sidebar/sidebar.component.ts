@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Output } from '@angular/core';
+import { DashboardSectionType } from "../../../model/dashboard-section-type";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -9,34 +11,27 @@ import { Output } from '@angular/core';
 })
 export class SidebarComponent {
   selectedItem: string = '';
-
-  @Output() home = new EventEmitter<void>();
-  @Output() ownQuizzes = new EventEmitter<void>();
-  @Output() favorites = new EventEmitter<void>();
-
   @Input() toggleSidebar?: () => void;
 
-  ngInit(){
-    this.selectedItem = "home";
+  constructor(private router: Router) {
   }
 
-  toggleHome(): void {
-    this.selectedItem = "home";
-    this.home.emit();
+  async toggleHome(): Promise<void> {
+    await this.router.navigate(['/dashboard'], { queryParams: {section: DashboardSectionType.HOME}});
+    this.selectItem("home")
   }
 
-  toggleOwnQuizzes(): void {
-    this.selectedItem = "ownQuizzes";
-    this.ownQuizzes.emit();
+  async toggleOwnQuizzes(): Promise<void> {
+    await this.router.navigate(['/dashboard'], { queryParams: {section: DashboardSectionType.OWN}});
+    this.selectItem("own")
   }
 
-  // toggleFavorites(): void {
-  //   this.favorites.emit();
-  // }
+  async toggleStatistics(): Promise<void> {
+    await this.router.navigate(['/statisticOverview'])
+    this.selectItem("statistics")
+  }
 
   selectItem(item: string): void {
-    console.log(this.toggleSidebar, "sidebar")
     this.selectedItem = item;
   }
-
 }

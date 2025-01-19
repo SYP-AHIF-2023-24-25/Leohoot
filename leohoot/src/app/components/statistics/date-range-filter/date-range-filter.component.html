@@ -1,0 +1,38 @@
+<div class="flex flex-col space-y-4 pb-5 w-full">
+  <div class="flex items-center space-x-4">
+    <div class="flex flex-col space-y-2">
+      <label for="startDate" class="text-sm font-medium text-white">Start Date</label>
+      <input
+        type="date"
+        id="startDate"
+        name="startDate"
+        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+        [(ngModel)]="startDate"
+        (change)="onFilterChanged && onFilterChanged(quizName, startDate, endDate)"
+      />
+    </div>
+    <div class="flex flex-col space-y-2">
+      <label for="endDate" class="text-sm font-medium text-white">End Date</label>
+      <input
+        type="date"
+        id="endDate"
+        name="endDate"
+        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+        [(ngModel)]="endDate"
+        (change)="onFilterChanged && onFilterChanged(quizName, startDate, endDate)"
+      />
+    </div>
+    <div class="flex flex-col space-y-2 w-full">
+      <label for="startDate" class="text-sm font-medium text-white">Quiz Name</label>
+      <input
+        type="text"
+        id="quizName"
+        name="quizName"
+        class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+        placeholder="Quiz Name"
+        [(ngModel)]="quizName"
+        (input)="onFilterChanged && onFilterChanged(quizName, startDate, endDate)"
+      />
+    </div>
+  </div>
+</div>

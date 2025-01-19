@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApexChart, ApexNonAxisChartSeries, ApexResponsive, ChartComponent } from 'ng-apexcharts';
 import { Statistic } from 'src/app/model/statistic';
 import { RestService } from 'src/app/services/rest.service';
-import { SignalRService } from 'src/app/services/signalr.service';
-import { Chart} from "../../../model/chart";
 
 
 @Component({
@@ -20,10 +17,11 @@ export class StatisticComponent {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
-        this.restservice.getGameStatistics(this.gameId).subscribe((data) => {
+        this.restservice.getStatisticOfGame(this.gameId).subscribe((data) => {
           console.log(data.questionAnswers, "data")
           this.statistic = data;
         });
+        this.restservice.postStatistics(this.gameId).subscribe((data) => {})
       }
     });
   }

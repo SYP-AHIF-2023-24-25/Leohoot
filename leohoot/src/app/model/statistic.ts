@@ -5,6 +5,6 @@ export interface Statistic {
     quizName: string;
     topThreePlayers: Player[];
     questionAnswers: { [key: number]: boolean[] };
-    questionTexts: QuestionTeacher[];
+    questionTexts: string[];
     playerCount: number;
 }

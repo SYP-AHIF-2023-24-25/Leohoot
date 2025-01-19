@@ -59,7 +59,7 @@ public class Repository
     public CountsDto AddAnswerToGame(int gameId, string username, bool[] answers)
     {
         var game = _games.Find(g => g.GameId == gameId) ?? throw new Exception("Game not found");
-        game.AddAnswer(game.GameId, answers, username);
+        game.AddAnswer(answers, username);
         return new CountsDto(game.AnswerCount, game.PlayerCount == game.AnswerCount);
     }
 

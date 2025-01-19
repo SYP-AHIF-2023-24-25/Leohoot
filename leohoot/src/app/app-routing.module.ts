@@ -23,6 +23,9 @@ import { Role } from './model/leo-token';
 import { ResultViewComponent } from './screens/student-screens/result-view/result-view.component';
 import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-page/quiz-detail-page.component";
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
+import { StatisticOverviewComponent } from "./screens/teacher-screens/statistic-overview/statistic-overview.component";
+import { StudentStatisticComponent } from "./screens/teacher-screens/student-statistic/student-statistic.component";
+import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -90,6 +93,27 @@ export const routes: Routes = [
   {
     path: 'quizDetails',
     component: QuizDetailPageComponent,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
+  },
+  {
+    path: 'statisticOverview',
+    component: StatisticOverviewComponent,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
+  },
+  {
+    path: 'gameStatistics',
+    component: GameStatisticComponent,
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
+  },
+  {
+    path: 'studentStatistics',
+    component: StudentStatisticComponent,
     canActivate: [AuthGuard], data: {
       roles: [Role.Teacher]
     }

@@ -8,4 +8,5 @@ public interface IUnitOfWork : IBaseUnitOfWork
     IUserRepository Users { get; }
     IImageRepository Images { get; }
     ITagRepository Tags { get; }
+    IStatisticRepository Statistics { get; }
 }

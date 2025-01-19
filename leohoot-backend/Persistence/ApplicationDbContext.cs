@@ -20,6 +20,9 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Image> Images { get; init;}
 
     public DbSet<Tag> Tags { get; init; }
+    public DbSet<Statistic> Statistics { get; set; }
+    public DbSet<StatisticQuestion> StatisticQuestions { get; set; }
+    public DbSet<StatisticAnswers> StatisticAnswers { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {

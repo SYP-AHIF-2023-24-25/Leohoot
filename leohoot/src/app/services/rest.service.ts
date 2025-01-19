@@ -13,6 +13,8 @@ import { AuthResponse } from '../model/auth-response';
 import { User } from '../model/user';
 import { Tag } from '../model/tag';
 import { PlayerResult } from '../model/player-result';
+import { StatisticOverview } from "../model/statistic-overview";
+import { StatisticDetails } from "../model/statistic-details";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +45,7 @@ export class RestService {
     return this.httpClient.get<Ranking>(`${RestService.apiUrl}games/${gameId}/ranking`);
   }
 
-  getGameStatistics(gameId: number): Observable<Statistic> {
+  getStatisticOfGame(gameId: number): Observable<Statistic> {
     return this.httpClient.get<Statistic>(`${RestService.apiUrl}games/${gameId}/statistic`);
   }
 
@@ -139,5 +141,21 @@ export class RestService {
 
   getUser(username: string): Observable<User> {
     return this.httpClient.get<User>(`${RestService.apiUrl}users/${username}`);
+  }
+
+  postStatistics(gameId: number): Observable<Object> {
+    return this.httpClient.post(`${RestService.apiUrl}games/${gameId}/statistic`, {});
+  }
+
+  getStatisticsForOverview(): Observable<StatisticOverview[]> {
+    return this.httpClient.get<StatisticOverview[]>(`${RestService.apiUrl}statistics`)
+  }
+
+  getStatisticDetails(statisticId: number): Observable<StatisticDetails> {
+    return this.httpClient.get<StatisticDetails>(`${RestService.apiUrl}statistics/${statisticId}`);
+  }
+
+  getGameStatistics(statisticId: number): Observable<Statistic> {
+    return this.httpClient.get<Statistic>(`${RestService.apiUrl}statistics/${statisticId}/game`);
   }
 }

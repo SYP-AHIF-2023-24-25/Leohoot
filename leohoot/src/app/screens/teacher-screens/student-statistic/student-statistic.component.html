@@ -1,0 +1,52 @@
+
+<div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
+
+  <app-sidebar class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"/>
+  <app-sidebar
+    *ngIf="isSidebarVisible && !screenIsLarge"
+    class="w-1/2 bg-white fixed lg:relative z-50"
+    [toggleSidebar]="toggleSidebar.bind(this)">
+  </app-sidebar>
+
+  <div class="flex flex-col flex-1">
+    <div class="flex items-center justify-between bg-background-blue-dark p-4 text-white h-16">
+      <div class="lg:hidden flex items-center pr-4">
+        <button (click)="toggleSidebar()" class="text-white">
+          <span class="material-icons text-3xl">menu</span>
+        </button>
+      </div>
+      <div class="flex items-center flex-grow mr-4">
+        <div class="text-xl font-bold">{{statistic.quizName}}</div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="material-icons">download</span>
+        <div class="w-px h-6 bg-white"></div>
+        <app-profile/>
+      </div>
+    </div>
+    <div *ngIf="statistic" class="p-4 sm:p-6">
+      <div *ngFor="let user of statistic.users" class="bg-white rounded-lg mb-5" (click)="toggleOnOpen(user)">
+        <div class="text-lg p-3 flex items-center">
+          <span *ngIf="!user.isOpen" class="material-icons text-3xl">arrow_drop_down</span>
+          <span *ngIf="user.isOpen" class="material-icons text-3xl">arrow_drop_up</span>
+          <span class="font-bold ml-2">{{ user.username }}</span>
+          <div class="ml-auto">{{user.correctAnswers}}/{{user.quizLength}}</div>
+        </div>
+
+        <div *ngIf="user.isOpen" class="px-4 pb-4">
+          <div *ngFor="let question of user.questions">
+            <div class="text-base pb-1 pt-3 font-bold">{{question.questionText}}</div>
+            <div class="grid grid-cols-2">
+              <div *ngFor="let answer of question.answers; index as i" class="p-3 text-white {{!answer.isCorrect ? 'bg-gray-400' : colors[i]}} rounded-md m-1 flex items-center justify-between">
+                <div class="font-bold">{{answer.answerText}}</div>
+                <img *ngIf="answer.isCorrect && answer.isTicked" src="../../../../assets/images/checked-filled-white.png" alt="correct answer" class="w-5 h-5">
+                <img *ngIf="!answer.isCorrect && answer.isTicked" src="../../../../assets/images/cross-filled-white.png" alt="correct answer" class="w-5 h-5">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

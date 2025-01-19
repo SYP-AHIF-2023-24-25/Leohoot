@@ -34,7 +34,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GameInfosComponent } from "./components/waitingroom/game-infos/game-infos.component";
 import { TopThreeComponent } from "./components/statistics/top-three/top-three.component";
 import { HeaderComponent } from "./components/general-components/header/header.component";
-import { StatisticOverviewComponent } from "./components/statistics/statistic-overview/statistic-overview.component";
 import { ButtonComponent } from "./components/general-components/button/button.component";
 import { RankingListComponent } from "./components/ranking/ranking-list/ranking-list.component";
 import { FooterComponent } from "./components/general-components/footer/footer.component";
@@ -61,6 +60,12 @@ import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizm
 import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
+import { StatisticOverviewComponent } from "./screens/teacher-screens/statistic-overview/statistic-overview.component";
+import { ProfileComponent } from "./components/general-components/profile/profile.component";
+import { StudentStatisticComponent } from "./screens/teacher-screens/student-statistic/student-statistic.component";
+import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
+import { StatisticTableComponent } from "./components/statistics/statistic-table/statistic-table.component";
+import { DateRangeFilterComponent } from "./components/statistics/date-range-filter/date-range-filter.component";
 
 @NgModule({
   declarations: [
@@ -109,7 +114,13 @@ import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboar
     SidebarQuizmakerComponent,
     QuestionQuizmakerComponent,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    StatisticOverviewComponent,
+    ProfileComponent,
+    GameStatisticComponent,
+    StudentStatisticComponent,
+    StatisticTableComponent,
+    DateRangeFilterComponent
   ],
   imports: [
     BrowserModule,

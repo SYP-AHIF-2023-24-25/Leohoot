@@ -1,15 +1,11 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Api.Hubs;
-using Persistence;
 using Core;
 using Core.Contracts;
 using Core.DataTransferObjects;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 namespace Api.Controllers;
 
@@ -41,6 +37,7 @@ public class GameController : Controller
         var game = Repository.GetInstance().GetGameById(gameId);
         if (game == null)
         {
+            
             return Results.NotFound("Game not found");
         }
         return Results.Ok(game.Quiz.Id);
@@ -75,19 +72,35 @@ public class GameController : Controller
         {
             return Results.NotFound("Game not found");
         }
-        var questionAnswers = game.Statistic.QuestionAnswers.ToDictionary(q => q.Key, q => q.Value.AllAnswers);
+
+        var questionAnswers = game.Statistic.Questions
+            .ToDictionary(
+                q => q.QuestionNumber, 
+                q => q.Answers
+                    .SelectMany(a => a.UserNames.Select(u => new {Username = u, IsCorrect = a.IsCorrect}))
+                    .GroupBy(a => a.Username)
+                    .Select(g => g.All(a => a.IsCorrect))
+                    .ToList());
         var topThreePlayers = game.GetRanking(3);
-        QuestionDto[] questions = game.Quiz.Questions.Select(q => new QuestionDto(
-            q.QuestionNumber, 
-            q.QuestionText, 
-            q.AnswerTimeInSeconds, 
-            q.Answers.Select(a => new AnswerDto(a.AnswerText, a.IsCorrect)).ToList(), 
-            q.ImageName, 
-            q.PreviewTime,
-            q.Snapshot,
-            q.ShowMultipleChoice
-            )).ToArray();
-        return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questions, game.PlayerCount));
+        List<string> questionTexts = game.Quiz.Questions
+            .Select(q => q.QuestionText)
+            .ToList();
+        return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questionTexts, game.PlayerCount));
+    }
+    
+    [Authorize]
+    [HttpPost("{gameId:int}/statistic")]
+    public async Task<IResult> PostStatisticsOfGame(int gameId)
+    {
+        var game = Repository.GetInstance().GetGameById(gameId);
+        if (game != null)
+        {
+            game.Statistic.EndTime = DateTime.Now;
+            await _unitOfWork.Statistics.AddAsync(game.Statistic);
+            await _unitOfWork.SaveChangesAsync();
+            return Results.Ok();
+        }
+        return Results.NotFound("Game not found");
     }
 
     [AllowAnonymous]
@@ -142,7 +155,10 @@ public class GameController : Controller
         var game = Repository.GetInstance().GetGameById(gameId);
         try
         {
-            var answers = game?.Statistic.QuestionAnswers[game.CurrentQuestion.QuestionNumber].CountPerAnswer;
+            var answers = game?.Statistic.Questions
+                .Single(q => q.QuestionNumber == game.CurrentQuestion.QuestionNumber).Answers
+                .Select(a => a.UserNames.Count())
+                .ToList();
             return Results.Ok(answers);
         }
         catch
@@ -201,7 +217,6 @@ public class GameController : Controller
         }
 
         game.CurrentQuestion = nextQuestion!;
-        await _unitOfWork.SaveChangesAsync();
             
         return Results.Ok(nextQuestion);
     }
