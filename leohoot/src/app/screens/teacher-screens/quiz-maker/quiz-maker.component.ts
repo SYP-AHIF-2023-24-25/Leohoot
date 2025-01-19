@@ -32,6 +32,7 @@ export class QuizMakerComponent {
     imageName: "",
     tags: []
   };
+  
   username: string = "";
   editQuizDetails: boolean = true;
   loading: boolean = false;
