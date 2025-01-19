@@ -15,7 +15,6 @@ import { NavbarComponent } from '../../general-components/navbar/navbar.componen
 export class QuestionQuizmakerComponent {
   quiz: Quiz | undefined;
 
-  loading: boolean = false;
   @ViewChild('questionScreen', { static: false }) screen: any;
 
   @Input() question: QuestionTeacher = {
@@ -29,8 +28,9 @@ export class QuestionQuizmakerComponent {
     showMultipleChoice: false
   };
 
+  @Input() loading: boolean = false;
   @Input() quizId: number = -1;
-  @Input() navQuestion: QuestionTeacher | undefined;
+  @Input() editQuizDetails: boolean = false;
 
   @Input()
   set newQuiz(value: Quiz | undefined) {
@@ -39,11 +39,9 @@ export class QuestionQuizmakerComponent {
 
   @Output() createSnapshot = new EventEmitter<void>();
   @Output() questionChanged = new EventEmitter<QuestionTeacher>();
-  //@Output() addQuestion = new EventEmitter<void>();
-  //@Output() questionAdded = new EventEmitter<void>();
+  @Output() saveQuiz = new EventEmitter<void>();
 
   constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
-    
   }
 
   emitChanges() {
@@ -52,16 +50,26 @@ export class QuestionQuizmakerComponent {
 
   ngInit() {
     
-    if (this.navQuestion) {
-      console.log('navQuestion:', this.navQuestion);
-      this.question = this.navQuestion;
-    }
   }
 
-  // updateQuestion(newQuestion: QuestionTeacher) {
-  //   this.question = newQuestion;
-  //   this.cdr.detectChanges(); // Erzwingt das Aktualisieren des Templates
-  // }
+  
+  async displayQuestion(data: number | QuestionTeacher){
+    if (typeof data === 'number') {
+      const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
+      if (!searchResult) {
+        alert('Question not found');
+        return
+      }
+        //this.saveQuiz.emit();
+        this.question = searchResult;
+        const missingAnswersCount = 4 - this.question.answers.length;
+        if (missingAnswersCount > 0) {
+          for (let i = 0; i < missingAnswersCount; i++) {
+            this.question.answers.push({ answerText: '', isCorrect: false });
+          }
+        }
+    } 
+  }
 
   handleFileInput(event: any) {
     const files = event?.target?.files;
@@ -99,14 +107,7 @@ export class QuestionQuizmakerComponent {
         this.quizId = params['quizId'];
       }
       this.initNewQuestion();
-      
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['question']) {
-      console.log('Question changed:', typeof(changes['question'].currentValue));
-    }
   }
 
   initNewQuestion() {
@@ -161,13 +162,16 @@ export class QuestionQuizmakerComponent {
   }
   
   async onQuestionAdd() {
+    this.loading = true;
     await this.createQuestionSnapshot();
 
     if (this.quiz) {
       this.question.questionNumber = this.quiz.questions.length + 1;
       this.quiz.questions.push(this.question);
       this.emitChanges();
+      this.saveQuiz.emit();
     }
+    this.loading = false;
   }
 
   validateQuestion(): boolean {
@@ -234,9 +238,8 @@ export class QuestionQuizmakerComponent {
       } else {
         this.question.snapshot = this.restService.getImage(data!);
       }
-
-      this.loading = false;
     });
+    this.loading = false;
   }
   
 }

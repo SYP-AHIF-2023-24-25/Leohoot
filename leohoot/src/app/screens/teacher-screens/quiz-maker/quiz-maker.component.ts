@@ -12,6 +12,7 @@ import { LoginService } from 'src/app/services/auth.service';
 import { Tag } from 'src/app/model/tag';
 import { NgxCaptureService } from 'ngx-capture';
 import { QuizMakerSidebarComponent } from 'src/app/components/quiz-maker/quiz-maker-sidebar/quiz-maker-sidebar.component';
+import { QuestionQuizmakerComponent } from 'src/app/components/quiz-maker/question-quizmaker/question-quizmaker.component';
 
 interface ListItems {
   tag: Tag;
@@ -32,11 +33,10 @@ export class QuizMakerComponent {
     imageName: "",
     tags: []
   };
-  
+
   username: string = "";
   editQuizDetails: boolean = true;
   loading: boolean = false;
-  initQuestion: boolean = false;
 
   question: QuestionTeacher = {
     questionText: '',
@@ -50,10 +50,8 @@ export class QuizMakerComponent {
   };
 
   navQuestion: QuestionTeacher | undefined;
-  
-  @ViewChild('questionScreen', { static: false }) screen: any;
+  @ViewChild(QuestionQuizmakerComponent) questionQuizmakerComponent: QuestionQuizmakerComponent | undefined;
   @ViewChild(QuizMakerSidebarComponent) sidebarComponent!: QuizMakerSidebarComponent;
-
 
   constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService, private cdr: ChangeDetectorRef) {
 
@@ -88,46 +86,51 @@ export class QuizMakerComponent {
 
   async close(){
     if (confirm("Are you sure you want to leave?")) {
-      await this.router.navigate(['/dashboard']);
+      if (this.quizId === -1){
+        confirm('Quiz not saved. All changes will be lost.');
+        await this.router.navigate(['/dashboard']);
+      }
+      if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
+      || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
+        || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
+        await this.router.navigate(['/dashboard']);
+      }
     }
   }
-
   updateQuestion(updatedQuestion: QuestionTeacher) {
     this.question = updatedQuestion;
     console.log('Current question updated:', this.question);
   }
 
+  // autosave() {
+  //   this.saveQuiz();
+  // }
+
   saveQuiz() {
-   //TODO TAGS
-   console.log("add quiz");
-    
     this.quiz!.questions =  this.quiz!.questions.map(question => ({
       ...question,
       answers: question.answers.filter(answer => answer.answerText !== '')
     }));
-
+    
     if (this.quizId === -1){
       this.restService.addQuiz(this.quiz!).subscribe(data => {
         this.quizId = data;
-       
-        //alert('Quiz saved successfully.');
       });
     } else {
       this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
-        console.log(data);
+       
       });
-      //alert('Quiz updated successfully.');
     }
   }
 
   changeEditMode(){
-    if (this.editQuizDetails === false && this.validateQuestion() && this.question.questionNumber !== 0){
+    if (this.editQuizDetails === false && this.validateQuestion() && this.question.questionNumber !== 0 ||this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === ''){
       this.editQuizDetails = true;
-      //this.saveQuiz();
+      this.saveQuiz();
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
       alert('Please fill in all necessary fields.');
       return;
-    } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion()){
+    } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false){
       alert('Please fill in all necessary fields and add the question first.');
       return;
     }
@@ -158,7 +161,6 @@ export class QuizMakerComponent {
   initNewQuestion() {
     if (this.editQuizDetails){
       this.saveQuiz();
-
       this.editQuizDetails = !this.editQuizDetails;
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion()){
        this.quiz.questions.find(question => question.questionNumber === this.question.questionNumber) ? this.updateQuestion(this.question) : this.quiz.questions.push(this.question);
@@ -187,6 +189,10 @@ export class QuizMakerComponent {
   }
 
   deleteQuestion(id: number){
+    if (this.question.questionNumber === 0 && this.validateQuestion() == false){
+      alert('Please fill in all necessary fields and add the question first before deleting another question.');
+      return;
+    }
       if (this.quiz.questions.length === 1 && this.quiz.questions[0].questionNumber === id) {
         this.quiz.questions = [];
         this.initNewQuestion();
@@ -196,7 +202,7 @@ export class QuizMakerComponent {
       this.quiz.questions.forEach((question, index) => {
         question.questionNumber = index + 1;
       });
-      console.log(this.quiz.questions);
+      this.saveQuiz();
 
       if (this.quiz?.questions.length == 0){
         this.initNewQuestion();
@@ -207,7 +213,7 @@ export class QuizMakerComponent {
     }
   
 
-  displayQuestion(data: number | QuestionTeacher){
+  async displayQuestion(data: number | QuestionTeacher){
     if (typeof data === 'number') {
       const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
@@ -216,8 +222,10 @@ export class QuizMakerComponent {
       }
 
       if (this.editQuizDetails || (this.question.questionNumber !== 0 && this.validateQuestion()) || (this.question.questionNumber === 0 && this.validateQuestion())){
-        // await this.createQuestionSnapshot();
+        this.loading = true;
+        await this.createQuestionSnapshot();
         this.question = searchResult;
+        
         const missingAnswersCount = 4 - this.question.answers.length;
         if (missingAnswersCount > 0) {
           for (let i = 0; i < missingAnswersCount; i++) {
@@ -229,8 +237,13 @@ export class QuizMakerComponent {
           this.editQuizDetails = false;
         }
 
-        this.question = searchResult as QuestionTeacher;
-        this.cdr.detectChanges();
+        if (!this.questionQuizmakerComponent) {
+          this.cdr.detectChanges();
+          this.questionQuizmakerComponent = this.questionQuizmakerComponent || this.questionQuizmakerComponent;
+        } 
+        this.loading = false;
+        this.questionQuizmakerComponent?.displayQuestion(data);
+        
       } else if (this.question.questionNumber !== 0 && this.validateQuestion() == false){
         alert('Please fill in all necessary fields');
       } else if (this.question.questionNumber === 0 && this.validateQuestion() == false){
@@ -238,51 +251,9 @@ export class QuizMakerComponent {
       }
     } 
   }
-  async createQuestionSnapshot() {
-    //this.loading = true;
-    await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
-      let questionNumber = this.question.questionNumber;
-
-      if (this.question.questionNumber === 0) {
-        questionNumber = this.quiz!.questions.length + 1;
-      }
-      const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
-
-      const data = await this.uploadImage(img!, fileName).toPromise();
-      console.log(data);
-      const existingQuestion = this.quiz?.questions.find(q => q.questionNumber === this.question.questionNumber);
-      if (existingQuestion) {
-        existingQuestion.snapshot = this.restService.getImage(data!);
-      } else {
-        this.question.snapshot = this.restService.getImage(data!);
-      }
-
-      //this.loading = false;
-    });
+  async createQuestionSnapshot() { 
+    await this.questionQuizmakerComponent?.createQuestionSnapshot();
   }
-
-  
-  dataURItoBlob(dataURI: string) {
-    const byteString = window.atob(dataURI.split(',')[1]);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: 'image/jpeg' });
-    return blob;
-  }
-
-  uploadImage(imageString: string, fileName: string) {
-    const imageBlob = this.dataURItoBlob(imageString);
-
-    const formData = new FormData();
-
-    formData.append('image', imageBlob, fileName);
-
-    return this.restService.addImage(formData);
-  }
-
 
   isWhitespaceString(str: string): boolean {
     return !str.trim();

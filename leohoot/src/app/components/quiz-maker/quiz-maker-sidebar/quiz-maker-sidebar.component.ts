@@ -15,14 +15,11 @@ import { SignalRService } from 'src/app/services/signalr.service';
 })
 export class QuizMakerSidebarComponent {
   @Input() quizTitle: string | undefined;
-  @Input() initQuestion: boolean | undefined;
 
-  //@Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
   @Output() onDisplay = new EventEmitter<number>();
   @Output() onDeleteQuestion = new EventEmitter<number>();
 
-  //existingQuestions: QuestionTeacher[] = [];
   quiz: Quiz | undefined;
 
   @Input() quizId: number | undefined;
@@ -34,7 +31,6 @@ export class QuizMakerSidebarComponent {
 
   @Output() close = new EventEmitter<void>();
   @Output() saveQuiz = new EventEmitter<string>();
-  //@Output() changeEditMode = new EventEmitter<string>();
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
   }
@@ -53,15 +49,6 @@ export class QuizMakerSidebarComponent {
   }
   
   createQuestion(){
-    // //quiz not saved to db yet
-    // if(this.quizId === -1 && this.editMode === false){
-    //   console.log('quiz not saved to db yet');
-    //   //this.changeEditMode.emit('initNewQuestion');
-    //   this.saveQuiz.emit('saveQuiz');
-    //   return;
-    // } else if (this.editMode === false){
-    //   //this.changeEditMode.emit('initNewQuestion');
-    // }
     this.onInitNewQuestion.emit();
   }
 
