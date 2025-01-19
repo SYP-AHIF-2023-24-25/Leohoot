@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { get } from 'jquery';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
@@ -47,12 +47,14 @@ export class QuizMakerComponent {
     snapshot: undefined,
     showMultipleChoice: false
   };
+
+  navQuestion: QuestionTeacher | undefined;
   
   @ViewChild('questionScreen', { static: false }) screen: any;
   @ViewChild(QuizMakerSidebarComponent) sidebarComponent!: QuizMakerSidebarComponent;
 
 
-  constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService) {
+  constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService, private cdr: ChangeDetectorRef) {
 
   }
 
@@ -64,7 +66,7 @@ export class QuizMakerComponent {
         await this.getQuiz()
       }
     })
-    
+
     this.username = this.loginService.getUserName()
   }
 
@@ -166,7 +168,7 @@ export class QuizMakerComponent {
       alert('Please fill in all necessary fields and add the question first.');
       return;
     }
-    
+
     this.question = {
       questionText: '',
       answerTimeInSeconds: 15,
@@ -204,22 +206,36 @@ export class QuizMakerComponent {
     }
   
 
-  async displayQuestion(data: number | QuestionTeacher){
+  displayQuestion(data: number | QuestionTeacher){
     if (typeof data === 'number') {
       const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
         alert('Question not found');
         return
       }
-      if (this.question.questionNumber !== 0 && this.validateQuestion() || this.question.questionNumber === 0 && this.validateQuestion()){
-       // await this.createQuestionSnapshot();
+
+      if (this.editQuizDetails || (this.question.questionNumber !== 0 && this.validateQuestion()) || (this.question.questionNumber === 0 && this.validateQuestion())){
+        // await this.createQuestionSnapshot();
         this.question = searchResult;
+        const missingAnswersCount = 4 - this.question.answers.length;
+        if (missingAnswersCount > 0) {
+          for (let i = 0; i < missingAnswersCount; i++) {
+            this.question.answers.push({ answerText: '', isCorrect: false });
+          }
+        }
+
+        if(this.editQuizDetails){
+          this.editQuizDetails = false;
+        }
+
+        this.question = searchResult as QuestionTeacher;
+        this.cdr.detectChanges();
       } else if (this.question.questionNumber !== 0 && this.validateQuestion() == false){
         alert('Please fill in all necessary fields');
       } else if (this.question.questionNumber === 0 && this.validateQuestion() == false){
         alert('Please fill in all necessary fields and add the question first.');
       }
-    }
+    } 
   }
   async createQuestionSnapshot() {
     //this.loading = true;

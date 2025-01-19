@@ -5,7 +5,7 @@
   <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
     <app-header-quizmaker [username]="username" [quiz]="quiz" [question]="question" [editMode]="editQuizDetails" [quizId]="quizId" (changeEditMode)="changeEditMode()"/> <!--editmode-->
     <app-quiz-quizmaker *ngIf="editQuizDetails" [newQuiz]="quiz" />
-    <app-question-quizmaker #questionScreen *ngIf="!editQuizDetails" [newQuiz]="quiz" [quizId]="quizId" [question]="question" (questionChanged)="updateQuestion($event)"></app-question-quizmaker>
+    <app-question-quizmaker #questionScreen *ngIf="!editQuizDetails" [newQuiz]="quiz" [quizId]="quizId" [question]="question" [navQuestion]="navQuestion" (questionChanged)="updateQuestion($event)"></app-question-quizmaker>
   </div>
   <div *ngIf="loading">
     <app-loading-screen [isLoading]="loading" loadingText="Updating..."></app-loading-screen>
