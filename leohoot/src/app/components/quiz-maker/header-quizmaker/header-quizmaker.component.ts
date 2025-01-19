@@ -25,6 +25,8 @@ export class HeaderQuizmakerComponent {
     };
 
     @Input() editMode: boolean = false;
+    @Input() savedQuiz: boolean = false;
+    
     @Output() changeEditMode = new EventEmitter<string>();
 
     @Output() saveQuiz = new EventEmitter<string>();

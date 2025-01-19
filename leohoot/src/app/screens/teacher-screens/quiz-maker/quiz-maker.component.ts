@@ -11,7 +11,7 @@ import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
 import { Tag } from 'src/app/model/tag';
 import { NgxCaptureService } from 'ngx-capture';
-import { SidebarQuizmakerComponent } from 'src/app/components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
+import { QuizMakerSidebarComponent } from 'src/app/components/quiz-maker/quiz-maker-sidebar/quiz-maker-sidebar.component';
 
 interface ListItems {
   tag: Tag;
@@ -42,7 +42,7 @@ export class QuizMakerComponent {
   };
   
   @ViewChild('questionScreen', { static: false }) screen: any;
-  @ViewChild(SidebarQuizmakerComponent) sidebarComponent!: SidebarQuizmakerComponent;
+  @ViewChild(QuizMakerSidebarComponent) sidebarComponent!: QuizMakerSidebarComponent;
 
 
   constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService) {
@@ -74,8 +74,8 @@ export class QuizMakerComponent {
         }
       });
       this.quiz = quiz;
-      this.configurationService.setQuiz(quiz);
-      this.sidebarComponent.refetchQuestions();
+      //this.configurationService.setQuiz(quiz);
+      //this.sidebarComponent.refetchQuestions();
   });
 }
 
@@ -198,7 +198,7 @@ export class QuizMakerComponent {
 
   onQuestionAdded() {
     console.log('fetch questions added');
-    this.sidebarComponent.refetchQuestions();
+    //this.sidebarComponent.refetchQuestions();
     this.initQuestion = false;
     console.log(this.editMode);
   }
@@ -210,7 +210,7 @@ export class QuizMakerComponent {
     // }
 
     if (typeof data === 'number') {
-      const searchResult = this.configurationService.getQuestions().find(question => question.questionNumber === data);
+      const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
         alert('Question not found');
         return

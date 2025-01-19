@@ -28,7 +28,7 @@
       </div>
       <app-profile/>
     </div>
-    <!-- <main class="p-4 sm:p-6">
+    <main class="p-4 sm:p-6">
       <div class="flex flex-wrap gap-2 mb-4">
         <span *ngFor="let tag of tags">
           <span (click)="toggleTagSelection(tag)" *ngIf="selectedTags.includes(tag)" class="px-3 py-1 bg-hooti-yellow text-white rounded text-lg">{{ tag.name }}</span>
@@ -68,60 +68,9 @@
               <div class="text-end">{{ quiz.questions.length }}</div>
             </div>
           </div>
-          </div>
         </div>
-      </div> -->
-
-
-
-      <main class="p-4 sm:p-6">
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span *ngFor="let tag of tags">
-            <span (click)="toggleTagSelection(tag)" *ngIf="selectedTags.includes(tag)" class="px-3 py-1 bg-hooti-yellow text-white rounded text-lg">{{ tag.name }}</span>
-            <span (click)="toggleTagSelection(tag)" *ngIf="!selectedTags.includes(tag)" class="px-3 py-1 bg-gray-200 rounded text-lg">{{ tag.name }}</span>
-          </span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          <div
-            *ngFor="let quiz of filteredQuizzes"
-            class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
-          >
-
-          <div (click)="viewQuizDetails(quiz)">
-           
-              <img
-              *ngIf="quiz.imageName"
-              [src]="quiz.imageName"
-              alt="Quiz Image"
-              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
-            />
-            <img
-              *ngIf="!quiz.imageName"
-              src="assets/images/noImage.png"
-              alt="No image"
-              class="w-full h-56 object-cover mb-2 aspect-[16/9]"
-            />
-            <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
-            <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
-              <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
-            </div>
-            
-            <div class="flex justify-between w-full mt-auto">
-              <div class="flex justify-start items-center rounded-lg">
-                <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
-                <div class="text-md">{{quiz.creator}}</div>
-              </div>
-
-              <div class="flex justify-end items-center ">
-                <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
-                <div class="text-end">{{ quiz.questions.length }}</div>
-              </div>
-            </div>
-          </div>
-          </div>
-          </div>
-
+      </div>
+      </div>
       </main>
     </div>
-  </div>
 </div>

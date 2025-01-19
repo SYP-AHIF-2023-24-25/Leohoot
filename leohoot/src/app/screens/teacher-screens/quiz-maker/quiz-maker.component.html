@@ -1,6 +1,6 @@
 <div class="grid grid-cols-5">
   <div class="col-span-1 bg-white">
-    <app-sidebar-quizmaker [newQuiz]="quiz" [quizId]="quizId" [editMode]="editMode" (saveQuiz)="saveQuiz()" (close)="close()" (changeEditMode)="changeEditMode()" [initQuestion]="initQuestion" (onDisplay)="displayQuestion($event)" (onInitNewQuestion)="initNewQuestion()" (onCreate)="onQuestionCreate()"></app-sidebar-quizmaker>
+    <app-quiz-maker-sidebar [newQuiz]="quiz" [quizId]="quizId" [editMode]="editMode" (saveQuiz)="saveQuiz()" (close)="close()" (changeEditMode)="changeEditMode()" [initQuestion]="initQuestion" (onDisplay)="displayQuestion($event)" (onInitNewQuestion)="initNewQuestion()" (onCreate)="onQuestionCreate()"></app-quiz-maker-sidebar>
   </div>
   <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
     <app-header-quizmaker [username]="username" [quiz]="quiz" [question]="question" [editMode]="editMode" [quizId]="quizId" (changeEditMode)="changeEditMode()"/>

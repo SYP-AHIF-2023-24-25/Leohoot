@@ -3,8 +3,8 @@
       <div class="text-3xl font-bold text-white pl-4">{{quiz?.title || "Quizmaker"}}</div>
     </div>
     <div class="flex items-center space-x-4">
-      <img  src="assets/images/edit.png" alt="edit" class="w-6 h-6 hover:w-7 hover:h-7" (click)="editQuiz()">
-      <img  src="assets/images/save.png" alt="save" class="w-6 h-6 hover:w-7 hover:h-7" (click)="save()">
+      <img *ngIf="(quiz?.id ?? -1) <= 0" src="assets/images/save.png" alt="save" class="w-6 h-6 hover:w-7 hover:h-7" (click)="save()">
+      <img src="assets/images/edit.png" alt="edit" class="w-6 h-6 hover:w-7 hover:h-7" (click)="editQuiz()">      
       <div class="w-px h-6 bg-white"></div>
       <img src="assets/images/user.png" alt="user" class="w-6 h-6">
       <div class="text-xl text-white">{{username}}</div>

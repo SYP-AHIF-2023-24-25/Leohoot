@@ -10,69 +10,84 @@ import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-quiz-maker-sidebar',
-  templateUrl: './quiz-maker-sidebar.component.html'
+  templateUrl: './quiz-maker-sidebar.component.html',
+  styleUrls: ['./quiz-maker-sidebar.component.css']
 })
 export class QuizMakerSidebarComponent {
-
-
-
   @Input() quizTitle: string | undefined;
   @Input() initQuestion: boolean | undefined;
+  @Input() editMode: boolean = false;
 
-  @Output() onQuizName = new EventEmitter<string>();
   @Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
-  @Output() onDisplay = new EventEmitter<QuestionTeacher>();
+  @Output() onDisplay = new EventEmitter<number>();
 
-  existingQuestions: QuestionTeacher[] = [];
-  
+  //existingQuestions: QuestionTeacher[] = [];
+  quiz: Quiz | undefined;
+
+  @Input() quizId: number | undefined;
+
+  @Input()
+  set newQuiz(value: Quiz | undefined) {
+    this.quiz = value;
+  }
+
+  @Output() close = new EventEmitter<void>();
+
+  @Output() saveQuiz = new EventEmitter<string>();
+  @Output() changeEditMode = new EventEmitter<string>();
+
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
   }
 
-  ngOnInit() {
-    this.refetchQuestions();
+  leaveQuizmaker() {
+    this.close.emit();
   }
 
   drop(event: CdkDragDrop<QuestionTeacher[]>) {
-    moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
-    this.configurationService.changeOrderOfQuestions(this.existingQuestions);
-    this.refetchQuestions();
-  }
-
-  refetchQuestions() {
-    this.existingQuestions = this.configurationService.getQuestions();
-  }
-
-  onQuizTitle() {
-    this.onQuizName.emit(this.quizTitle);
+    if (this.quiz?.questions) {
+      moveItemInArray(this.quiz.questions, event.previousIndex, event.currentIndex);
+      this.quiz?.questions.forEach((question, index) => {
+        question.questionNumber = index + 1; 
+      });
+    }
   }
   
-  truncateText(text: string, maxLength: number): string {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-  }
-
-  onQuestionCreate() {
+  createQuestion(){
+    //quiz not saved to db yet
+    if(this.quizId === -1 && this.editMode === false){
+      console.log('quiz not saved to db yet');
+      this.changeEditMode.emit('addQuestion');
+      this.saveQuiz.emit('saveQuiz');
+      return;
+    } else if (this.editMode === false){
+      this.changeEditMode.emit('addQuestion');
+    }
     this.onCreate.emit();
   }
 
   onQuestionSelect(question: QuestionTeacher) {
-    this.onDisplay.emit(question);
+    this.onDisplay.emit(question.questionNumber);
   }
   
   onQuestionDelete(id: number) {
-    if (this.initQuestion === true){
-      alert('Save the question first before deleting one.');
-      return;
-    }
+    if (this.quiz?.questions){
+      if (this.initQuestion === true){
+        alert('Save the question first before deleting one.');
+        return;
+      }
 
-    this.configurationService.deleteQuestion(id);
-    this.refetchQuestions();
-    
-    if (this.existingQuestions.length == 0){
-      this.onInitNewQuestion.emit();
-    } else {
-      let index = id > 2 ? id - 2 : 0;
-      this.onQuestionSelect(this.existingQuestions[index]);
+      this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== id);
+      this.quiz.questions.forEach((question, index) => {
+        question.questionNumber = index + 1;
+      });
+
+      if (this.quiz?.questions.length == 0){
+        this.onInitNewQuestion.emit();
+      } else {
+        let index = id > 2 ? id - 2 : 0;
+        this.onQuestionSelect(this.quiz?.questions[index]);
+      }
     }
   }
 }
