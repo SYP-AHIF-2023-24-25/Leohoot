@@ -126,8 +126,9 @@ export class QuizQuizmakerComponent {
   playDemoMode() {
     if (this.quiz?.id) {
     const id = parseInt(this.quiz.id.toString());
+
     this.restService.getNewGameId(id).subscribe(data => {
-      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quizId } });
+      this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quiz?.id } });
     });
   } else {
     alert('Please save the quiz first.');
