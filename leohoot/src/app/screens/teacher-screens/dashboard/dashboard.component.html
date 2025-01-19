@@ -98,8 +98,22 @@
           />
           <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
           <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
-            <span *ngFor="let tag of quiz.tags" class="px-2 py-1 bg-gray-200 rounded text-sm">{{ tag.name }}</span>
+            <span 
+              *ngFor="let tag of quiz.tags | slice:0:3" 
+              class="px-2 py-1 bg-gray-200 rounded text-sm"
+            >
+              {{ tag.name }}
+            </span>
+          
+            <!-- Show a 'more' indicator if there are more than three tags -->
+            <span 
+              *ngIf="quiz.tags.length > 3" 
+              class="px-2 py-1 bg-gray-200 rounded text-sm text-gray-500"
+            >
+              +{{ quiz.tags.length - 3 }} more
+            </span>
           </div>
+          
           <div class="flex justify-between w-full mt-auto">
             <div class="flex justify-start items-center rounded-lg">
               <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
