@@ -1,10 +1,11 @@
 
 <div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
-    <app-sidebar
-      *ngIf="isSidebarVisible && !screenIsLarge"
-      class="w-1/2 bg-white fixed lg:relative z-50"
-      [toggleSidebar]="toggleSidebar.bind(this)">
-    </app-sidebar>
+  <app-sidebar class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"/>
+  <app-sidebar
+    *ngIf="isSidebarVisible && !screenIsLarge"
+    class="w-1/2 bg-white fixed lg:relative z-50"
+    [toggleSidebar]="toggleSidebar.bind(this)">
+  </app-sidebar>
 
   <!-- Main Content -->
   <div class="flex flex-col flex-1">
