@@ -62,7 +62,6 @@ export class QuizMakerComponent {
       if (typeof params['quizId'] !== 'undefined') {
         this.quizId = parseInt(params['quizId']);
         await this.getQuiz()
-
       }
     })
     
@@ -81,19 +80,12 @@ export class QuizMakerComponent {
         }
       });
       this.quiz = quiz;
-      //this.configurationService.setQuiz(quiz);
-      //this.sidebarComponent.refetchQuestions();
   });
 }
 
   async close(){
     if (confirm("Are you sure you want to leave?")) {
       await this.router.navigate(['/dashboard']);
-      // if (this.quizId) {
-      //   await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
-      // } else {
-      //   await this.router.navigate(['/quizOverview'])
-      // }
     }
   }
 
@@ -125,19 +117,18 @@ export class QuizMakerComponent {
     }
   }
 
-  // changeEditMode() {
-  //   if (this.editMode && this.initQuestion === false && this.validateQuestion()){
-  //     this.editMode = !this.editMode;
-  //     this.saveQuiz();
-  //     console.log(this.editMode);
-  //   } else if (this.editMode && this.initQuestion === false && this.validateQuestion() == false){
-  //     alert('Please fill in all necessary fields.');
-  //   } else if (this.editMode && this.initQuestion === true && this.validateQuestion() == false){
-  //     alert('Please fill in all necessary fields and add the question.');
-  //   } else if (this.editMode === false){
-  //     this.editMode = !this.editMode;
-  //   }
-  // }
+  changeEditMode(){
+    if (this.editQuizDetails === false && this.validateQuestion() && this.question.questionNumber !== 0){
+      this.editQuizDetails = true;
+      //this.saveQuiz();
+    } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
+      alert('Please fill in all necessary fields.');
+      return;
+    } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion()){
+      alert('Please fill in all necessary fields and add the question first.');
+      return;
+    }
+  }
 
   validateQuestion(): boolean {
     if (
@@ -157,17 +148,15 @@ export class QuizMakerComponent {
         return false;
       }
     }
-    console.log('Question is valid');
+    
     return true;
   }
 
   initNewQuestion() {
     if (this.editQuizDetails){
-      console.log('change edit mode');
       this.saveQuiz();
-      console.log(this.quiz);
-      this.editQuizDetails = !this.editQuizDetails;
 
+      this.editQuizDetails = !this.editQuizDetails;
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion()){
        this.quiz.questions.find(question => question.questionNumber === this.question.questionNumber) ? this.updateQuestion(this.question) : this.quiz.questions.push(this.question);
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
@@ -177,6 +166,7 @@ export class QuizMakerComponent {
       alert('Please fill in all necessary fields and add the question first.');
       return;
     }
+    
     this.question = {
       questionText: '',
       answerTimeInSeconds: 15,

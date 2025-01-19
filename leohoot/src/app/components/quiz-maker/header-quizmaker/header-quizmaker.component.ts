@@ -27,8 +27,7 @@ export class HeaderQuizmakerComponent {
     @Input() editMode: boolean = false;
     @Input() savedQuiz: boolean = false;
     
-    @Output() changeEditMode = new EventEmitter<string>();
-
+    @Output() changeEditMode = new EventEmitter<void>();
     @Output() saveQuiz = new EventEmitter<string>();
   
     isDropdownOpen: boolean = false;
@@ -36,10 +35,9 @@ export class HeaderQuizmakerComponent {
     constructor(private router: Router, private restService: RestService, private loginService: LoginService) {
     }
   
-    async editQuiz() {
-      if (this.editMode){
-        this.changeEditMode.emit('editQuiz');
-      }      
+    editQuiz() {
+      console.log('editQuiz');
+      this.changeEditMode.emit();     
     }
     async save() {
       if(this.quizId === -1){
