@@ -61,8 +61,8 @@ import { StudentStatisticComponent } from "./screens/teacher-screens/student-sta
 import { GameStatisticComponent } from "./screens/teacher-screens/game-statistics/game-statistic.component";
 import { StatisticTableComponent } from "./components/statistics/statistic-table/statistic-table.component";
 import { DateRangeFilterComponent } from "./components/statistics/date-range-filter/date-range-filter.component";
-import { QuizMakerSidebarComponent } from './components/quiz-maker/quiz-maker-sidebar/quiz-maker-sidebar.component';
-import { QuizMakerSidebarItemComponent } from './components/quiz-maker/quiz-maker-sidebar-item/quiz-maker-sidebar-item.component';
+import { QuizMakerSidebarComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
+import { QuizMakerSidebarItemComponent } from './components/quiz-maker/sidebar-item-quizmaker/sidebar-item-quizmaker.component';
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 
 @NgModule({

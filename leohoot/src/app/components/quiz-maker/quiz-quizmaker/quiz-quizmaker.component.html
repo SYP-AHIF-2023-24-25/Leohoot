@@ -33,14 +33,15 @@
 
         <div *ngIf="quiz?.imageName" class="flex-1 flex-col items-center justify-center h-72 my-5">
           <div class="flex items-center justify-center">
-            <img [src]="quiz?.imageName" class="mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
+              <img [src]="quiz?.imageName" class="mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
           </div>
           <div class="flex items-center justify-center mt-4">
-            <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded">
-              <img src="assets/images/bin.png" class="w-5 h-5">
-            </button>
+              <button class="bg-design-quiz-blue hover:bg-blue-700 text-white font-bold py-1 px-2 rounded flex items-center">
+                  <img src="assets/images/bin.png" class="w-5 h-5 mr-1" alt="Delete">
+                  Delete
+              </button>
           </div>
-        </div>        
+      </div>   
       </div>
     </div>
     <div class="col-span-2">

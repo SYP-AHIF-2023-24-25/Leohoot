@@ -10,8 +10,8 @@ import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-quiz-maker-sidebar',
-  templateUrl: './quiz-maker-sidebar.component.html',
-  styleUrls: ['./quiz-maker-sidebar.component.css']
+  templateUrl: './sidebar-quizmaker.component.html',
+  styleUrls: ['./sidebar-quizmaker.component.css']
 })
 export class QuizMakerSidebarComponent {
   @Input() quizTitle: string | undefined;
