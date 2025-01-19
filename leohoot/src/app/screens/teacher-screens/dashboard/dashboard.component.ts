@@ -20,6 +20,7 @@ export class DashboardComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   ownQuizzesSelected: boolean = false;
+  isOpen = false;
 
   constructor(private restService: RestService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {}
 
