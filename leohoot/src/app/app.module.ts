@@ -52,6 +52,12 @@ import { QuizDetailPageComponent } from "./screens/teacher-screens/quiz-detail-p
 import { HeaderDetailsComponent } from "./components/quiz-detail-page/header-details/header-details.component";
 import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details/quiz-details.component";
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
+import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmaker/header-quizmaker.component';
+import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/quiz-quizmaker.component';
+import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
+import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
+import { SidebarQuizmakerComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
+import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
 import { StatisticOverviewComponent } from "./screens/teacher-screens/statistic-overview/statistic-overview.component";
@@ -101,6 +107,12 @@ import { DateRangeFilterComponent } from "./components/statistics/date-range-fil
     HeaderDetailsComponent,
     QuizDetailsComponent,
     QuestionsComponent,
+    HeaderQuizmakerComponent,
+    QuizQuizmakerComponent,
+    UploadImageComponent,
+    TagsQuizmakerComponent,
+    SidebarQuizmakerComponent,
+    QuestionQuizmakerComponent,
     SidebarComponent,
     DashboardComponent,
     StatisticOverviewComponent,

@@ -14,15 +14,18 @@ export class SignalRService {
 
   constructor() {
     this.buildConnection();
+    this.monitorAppState();
   }
 
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/hub`, { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
-      .withAutomaticReconnect()
+      .withAutomaticReconnect([0, 2000, 10000, 30000])
       .build();
-    this.connection.serverTimeoutInMilliseconds = 30000;
-    this.connection.keepAliveIntervalInMilliseconds = 10000;
+
+    this.connection.onclose((error) => {
+      this.connectionClosedSubject.next();
+    });
 
     this.connection.on("gameEnded", (gameId: number) => {
       this.gameEnded$.next(gameId);
@@ -37,8 +40,18 @@ export class SignalRService {
         console.log("Connection started");
       })
       .catch(err => {
-        console.log('Error while establishing connection, retrying...', err);
         setTimeout(() => this.startConnection(), 5000);
       });
+  }
+
+  private monitorAppState() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+      } else {
+        if (this.connection.state === signalR.HubConnectionState.Disconnected) {
+          this.startConnection();
+        }
+      }
+    });
   }
 }

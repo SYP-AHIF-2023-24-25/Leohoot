@@ -9,20 +9,33 @@ import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 
 @Component({
-  selector: 'app-quiz-maker-sidebar',
-  templateUrl: './quiz-maker-sidebar.component.html'
+  selector: 'app-sidebar-quizmaker',
+  templateUrl: './sidebar-quizmaker.component.html',
+  styleUrls: ['./sidebar-quizmaker.component.css']
 })
-export class QuizMakerSidebarComponent {
-
-
-
+export class SidebarQuizmakerComponent {
   @Input() quizTitle: string | undefined;
   @Input() initQuestion: boolean | undefined;
+  @Input() editMode: boolean = false;
 
-  @Output() onQuizName = new EventEmitter<string>();
   @Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
-  @Output() onDisplay = new EventEmitter<QuestionTeacher>();
+  @Output() onDisplay = new EventEmitter<number>();
+
+  //existingQuestions: QuestionTeacher[] = [];
+  quiz: Quiz | undefined;
+
+  @Input() quizId: number | undefined;
+
+  @Input()
+  set newQuiz(value: Quiz | undefined) {
+    this.quiz = value;
+  }
+
+  @Output() close = new EventEmitter<void>();
+
+  @Output() saveQuiz = new EventEmitter<string>();
+  @Output() changeEditMode = new EventEmitter<string>();
 
   existingQuestions: QuestionTeacher[] = [];
   
@@ -33,30 +46,36 @@ export class QuizMakerSidebarComponent {
     this.refetchQuestions();
   }
 
+  leaveQuizmaker() {
+    this.close.emit();
+  }
+
   drop(event: CdkDragDrop<QuestionTeacher[]>) {
     moveItemInArray(this.existingQuestions, event.previousIndex, event.currentIndex);
     this.configurationService.changeOrderOfQuestions(this.existingQuestions);
     this.refetchQuestions();
   }
 
+
   refetchQuestions() {
     this.existingQuestions = this.configurationService.getQuestions();
   }
-
-  onQuizTitle() {
-    this.onQuizName.emit(this.quizTitle);
-  }
   
-  truncateText(text: string, maxLength: number): string {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-  }
-
-  onQuestionCreate() {
+  createQuestion(){
+    //quiz not saved to db yet
+    if(this.quizId === -1 && this.editMode === false){
+      console.log('quiz not saved to db yet');
+      this.changeEditMode.emit('addQuestion');
+      this.saveQuiz.emit('saveQuiz');
+      return;
+    } else if (this.editMode === false){
+      this.changeEditMode.emit('addQuestion');
+    }
     this.onCreate.emit();
   }
 
   onQuestionSelect(question: QuestionTeacher) {
-    this.onDisplay.emit(question);
+    this.onDisplay.emit(question.questionNumber);
   }
   
   onQuestionDelete(id: number) {

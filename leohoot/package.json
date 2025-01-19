@@ -20,7 +20,7 @@
     "@angular/platform-browser": "^17.2.2",
     "@angular/platform-browser-dynamic": "^17.2.2",
     "@angular/router": "^17.2.2",
-    "@microsoft/signalr": "^7.0.12",
+    "@microsoft/signalr": "^7.0.14",
     "@tailwindcss/forms": "^0.5.7",
     "@techiediaries/ngx-qrcode": "^9.1.0",
     "@types/node": "^20.9.0",

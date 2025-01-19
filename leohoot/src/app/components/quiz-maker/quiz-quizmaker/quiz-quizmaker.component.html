@@ -1,0 +1,85 @@
+<div class="grid grid-cols-3 items-center space-x-10 p-10">
+    <div class="col-span-1">
+      <div *ngIf="quiz?.imageName">
+        <img
+          [src]="quiz?.imageName"
+          alt="quiz image"
+          class="w-full max-w-100 max-h-72 h-auto object-contain"
+        />
+      </div>
+      <div *ngIf="!quiz?.imageName" class="mt-10 mr-10">
+        <div *ngIf="!quiz?.imageName" class="flex ">
+          <div class="mt-10 mr-10">
+            <label class="flex items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
+                <svg
+                  class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p class="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span
+                  class="font-semibold"
+                >Click to upload</span> or drag and drop</p>
+                <p class="text-xs text-center text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+              </div>
+              <input #fileInput id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)"/>
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="quiz?.imageName" class="flex-1 flex-col items-center justify-center h-72 my-5">
+          <div class="flex items-center justify-center">
+            <img [src]="quiz?.imageName" class="flex items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
+          </div>
+          <div class="flex items-center justify-center mt-2">
+            <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onImageDelete()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-2">
+      <div class="grid grid-cols-5 items-center space-y-4 ml-4 text-white text-base">
+        <div class="col-span-1 flex items-center font-bold h-11">Quiz Title:</div>
+        <div class="col-span-4 flex items-center justify-between">
+          <input
+            name="title"
+            type="text"
+            placeholder="Quiz Title"
+            [(ngModel)]="quizTitle"
+            (ngModelChange)="updateQuizTitle($event)"
+            required
+            class="block w-full max-w-128 h-11 rounded-md border-0 py-1.5 pl-2 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
+          />
+         
+          <img
+            src="assets/images/play-button-white.png"
+            alt="Play"
+            class="w-12 h-12"
+            (click)="playDemoMode()"
+          />
+        </div>
+  
+        <div class="col-span-1 flex items-center font-bold h-32">Description:</div>
+        <div class="col-span-4 flex items-center justify-between">
+          <textarea
+            name="description"
+            placeholder="Description"
+            [(ngModel)]="description"
+            (ngModelChange)="updateQuizDescription($event)"
+            required
+            class="block w-full h-32 max-w-128 rounded-md border-0 py-2 px-3 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
+          ></textarea>
+        </div>
+  
+        <div class="col-span-1 flex items-center font-bold h-11">Tags:</div>
+        <div class="col-span-4">
+          <app-tags-quizmaker></app-tags-quizmaker>
+        </div>
+      </div>
+    </div>
+  </div>
+  

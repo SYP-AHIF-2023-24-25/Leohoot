@@ -1,0 +1,175 @@
+<div class="flex-grow max-h-screen overflow-y-auto">
+  <main #questionScreen class="bg-background-blue">
+    <div class="px- sm:px-6 lg:px-8">
+      <div class="col-span-5 mt-10 mx-10">
+        <div class="bg-white text-center drop-shadow-lg" id="questiontext">
+          <div class="container mx-auto p-2">
+            <div
+              class="mt-8 text-2xl font-bold md:text-4xl flex items-center justify-center"
+             >
+              <input
+                    name="title" type="title" placeholder="Title" [(ngModel)]="question.questionText"
+                    #questionTitle="ngModel" required
+                    class="bg-transparent w-full rounded-md border-0 md:h-11 md:text-3xl text-black font-bold text-center placeholder:text-center placeholder:text-2xl pb-5 placeholder:text-gray-600 placeholder:font-semibold focus:border-transparent focus:outline-none"
+                    onfocus="this.placeholder=''" onblur="this.placeholder='Titel'"
+                  >
+            </div>
+          </div>
+        </div>
+
+          <div class="grid grid-cols-3 gap-8 items-center justify-center overflow-y-auto">
+            <div>
+              <form class="max-w-xs">
+                <label for="preview-time-input" class="block mb-2 text-sm font-medium text-white">Preview Time</label>
+                <div class="relative flex items-center max-w-[8rem]">
+                  <button
+                    type="button" id="preview-decrement-button" data-input-counter-decrement="preview-time-input"
+                    (click)="decrement('previewTime')"
+                    class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                  >
+                    <svg
+                      class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 18 2"
+                    >
+                      <path
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"
+                      />
+                    </svg>
+                  </button>
+                  <input
+                    name="previewTime" [(ngModel)]="question.previewTime" type="text" id="preview-time-input"
+                    data-input-counter data-input-counter-min="3" data-input-counter-max="60"
+                    aria-describedby="preview-helper-text-explanation" placeholder="{{question.previewTime}}"
+                    class="bg-white border-x-0 border-gray-300 h-11 md:w-12 w-10 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block py-2.5"
+                    required
+                  />
+                  <button
+                    type="button" id="preview-increment-button" data-input-counter-increment="preview-time-input"
+                    (click)="increment('previewTime')"
+                    class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                  >
+                    <svg
+                      class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 18 18"
+                    >
+                      <path
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 1v16M1 9h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+
+                <label for="answer-time-input" class="block mt-4 mb-2 text-sm font-medium text-white">Answer Time</label>
+                <div class="relative flex items-center max-w-[8rem] sm:w-20">
+                  <button
+                    type="button" id="answer-decrement-button" data-input-counter-decrement="answer-time-input"
+                    (click)="decrement('answerTime')"
+                    class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                  >
+                    <svg
+                      class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 18 2"
+                    >
+                      <path
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"
+                      />
+                    </svg>
+                  </button>
+                  <input
+                    name="answerTime" [(ngModel)]="question.answerTimeInSeconds" type="text" id="answer-time-input"
+                    data-input-counter data-input-counter-min="5" data-input-counter-max="500"
+                    aria-describedby="answer-helper-text-explanation"
+                    class="bg-white border-x-0 border-gray-300 h-11 md:w-12 w-10 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block py-2.5"
+                    required
+                  />
+                  <button
+                    type="button" id="answer-increment-button" data-input-counter-increment="answer-time-input"
+                    (click)="increment('answerTime')"
+                    class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
+                  >
+                    <svg
+                      class="md:w-3 md:h-3 w-2 h-2 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 18 18"
+                    >
+                      <path
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 1v16M1 9h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <div class="w-128 my-16">
+                <div *ngIf="!question.imageName">
+                  <div class="mt-10 mr-10">
+                    <label class="flex items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                      <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
+                        <svg
+                          class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"
+                        >
+                          <path
+                            stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                          />
+                        </svg>
+                        <p class="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span
+                          class="font-semibold"
+                        >Click to upload</span> or drag and drop</p>
+                        <p class="text-xs text-center text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                      </div>
+                      <input #fileInput id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)"/>
+                    </label>
+                  </div>                
+                </div>
+
+                <div *ngIf="question.imageName" class="flex flex-col items-center justify-center h-72 my-5">
+                  <label for="dropzone-file">
+                    <img [src]="question.imageName" class="flex flex-col items-center justify-center mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
+                    <div class="flex items-center justify-center mt-2">
+                      <button class="hover:bg-design-quiz-blue text-white font-bold py-2 px-4 rounded" (click)="onDeleteImage()"><img src="/assets/images/bin.png" class="w-5 h-5"></button>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-2 sm:mx-0 overflow-y-auto">
+            <div
+              *ngFor="let answer of question.answers; let i = index"
+              [ngClass]="{'bg-button-yellow': i === 0, 'bg-green-400': i === 1, 'bg-rose-400': i === 2, 'bg-blue-400': i === 3}"
+              class="flex items-center h-28 rounded-lg md:text-2xl text-base font-bold px-4 text-white shadow-lg drop-shadow-lg md:h-24"
+            >
+              <img [src]="'assets/images/' + ['cat', 'frog', 'crab', 'bird'][i] + '.png'" class="h-10 w-10 m-2">
+                <input
+                  name="{{i+1}}-answer" placeholder="Add answer {{i+1}} (optional)" [(ngModel)]="answer.answerText"
+                  class="block bg-transparent w-full rounded-md border-0 py-1.5 pl-2 md:h-11 md:text-xl text-white placeholder:text-base placeholder:text-white placeholder:font-normal focus:border-transparent focus:outline-none"
+                >
+                <input
+                  type="checkbox" [(ngModel)]="answer.isCorrect"
+                  class="w-8 h-8 mx-5 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-200 focus:ring-2"
+                >
+            </div>
+          </div>
+          <div class="grid grid-cols-2">
+            <div class="flex mt-7">
+              <p class="flex text-lg text-white ml-2">Show multiple choice</p>
+              <input
+              type="checkbox" [(ngModel)]="question.showMultipleChoice"
+              class="w-6 h-6 mx-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-200 focus:ring-2"
+              >
+            </div>
+            <div *ngIf="initQuestion" class="flex items-end justify-end mt-5">
+              <button class="rounded-lg bg-hooti-yellow text-white text-center text-semibold h-12 w-52 mb-5" (click)="onQuestionAdd()">Add Question</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <app-loading-screen [isLoading]="loading" loadingText="Updating..."></app-loading-screen> -->
+    </main>
+  </div>
