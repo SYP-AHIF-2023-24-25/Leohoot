@@ -1,11 +1,11 @@
 <div class="grid grid-cols-5">
   <div class="col-span-1 bg-white">
-    <app-quiz-maker-sidebar [newQuiz]="quiz" [quizId]="quizId" (onDeleteQuestion)="deleteQuestion($event)" (saveQuiz)="saveQuiz()" (close)="close()" [initQuestion]="initQuestion" (onDisplay)="displayQuestion($event)" (onInitNewQuestion)="initNewQuestion()" (questionChanged)="updateQuestion(question)"></app-quiz-maker-sidebar>
+    <app-quiz-maker-sidebar [newQuiz]="quiz" [quizId]="quizId" (onDeleteQuestion)="deleteQuestion($event)" (saveQuiz)="saveQuiz()" (close)="close()" (onDisplay)="displayQuestion($event)" (onInitNewQuestion)="initNewQuestion()"></app-quiz-maker-sidebar>
   </div>
   <div class="col-span-4 bg-background-blue flex flex-col min-h-screen">
     <app-header-quizmaker [username]="username" [quiz]="quiz" [question]="question" [editMode]="editQuizDetails" [quizId]="quizId" (changeEditMode)="changeEditMode()"/> <!--editmode-->
-    <app-quiz-quizmaker *ngIf="editQuizDetails" [newQuiz]="quiz" />
-    <app-question-quizmaker #questionScreen *ngIf="!editQuizDetails" [newQuiz]="quiz" [quizId]="quizId" [question]="question" [navQuestion]="navQuestion" (questionChanged)="updateQuestion($event)"></app-question-quizmaker>
+    <app-quiz-quizmaker *ngIf="editQuizDetails" [newQuiz]="quiz" (saveQuiz)="saveQuiz()" />
+    <app-question-quizmaker *ngIf="!editQuizDetails" [newQuiz]="quiz" [quizId]="quizId" [question]="question" [editQuizDetails]="editQuizDetails" [loading]="loading" (saveQuiz)="saveQuiz()" (questionChanged)="updateQuestion($event)"></app-question-quizmaker>
   </div>
   <div *ngIf="loading">
     <app-loading-screen [isLoading]="loading" loadingText="Updating..."></app-loading-screen>

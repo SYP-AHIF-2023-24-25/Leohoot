@@ -158,4 +158,9 @@ export class RestService {
   getGameStatistics(statisticId: number): Observable<Statistic> {
     return this.httpClient.get<Statistic>(`${RestService.apiUrl}statistics/${statisticId}/game`);
   }
+
+  updateQuestion(quizId: number, question: QuestionTeacher) {
+  
+    return this.httpClient.put(`${RestService.apiUrl}quizzes/${quizId}/questions/${question.questionNumber}`, question);
+  }
 }

@@ -102,9 +102,6 @@ export class QuizMakerComponent {
     console.log('Current question updated:', this.question);
   }
 
-  // autosave() {
-  //   this.saveQuiz();
-  // }
 
   saveQuiz() {
     this.quiz!.questions =  this.quiz!.questions.map(question => ({
@@ -115,6 +112,9 @@ export class QuizMakerComponent {
     if (this.quizId === -1){
       this.restService.addQuiz(this.quiz!).subscribe(data => {
         this.quizId = data;
+        this.route.params.subscribe(params => {
+          this.router.navigate(['/quizMaker'], {queryParams: {quizId: this.quizId}});
+        });
       });
     } else {
       this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
@@ -126,7 +126,9 @@ export class QuizMakerComponent {
   changeEditMode(){
     if (this.editQuizDetails === false && this.validateQuestion() && this.question.questionNumber !== 0 ||this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === ''){
       this.editQuizDetails = true;
-      this.saveQuiz();
+      this.createQuestionSnapshot();
+      this.restService.updateQuestion(this.quizId, this.question).subscribe(data => {
+      });
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
       alert('Please fill in all necessary fields.');
       return;

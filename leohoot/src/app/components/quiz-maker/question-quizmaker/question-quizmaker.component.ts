@@ -49,9 +49,14 @@ export class QuestionQuizmakerComponent {
   }
 
   ngInit() {
-    
-  }
+    this.route.queryParams.subscribe(async params => {
+      if (typeof params['quizId'] !== 'undefined') {
+        this.quizId = parseInt(params['quizId']);
+        
+      }
+    })
 
+  }
   
   async displayQuestion(data: number | QuestionTeacher){
     if (typeof data === 'number') {
@@ -60,7 +65,10 @@ export class QuestionQuizmakerComponent {
         alert('Question not found');
         return
       }
-        //this.saveQuiz.emit();
+      
+        this.restService.updateQuestion(this.quizId, searchResult).subscribe(data => {
+          console.log(data);
+        });
         this.question = searchResult;
         const missingAnswersCount = 4 - this.question.answers.length;
         if (missingAnswersCount > 0) {
