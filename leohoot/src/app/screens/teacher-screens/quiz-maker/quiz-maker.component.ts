@@ -24,16 +24,23 @@ interface ListItems {
 })
 export class QuizMakerComponent {
   quizId: number = -1;
-  quiz?: Quiz;
+  quiz: Quiz = {
+    title: "",
+    description: "",
+    creator: this.loginService.getUserName(),
+    questions: [],
+    imageName: "",
+    tags: []
+  };
   username: string = "";
-  editMode: boolean = false;
+  editQuizDetails: boolean = true;
   loading: boolean = false;
   initQuestion: boolean = false;
 
   question: QuestionTeacher = {
-    questionText: 'New Question',
-    answerTimeInSeconds: 0,
-    previewTime: 0,
+    questionText: '',
+    answerTimeInSeconds: 15,
+    previewTime: 5,
     answers: [],
     questionNumber: 0,
     imageName: undefined,
@@ -58,7 +65,7 @@ export class QuizMakerComponent {
 
       }
     })
-    this.quiz = this.configurationService.getQuiz();
+    
     this.username = this.loginService.getUserName()
   }
 
@@ -80,8 +87,7 @@ export class QuizMakerComponent {
 }
 
   async close(){
-    if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
-      this.configurationService.clearQuiz();
+    if (confirm("Are you sure you want to leave?")) {
       await this.router.navigate(['/dashboard']);
       // if (this.quizId) {
       //   await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
@@ -98,7 +104,7 @@ export class QuizMakerComponent {
 
   saveQuiz() {
    //TODO TAGS
-    this.configurationService.setQuiz(this.quiz!);
+   console.log("add quiz");
     
     this.quiz!.questions =  this.quiz!.questions.map(question => ({
       ...question,
@@ -119,21 +125,58 @@ export class QuizMakerComponent {
     }
   }
 
-  changeEditMode() {
-    if (this.editMode && this.initQuestion === false && this.validateQuestion()){
-      this.editMode = !this.editMode;
-      this.saveQuiz();
-      console.log(this.editMode);
-    } else if (this.editMode && this.initQuestion === false && this.validateQuestion() == false){
-      alert('Please fill in all necessary fields.');
-    } else if (this.editMode && this.initQuestion === true && this.validateQuestion() == false){
-      alert('Please fill in all necessary fields and add the question.');
-    } else if (this.editMode === false){
-      this.editMode = !this.editMode;
+  // changeEditMode() {
+  //   if (this.editMode && this.initQuestion === false && this.validateQuestion()){
+  //     this.editMode = !this.editMode;
+  //     this.saveQuiz();
+  //     console.log(this.editMode);
+  //   } else if (this.editMode && this.initQuestion === false && this.validateQuestion() == false){
+  //     alert('Please fill in all necessary fields.');
+  //   } else if (this.editMode && this.initQuestion === true && this.validateQuestion() == false){
+  //     alert('Please fill in all necessary fields and add the question.');
+  //   } else if (this.editMode === false){
+  //     this.editMode = !this.editMode;
+  //   }
+  // }
+
+  validateQuestion(): boolean {
+    if (
+      (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) &&
+      this.question.answers.every(answer => answer.answerText === undefined || answer.answerText === '' || this.isWhitespaceString(answer.answerText))
+    ) {
+      return true;
     }
+
+    if (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)) {
+      return false;
+    }
+
+    for (let i = 0; i < 2; i++) {
+      const answer = this.question.answers[i];
+      if (answer.answerText === undefined || answer.answerText === '' || this.isWhitespaceString(answer.answerText)) {
+        return false;
+      }
+    }
+    console.log('Question is valid');
+    return true;
   }
 
   initNewQuestion() {
+    if (this.editQuizDetails){
+      console.log('change edit mode');
+      this.saveQuiz();
+      console.log(this.quiz);
+      this.editQuizDetails = !this.editQuizDetails;
+
+    } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion()){
+       this.quiz.questions.find(question => question.questionNumber === this.question.questionNumber) ? this.updateQuestion(this.question) : this.quiz.questions.push(this.question);
+    } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
+      alert('Please fill in all necessary fields.');
+      return;
+    } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false){
+      alert('Please fill in all necessary fields and add the question first.');
+      return;
+    }
     this.question = {
       questionText: '',
       answerTimeInSeconds: 15,
@@ -141,120 +184,103 @@ export class QuizMakerComponent {
       answers: [],
       questionNumber: 0,
       imageName: undefined,
+      snapshot: undefined,
       showMultipleChoice: false
     };
-
+    
     for (let i = 0; i < 4; i++) {
       this.question.answers.push({answerText: '', isCorrect: false});
     }
-
-    this.initQuestion = true;
   }
 
-  async createQuestionSnapshot() {
-    if (!this.screen) {
-      console.error('ViewChild screen is undefined');
-      return;
-    }
-  
-    this.loading = true;
-  
-    try {
-      const img = await this.captureService.getImage(this.screen, true).toPromise();
-      let questionNumber = this.question.questionNumber || this.configurationService.getQuestions().length + 1;
-      const fileName = `snapshot_${questionNumber.toString().padStart(2, '0')}.png`;
-  
-      // const data = await this.uploadImage(img!, fileName).toPromise();
-      // this.question.snapshot = this.restService.getImage(data!);
-  
-      this.loading = false;
-    } catch (error) {
-      console.error('Error capturing snapshot:', error);
-      this.loading = false;
-    }
-  }
-
-  async onQuestionCreate() {
-    // if (this.isMobileMenuOpen) {
-    //   this.toggleMobileMenu();
-    // }
-    console.log(this.initQuestion);
-    if (this.initQuestion === false
-      || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
-        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
-        && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
-
-        await this.createQuestionSnapshot();
-
+  deleteQuestion(id: number){
+      if (this.quiz.questions.length === 1 && this.quiz.questions[0].questionNumber === id) {
+        this.quiz.questions = [];
         this.initNewQuestion();
-    } else {
-      if (this.validateQuestion() == false){
-        alert('Please fill in all necessary fields and save the question.');
+      }
+
+      this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== id);
+      this.quiz.questions.forEach((question, index) => {
+        question.questionNumber = index + 1;
+      });
+      console.log(this.quiz.questions);
+
+      if (this.quiz?.questions.length == 0){
+        this.initNewQuestion();
       } else {
-        alert('Save the question first before adding a new one.')
+        let index = id > 2 ? id - 2 : 0;
+        this.displayQuestion(index + 1);
       }
     }
-  }
-
-  onQuestionAdded() {
-    console.log('fetch questions added');
-    //this.sidebarComponent.refetchQuestions();
-    this.initQuestion = false;
-    console.log(this.editMode);
-  }
   
 
-  async displayQuestion(data: number | QuestionTeacher) {
-    // if (this.isMobileMenuOpen) {
-    //   this.toggleMobileMenu();
-    // }
-
+  async displayQuestion(data: number | QuestionTeacher){
     if (typeof data === 'number') {
       const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
         alert('Question not found');
         return
-      }  
-      this.question = searchResult;
-      console.log(this.question);
-      this.editMode = true;
-      console.log(this.editMode);
-    } else {
-      if (this.initQuestion === false && this.validateQuestion()
-      && this.editMode === true || ((this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText))
-        && (this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText))
-        && (this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)))){
-          await this.createQuestionSnapshot();
-
-          this.question = data as QuestionTeacher;
-          this.initQuestion = false;
-        } else {
-          alert('Please fill in all necessary fields and save the question.');
-        }
+      }
+      if (this.question.questionNumber !== 0 && this.validateQuestion() || this.question.questionNumber === 0 && this.validateQuestion()){
+       // await this.createQuestionSnapshot();
+        this.question = searchResult;
+      } else if (this.question.questionNumber !== 0 && this.validateQuestion() == false){
+        alert('Please fill in all necessary fields');
+      } else if (this.question.questionNumber === 0 && this.validateQuestion() == false){
+        alert('Please fill in all necessary fields and add the question first.');
+      }
     }
   }
+  async createQuestionSnapshot() {
+    //this.loading = true;
+    await this.captureService.getImage(this.screen.nativeElement, true).toPromise().then(async (img) => {
+      let questionNumber = this.question.questionNumber;
 
-  validateQuestion() {
-    console.log(this.question);
-    if (this.question.questionText === undefined || this.question.questionText === '' || this.isWhitespaceString(this.question.questionText)
-    || this.question.answers[0].answerText === undefined || this.question.answers[0].answerText === '' || this.isWhitespaceString(this.question.answers[0].answerText)
-    || this.question.answers[1].answerText === undefined || this.question.answers[1].answerText === '' || this.isWhitespaceString(this.question.answers[1].answerText)) {
-      return false;
-    }
-    return true;
+      if (this.question.questionNumber === 0) {
+        questionNumber = this.quiz!.questions.length + 1;
+      }
+      const fileName = "snapshot_" + questionNumber.toString().padStart(2, '0') + ".png";
+
+      const data = await this.uploadImage(img!, fileName).toPromise();
+      console.log(data);
+      const existingQuestion = this.quiz?.questions.find(q => q.questionNumber === this.question.questionNumber);
+      if (existingQuestion) {
+        existingQuestion.snapshot = this.restService.getImage(data!);
+      } else {
+        this.question.snapshot = this.restService.getImage(data!);
+      }
+
+      //this.loading = false;
+    });
   }
+
+  
+  dataURItoBlob(dataURI: string) {
+    const byteString = window.atob(dataURI.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
+  }
+
+  uploadImage(imageString: string, fileName: string) {
+    const imageBlob = this.dataURItoBlob(imageString);
+
+    const formData = new FormData();
+
+    formData.append('image', imageBlob, fileName);
+
+    return this.restService.addImage(formData);
+  }
+
 
   isWhitespaceString(str: string): boolean {
     return !str.trim();
   }
 
-  arrayEqual(a: any[], b: any[]): boolean {
-    return JSON.stringify(a) === JSON.stringify(b);
-  }
-
-  onDeleteImage(){
-    this.question.imageName = undefined;
-  }
   // quizId: number | undefined;
   // existingQuestions: QuestionTeacher[] = [];
   // title: string = "";

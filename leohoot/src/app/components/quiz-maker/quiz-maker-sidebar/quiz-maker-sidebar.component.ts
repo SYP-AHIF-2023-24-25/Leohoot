@@ -16,11 +16,11 @@ import { SignalRService } from 'src/app/services/signalr.service';
 export class QuizMakerSidebarComponent {
   @Input() quizTitle: string | undefined;
   @Input() initQuestion: boolean | undefined;
-  @Input() editMode: boolean = false;
 
-  @Output() onCreate = new EventEmitter<void>();
+  //@Output() onCreate = new EventEmitter<void>();
   @Output() onInitNewQuestion = new EventEmitter<void>();
   @Output() onDisplay = new EventEmitter<number>();
+  @Output() onDeleteQuestion = new EventEmitter<number>();
 
   //existingQuestions: QuestionTeacher[] = [];
   quiz: Quiz | undefined;
@@ -33,9 +33,8 @@ export class QuizMakerSidebarComponent {
   }
 
   @Output() close = new EventEmitter<void>();
-
   @Output() saveQuiz = new EventEmitter<string>();
-  @Output() changeEditMode = new EventEmitter<string>();
+  //@Output() changeEditMode = new EventEmitter<string>();
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
   }
@@ -54,16 +53,16 @@ export class QuizMakerSidebarComponent {
   }
   
   createQuestion(){
-    //quiz not saved to db yet
-    if(this.quizId === -1 && this.editMode === false){
-      console.log('quiz not saved to db yet');
-      this.changeEditMode.emit('addQuestion');
-      this.saveQuiz.emit('saveQuiz');
-      return;
-    } else if (this.editMode === false){
-      this.changeEditMode.emit('addQuestion');
-    }
-    this.onCreate.emit();
+    // //quiz not saved to db yet
+    // if(this.quizId === -1 && this.editMode === false){
+    //   console.log('quiz not saved to db yet');
+    //   //this.changeEditMode.emit('initNewQuestion');
+    //   this.saveQuiz.emit('saveQuiz');
+    //   return;
+    // } else if (this.editMode === false){
+    //   //this.changeEditMode.emit('initNewQuestion');
+    // }
+    this.onInitNewQuestion.emit();
   }
 
   onQuestionSelect(question: QuestionTeacher) {
@@ -71,23 +70,6 @@ export class QuizMakerSidebarComponent {
   }
   
   onQuestionDelete(id: number) {
-    if (this.quiz?.questions){
-      if (this.initQuestion === true){
-        alert('Save the question first before deleting one.');
-        return;
-      }
-
-      this.quiz.questions = this.quiz.questions.filter(question => question.questionNumber !== id);
-      this.quiz.questions.forEach((question, index) => {
-        question.questionNumber = index + 1;
-      });
-
-      if (this.quiz?.questions.length == 0){
-        this.onInitNewQuestion.emit();
-      } else {
-        let index = id > 2 ? id - 2 : 0;
-        this.onQuestionSelect(this.quiz?.questions[index]);
-      }
-    }
+    this.onDeleteQuestion.emit(id);
   }
 }
