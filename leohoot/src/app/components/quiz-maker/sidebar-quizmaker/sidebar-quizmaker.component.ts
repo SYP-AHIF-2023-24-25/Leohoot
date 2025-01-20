@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgxCaptureService } from 'ngx-capture';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { Quiz } from 'src/app/model/quiz';
-import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 
@@ -32,7 +31,7 @@ export class QuizMakerSidebarComponent {
   @Output() close = new EventEmitter<void>();
   @Output() saveQuiz = new EventEmitter<string>();
 
-  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService:NgxCaptureService) {
+  constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private captureService:NgxCaptureService) {
   }
 
   leaveQuizmaker() {

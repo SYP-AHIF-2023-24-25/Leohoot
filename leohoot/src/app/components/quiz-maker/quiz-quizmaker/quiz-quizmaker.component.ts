@@ -4,7 +4,6 @@ import { parse } from 'path';
 import { Mode } from 'src/app/model/mode';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
-import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
 
@@ -33,7 +32,6 @@ export class QuizQuizmakerComponent {
     private router: Router,
     private route: ActivatedRoute,
     private signalRService: SignalRService,
-    private configurationService: ConfigurationService,
     private loginService: LoginService
   ) {
   }

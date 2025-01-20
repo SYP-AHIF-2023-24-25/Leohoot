@@ -1,12 +1,7 @@
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { get } from 'jquery';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
-import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
-import { SignalRService } from 'src/app/services/signalr.service';
-import { Mode } from 'src/app/model/mode';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Quiz } from 'src/app/model/quiz';
 import { LoginService } from 'src/app/services/auth.service';
 import { Tag } from 'src/app/model/tag';
@@ -53,7 +48,7 @@ export class QuizMakerComponent {
   @ViewChild(QuestionQuizmakerComponent) questionQuizmakerComponent: QuestionQuizmakerComponent | undefined;
   @ViewChild(QuizMakerSidebarComponent) sidebarComponent!: QuizMakerSidebarComponent;
 
-  constructor(private router: Router, private route: ActivatedRoute, private configurationService: ConfigurationService, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService, private cdr: ChangeDetectorRef) {
+  constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService, private cdr: ChangeDetectorRef) {
 
   }
 

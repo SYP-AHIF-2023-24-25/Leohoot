@@ -3,10 +3,8 @@ import { Quiz } from 'src/app/model/quiz';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxCaptureService } from 'ngx-capture';
-import { ConfigurationService } from 'src/app/services/configuration.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
-import { NavbarComponent } from '../../general-components/navbar/navbar.component';
 
 @Component({
   selector: 'app-question-quizmaker',
@@ -41,7 +39,7 @@ export class QuestionQuizmakerComponent {
   @Output() questionChanged = new EventEmitter<QuestionTeacher>();
   @Output() saveQuiz = new EventEmitter<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private configurationService: ConfigurationService, private captureService: NgxCaptureService) {
+  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private captureService: NgxCaptureService) {
   }
 
   emitChanges() {
@@ -91,7 +89,7 @@ export class QuestionQuizmakerComponent {
           const extension = file.name.split('.').pop();
           let questionNumber = this.question.questionNumber;
           if (this.question.questionNumber === 0) {
-            questionNumber = this.configurationService.getQuestions().length + 1;
+            questionNumber = (this.quiz?.questions?.length ?? 0) + 1;
           }
 
           const fileName = "questionImage_" + questionNumber.toString().padStart(2, '0') + "." + extension;
