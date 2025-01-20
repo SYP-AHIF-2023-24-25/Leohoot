@@ -1,12 +1,12 @@
 
 <div class="flex flex-col lg:flex-row min-h-screen bg-background-blue">
-  <!-- Sidebar -->
   <app-sidebar class="lg:w-1/5 w-full h-full lg:block hidden sticky top-0 self-start"/>
   <app-sidebar
     *ngIf="isSidebarVisible && !screenIsLarge"
     class="w-1/2 bg-white fixed lg:relative z-50"
     [toggleSidebar]="toggleSidebar.bind(this)">
   </app-sidebar>
+
   <!-- Main Content -->
   <div class="flex flex-col flex-1">
     <!-- Header -->
@@ -99,18 +99,16 @@
           <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
           <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
             <span 
-              *ngFor="let tag of quiz.tags | slice:0:3" 
-              class="px-2 py-1 bg-gray-200 rounded text-sm"
-            >
-              {{ tag.name }}
-            </span>
-          
-            <!-- Show a 'more' indicator if there are more than three tags -->
+                *ngFor="let tag of quiz.tags | slice:0:2" 
+                class="px-2 py-1 bg-gray-200 rounded text-sm"
+              >
+                {{ tag.name }}
+              </span>
             <span 
-              *ngIf="quiz.tags.length > 3" 
+              *ngIf="quiz.tags.length > 2" 
               class="px-2 py-1 bg-gray-200 rounded text-sm text-gray-500"
             >
-              +{{ quiz.tags.length - 3 }} more
+              +{{ quiz.tags.length - 2 }} more
             </span>
           </div>
           
