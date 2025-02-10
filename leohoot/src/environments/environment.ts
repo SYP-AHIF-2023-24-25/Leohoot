@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://leohoot.sophiehaider.com',
-    cdnUrl: 'https://leohoot.sophiehaider.com'
+    apiUrl: 'https://leohoot.htl-leonding.ac.at',
+    cdnUrl: 'https://leohoot.htl-leonding.ac.at',
 };
