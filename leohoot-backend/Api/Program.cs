@@ -21,7 +21,7 @@ builder.Services.AddSignalR(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", b => b
-        .WithOrigins("http://localhost:4200", "http://140.238.173.82:8000","https://leohoot.sophiehaider.com")
+        .WithOrigins("http://localhost:4200","https://leohoot.htl-leonding.ac.at")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials());
