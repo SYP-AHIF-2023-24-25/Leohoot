@@ -24,4 +24,6 @@ public class Quiz: EntityObject
     public List<Question> Questions { get; set; } = [];
 
     public List<Tag> Tags { get; set; } = [];
+
+    public List<FavoriteQuizzes> FavoritedBy { get; set; } = [];
 }

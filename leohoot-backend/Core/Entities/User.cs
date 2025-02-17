@@ -14,4 +14,6 @@ public class User: EntityObject
     public required string Password { get; set; }
     
     public required byte[] Salt { get; set; }
+
+    public List<FavoriteQuizzes> FavoriteQuizzes { get; set; } = [];
 }
