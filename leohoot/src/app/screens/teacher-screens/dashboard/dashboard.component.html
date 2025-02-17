@@ -81,9 +81,11 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div
           *ngFor="let quiz of filteredQuizzes"
-          class="p-4 bg-white h-96 rounded-lg shadow-lg flex flex-col items-center"
+          class="p-4 relative bg-white h-[26rem] rounded-lg shadow-lg flex flex-col items-center"
         >
+             
           <div (click)="viewQuizDetails(quiz)">
+
             <img
             *ngIf="quiz.imageName"
             [src]="quiz.imageName"
@@ -96,8 +98,18 @@
             alt="No image"
             class="w-full h-56 object-cover mb-2 aspect-[16/9]"
           />
-          <p class="text-lg mb-1 text-center">{{ quiz.title }}</p>
-          <div class="flex flex-wrap gap-2 mb-2 justify-center h-8">
+
+          <div class="flex items-start justify-center gap-2 my-3">
+            <div *ngIf="!quiz.isPublic" class="flex bg-hooti-yellow text-white p-1 items-center rounded-md">
+              <img src="assets/images/padlock.png" alt="lock" class="w-6 h-6">
+            </div>
+            <div class="flex flex-col justify-start text-lg text-left">
+              <p>{{ quiz.title.length > 35 ? (quiz.title | slice:0:35) + '…' : quiz.title }}</p>
+            </div>
+          </div>
+          
+
+          <div class="flex flex-wrap gap-2 mt-1 mb-1 justify-center h-8">
             <span 
                 *ngFor="let tag of quiz.tags | slice:0:2" 
                 class="px-2 py-1 bg-gray-200 rounded text-sm"
@@ -112,15 +124,17 @@
             </span>
           </div>
           
-          <div class="flex justify-between w-full mt-auto">
+          <div class="flex justify-between w-full mt-6 ">
             <div class="flex justify-start items-center rounded-lg">
               <img src="/assets/images/hootiFaceIcon.ico" alt="hootie icon" class="w-10 h-10 rounded-full mr-2">
               <div class="text-md">{{quiz.creator}}</div>
             </div>
 
-            <div class="flex justify-end items-center ">
-              <div class="inline-block bg-gray-200 rounded-full px-3 py-1 font-bold ml-2 mr-2 text-end">?</div>
-              <div class="text-end">{{ quiz.questions.length }}</div>
+            <div class="flex justify-end items-center">
+              <div class="inline-flex items-center bg-gray-200 rounded-md px-4 py-2 font-bold ml-2 mr-2">
+                <span class="mr-2">?</span>
+                <span class="font-normal">{{ quiz.questions.length }}</span>
+              </div>
             </div>
           </div>
         </div>
