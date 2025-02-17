@@ -51,7 +51,6 @@ import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmaker/header-quizmaker.component';
 import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/quiz-quizmaker.component';
-import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
 import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
 import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
@@ -104,7 +103,6 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     QuestionsComponent,
     HeaderQuizmakerComponent,
     QuizQuizmakerComponent,
-    UploadImageComponent,
     TagsQuizmakerComponent,
     QuestionQuizmakerComponent,
     DashboardComponent,
