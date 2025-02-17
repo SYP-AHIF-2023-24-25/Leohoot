@@ -30,6 +30,23 @@
           </div>
         </div>
       </div>
+      <div class="col-span-1 font-bold">Visibility:</div>
+      <div class="col-span-3 flex items-center space-x-3">
+        <span class="text-white text-md">Private: </span>
+        <div class="relative w-14 h-7 flex items-center">
+          <!-- Checkbox hidden for visual effect -->
+          <input type="checkbox" [checked]="!selectedQuiz?.isPublic" class="sr-only peer" />
+          <div *ngIf="!selectedQuiz?.isPublic" class="relative w-14 h-7 bg-gray-200 rounded-full peer-checked:bg-hooti-yellow">
+            <div class="after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 transition-all peer-checked:after:translate-x-full peer-checked:after:right-0"></div>
+          </div>
+          <div *ngIf="selectedQuiz?.isPublic" class="relative w-14 h-7 bg-gray-200 rounded-full peer-checked:bg-hooti-yellow">
+            <div class="after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 transition-all peer-checked:after:translate-x-full peer-checked:after:left-0"></div>
+          </div>
+        </div>
+        <img src="assets/images/padlock.png" class="h-7 w-7" />
+      </div>
+
+
       <div class="col-span-1 font-bold">Description:</div>
       <div class="col-span-3">{{selectedQuiz?.description}}</div>
     </div>
