@@ -23,7 +23,7 @@ import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
-import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
+import { ValidatePasswordDirective } from './validators/validate-password.directive';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
