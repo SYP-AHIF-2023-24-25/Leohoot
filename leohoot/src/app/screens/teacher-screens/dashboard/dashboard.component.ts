@@ -56,10 +56,12 @@ export class DashboardComponent {
 
   fetchQuizzes(): void {
     this.restService.getAllQuizzes().subscribe((data: Quiz[]) => {
-      this.quizzes = data;
       if (this.ownQuizzesSelected) {
         this.quizzes = data.filter(d => d.creator === this.username)
+      } else {
+        this.quizzes = data.filter(d => d.isPublic || d.creator === this.username);
       }
+      
       this.filteredQuizzes = this.quizzes;
     });
   }
