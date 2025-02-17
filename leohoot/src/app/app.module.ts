@@ -34,8 +34,6 @@ import { HeaderComponent } from "./components/general-components/header/header.c
 import { ButtonComponent } from "./components/general-components/button/button.component";
 import { RankingListComponent } from "./components/ranking/ranking-list/ranking-list.component";
 import { FooterComponent } from "./components/general-components/footer/footer.component";
-import { QuizCardComponent } from "./components/quiz-overview/quiz-card/quiz-card.component";
-import { SearchBarComponent } from "./components/quiz-overview/search-bar/search-bar.component";
 import { NavbarComponent } from "./components/general-components/navbar/navbar.component";
 import { CountdownComponent } from "./components/general-components/countdown/countdown.component";
 import { AnswerButtonComponent } from "./components/question/answer-button/answer-button.component";
@@ -87,8 +85,6 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     ButtonComponent,
     RankingListComponent,
     FooterComponent,
-    QuizCardComponent,
-    SearchBarComponent,
     NavbarComponent,
     CountdownComponent,
     AnswerButtonComponent,

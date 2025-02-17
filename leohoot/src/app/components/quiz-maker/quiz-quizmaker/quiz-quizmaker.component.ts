@@ -14,6 +14,7 @@ import { SignalRService } from 'src/app/services/signalr.service';
 export class QuizQuizmakerComponent {
   quizTitle: string = '';
   description: string = '';
+  isPrivate: boolean = false;
   quiz: Quiz | undefined;
   @Input() quizId: string = "";
   @Output() saveQuiz = new EventEmitter<void>();
@@ -25,6 +26,7 @@ export class QuizQuizmakerComponent {
     if (value) {
       this.quizTitle = value.title || '';
       this.description = value.description || '';
+      this.isPrivate = !value.isPublic;
     }
   }
   constructor(
@@ -54,6 +56,12 @@ export class QuizQuizmakerComponent {
   updateQuizTitle(title: string) {
     if (this.quiz) {
       this.quiz.title = title;
+    }
+  }
+
+  updateIsPublic(value: boolean) {
+    if (this.quiz) {
+      this.quiz.isPublic = !value;
     }
   }
 
