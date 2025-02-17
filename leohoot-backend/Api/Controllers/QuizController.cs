@@ -68,7 +68,8 @@ public class QuizController : Controller
                 PreviewTime = q.PreviewTime,
                 ShowMultipleChoice = q.ShowMultipleChoice
             }).ToList(),
-            ImageName = quizDto.ImageName
+            ImageName = quizDto.ImageName,
+            IsPublic = quizDto.IsPublic
         };
 
         foreach (var tagDto in quizDto.Tags)
@@ -99,6 +100,7 @@ public class QuizController : Controller
         existingQuiz.Title = quizDto.Title;
         existingQuiz.Description = quizDto.Description;
         existingQuiz.ImageName = quizDto.ImageName;
+        existingQuiz.IsPublic = quizDto.IsPublic;
         if (quizDto.Questions.Count == 0){
             existingQuiz.Questions.Clear();
         } else {
@@ -192,7 +194,8 @@ public class QuizController : Controller
 
         return Results.Created($"/cdn/images/{newImageName}", newImageName);
     } 
-     [HttpGet("tags")]
+
+    [HttpGet("tags")]
     public async Task<List<TagDto>> GetTags()
     {
         return await _unitOfWork.Tags.GetAllTagsAsync();

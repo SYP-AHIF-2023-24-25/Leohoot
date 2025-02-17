@@ -1,0 +1,300 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\persistence\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|solutionrelative:persistence\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ECBAD743-EFE5-4290-9F3B-E3ED9405ADC0}|Core\\Core.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\core\\datatransferobjects\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ECBAD743-EFE5-4290-9F3B-E3ED9405ADC0}|Core\\Core.csproj|solutionrelative:core\\datatransferobjects\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\persistence\\quizrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|solutionrelative:persistence\\quizrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ECBAD743-EFE5-4290-9F3B-E3ED9405ADC0}|Core\\Core.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\core\\entities\\quiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ECBAD743-EFE5-4290-9F3B-E3ED9405ADC0}|Core\\Core.csproj|solutionrelative:core\\entities\\quiz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\persistence\\migrations\\20240616100420_intitalcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|solutionrelative:persistence\\migrations\\20240616100420_intitalcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193627_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193521_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142300_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142004_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528141205_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\persistence\\tagrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|solutionrelative:persistence\\tagrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093809_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\persistence\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8E59194-BC14-46E2-8153-B04788DF5C21}|Persistence\\Persistence.csproj|solutionrelative:persistence\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093531_DropTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C58E73D3-1EF7-4AA1-A57E-1A0D2B0644CE}|Api\\Api.csproj|c:\\users\\victoria\\documents\\htl\\5ahif\\syp\\leohoot\\leohoot-backend\\api\\controllers\\quizcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C58E73D3-1EF7-4AA1-A57E-1A0D2B0644CE}|Api\\Api.csproj|solutionrelative:api\\controllers\\quizcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationDbContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "Persistence\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeToolTip": "Persistence\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T13:00:09.387Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Microsoft.Common.CurrentVersion.targets",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
+              "ViewState": "AgIAAJkTAAAAAAAAAAAjwKoTAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-02-17T13:00:03.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QuizRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\QuizRepository.cs",
+              "RelativeDocumentMoniker": "Persistence\\QuizRepository.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\QuizRepository.cs",
+              "RelativeToolTip": "Persistence\\QuizRepository.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAEwDcAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:59:07.693Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Dtos.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Core\\DataTransferObjects\\Dtos.cs",
+              "RelativeDocumentMoniker": "Core\\DataTransferObjects\\Dtos.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Core\\DataTransferObjects\\Dtos.cs",
+              "RelativeToolTip": "Core\\DataTransferObjects\\Dtos.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:58:51.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Quiz.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Core\\Entities\\Quiz.cs",
+              "RelativeDocumentMoniker": "Core\\Entities\\Quiz.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Core\\Entities\\Quiz.cs",
+              "RelativeToolTip": "Core\\Entities\\Quiz.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwBUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:54:57.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20240616100420_IntitalCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240616100420_IntitalCreate.cs",
+              "RelativeDocumentMoniker": "Persistence\\Migrations\\20240616100420_IntitalCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240616100420_IntitalCreate.cs",
+              "RelativeToolTip": "Persistence\\Migrations\\20240616100420_IntitalCreate.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAiwBAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:21:26.3Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20250217122216_added_puplic_private_quizmanagement.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs",
+              "RelativeDocumentMoniker": "Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs",
+              "RelativeToolTip": "Persistence\\Migrations\\20250217122216_added_puplic_private_quizmanagement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:22:16.504Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "20240604193627_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193627_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193627_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193627_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193627_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T19:36:27.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20240604193521_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193521_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193521_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193521_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240604193521_InitialCreate.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAQwCEAAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T19:35:22.2Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20240528142300_init.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142300_init.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142300_init.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142300_init.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142300_init.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-28T14:23:00.805Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20240528142004_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142004_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142004_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142004_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528142004_InitialCreate.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-28T14:20:04.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "20240528141205_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528141205_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528141205_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528141205_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240528141205_InitialCreate.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAQwCAAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-28T14:12:05.971Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TagRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\TagRepository.cs",
+              "RelativeDocumentMoniker": "Persistence\\TagRepository.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\TagRepository.cs",
+              "RelativeToolTip": "Persistence\\TagRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:21:10.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "20240501093809_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093809_InitialCreate.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093809_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093809_InitialCreate.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093809_InitialCreate.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-01T09:38:09.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "20240501093531_DropTables.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093531_DropTables.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093531_DropTables.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093531_DropTables.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\4AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\Migrations\\20240501093531_DropTables.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-01T09:35:31.236Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Persistence\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Persistence\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Persistence\\ApplicationDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:21:10.204Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "QuizController.cs",
+              "DocumentMoniker": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Api\\Controllers\\QuizController.cs",
+              "RelativeDocumentMoniker": "Api\\Controllers\\QuizController.cs",
+              "ToolTip": "C:\\Users\\Victoria\\Documents\\htl\\5AHIF\\Syp\\Leohoot\\leohoot-backend\\Api\\Controllers\\QuizController.cs",
+              "RelativeToolTip": "Api\\Controllers\\QuizController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABoAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T12:21:10.208Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
