@@ -160,7 +160,14 @@ export class RestService {
   }
 
   updateQuestion(quizId: number, question: QuestionTeacher) {
-  
     return this.httpClient.put(`${RestService.apiUrl}quizzes/${quizId}/questions/${question.questionNumber}`, question);
+  }
+
+  getStatisticCsv(statisticId: number): Observable<Blob> {
+    return this.httpClient.get(`${RestService.apiUrl}statistics/${statisticId}/download`, {responseType: "blob"});
+  }
+
+  getGameStatisticsCsv(statisticId: number): Observable<Blob> {
+    return this.httpClient.get(`${RestService.apiUrl}statistics/${statisticId}/game/download`, {responseType: "blob"});
   }
 }
