@@ -15,10 +15,10 @@
         </button>
       </div>
       <div class="flex items-center flex-grow mr-4">
-        <div class="text-xl font-bold">{{statistic?.quizName}}</div>
+        <div class="text-xl font-bold" *ngIf="statistic">{{statistic.quizName}}</div>
       </div>
       <div class="flex items-center space-x-4">
-        <span class="material-icons">download</span>
+        <span class="material-icons" (click)="downloadStatistics()">download</span>
         <div class="w-px h-6 bg-white"></div>
         <app-profile/>
       </div>
