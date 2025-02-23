@@ -31,6 +31,10 @@ export class QuizDetailsComponent {
   }
 
   async startGame() {
+    if (this.selectedQuiz?.questions.length === 0) {
+      alert("This quiz has no questions. Please add questions to start the quiz.");
+      return;
+    }
     await this.router.navigate(['/waitingroom'], { queryParams: { quizId:  this.selectedQuiz?.id } });
   }
 }
