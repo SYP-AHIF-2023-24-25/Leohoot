@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/statistics")]
 [ApiController]
 public class StatisticController: Controller

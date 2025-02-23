@@ -11,7 +11,8 @@ export class AuthInterceptorService implements AuthInterceptorService{
   constructor(private loginService: LoginService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authToken = this.loginService.getToken();
+    //const authToken = this.loginService.getToken();
+    const authToken = null
     console.log('authToken', authToken);
     if (authToken) {
       const cloned = req.clone({

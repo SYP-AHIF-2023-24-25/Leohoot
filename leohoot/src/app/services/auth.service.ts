@@ -79,10 +79,11 @@ export class LoginService {
   }
 
   getUserName(): string {
-    let token: string | null | undefined = this.getToken();
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
-    return this.isLoggedInIntern()
+    //let token: string | null | undefined = this.getToken();
+    //const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
+    return "if200148";
+    /*return this.isLoggedInIntern()
       ? decoded.username
-      : decoded.preferred_username;
+      : decoded.preferred_username;*/
   }
 }
