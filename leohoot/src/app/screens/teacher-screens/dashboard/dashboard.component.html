@@ -70,7 +70,7 @@
                   for="{{ tag.name }}" 
                   class="text-sm text-gray-700 cursor-pointer hover:text-blue-600 transition-colors duration-200"
                 >
-                  {{ tag.name }}
+                  {{ tag.name.length > 23 ? (tag.name | slice:0:23) + '…' : tag.name}}
                 </label>
               </span>
             </div>
@@ -85,18 +85,23 @@
         >
              
           <div (click)="viewQuizDetails(quiz)">
+            <img *ngIf="quiz.isFavorited"
+              src="assets/images/heart-filled-light.png" 
+              alt="Heart" 
+              class="absolute top-2 right-2 w-12 h-12 cursor-pointer"
+            />
 
             <img
             *ngIf="quiz.imageName"
             [src]="quiz.imageName"
             alt="Quiz Image"
-            class="w-full h-56 object-cover mb-2 aspect-[16/9]"
+            class="w-full h-56 object-cover mb-3 aspect-[16/9]"
           />
           <img
             *ngIf="!quiz.imageName"
             src="assets/images/noImage.png"
             alt="No image"
-            class="w-full h-56 object-cover mb-2 aspect-[16/9]"
+            class="w-full h-56 object-cover mb-3 aspect-[16/9]"
           />
 
           <div class="flex items-start justify-center gap-2 my-3">

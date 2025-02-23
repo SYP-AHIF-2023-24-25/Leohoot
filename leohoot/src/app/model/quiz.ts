@@ -9,5 +9,6 @@ export interface Quiz {
   creator: string;
   imageName: string;
   isPublic: boolean;
+  isFavorited: boolean;
   id?: number;
 }

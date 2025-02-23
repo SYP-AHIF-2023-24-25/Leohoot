@@ -27,7 +27,8 @@ export class QuizMakerComponent {
     questions: [],
     imageName: "",
     isPublic: false,
-    tags: []
+    tags: [],
+    isFavorited: false
   };
 
   username: string = "";

@@ -7,59 +7,88 @@ import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromD
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 
-// Function to initialize Keycloak with the necessary configurations
-function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
-    keycloak.init({
-      config: {
-        url: 'https://auth.htl-leonding.ac.at', // URL of the Keycloak server
-        realm: 'htlleonding', // Realm to be used in Keycloak
-        clientId: 'htlleonding-service' // Client ID for the application in Keycloak,
-      },
-      initOptions: {
-        onLoad: 'check-sso', // Action to take on load
-        //enableLogging: true, // Enables logging
-        pkceMethod: 'S256', // Proof Key for Code Exchange (PKCE) method to use
-        // IMPORTANT: implicit flow is no longer recommended, but using standard flow leads to a 401 at the keycloak server
-        // when retrieving the token with the access code - we leave it like this for the moment until a solution is found
-        flow: 'implicit',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html' // URI for silent SSO checks
-      },
-      // Enables Bearer interceptor
-      enableBearerInterceptor: true,
-      // Prefix for the Bearer token
-      bearerPrefix: 'Bearer',
-      // URLs excluded from Bearer token addition (empty by default)
-      //bearerExcludedUrls: []
-    });
-}
+// // Function to initialize Keycloak with the necessary configurations
+// function initializeKeycloak(keycloak: KeycloakService) {
+//   return () =>
+//     keycloak.init({
+//       config: {
+//         url: 'https://auth.htl-leonding.ac.at', // URL of the Keycloak server
+//         realm: 'htlleonding', // Realm to be used in Keycloak
+//         clientId: 'htlleonding-service' // Client ID for the application in Keycloak,
+//       },
+//       initOptions: {
+//         onLoad: 'check-sso', // Action to take on load
+//         //enableLogging: true, // Enables logging
+//         pkceMethod: 'S256', // Proof Key for Code Exchange (PKCE) method to use
+//         // IMPORTANT: implicit flow is no longer recommended, but using standard flow leads to a 401 at the keycloak server
+//         // when retrieving the token with the access code - we leave it like this for the moment until a solution is found
+//         flow: 'implicit',
+//         silentCheckSsoRedirectUri:
+//           window.location.origin + '/assets/silent-check-sso.html' // URI for silent SSO checks
+//       },
+//       // Enables Bearer interceptor
+//       enableBearerInterceptor: true,
+//       // Prefix for the Bearer token
+//       bearerPrefix: 'Bearer',
+//       // URLs excluded from Bearer token addition (empty by default)
+//       //bearerExcludedUrls: []
+//     });
+// }
 
-// Provider for Keycloak Bearer Interceptor
-const KeycloakBearerInterceptorProvider: Provider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: KeycloakBearerInterceptor,
-  multi: true
-};
+// // Provider for Keycloak Bearer Interceptor
+// const KeycloakBearerInterceptorProvider: Provider = {
+//   provide: HTTP_INTERCEPTORS,
+//   useClass: KeycloakBearerInterceptor,
+//   multi: true
+// };
 
-// Provider for Keycloak Initialization
-const KeycloakInitializerProvider: Provider = {
-  provide: APP_INITIALIZER,
-  useFactory: initializeKeycloak,
-  multi: true,
-  deps: [KeycloakService]
+// // Provider for Keycloak Initialization
+// const KeycloakInitializerProvider: Provider = {
+//   provide: APP_INITIALIZER,
+//   useFactory: initializeKeycloak,
+//   multi: true,
+//   deps: [KeycloakService]
+// }
+
+// export const appConfig: ApplicationConfig = {
+//   providers: [
+//     // {
+//     //   provide: HTTP_INTERCEPTORS,
+//     //   useClass: AuthInterceptorService,
+//     //   multi: true
+//     // },
+//     // KeycloakInitializerProvider, // Initializes Keycloak
+//     // KeycloakService, // Service for Keycloak
+//     provideRouter(routes),
+//     provideAnimationsAsync()
+//   ]
+// };
+
+class MockKeycloakService {
+  async login() {
+    console.log('Mock login');
+  }
+
+  async logout() {
+    console.log('Mock logout');
+  }
+
+  async isLoggedIn(): Promise<boolean> {
+    return true; // Simulating an always logged-in state
+  }
+
+  getKeycloakInstance() {
+    return { token: 'mock-token' }; // Mock token response
+  }
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
+      provide: KeycloakService,
+      useClass: MockKeycloakService, // Use Mock instead of real Keycloak
     },
-    KeycloakInitializerProvider, // Initializes Keycloak
-    KeycloakService, // Service for Keycloak
     provideRouter(routes),
-    provideAnimationsAsync()
-  ]
+    provideAnimationsAsync(),
+  ],
 };

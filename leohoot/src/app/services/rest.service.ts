@@ -122,7 +122,7 @@ export class RestService {
   }
 
   addTagToQuiz(quizId: number, tagName: string): Observable<void> {
-    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/tags/`, tagName);
+    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/tags`, tagName);
   }
 
   removeTagFromQuiz(quizId: number, tagName: string): Observable<void> {
@@ -162,5 +162,14 @@ export class RestService {
   updateQuestion(quizId: number, question: QuestionTeacher) {
   
     return this.httpClient.put(`${RestService.apiUrl}quizzes/${quizId}/questions/${question.questionNumber}`, question);
+  }
+
+  favoriteQuiz(quizId: number, username: string): Observable<void> {
+    console.log(quizId, username)
+    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite`, {username: username});
+  }
+
+  unfavoriteQuiz(quizId: number, username: string): Observable<void> {
+    return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite?username=${username}`);
   }
 }

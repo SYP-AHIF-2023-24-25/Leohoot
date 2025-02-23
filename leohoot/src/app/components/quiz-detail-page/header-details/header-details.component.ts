@@ -46,4 +46,21 @@ export class HeaderDetailsComponent {
   async logout() {
     await this.loginService.logout()
   }
+
+  unfavoriteQuiz() {
+    this.restService.unfavoriteQuiz(this.quiz?.id!, this.username).subscribe(() => {
+      this.restService.getQuizById(this.quiz?.id!).subscribe((quiz) => {
+        this.quiz = quiz;
+      });
+    });
+  }
+
+  favoriteQuiz() {
+    this.restService.favoriteQuiz(this.quiz?.id!, this.username).subscribe(() => {
+
+      this.restService.getQuizById(this.quiz?.id!).subscribe((quiz) => {
+        this.quiz = quiz;
+      });
+    });
+  }
 }
