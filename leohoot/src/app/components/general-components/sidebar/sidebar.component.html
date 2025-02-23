@@ -14,6 +14,12 @@
       </button>
       <button
         class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded"
+        [ngClass]="{'bg-gray-300': selectedItem === 'favorites'}"
+        (click)="toggleFavoriteQuizzes()">
+        <span class="material-icons mr-2">favorite</span> {{ 'Favorite Quizzes' }}
+      </button>
+      <button
+        class="flex items-center p-2 w-full text-gray-700 hover:bg-gray-200 rounded"
         [ngClass]="{'bg-gray-300': selectedItem === 'own'}"
         (click)="toggleOwnQuizzes()">
         <span class="material-icons mr-2">quiz</span> {{ 'Own Quizzes' }}

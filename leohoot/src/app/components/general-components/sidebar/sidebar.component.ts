@@ -21,6 +21,11 @@ export class SidebarComponent {
     this.selectItem("home")
   }
 
+  async toggleFavoriteQuizzes(): Promise<void> {
+    await this.router.navigate(['/dashboard'], { queryParams: {section: DashboardSectionType.FAVOURITES}});
+    this.selectItem("favorites")
+  }
+
   async toggleOwnQuizzes(): Promise<void> {
     await this.router.navigate(['/dashboard'], { queryParams: {section: DashboardSectionType.OWN}});
     this.selectItem("own")

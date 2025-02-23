@@ -20,6 +20,7 @@ export class DashboardComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   ownQuizzesSelected: boolean = false;
+  favoriteQuizzesSelected: boolean = false;
   isOpen = false;
 
   constructor(private restService: RestService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {}
@@ -31,6 +32,7 @@ export class DashboardComponent {
      this.route.queryParams.subscribe(params => {
        let section = parseInt(params['section']);
        this.ownQuizzesSelected = section === DashboardSectionType.OWN;
+       this.favoriteQuizzesSelected = section === DashboardSectionType.FAVOURITES;
        this.fetchQuizzes();
      });
   }
@@ -58,6 +60,8 @@ export class DashboardComponent {
     this.restService.getAllQuizzes().subscribe((data: Quiz[]) => {
       if (this.ownQuizzesSelected) {
         this.quizzes = data.filter(d => d.creator === this.username)
+      } else if (this.favoriteQuizzesSelected) {
+        this.quizzes = data.filter(d => d.isFavorited && d.isPublic);
       } else {
         this.quizzes = data.filter(d => d.isPublic || d.creator === this.username);
       }
