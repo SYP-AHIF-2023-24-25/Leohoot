@@ -83,19 +83,6 @@ export class QuizQuizmakerComponent {
     }
   }
 
-  async onClose(){
-    if (confirm("Are you sure you want to leave? All unsaved changes will be lost.")) {
-      if (this.quiz?.id){
-        this.saveQuiz.emit();
-      }
-      if (this.quizId) {
-        await this.router.navigate(['/dashboard'], {queryParams: {quizId: this.quizId}});
-      } else {
-        await this.router.navigate(['/dashboard'])
-      }
-    }
-  }
-
   handleFileInput(event: any) {
     const files = event?.target?.files;
     if (files && files.length > 0) {
@@ -143,15 +130,22 @@ export class QuizQuizmakerComponent {
   }
 
   playDemoMode() {
-    if (this.quiz?.id) {
+    if (this.quiz?.id && this.quiz.questions.length > 0) {
     const id = parseInt(this.quiz.id.toString());
     this.saveQuiz.emit();
     this.restService.getNewGameId(id).subscribe(data => {
       this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quiz?.id } });
     });
-  } else {
+  } else if (this.quiz?.id && this.quiz.questions.length === 0) {
+    alert('Please add questions to the quiz first.');
+  }
+  else {
     alert('Please save the quiz first.');
   }
   }
+}
+
+function isWhitespace(title: string): boolean {
+  return title.trim().length === 0;
 }
 

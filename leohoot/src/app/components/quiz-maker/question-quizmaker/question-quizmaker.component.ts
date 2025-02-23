@@ -168,6 +168,11 @@ export class QuestionQuizmakerComponent {
   }
   
   async onQuestionAdd() {
+    if (this.question.answers.every(answer => !answer.isCorrect)) {
+      alert('At least one answer must be correct.');
+      return;
+    }
+
     this.loading = true;
     await this.createQuestionSnapshot();
 

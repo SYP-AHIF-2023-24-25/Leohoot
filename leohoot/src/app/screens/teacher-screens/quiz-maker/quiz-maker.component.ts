@@ -83,15 +83,25 @@ export class QuizMakerComponent {
 
   async close(){
     if (confirm("Are you sure you want to leave?")) {
+      if (this.quiz?.title.length === 0 || this.quiz?.description.length === 0 || this.quiz?.title === undefined || this.quiz?.description === undefined || this.isWhitespaceString(this.quiz?.title) || this.isWhitespaceString(this.quiz?.description)) {
+        alert('Please enter a title and description for the quiz.');
+        return;
+      }
+
       if (this.quizId === -1){
-        confirm('Quiz not saved. All changes will be lost.');
-        await this.router.navigate(['/dashboard']);
+        this.saveQuiz();
       }
       if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
       || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
         || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
         this.saveQuiz();
-        await this.router.navigate(['/dashboard']);
+        if (this.quizId) {
+          await this.router.navigate(['/dashboard'], {queryParams: {quizId: this.quizId}});
+        } else {
+          await this.router.navigate(['/dashboard'])
+        }
+      } else {
+        alert('Please fill in all necessary fields and add the question first.');
       }
     }
   }
@@ -103,7 +113,7 @@ export class QuizMakerComponent {
 
 
   saveQuiz() {
-    this.quiz!.questions =  this.quiz!.questions.map(question => ({
+    this.quiz!.questions = this.quiz!.questions.map(question => ({
       ...question,
       answers: question.answers.filter(answer => answer.answerText !== '')
     }));
@@ -168,7 +178,7 @@ export class QuizMakerComponent {
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
       alert('Please fill in all necessary fields.');
       return;
-    } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false){
+    } else if (this.editQuizDetails === false && this.question.questionNumber === 0){
       alert('Please fill in all necessary fields and add the question first.');
       return;
     }
