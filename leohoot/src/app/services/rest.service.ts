@@ -164,14 +164,13 @@ export class RestService {
   }
 
   favoriteQuiz(quizId: number, username: string): Observable<void> {
-    console.log(quizId, username)
-    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite`, {username: username});
+    return this.httpClient.post<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite?username=${username}`, {});
   }
 
   unfavoriteQuiz(quizId: number, username: string): Observable<void> {
     return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite?username=${username}`);
   }
-  
+
   getStatisticCsv(statisticId: number): Observable<Blob> {
     return this.httpClient.get(`${RestService.apiUrl}statistics/${statisticId}/download`, {responseType: "blob"});
   }

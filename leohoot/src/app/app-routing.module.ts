@@ -64,16 +64,16 @@ export const routes: Routes = [
   {
     path: 'quizMaker',
     component: QuizMakerComponent,
-    // canActivate: [AuthGuard], data: {
-    //   roles: [Role.Teacher]
-    // }
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // canActivate: [AuthGuard], data: {
-    //   roles: [Role.Teacher]
-    // }
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
   },
   {
     path: 'questionPreview',
@@ -85,9 +85,9 @@ export const routes: Routes = [
   {
     path: 'quizDetails',
     component: QuizDetailPageComponent,
-    // canActivate: [AuthGuard], data: {
-    //   roles: [Role.Teacher]
-    // }
+    canActivate: [AuthGuard], data: {
+      roles: [Role.Teacher]
+    }
   },
   {
     path: 'statisticOverview',

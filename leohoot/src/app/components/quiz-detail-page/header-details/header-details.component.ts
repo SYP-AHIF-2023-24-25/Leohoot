@@ -48,7 +48,7 @@ export class HeaderDetailsComponent {
   }
 
   unfavoriteQuiz() {
-    this.restService.unfavoriteQuiz(this.quiz?.id!, this.username).subscribe(() => {
+    this.restService.unfavoriteQuiz(this.quiz?.id!, this.username).subscribe((data) => {
       this.restService.getQuizById(this.quiz?.id!).subscribe((quiz) => {
         this.quiz = quiz;
       });
@@ -56,8 +56,7 @@ export class HeaderDetailsComponent {
   }
 
   favoriteQuiz() {
-    this.restService.favoriteQuiz(this.quiz?.id!, this.username).subscribe(() => {
-
+    this.restService.favoriteQuiz(this.quiz?.id!, this.username).subscribe((data) => {
       this.restService.getQuizById(this.quiz?.id!).subscribe((quiz) => {
         this.quiz = quiz;
       });

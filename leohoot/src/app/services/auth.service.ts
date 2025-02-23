@@ -81,15 +81,9 @@ export class LoginService {
   getUserName(): string {
     //let token: string | null | undefined = this.getToken();
     //const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
-    return "if200157";
+    return "if200127";
     /*return this.isLoggedInIntern()
       ? decoded.username
       : decoded.preferred_username;*/
   }
-  //   let token: string | null | undefined = this.getToken();
-  //   const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
-  //   return this.isLoggedInIntern()
-  //     ? decoded.username
-  //     : decoded.preferred_username;
-  // }
 }
