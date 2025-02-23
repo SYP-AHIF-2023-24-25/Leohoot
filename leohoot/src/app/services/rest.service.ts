@@ -160,7 +160,6 @@ export class RestService {
   }
 
   updateQuestion(quizId: number, question: QuestionTeacher) {
-  
     return this.httpClient.put(`${RestService.apiUrl}quizzes/${quizId}/questions/${question.questionNumber}`, question);
   }
 
@@ -171,5 +170,13 @@ export class RestService {
 
   unfavoriteQuiz(quizId: number, username: string): Observable<void> {
     return this.httpClient.delete<void>(`${RestService.apiUrl}quizzes/${quizId}/favorite?username=${username}`);
+  }
+  
+  getStatisticCsv(statisticId: number): Observable<Blob> {
+    return this.httpClient.get(`${RestService.apiUrl}statistics/${statisticId}/download`, {responseType: "blob"});
+  }
+
+  getGameStatisticsCsv(statisticId: number): Observable<Blob> {
+    return this.httpClient.get(`${RestService.apiUrl}statistics/${statisticId}/game/download`, {responseType: "blob"});
   }
 }

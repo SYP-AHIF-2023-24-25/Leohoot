@@ -18,6 +18,7 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
     public Task<List<StatisticOverviewDto>> GetAllStatisticsAsync()
     {
         return _statistics
+            .OrderByDescending(s => s.StartTime)
             .Select(s => new StatisticOverviewDto(
                 s.Id,
                 s.StartTime, 
@@ -26,7 +27,8 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
                 s.QuizName,
                 s.StudentsCount,
                 s.QuizId)
-            ).ToListAsync();
+            )
+            .ToListAsync();
     }
 
     public async Task<StatisticDetailsDto?> GetStatisticsByStatisticIdAsync(int statisticId)
@@ -87,5 +89,20 @@ public class StatisticRepository: GenericRepository<Statistic>, IStatisticReposi
             .ToList();
         return new StatisticDto(statistic.QuizName, [], questionAnswers, questionTexts, statistic.StudentsCount);
 
+    }
+
+    public async Task<List<GameStatisticQuestion>?> GetGameStatisticAsync(int statisticId)
+    {
+        var statisticTable = await GetStatisticForTableByIdAsync(statisticId);
+        if (statisticTable == null) return null;
+        var questions = new List<GameStatisticQuestion>();
+        for (int i = 0; i < statisticTable.QuestionTexts.Count; i++)
+        {
+            var correctAnswers = statisticTable.QuestionAnswers[i+1].Count(a => a);
+            var wrongAnswers = statisticTable.QuestionAnswers[i+1].Count(a => !a);
+            var notGivenAnswers = statisticTable.PlayerCount - correctAnswers - wrongAnswers;
+            questions.Add(new GameStatisticQuestion(statisticTable.QuestionTexts[i], correctAnswers, wrongAnswers, notGivenAnswers));
+        }
+        return questions;
     }
 }

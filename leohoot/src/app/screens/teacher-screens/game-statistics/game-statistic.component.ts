@@ -11,6 +11,7 @@ export class GameStatisticComponent {
   isSidebarVisible = false;
   screenIsLarge = false;
   statistic?: Statistic;
+  statisticId: number = 0;
 
   constructor(private restService: RestService, private route: ActivatedRoute) {
     this.screenIsLarge = window.innerWidth >= 1024;
@@ -18,6 +19,7 @@ export class GameStatisticComponent {
       let statisticId = parseInt(params['statisticId']);
       this.restService.getGameStatistics(statisticId).subscribe((data) => {
         this.statistic = data;
+        this.statisticId = statisticId;
       })
     })
   }
@@ -29,5 +31,19 @@ export class GameStatisticComponent {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenIsLarge = window.innerWidth >= 1024;
+  }
+
+  downloadStatistics() {
+    console.log("downloadStatistics");
+    this.restService.getGameStatisticsCsv(this.statisticId).subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'statistics.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    })
   }
 }

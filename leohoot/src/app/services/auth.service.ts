@@ -79,21 +79,12 @@ export class LoginService {
   }
 
   getUserName(): string {
-    let token: string | null | undefined = this.getToken();
-
-  if (!token) {
-    console.warn('No token found, returning default username');
-    return 'Guest'; // Fallback value
-  }
-
-  try {
-    const decoded: JwtPayload = jwtDecode<JwtPayload>(token);
-    return this.isLoggedInIntern()
+    //let token: string | null | undefined = this.getToken();
+    //const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
+    return "if200157";
+    /*return this.isLoggedInIntern()
       ? decoded.username
-      : decoded.preferred_username;
-  } catch (error) {
-    console.error('Invalid token:', error);
-    return 'Guest'; // Fallback in case of invalid token
+      : decoded.preferred_username;*/
   }
   //   let token: string | null | undefined = this.getToken();
   //   const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
@@ -101,5 +92,4 @@ export class LoginService {
   //     ? decoded.username
   //     : decoded.preferred_username;
   // }
-}
 }

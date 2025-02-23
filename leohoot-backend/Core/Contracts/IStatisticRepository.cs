@@ -9,4 +9,5 @@ public interface IStatisticRepository: IGenericRepository<Statistic>
     public Task<List<StatisticOverviewDto>> GetAllStatisticsAsync();
     public Task<StatisticDetailsDto?> GetStatisticsByStatisticIdAsync(int quizId);
     public Task<StatisticDto?> GetStatisticForTableByIdAsync(int statisticId);
+    public Task<List<GameStatisticQuestion>?> GetGameStatisticAsync(int statisticId);
 }
