@@ -19,6 +19,8 @@ public class Quiz: EntityObject
     [MaxLength(256)]
     public string? ImageName { get; set; }
 
+    public bool IsPublic { get; set; }
+
     public List<Question> Questions { get; set; } = [];
 
     public List<Tag> Tags { get; set; } = [];

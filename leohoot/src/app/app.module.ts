@@ -23,7 +23,7 @@ import { CommonModule, NgOptimizedImage } from "@angular/common";
 import { StatisticComponent } from './screens/teacher-screens/statistic/statistic.component';
 import { QuestionPreviewComponent } from './screens/teacher-screens/question-preview/question-preview.component';
 import { appConfig } from './app.config';
-import { ValidatePasswordDirective } from './validatiors/validate-password.directive';
+import { ValidatePasswordDirective } from './validators/validate-password.directive';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
@@ -34,8 +34,6 @@ import { HeaderComponent } from "./components/general-components/header/header.c
 import { ButtonComponent } from "./components/general-components/button/button.component";
 import { RankingListComponent } from "./components/ranking/ranking-list/ranking-list.component";
 import { FooterComponent } from "./components/general-components/footer/footer.component";
-import { QuizCardComponent } from "./components/quiz-overview/quiz-card/quiz-card.component";
-import { SearchBarComponent } from "./components/quiz-overview/search-bar/search-bar.component";
 import { NavbarComponent } from "./components/general-components/navbar/navbar.component";
 import { CountdownComponent } from "./components/general-components/countdown/countdown.component";
 import { AnswerButtonComponent } from "./components/question/answer-button/answer-button.component";
@@ -51,7 +49,6 @@ import { QuizDetailsComponent } from "./components/quiz-detail-page/quiz-details
 import { QuestionsComponent } from "./components/quiz-detail-page/questions/questions.component";
 import { HeaderQuizmakerComponent } from './components/quiz-maker/header-quizmaker/header-quizmaker.component';
 import { QuizQuizmakerComponent } from './components/quiz-maker/quiz-quizmaker/quiz-quizmaker.component';
-import { UploadImageComponent } from './components/general-components/upload-image/upload-image.component';
 import { TagsQuizmakerComponent } from './components/quiz-maker/tags-quizmaker/tags-quizmaker.component';
 import { QuestionQuizmakerComponent } from './components/quiz-maker/question-quizmaker/question-quizmaker.component';
 import { DashboardComponent } from './screens/teacher-screens/dashboard/dashboard.component';
@@ -88,8 +85,6 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     ButtonComponent,
     RankingListComponent,
     FooterComponent,
-    QuizCardComponent,
-    SearchBarComponent,
     NavbarComponent,
     CountdownComponent,
     AnswerButtonComponent,
@@ -104,7 +99,6 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     QuestionsComponent,
     HeaderQuizmakerComponent,
     QuizQuizmakerComponent,
-    UploadImageComponent,
     TagsQuizmakerComponent,
     QuestionQuizmakerComponent,
     DashboardComponent,

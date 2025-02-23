@@ -3,8 +3,9 @@
   {
     "Title": "Demo Quiz",
     "Description": "This is a demo quiz",
-    "CreatorName": "if200148",
+    "CreatorName": "if200149",
     "ImageName": "assets/images/hooti.png",
+    "IsPublic": true,
     "Questions": [
       {
         "QuestionText": "What is the capital of France?",
@@ -124,7 +125,8 @@
   {
     "Title": "Difficult Math Quiz",
     "Description": "This is a challenging quiz to test your advanced math skills",
-    "CreatorName": "if200148",
+    "CreatorName": "if2001587",
+    "IsPublic": false,
     "Questions": [
       {
         "QuestionText": "Find the derivative of f(x) = x^3 - 3x^2 + 2x - 5",
@@ -251,6 +253,7 @@
     "Title": "Advanced LINQ Quiz",
     "Description": "This is a challenging quiz to test your advanced LINQ knowledge and skills.",
     "CreatorName": "victoria",
+    "IsPublic": true,
     "Questions": [
       {
         "QuestionText": "Welcher LINQ-Operator wird verwendet, um eine Aggregation durchzuführen und die Summe der Elemente zu berechnen?",

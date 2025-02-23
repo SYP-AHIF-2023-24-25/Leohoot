@@ -8,5 +8,6 @@ export interface Quiz {
   tags: Tag[];
   creator: string;
   imageName: string;
+  isPublic: boolean;
   id?: number;
 }

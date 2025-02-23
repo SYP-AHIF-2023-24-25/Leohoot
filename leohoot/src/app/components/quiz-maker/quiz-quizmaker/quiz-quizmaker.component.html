@@ -1,88 +1,69 @@
-<div class="grid grid-cols-3 items-center space-x-10 p-10">
-    <div class="col-span-1">
-      <div *ngIf="quiz?.imageName">
-        <img
-          [src]="quiz?.imageName"
-          alt="quiz image"
-          class="w-full max-w-100 max-h-72 h-auto object-contain"
-        />
-      </div>
-      <div *ngIf="!quiz?.imageName" class="mt-10 mr-10">
-        <div *ngIf="!quiz?.imageName" class="flex ">
-          <div class="mt-10 mr-10">
-            <label class="flex items-center justify-center h-72 lg:w-128 md:w-80 sm:w-56 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-              <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
-                <svg
-                  class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16"
-                >
-                  <path
-                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                  />
-                </svg>
-                <p class="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span
-                  class="font-semibold"
-                >Click to upload</span> or drag and drop</p>
-                <p class="text-xs text-center text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-              </div>
-              <input #fileInput id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)"/>
-            </label>
-          </div>
-        </div>
-
-        <div *ngIf="quiz?.imageName" class="flex-1 flex-col items-center justify-center h-72 my-5">
-          <div class="flex items-center justify-center">
-              <img [src]="quiz?.imageName" class="mt-4 max-h-96 cursor-pointer rounded" alt="Preview">
-          </div>
-          <div class="flex items-center justify-center mt-4">
-              <button class="bg-design-quiz-blue hover:bg-blue-700 text-white font-bold py-1 px-2 rounded flex items-center">
-                  <img src="assets/images/bin.png" class="w-5 h-5 mr-1" alt="Delete">
-                  Delete
-              </button>
-          </div>
-      </div>   
-      </div>
+<div class="grid grid-cols-1 md:grid-cols-3 items-start gap-6 p-6">
+  <!-- Image Upload Section -->
+  <div class="col-span-1 flex flex-col items-center pt-6">
+    <div *ngIf="quiz?.imageName" class="w-full flex flex-col items-center">
+      <img [src]="quiz?.imageName" alt="quiz image"
+        class="w-full max-h-72 object-contain rounded-lg">
+      <button class="mt-4 flex items-center bg-white text-black py-1 px-3 rounded-md">
+        <img src="assets/images/bin-black.png" class="w-5 h-5 mr-2" alt="Delete"> Delete
+      </button>
     </div>
-    <div class="col-span-2">
-      <div class="grid grid-cols-5 items-center space-y-4 ml-4 text-white text-base">
-        <div class="col-span-1 flex items-center font-bold h-11">Quiz Title:</div>
-        <div class="col-span-4 flex items-center justify-between">
-          <input
-            name="title"
-            type="text"
-            placeholder="Quiz Title"
-            [(ngModel)]="quizTitle"
-            (ngModelChange)="updateQuizTitle($event)"
-            required
-            class="block w-full max-w-128 h-11 rounded-md border-0 py-1.5 pl-2 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
-          />
-         
-          <img
-            src="assets/images/play-button-white.png"
-            alt="Play"
-            class="w-12 h-12"
-            (click)="playDemoMode()"
-          />
+
+    <div *ngIf="!quiz?.imageName" class="w-full flex flex-col items-center">
+      <label class="flex flex-col items-center justify-center w-full h-72 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+        <div class="flex flex-col items-center justify-center pt-5 pb-6 px-3">
+          <svg class="w-10 h-10 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+          </svg>
+          <p class="text-sm text-gray-500">Click to upload or drag and drop</p>
+          <p class="text-xs text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
         </div>
-  
-        <div class="col-span-1 flex items-center font-bold h-32">Description:</div>
-        <div class="col-span-4 flex items-center justify-between">
-          <textarea
-            name="description"
-            placeholder="Description"
-            [(ngModel)]="description"
-            (ngModelChange)="updateQuizDescription($event)"
-            required
-            class="block w-full h-32 max-w-128 rounded-md border-0 py-2 px-3 md:text-xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:ml-3 placeholder:text-base focus:ring-2 focus:ring-inset"
-          ></textarea>
-        </div>
-  
-        <div class="col-span-1 flex items-center font-bold h-11">Tags:</div>
-        <div class="col-span-4">
-          <app-tags-quizmaker [quiz]="quiz" (saveQuiz)="autosaveQuiz()"></app-tags-quizmaker>
-        </div>
-      </div>
+        <input #fileInput id="dropzone-file" type="file" class="hidden" (change)="handleFileInput($event)" />
+      </label>
     </div>
   </div>
-  
+
+  <!-- Quiz Form Section -->
+  <div class="col-span-2  p-6 rounded-lg">
+    <div class="grid grid-cols-1 gap-4">
+      <div>
+        <label class="block text-white font-semibold mb-1">Quiz Title:</label>
+        <div class="flex items-center gap-4">
+          <input type="text" [(ngModel)]="quizTitle" (ngModelChange)="updateQuizTitle($event)"
+            class="w-full p-2 border rounded-md focus:ring-2" placeholder="Enter quiz title">
+          <img src="assets/images/play-button-white.png" alt="Play" class="w-12 h-12 cursor-pointer hover:opacity-80"
+            (click)="playDemoMode()">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-white font-semibold mb-1">Description:</label>
+        <textarea [(ngModel)]="description" (ngModelChange)="updateQuizDescription($event)"
+          class="w-full p-2 border rounded-md focus:ring-2 h-32 resize-none"
+          placeholder="Enter quiz description"></textarea>
+      </div>
+
+      <div class="flex items-start gap-6">
+        <!-- Tags -->
+        <div class="flex-[2]">
+          <label class="block text-white font-semibold mb-1">Tags:</label>
+          <app-tags-quizmaker [quiz]="quiz" (saveQuiz)="autosaveQuiz()"></app-tags-quizmaker>
+        </div>
+      
+        <!-- Sichtbarkeit -->
+        <div class="flex-[1]">
+          <label class="block text-white font-semibold mb-3">Visibilty:</label>
+          
+          <label class="inline-flex items-center cursor-pointer">
+            <span class="text-white mr-3 text-md">Private: </span>
+            <input type="checkbox" [(ngModel)]="isPrivate" (ngModelChange)="updateIsPublic($event)" class="sr-only peer">
+            <div class="relative w-14 h-7 mr-2 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-hooti-yellow-disabled rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all  peer-checked:bg-hooti-yellow"></div>
+            <img src="assets/images/padlock.png" class="h-7 w-7"/>
+          </label>
+
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>

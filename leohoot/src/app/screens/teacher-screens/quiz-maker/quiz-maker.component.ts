@@ -26,6 +26,7 @@ export class QuizMakerComponent {
     creator: this.loginService.getUserName(),
     questions: [],
     imageName: "",
+    isPublic: false,
     tags: []
   };
 

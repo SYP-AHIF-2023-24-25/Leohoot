@@ -44,7 +44,8 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                 q.Tags
                     .Select(tag => new TagDto(tag.Name))
                     .ToList(),
-                q.ImageName
+                q.ImageName,
+                q.IsPublic
             ))
             .ToListAsync();
     }
@@ -77,7 +78,8 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                 q.Tags
                     .Select(tag => new TagDto(tag.Name))
                     .ToList(),
-                q.ImageName
+                q.ImageName,
+                q.IsPublic
             ))
             .SingleOrDefaultAsync();
         
