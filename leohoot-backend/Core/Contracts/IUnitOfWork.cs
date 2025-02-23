@@ -9,4 +9,6 @@ public interface IUnitOfWork : IBaseUnitOfWork
     IImageRepository Images { get; }
     ITagRepository Tags { get; }
     IStatisticRepository Statistics { get; }
+
+    IFavoriteQuizzesRepository FavoriteQuizzes { get; }
 }

@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
-[Authorize]
+//[Authorize]
 [ApiController]
 public class QuizController : Controller
 {
@@ -329,4 +329,61 @@ public class QuizController : Controller
         await _unitOfWork.SaveChangesAsync();
         return Results.Ok();
     }
+
+    [HttpPost("{quizId}/favorite")]
+    public async Task<IResult> FavoriteQuiz(int quizId, string username)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        var user = await _unitOfWork.Users.GetUserByUsername(username);
+
+        if (user == null)
+        {
+            return Results.NotFound("User not found");
+        }
+
+        
+        var favorite = new FavoriteQuizzes
+        {
+            User = user,
+            Quiz = quiz,
+            FavoritedAt = DateTime.UtcNow
+        };
+
+        await _unitOfWork.FavoriteQuizzes.AddAsync(favorite);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Created($"/api/quizzes/{quizId}/favorite", favorite.Id);
+    }
+
+    [HttpDelete("{quizId}/favorite")]
+    public async Task<IResult> UnfavoriteQuiz(int quizId, string username)
+    {
+        var quiz = await _unitOfWork.Quizzes.GetQuiz(quizId);
+        if (quiz == null)
+        {
+            return Results.NotFound("Quiz not found");
+        }
+
+        var user = await _unitOfWork.Users.GetUserByUsername(username);
+
+        if (user == null)
+        {
+            return Results.NotFound("User not found");
+        }
+
+        var favorite = await _unitOfWork.FavoriteQuizzes.GetFavoriteQuizdAsync(user.Id, quiz.Id);
+        if (favorite == null)
+        {
+            return Results.NotFound("Favorite not found");
+        }
+
+        _unitOfWork.FavoriteQuizzes.Remove(favorite);
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Ok();
+    }
+
 }

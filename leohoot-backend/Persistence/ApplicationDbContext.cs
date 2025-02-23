@@ -24,6 +24,8 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<StatisticQuestion> StatisticQuestions { get; set; }
     public DbSet<StatisticAnswers> StatisticAnswers { get; set; }
 
+    public DbSet<FavoriteQuizzes> FavoriteQuizzes { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
     }

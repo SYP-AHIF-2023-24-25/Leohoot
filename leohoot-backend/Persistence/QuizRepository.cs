@@ -45,7 +45,8 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                     .Select(tag => new TagDto(tag.Name))
                     .ToList(),
                 q.ImageName,
-                q.IsPublic
+                q.IsPublic,
+                q.FavoritedBy.Any(fq => fq.QuizId == q.Id)
             ))
             .ToListAsync();
     }
@@ -79,7 +80,8 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
                     .Select(tag => new TagDto(tag.Name))
                     .ToList(),
                 q.ImageName,
-                q.IsPublic
+                q.IsPublic,
+                q.FavoritedBy.Any(fq => fq.QuizId == quizId)
             ))
             .SingleOrDefaultAsync();
         

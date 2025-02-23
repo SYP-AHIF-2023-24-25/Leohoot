@@ -17,11 +17,14 @@ public class UnitOfWork : BaseUnitOfWork, IUnitOfWork
         Images = new ImageRepository(_dbContext.Images);
         Tags = new TagRepository(_dbContext.Tags);
         Statistics = new StatisticRepository(_dbContext.Statistics);
+        FavoriteQuizzes = new FavoriteQuizzesRepository(_dbContext.FavoriteQuizzes);
     }
 
     public IQuizRepository Quizzes { get; }
     public IUserRepository Users { get; }
     public IImageRepository Images { get; }
     public ITagRepository Tags { get; }
+
+    public IFavoriteQuizzesRepository FavoriteQuizzes { get; }
     public IStatisticRepository Statistics { get;}
 }
