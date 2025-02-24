@@ -13,7 +13,7 @@ import { KeycloakService } from "keycloak-angular";
 export const AuthGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const loginService = inject(LoginService);
   const keycloakService = inject(KeycloakService);
-  /*if (!loginService.isLoggedIn())
+  if (!loginService.isLoggedIn())
   {
     await loginService.login(true)
   }
@@ -25,6 +25,6 @@ export const AuthGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
     }
     const leoUser = await createLeoUser(keycloakService);
     return requiredRoles.some((role) => leoUser.hasRole(role) || leoUser.username === "if200148" || leoUser.username === "if200196" || leoUser.username === "if200127");
-  }*/
-  return true;
+  }
+  return false;
 };

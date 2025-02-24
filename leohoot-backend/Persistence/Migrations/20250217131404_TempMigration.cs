@@ -5,25 +5,27 @@
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class IsPublicQuizManagement : Migration
+    public partial class TempMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "isPublic",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsPublic",
                 table: "Quizzes",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "isPublic",
-                table: "Quizzes");
+                name: "IsPublic",
+                table: "Quizzes"
+            );
         }
     }
 }

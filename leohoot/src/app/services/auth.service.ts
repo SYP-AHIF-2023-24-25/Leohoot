@@ -14,7 +14,7 @@ export class LoginService {
   private isLoggedInIntern = () => !this.isInternTokenExpired();
   private isLoggedInKeycloak = () => this.keycloakService.isLoggedIn();
 
-  isLoggedIn = () => true;//this.isLoggedInIntern() || this.isLoggedInKeycloak();
+  isLoggedIn = () => this.isLoggedInIntern() || this.isLoggedInKeycloak();
 
   constructor(
     private keycloakService: KeycloakService,
@@ -79,11 +79,10 @@ export class LoginService {
   }
 
   getUserName(): string {
-    //let token: string | null | undefined = this.getToken();
-    //const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
-    return "if200127";
-    /*return this.isLoggedInIntern()
+    let token: string | null | undefined = this.getToken();
+    const decoded: JwtPayload = jwtDecode<JwtPayload>(token!);
+    return this.isLoggedInIntern()
       ? decoded.username
-      : decoded.preferred_username;*/
+      : decoded.preferred_username;
   }
 }
