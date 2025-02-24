@@ -15,10 +15,10 @@ public class FavoriteQuizzesRepository: GenericRepository<FavoriteQuizzes>, IFav
         _favoriteQuizzes = favoriteQuizzes;
     }
 
-    public async Task<FavoriteQuizzes?> GetFavoriteQuizdAsync(int userId, int quizId)
+    public async Task<FavoriteQuizzes?> GetFavoriteQuizdAsync(string username, int quizId)
     {
         return await _favoriteQuizzes
-            .Where(fq => fq.UserId == userId && fq.QuizId == quizId)
+            .Where(fq => fq.Username == username && fq.QuizId == quizId)
             .FirstOrDefaultAsync();
     }
 }

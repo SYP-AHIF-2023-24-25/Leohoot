@@ -338,18 +338,9 @@ public class QuizController : Controller
         {
             return Results.NotFound("Quiz not found");
         }
-
-        var user = await _unitOfWork.Users.GetUserByUsername(username);
-
-        if (user == null)
-        {
-            return Results.NotFound("User not found");
-        }
-
-        
         var favorite = new FavoriteQuizzes
         {
-            User = user,
+            Username = username,
             Quiz = quiz,
             FavoritedAt = DateTime.UtcNow
         };
@@ -367,15 +358,7 @@ public class QuizController : Controller
         {
             return Results.NotFound("Quiz not found");
         }
-
-        var user = await _unitOfWork.Users.GetUserByUsername(username);
-
-        if (user == null)
-        {
-            return Results.NotFound("User not found");
-        }
-
-        var favorite = await _unitOfWork.FavoriteQuizzes.GetFavoriteQuizdAsync(user.Id, quiz.Id);
+        var favorite = await _unitOfWork.FavoriteQuizzes.GetFavoriteQuizdAsync(username, quiz.Id);
         if (favorite == null)
         {
             return Results.NotFound("Favorite not found");
