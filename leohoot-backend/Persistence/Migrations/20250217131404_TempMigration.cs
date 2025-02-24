@@ -10,19 +10,22 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            migrationBuilder.AddColumn<bool>(
                 name: "IsPublic",
                 table: "Quizzes",
-                newName: "IsPublicTemp");
+                type: "boolean",
+                nullable: false,
+                defaultValue: false
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "IsPublicTemp",
-                table: "Quizzes",
-                newName: "IsPublic");
+            migrationBuilder.DropColumn(
+                name: "IsPublic",
+                table: "Quizzes"
+            );
         }
     }
 }
