@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ConsoleApp;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 Console.WriteLine("Hello, World!");
@@ -10,7 +11,8 @@ var quizzes = Importer.ImportQuizzes();
 using (var dbContext = new ApplicationDbContext())
 {
     dbContext.Database.EnsureDeleted();
-    dbContext.Database.EnsureCreated();
+    dbContext.Database.Migrate();
+
     dbContext.Quizzes.AddRange(quizzes);
     dbContext.SaveChanges();
 }

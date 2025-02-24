@@ -13,4 +13,6 @@ public interface IQuizRepository: IGenericRepository<Quiz>
     public Task<List<QuestionDto>> GetQuestions(int quizId);
     public Task<QuestionDto?> GetQuestion(int quizId, int questionNumber);
     public Task<bool> IsAnswerCorrect(int quizId, int questionNumber, bool[] answers);
+
+    public Task DeleteAllQuizzesAsync();
 }
