@@ -6,5 +6,5 @@ namespace Core.Contracts;
 
 public interface IFavoriteQuizzesRepository: IGenericRepository<FavoriteQuizzes>
 {
-    Task<FavoriteQuizzes?> GetFavoriteQuizdAsync(int userId, int quizId);
+    public Task<FavoriteQuizzes?> GetFavoriteQuizdAsync(string username, int quizId);
 }

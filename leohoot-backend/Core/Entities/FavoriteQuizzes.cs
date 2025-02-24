@@ -1,13 +1,13 @@
 
+using System.ComponentModel.DataAnnotations;
 using Base.Core.Entities;
 
 namespace Core.Entities;
 
 public class FavoriteQuizzes : EntityObject
 {
-    public int UserId { get; set; }
-    public User? User { get; set; }
-
+    [Required]
+    public string Username { get; set; }
     public int QuizId { get; set; }
     public Quiz? Quiz { get; set; }
 
