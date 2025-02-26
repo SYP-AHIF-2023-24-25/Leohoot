@@ -13,7 +13,7 @@ export class WaitingPageComponent {
   username: string = sessionStorage.getItem("username") || "test";
   gameEndedSubscription: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
+  constructor(private router: Router, private route: ActivatedRoute, public signalRService: SignalRService) {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
