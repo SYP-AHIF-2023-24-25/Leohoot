@@ -62,7 +62,7 @@ export class DashboardComponent {
       if (this.ownQuizzesSelected) {
         this.quizzes = data.filter(d => d.creator === this.username)
       } else if (this.favoriteQuizzesSelected) {
-        this.quizzes = data.filter(d => d.isFavorited && d.isPublic || d.isFavorited && this.username === d.creator);
+        this.quizzes = data.filter(d => d.isFavorited && d.isPublic || d.isFavorited && d.creator === this.username);
       } else {
         this.quizzes = data.filter(d => d.isPublic || d.creator === this.username);
       }

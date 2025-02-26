@@ -369,4 +369,12 @@ public class QuizController : Controller
         return Results.Ok();
     }
 
+    [HttpDelete]
+    public async Task<IResult> DeleteAllQuizzes()
+    {
+        await _unitOfWork.Quizzes.DeleteAllQuizzesAsync();
+        await _unitOfWork.SaveChangesAsync();
+        return Results.Ok();
+    }
+
 }

@@ -3,7 +3,7 @@
   {
     "Title": "Demo Quiz",
     "Description": "This is a demo quiz",
-    "CreatorName": "if200149",
+    "CreatorName": "if200148",
     "ImageName": "assets/images/hooti.png",
     "IsPublic": true,
     "Questions": [
@@ -125,7 +125,8 @@
   {
     "Title": "Difficult Math Quiz",
     "Description": "This is a challenging quiz to test your advanced math skills",
-    "CreatorName": "if2001587",
+    "CreatorName": "if200127",
+    "ImageName": null,
     "IsPublic": false,
     "Questions": [
       {
@@ -252,7 +253,8 @@
   {
     "Title": "Advanced LINQ Quiz",
     "Description": "This is a challenging quiz to test your advanced LINQ knowledge and skills.",
-    "CreatorName": "victoria",
+    "CreatorName": "if200127",
+    "ImageName": null,
     "IsPublic": true,
     "Questions": [
       {

@@ -152,4 +152,10 @@ public class QuizRepository: GenericRepository<Quiz>, IQuizRepository
 
         return true;
     }
+
+    public Task DeleteAllQuizzesAsync()
+    {
+        _quizzes.RemoveRange(_quizzes);
+        return Task.CompletedTask;
+    }
 }
