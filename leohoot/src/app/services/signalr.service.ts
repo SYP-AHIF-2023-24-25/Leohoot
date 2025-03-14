@@ -11,6 +11,7 @@ export class SignalRService {
   connectionClosedSubject = new Subject<void>();
   connectionClosed$: Observable<void> = this.connectionClosedSubject.asObservable();
   gameEnded$ = new Subject<number>();
+  error?: string;
 
   constructor() {
     this.buildConnection();
@@ -20,11 +21,12 @@ export class SignalRService {
   private buildConnection() {
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/hub`, { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
+      .configureLogging(signalR.LogLevel.Trace)
       .withAutomaticReconnect([0, 2000, 10000, 30000])
       .build();
-
+    this.error = "no error"
     this.connection.onclose((error) => {
-      this.connectionClosedSubject.next();
+      this.error = "Connection closed " + error
     });
 
     this.connection.on("gameEnded", (gameId: number) => {
