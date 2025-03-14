@@ -10,7 +10,7 @@
   <div class="flex items-center space-x-4">
     <img *ngIf="quiz?.isFavorited === false" src="assets/images/heart-light.png" alt="heart" class="w-6 h-6 hover:w-7 hover:h-7" (click)="favoriteQuiz()">
     <img *ngIf="quiz?.isFavorited" src="assets/images/heart-filled-light.png" alt="heart" class="w-7 h-7 hover:w-8 hover:h-8" (click)="unfavoriteQuiz()">
-    <img src="assets/images/duplicate.png" alt="duplicate" class="w-6 h-6 hover:w-7 hover:h-7">
+    <img src="assets/images/duplicate.png" alt="duplicate" class="w-6 h-6 hover:w-7 hover:h-7" (click)="duplicateQuiz()">
     <img *ngIf="quiz?.creator === username" src="assets/images/edit.png" alt="edit" class="w-6 h-6 hover:w-7 hover:h-7" (click)="editQuiz()">
     <img *ngIf="quiz?.creator === username" src="assets/images/bin.png" alt="delete" class="w-6 h-6 hover:w-7 hover:h-7" (click)="deleteQuiz()">
     <div class="w-px h-6 bg-white"></div>
