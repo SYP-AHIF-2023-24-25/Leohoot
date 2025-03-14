@@ -7,13 +7,24 @@ namespace Core;
 public class Game
 {
     public int GameId { get; private set; }
-    public QuizDto Quiz { get; set; }        
-    public QuestionDto CurrentQuestion { get; set; }
+    public QuizDto Quiz { get; set; }
+
+    public QuestionDto CurrentQuestion
+    {
+        get => _currentQuestion;
+        set
+        {
+            _currentQuestion = value;
+            AddQuestion();
+        }
+    }
+
     public Statistic Statistic { get; set; }
 
     private List<Player> _players;
     private List<Player> _currentAnswers;
     private bool _updatedPoints;
+    private QuestionDto _currentQuestion;
 
     public ImmutableList<Player> Ranking => _players.OrderByDescending(u => u.Score).Take(5).ToImmutableList();
     public int AnswerCount => _currentAnswers.Count;
@@ -23,6 +34,12 @@ public class Game
     {
         GameId = gameId;
         Quiz = quiz;
+        Statistic = new Statistic
+        {
+            QuizName = quiz.Title,
+            StartTime = DateTime.Now,
+            QuizId = quiz.Id
+        };
         CurrentQuestion = new QuestionDto (
             question.QuestionNumber,
             question.QuestionText,
@@ -33,14 +50,6 @@ public class Game
             question.Snapshot,
             question.ShowMultipleChoice
         );
-
-        Statistic = new Statistic
-        {
-            QuizName = quiz.Title,
-            StartTime = DateTime.Now,
-            QuizId = quiz.Id
-        };
-
         _players = [];
         _currentAnswers = [];
         _updatedPoints = false;
@@ -111,38 +120,13 @@ public class Game
     
     private void AddAnswerToStatistic(QuestionDto question, bool[] answers, string username)
     {
-        var foundQuestion = Statistic.Questions.SingleOrDefault(q => q.QuestionNumber == question.QuestionNumber);
-        if (foundQuestion != null)
+        var foundQuestion = Statistic.Questions.Single(q => q.QuestionNumber == question.QuestionNumber);
+        for (var i = 0; i < answers.Length; i++) 
         {
-            for (var i = 0; i < answers.Length; i++) 
+            if (answers[i])
             {
-                if (answers[i])
-                {
-                    foundQuestion.Answers[i].UserNames.Add(username);
-                }
+                foundQuestion.Answers[i].UserNames.Add(username);
             }
-        }
-        else
-        {
-            var questionStatistic = new StatisticQuestion
-            {
-                QuestionNumber = question.QuestionNumber,
-                QuestionText = question.QuestionText
-            };
-            for(var i = 0; i < answers.Length; i++)
-            {
-                var answerStatistic = new StatisticAnswers
-                {
-                    AnswerText = question.Answers[i].AnswerText,
-                    IsCorrect = question.Answers[i].IsCorrect,
-                };
-                if (answers[i])
-                {
-                    answerStatistic.UserNames.Add(username);
-                }
-                questionStatistic.Answers.Add(answerStatistic);
-            }
-            Statistic.Questions.Add(questionStatistic);
         }
     }
     private bool IsAnswerCorrect(bool[] answers)
@@ -159,5 +143,19 @@ public class Game
             ranking.Add(new Player("", 0));
         }
         return ranking.ToArray();
+    }
+
+    public void AddQuestion()
+    {
+        var question = Statistic.Questions.SingleOrDefault(q => q.QuestionNumber == CurrentQuestion!.QuestionNumber);
+        if (question == null)
+        {
+            var statisticQuestion = new StatisticQuestion
+            {
+                QuestionNumber = CurrentQuestion!.QuestionNumber,
+                QuestionText = CurrentQuestion!.QuestionText
+            };
+            Statistic.Questions.Add(statisticQuestion);
+        }
     }
 }

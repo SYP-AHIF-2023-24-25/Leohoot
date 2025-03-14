@@ -200,7 +200,6 @@ public class GameController : Controller
         }
         game.ClearCurrentAnswers();
         var nextQuestion = game.Quiz.Questions.SingleOrDefault(q => q.QuestionNumber == game.CurrentQuestion!.QuestionNumber + 1);
-        
         if (nextQuestion != null)
         {
             var shuffledAnswers = nextQuestion.Answers.OrderBy(a => Guid.NewGuid()).ToList();
