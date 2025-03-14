@@ -4,6 +4,7 @@ import { Quiz } from '../../../model/quiz';
 import { Player } from '../../../model/player';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SignalRService } from '../../../services/signalr.service';
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-waitingroom',
@@ -23,7 +24,7 @@ export class WaitingroomComponent {
         this.quizId = parseInt(params['quizId']);
         this.restService.getNewGameId(this.quizId).subscribe((response) =>
         {
-          this.qrCodeData = `https://leohoot.sophiehaider.com/gameUserLogin?gameId=${response}`;
+          this.qrCodeData = `${environment.apiUrl}/gameUserLogin?gameId=${response}`;
           this.qrCodeTitle = "Scan the QR code to join the game!";
           this.gamePin = response;
         });
