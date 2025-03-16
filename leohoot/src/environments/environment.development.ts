@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:5000',
-    cdnUrl: 'http://localhost:80'
+    apiUrl: 'https://leohoot.htl-leonding.ac.at',
+    cdnUrl: 'https://leohoot.htl-leonding.ac.at'
 };

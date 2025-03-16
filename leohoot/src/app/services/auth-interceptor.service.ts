@@ -11,8 +11,9 @@ export class AuthInterceptorService implements AuthInterceptorService{
   constructor(private loginService: LoginService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authToken = this.loginService.getToken();
-    console.log('authToken', authToken);
+    //const authToken = this.loginService.getToken();
+    //console.log('authToken', authToken);
+    const authToken = null;
     if (authToken) {
       const cloned = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${authToken}`)
