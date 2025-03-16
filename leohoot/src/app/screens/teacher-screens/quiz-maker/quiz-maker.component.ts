@@ -82,21 +82,26 @@ export class QuizMakerComponent {
 }
 
   async close(){
-    if (confirm("Are you sure you want to leave?")) {
-      if (this.quiz?.title.length === 0 || this.quiz?.description.length === 0 || this.quiz?.title === undefined || this.quiz?.description === undefined || this.isWhitespaceString(this.quiz?.title) || this.isWhitespaceString(this.quiz?.description)) {
-        alert('Please enter a title and description for the quiz.');
-        return;
+    if (this.quiz?.title.length === 0 || this.quiz?.description.length === 0 || this.quiz?.title === undefined || this.quiz?.description === undefined || this.isWhitespaceString(this.quiz?.title) || this.isWhitespaceString(this.quiz?.description)) {
+      if (confirm('Please provide a title and description before leaving. Your changes will not be saved. Do you still want to leave?')) {
+        await this.router.navigate(['/dashboard']);
       }
+      return;
+    }
 
+    if (confirm("Are you sure you want to leave?")) {
       if (this.quizId === -1){
-        this.saveQuiz();
+        await this.saveQuiz();
+
+        await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
       }
       if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
       || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
         || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
-        this.saveQuiz();
+        await this.saveQuiz();
+
         if (this.quizId) {
-          await this.router.navigate(['/dashboard'], {queryParams: {quizId: this.quizId}});
+          await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
         } else {
           await this.router.navigate(['/dashboard'])
         }
@@ -112,23 +117,20 @@ export class QuizMakerComponent {
   }
 
 
-  saveQuiz() {
+  async saveQuiz() {
     this.quiz!.questions = this.quiz!.questions.map(question => ({
       ...question,
       answers: question.answers.filter(answer => answer.answerText !== '')
     }));
     
     if (this.quizId === -1){
-      this.restService.addQuiz(this.quiz!).subscribe(data => {
+      const data = await this.restService.addQuiz(this.quiz!).toPromise();
+
+      if (typeof data === 'number') {
         this.quizId = data;
-        this.route.params.subscribe(params => {
-          this.router.navigate(['/quizMaker'], {queryParams: {quizId: this.quizId}});
-        });
-      });
+      }
     } else {
-      this.restService.updateQuiz(this.quizId, this.quiz!).subscribe(data => {
-       
-      });
+      await this.restService.updateQuiz(this.quizId, this.quiz!).toPromise();
     }
   }
 
@@ -169,9 +171,9 @@ export class QuizMakerComponent {
     return true;
   }
 
-  initNewQuestion() {
+  async initNewQuestion() {
     if (this.editQuizDetails){
-      this.saveQuiz();
+      await this.saveQuiz();
       this.editQuizDetails = !this.editQuizDetails;
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion()){
        this.quiz.questions.find(question => question.questionNumber === this.question.questionNumber) ? this.updateQuestion(this.question) : this.quiz.questions.push(this.question);
@@ -199,7 +201,7 @@ export class QuizMakerComponent {
     }
   }
 
-  deleteQuestion(id: number){
+  async deleteQuestion(id: number){
     if (this.question.questionNumber === 0 && this.validateQuestion() == false){
       alert('Please fill in all necessary fields and add the question first before deleting another question.');
       return;
@@ -213,7 +215,7 @@ export class QuizMakerComponent {
       this.quiz.questions.forEach((question, index) => {
         question.questionNumber = index + 1;
       });
-      this.saveQuiz();
+      await this.saveQuiz();
 
       if (this.quiz?.questions.length == 0){
         this.initNewQuestion();
