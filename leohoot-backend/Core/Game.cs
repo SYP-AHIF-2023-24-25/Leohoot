@@ -153,7 +153,14 @@ public class Game
             var statisticQuestion = new StatisticQuestion
             {
                 QuestionNumber = CurrentQuestion!.QuestionNumber,
-                QuestionText = CurrentQuestion!.QuestionText
+                QuestionText = CurrentQuestion!.QuestionText,
+                Answers = CurrentQuestion.Answers
+                    .Select(a => new StatisticAnswer
+                    {
+                        AnswerText = a.AnswerText,
+                        IsCorrect = a.IsCorrect,
+                        UserNames = []
+                    }).ToList()
             };
             Statistic.Questions.Add(statisticQuestion);
         }

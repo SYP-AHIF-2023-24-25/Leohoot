@@ -2,7 +2,7 @@ using Base.Core.Entities;
 
 namespace Core.Entities;
 
-public class StatisticAnswers: EntityObject
+public class StatisticAnswer: EntityObject
 {
     public required string AnswerText { get; set; }
     public List<string> UserNames { get; set; } = [];

@@ -22,7 +22,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<Tag> Tags { get; init; }
     public DbSet<Statistic> Statistics { get; set; }
     public DbSet<StatisticQuestion> StatisticQuestions { get; set; }
-    public DbSet<StatisticAnswers> StatisticAnswers { get; set; }
+    public DbSet<StatisticAnswer> StatisticAnswers { get; set; }
 
     public DbSet<FavoriteQuizzes> FavoriteQuizzes { get; set; }
 

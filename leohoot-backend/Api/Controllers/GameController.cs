@@ -22,7 +22,7 @@ public class GameController : Controller
         _unitOfWork = unitOfWork;
     }
     
-    //[Authorize]
+    [Authorize]
     [HttpPost("{quizId:int}")]
     public async Task<int> AddNewGame(int quizId)
     {
@@ -88,7 +88,7 @@ public class GameController : Controller
         return Results.Ok(new StatisticDto(game.Quiz.Title, topThreePlayers, questionAnswers, questionTexts, game.PlayerCount));
     }
     
-    //[Authorize]
+    [Authorize]
     [HttpPost("{gameId:int}/statistic")]
     public async Task<IResult> PostStatisticsOfGame(int gameId)
     {
@@ -125,7 +125,7 @@ public class GameController : Controller
         return Results.Ok(playerResult);
     }
     
-    //[Authorize]
+    [Authorize]
     [HttpGet("{gameId:int}/currentQuestion/teacher")]
     public IResult GetCurrentQuestionOfGameTeacher (int gameId)
     {
@@ -148,7 +148,7 @@ public class GameController : Controller
         return Results.Ok(question);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("{gameId:int}/answers")]
     public IResult GetAnswersOfQuestion(int gameId)
     {
@@ -188,10 +188,10 @@ public class GameController : Controller
         return Results.Ok(questionStudent);
     }
     
-    //[Authorize]
+    [Authorize]
     [AllowAnonymous]
     [HttpPut("{gameId:int}/currentQuestion")]
-    public async Task<IResult> NextQuestion (int gameId)
+    public IResult NextQuestion (int gameId)
     {
         var game = Repository.GetInstance().GetGameById(gameId);
         if (game == null)
@@ -232,7 +232,7 @@ public class GameController : Controller
         return game != null;
     }
     
-    //[Authorize]
+    [Authorize]
     [HttpDelete("{gameId:int}")]
     public IResult DeleteGame(int gameId)
     {

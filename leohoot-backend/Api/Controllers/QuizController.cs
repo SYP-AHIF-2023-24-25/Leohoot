@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Api.Controllers;
 
 [Route("api/quizzes")]
-//[Authorize]
+[Authorize]
 [ApiController]
 public class QuizController : Controller
 {
