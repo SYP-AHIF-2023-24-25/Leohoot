@@ -60,6 +60,10 @@ export class AnswerViewComponent {
     });
   }
 
+  isAnyButtonTrue(): boolean {
+    return this.buttons.some(button => button);
+  }
+
   generateButtons() {
     this.buttons = [];
     for (let i = 0; i < this.question!.numberOfAnswers!; i++) {

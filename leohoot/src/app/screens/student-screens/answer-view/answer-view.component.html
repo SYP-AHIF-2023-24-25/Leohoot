@@ -24,9 +24,13 @@
         </div>
       </div>
       <div class="flex justify-end col-span-2">
-        <button class="w-full my-4 h-14 rounded-md bg-white p-2 text-black font-bold text-lg" (click)="confirmAnswers()">Done</button>
+        <button 
+          class="w-full my-4 h-14 rounded-md bg-white p-2 text-black font-bold text-lg" 
+          [disabled]="!isAnyButtonTrue()" 
+          (click)="confirmAnswers()">
+          Done
+        </button>
       </div>
-
     </div>
 </div>
   <app-footer-student [username]="username" [points]="question.points"/>
