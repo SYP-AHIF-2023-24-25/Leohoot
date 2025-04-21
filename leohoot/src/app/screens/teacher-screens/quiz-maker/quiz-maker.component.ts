@@ -8,6 +8,7 @@ import { Tag } from 'src/app/model/tag';
 import { NgxCaptureService } from 'ngx-capture';
 import { QuizMakerSidebarComponent } from 'src/app/components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
 import { QuestionQuizmakerComponent } from 'src/app/components/quiz-maker/question-quizmaker/question-quizmaker.component';
+import { AlertService } from 'src/app/services/alert.service';
 
 interface ListItems {
   tag: Tag;
@@ -50,7 +51,7 @@ export class QuizMakerComponent {
   @ViewChild(QuestionQuizmakerComponent) questionQuizmakerComponent: QuestionQuizmakerComponent | undefined;
   @ViewChild(QuizMakerSidebarComponent) sidebarComponent!: QuizMakerSidebarComponent;
 
-  constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService,  private captureService: NgxCaptureService, private cdr: ChangeDetectorRef) {
+  constructor(private router: Router, private route: ActivatedRoute, private restService: RestService, private loginService: LoginService,  private alertService: AlertService, private cdr: ChangeDetectorRef) {
 
   }
 
@@ -106,7 +107,7 @@ export class QuizMakerComponent {
           await this.router.navigate(['/dashboard'])
         }
       } else {
-        alert('Please fill in all necessary fields and add the question first.');
+        this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
       }
     }
   }
@@ -141,10 +142,10 @@ export class QuizMakerComponent {
       this.restService.updateQuestion(this.quizId, this.question).subscribe(data => {
       });
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
-      alert('Please fill in all necessary fields.');
+      this.alertService.show('info', "Please fill in all necessary fields.");
       return;
     } else if (this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() === false){
-      alert('Please fill in all necessary fields and add the question first.');
+      this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
       return;
     }
   }
@@ -178,10 +179,10 @@ export class QuizMakerComponent {
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion()){
        this.quiz.questions.find(question => question.questionNumber === this.question.questionNumber) ? this.updateQuestion(this.question) : this.quiz.questions.push(this.question);
     } else if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() == false){
-      alert('Please fill in all necessary fields.');
+      this.alertService.show('info', "Please fill in all necessary fields.");
       return;
     } else if (this.editQuizDetails === false && this.question.questionNumber === 0){
-      alert('Please fill in all necessary fields and add the question first.');
+      this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
       return;
     }
 
@@ -203,7 +204,7 @@ export class QuizMakerComponent {
 
   async deleteQuestion(id: number){
     if (this.question.questionNumber === 0 && this.validateQuestion() == false){
-      alert('Please fill in all necessary fields and add the question first before deleting another question.');
+      this.alertService.show('info', "Please fill in all necessary fields and add the question first before deleting another question.");
       return;
     }
       if (this.quiz.questions.length === 1 && this.quiz.questions[0].questionNumber === id) {
@@ -230,7 +231,7 @@ export class QuizMakerComponent {
     if (typeof data === 'number') {
       const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
-        alert('Question not found');
+        this.alertService.show('info', "Question not found.");
         return
       }
 
@@ -258,9 +259,9 @@ export class QuizMakerComponent {
         this.questionQuizmakerComponent?.displayQuestion(data);
         
       } else if (this.question.questionNumber !== 0 && this.validateQuestion() == false){
-        alert('Please fill in all necessary fields');
+        this.alertService.show('info', "Please fill in all necessary fields.");
       } else if (this.question.questionNumber === 0 && this.validateQuestion() == false){
-        alert('Please fill in all necessary fields and add the question first.');
+        this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
       }
     } 
   }

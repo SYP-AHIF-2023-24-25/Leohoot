@@ -5,6 +5,7 @@ import { RestService } from '../../../services/rest.service';
 import { SignalRService } from '../../../services/signalr.service';
 import { Mode } from '../../../model/mode';
 import { Subscription, timer } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-question-preview',
@@ -27,10 +28,11 @@ export class QuestionPreviewComponent {
     private route: ActivatedRoute,
     private restservice: RestService,
     private signalRService: SignalRService,
+    private alertService: AlertService
   ) {
     this.connectionSubscription =
       this.signalRService.connectionClosed$.subscribe(async () => {
-        alert('Ending Game (No Players left)');
+        this.alertService.show('info', 'Ending Game, no players left.');
         await this.deleteGame();
       });
   }

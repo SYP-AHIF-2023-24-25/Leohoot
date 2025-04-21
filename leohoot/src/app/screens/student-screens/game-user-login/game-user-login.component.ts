@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from '../../../services/rest.service';
 import { SignalRService } from '../../../services/signalr.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-game-user-login',
@@ -10,7 +11,7 @@ import { SignalRService } from '../../../services/signalr.service';
 export class GameUserLoginComponent {
   username: string | undefined;
   gameId!: number;
-  constructor(private router: Router, private signalRService: SignalRService, private route: ActivatedRoute){
+  constructor(private router: Router, private signalRService: SignalRService, private route: ActivatedRoute, private alertService: AlertService){
 
   }
   ngOnInit() {
@@ -19,7 +20,7 @@ export class GameUserLoginComponent {
         this.gameId = parseInt(params['gameId']);
       }
       this.signalRService.connection.on("registeredUserFailed", (name) => {
-        alert(`Username is already taken`);
+        this.alertService.show('error', 'Username already exists.');
       });
 
       this.signalRService.connection.on("registeredUserSuccess", async (gameId, name) => {

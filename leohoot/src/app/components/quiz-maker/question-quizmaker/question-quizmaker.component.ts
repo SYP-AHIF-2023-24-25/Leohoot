@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgxCaptureService } from 'ngx-capture';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-question-quizmaker',
@@ -39,7 +40,7 @@ export class QuestionQuizmakerComponent {
   @Output() questionChanged = new EventEmitter<QuestionTeacher>();
   @Output() saveQuiz = new EventEmitter<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private captureService: NgxCaptureService) {
+  constructor(private alertService: AlertService, private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private captureService: NgxCaptureService) {
   }
 
   emitChanges() {
@@ -60,7 +61,7 @@ export class QuestionQuizmakerComponent {
     if (typeof data === 'number') {
       const searchResult = this.quiz?.questions.find(question => question.questionNumber === data);
       if (!searchResult) {
-        alert('Question not found');
+        this.alertService.show('error', "Question not found.");
         return
       }
       
@@ -100,10 +101,10 @@ export class QuestionQuizmakerComponent {
         };
         reader.readAsDataURL(file);
       } else {
-        alert('Please select an image file.')
+        this.alertService.show('info', "Please select an image file.");
       }
     } else {
-      alert('Please select an image file.')
+      this.alertService.show('info', "Please select an image file.");
     }
   }
 
@@ -169,7 +170,7 @@ export class QuestionQuizmakerComponent {
   
   async onQuestionAdd() {
     if (this.question.answers.every(answer => !answer.isCorrect)) {
-      alert('At least one answer must be correct.');
+      this.alertService.show('info', "At least one answer must be correct.");
       return;
     }
 

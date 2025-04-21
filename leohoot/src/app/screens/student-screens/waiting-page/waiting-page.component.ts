@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SignalRService } from '../../../services/signalr.service';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-student-waiting-page',
@@ -13,7 +14,7 @@ export class WaitingPageComponent {
   username: string = sessionStorage.getItem("username") || "test";
   gameEndedSubscription: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute, public signalRService: SignalRService) {
+  constructor(private router: Router, private route: ActivatedRoute, public signalRService: SignalRService, private alertService: AlertService) {
     this.route.queryParams.subscribe(params => {
       if (typeof params['gameId'] !== 'undefined') {
         this.gameId = parseInt(params['gameId']);
@@ -25,7 +26,7 @@ export class WaitingPageComponent {
 
         this.signalRService.connection.on("deletedUser", async (gameId: number, name: string) => {
           if (gameId == this.gameId && name == this.username) {
-            alert("You were kicked from the game");
+            this.alertService.show('info', "You were kicked from the game.");
             await this.router.navigate(['/gameLogin']);
           }
         });
@@ -34,7 +35,7 @@ export class WaitingPageComponent {
 
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {
-        alert("Game was canceled by the teacher");
+        this.alertService.show('info', "Game was canceled by the teacher.");
         await this.router.navigate(['/gameLogin']);
       }
     });

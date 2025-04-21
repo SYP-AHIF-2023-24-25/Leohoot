@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { Quiz } from 'src/app/model/quiz';
+import { AlertService } from 'src/app/services/alert.service';
 import { LoginService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -32,7 +33,7 @@ export class HeaderQuizmakerComponent {
   
     isDropdownOpen: boolean = false;
   
-    constructor(private router: Router, private restService: RestService, private loginService: LoginService) {
+    constructor(private router: Router, private alertService: AlertService, private loginService: LoginService) {
     }
   
     editQuiz() {
@@ -42,7 +43,7 @@ export class HeaderQuizmakerComponent {
     async save() {
       if(this.quizId === -1){
         if (this.quiz?.title === '' || this.quiz?.description === '') {
-          alert('Please enter a title and description for the quiz.');
+          this.alertService.show('info', "Please enter a title and description for the quiz.");
           return;
         }
         this.saveQuiz.emit('saveQuiz');

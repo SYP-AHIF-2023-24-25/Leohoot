@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { parse } from 'path';
 import { Mode } from 'src/app/model/mode';
 import { Quiz } from 'src/app/model/quiz';
+import { AlertService } from 'src/app/services/alert.service';
 import { LoginService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { SignalRService } from 'src/app/services/signalr.service';
@@ -32,7 +33,7 @@ export class QuizQuizmakerComponent {
   constructor(
     private restService: RestService,
     private router: Router,
-    private route: ActivatedRoute,
+    private alertService: AlertService,
     private signalRService: SignalRService,
     private loginService: LoginService
   ) {
@@ -101,10 +102,10 @@ export class QuizQuizmakerComponent {
         };
         reader.readAsDataURL(file);
       } else {
-        alert('Please select an image file.')
+        this.alertService.show('info', "Please select an image file.");
       }
     } else {
-      alert('Please select an image file.')
+      this.alertService.show('info', "Please select an image file.");
     }
   }
 
@@ -137,10 +138,10 @@ export class QuizQuizmakerComponent {
       this.router.navigate(['/question'], { queryParams: { gameId: data , mode: Mode.TEACHER_DEMO_MODE, quizId: this.quiz?.id } });
     });
   } else if (this.quiz?.id && this.quiz.questions.length === 0) {
-    alert('Please add questions to the quiz first.');
+    this.alertService.show('info', 'Please add questions to the quiz first.');
   }
   else {
-    alert('Please save the quiz first.');
+    this.alertService.show('info', "Please save the quiz first.");
   }
   }
 }

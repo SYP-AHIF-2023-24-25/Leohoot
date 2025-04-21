@@ -5,6 +5,7 @@ import { SignalRService } from '../../../services/signalr.service';
 import { QuestionTeacher } from 'src/app/model/question-teacher';
 import { QuestionStudent } from 'src/app/model/question-student';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-students-mobile-ranking',
@@ -29,10 +30,10 @@ export class InterimResultRankingComponent {
     "Preparing the next question...",
   ];
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService, private alertService: AlertService) {
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
       if (gameId === this.gameId) {
-        alert("Game was canceled by the teacher");
+        this.alertService.show('info', "Game was canceled by the teacher.");
         this.router.navigate(['/gameLogin']);
       }
     });

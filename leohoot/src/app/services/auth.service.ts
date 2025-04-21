@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { AuthResponse } from '../model/auth-response';
 import { jwtDecode } from 'jwt-decode';
 import { JwtPayload } from '../model/jwt-payload';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class LoginService {
   constructor(
     private keycloakService: KeycloakService,
     private restService: RestService,
+    private alertService: AlertService,
   ) {}
 
   async login(loginWithKeycloak: boolean, user?: User) {
@@ -29,7 +31,7 @@ export class LoginService {
         this.restService.login(user!.username, user!.password),
       );
       if (!response.isAuthSuccessful) {
-        alert(response.errorMessage);
+        this.alertService.show('error', response.errorMessage);
       } else {
         localStorage.setItem('token', response.token);
       }
@@ -50,7 +52,7 @@ export class LoginService {
       this.restService.signup(user.username, user.password),
     );
     if (!response.isAuthSuccessful) {
-      alert('Username already exists');
+      this.alertService.show('error', "Username already exists.");
     } else {
       localStorage.setItem('token', response.token);
     }

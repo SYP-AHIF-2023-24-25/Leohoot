@@ -5,6 +5,7 @@ import { Mode } from '../../../model/mode';
 import { QuestionTeacher } from '../../../model/question-teacher';
 import { RestService } from '../../../services/rest.service';
 import { SignalRService } from '../../../services/signalr.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-question',
@@ -27,15 +28,15 @@ export class QuestionComponent {
   gameCanceled: boolean = true;
   answerCounts?: number[];
 
-  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
+  constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService, private alertService: AlertService) {
       this.questionTimeout = setTimeout(async () => {
-        alert("Question timeout! Ending this game.");
+        this.alertService.show('info', "Question timeout! Ending this game.");
         await this.deleteGame();
       }, 10 * 60 * 60 * 1000);
 
       this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(async () =>
       {
-        alert("Ending Game (No Players left)");
+        this.alertService.show('info', "Ending Game, no players left.");
         await this.deleteGame();
       });
   }

@@ -1,6 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { Quiz } from "../../../model/quiz";
 import { Router } from "@angular/router";
+import { async } from "rxjs";
+import { AlertService } from "src/app/services/alert.service";
 
 @Component({
   selector: 'app-quiz-details',
@@ -19,7 +21,7 @@ export class QuizDetailsComponent {
     }
   }
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private alertService: AlertService) { 
   }
 
   calculateTotalDuration(quiz: Quiz): number {
@@ -32,7 +34,7 @@ export class QuizDetailsComponent {
 
   async startGame() {
     if (this.selectedQuiz?.questions.length === 0) {
-      alert("This quiz has no questions. Please add questions to start the quiz.");
+      this.alertService.show('info', "This quiz has no questions. Please add questions to start the quiz.");
       return;
     }
     await this.router.navigate(['/waitingroom'], { queryParams: { quizId:  this.selectedQuiz?.id } });

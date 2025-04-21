@@ -6,6 +6,7 @@ import { SignalRService } from '../../../services/signalr.service';
 import { Ranking } from '../../../model/ranking';
 import { RestService } from 'src/app/services/rest.service';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-ranking',
@@ -20,17 +21,17 @@ export class RankingComponent {
   connectionSubscription: Subscription;
   gameCanceled: boolean = true;
 
-  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService) {
+  constructor(private router: Router, private route: ActivatedRoute, private signalRService: SignalRService, private restservice: RestService, private alertService: AlertService) {
     this.getParams();
 
     this.questionTimeout = setTimeout(() => {
-      alert("Question timeout! Ending this game.");
+      this.alertService.show('info', "Question timeout! Ending this game.");
       this.deleteGame();
     }, 10 * 60 * 60 * 1000);
 
     this.connectionSubscription = this.signalRService.connectionClosed$.subscribe(() =>
     {
-      alert("Ending Game (No Players left)");
+      this.alertService.show('info', "Ending Game, no players left.");
       this.deleteGame();
     } );
   }
