@@ -6,5 +6,6 @@ import { Component, Input } from "@angular/core";
 })
 export class GameInfosComponent {
   @Input() gamePin: number = 0;
+  @Input() environment: string = "";
 
 }

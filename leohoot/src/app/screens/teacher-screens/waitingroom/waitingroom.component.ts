@@ -17,6 +17,7 @@ export class WaitingroomComponent {
   quizId: number = 1;
   users: Player[] = [];
   isQrFullscreen = false;
+  url: string = environment.apiUrl + "/gameLogin";
 
   constructor(private restService: RestService, private router: Router, private route: ActivatedRoute, private signalRService: SignalRService) {
     this.route.queryParams.subscribe(params => {
