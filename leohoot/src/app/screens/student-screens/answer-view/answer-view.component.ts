@@ -23,6 +23,8 @@ export class AnswerViewComponent {
     'bg-blue-400',
   ];
 
+  isSubmitting: boolean = false;
+
   icons = [
     'assets/images/cat.png',
     'assets/images/frog.png',
@@ -89,6 +91,10 @@ export class AnswerViewComponent {
   }
 
   confirmAnswers() {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+
     const randomText = this.loadingTexts[Math.floor(Math.random() * this.loadingTexts.length)];
 
     this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
