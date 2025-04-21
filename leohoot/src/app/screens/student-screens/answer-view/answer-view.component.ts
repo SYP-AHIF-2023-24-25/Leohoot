@@ -73,6 +73,7 @@ export class AnswerViewComponent {
   }
 
   isAnyButtonTrue(): boolean {
+    console.log(this.buttons.some(button => button))
     return this.buttons.some(button => button);
   }
 
