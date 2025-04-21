@@ -18,6 +18,16 @@ export class InterimResultRankingComponent {
   gameEndedRegistered = false;
   gameEndedSubscription: Subscription;
   rightAnswer: boolean = false;
+  
+  loadingTexts = [
+    "Know the answer?",
+    "Ready for the next one?",
+    "Think fast!",
+    "Loading next challenge...",
+    "Sharpening the question...",
+    "Next riddle loading...",
+    "Preparing the next question...",
+  ];
 
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe((gameId: number) => {
@@ -35,9 +45,11 @@ export class InterimResultRankingComponent {
       console.log("nextQuestion");
       if (gameId === this.gameId)
       {
+        const randomText = this.loadingTexts[Math.floor(Math.random() * this.loadingTexts.length)];
+
         const queryParams = {
           gameId: this.gameId,
-          loadingText: "Know the answer?"
+          loadingText: randomText
         };
         this.router.navigate(['/loadingScreen'], { queryParams });
       }

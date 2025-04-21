@@ -31,6 +31,18 @@ export class AnswerViewComponent {
   ]
   gameEndedSubscription: Subscription;
 
+  loadingTexts = [
+    "Already finished?",
+    "Crunching numbers...",
+    "Checking answers...",
+    "Summoning results...",
+    "Almost there...",
+    "Evaluating your brilliance...",
+    "Loading magic...",
+    "Calculating your genius...",
+    "Preparing the results...",
+  ];
+
   constructor(private router: Router, private route: ActivatedRoute, private restservice: RestService, private signalRService: SignalRService) {
     this.gameEndedSubscription = this.signalRService.gameEnded$.subscribe(async (gameId: number) => {
       if (gameId === this.gameId) {
@@ -76,8 +88,10 @@ export class AnswerViewComponent {
   }
 
   confirmAnswers() {
+    const randomText = this.loadingTexts[Math.floor(Math.random() * this.loadingTexts.length)];
+
     this.restservice.addAnswer(this.gameId, this.buttons, this.username).subscribe(async (response) => {
-      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: "Already finished?" } });
+      await this.router.navigate(['/loadingScreen'], { queryParams: { gameId: this.gameId, loadingText: randomText } });
     });
   }
 
