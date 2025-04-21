@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RestService } from '../../../services/rest.service';
 import { SignalRService } from '../../../services/signalr.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-game-login',
@@ -10,7 +11,7 @@ import { SignalRService } from '../../../services/signalr.service';
 export class GameLoginComponent {
   gameId!: string;
 
-  constructor(private restservice: RestService, private router: Router, private signalRService: SignalRService){
+  constructor(private restservice: RestService, private router: Router, private alertService: AlertService){
 
   }
 
@@ -19,7 +20,7 @@ export class GameLoginComponent {
       if(exists){
         await this.router.navigate(['/gameUserLogin'], { queryParams: { gameId: this.gameId } });
       } else {
-        alert("This game does not");
+        this.alertService.show('error', 'Username already exists');
       }
     });
   }

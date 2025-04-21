@@ -61,6 +61,7 @@ import { DateRangeFilterComponent } from "./components/statistics/date-range-fil
 import { QuizMakerSidebarComponent } from './components/quiz-maker/sidebar-quizmaker/sidebar-quizmaker.component';
 import { QuizMakerSidebarItemComponent } from './components/quiz-maker/sidebar-item-quizmaker/sidebar-item-quizmaker.component';
 import { SidebarComponent } from './components/general-components/sidebar/sidebar.component';
+import { AlertComponent } from './components/general-components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { SidebarComponent } from './components/general-components/sidebar/sideba
     DateRangeFilterComponent,
     QuizMakerSidebarComponent,
     QuizMakerSidebarItemComponent,
-    SidebarComponent
+    SidebarComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
