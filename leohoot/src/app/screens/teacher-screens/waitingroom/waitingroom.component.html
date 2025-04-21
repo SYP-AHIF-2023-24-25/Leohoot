@@ -1,4 +1,10 @@
 <div class="bg-background-blue min-h-screen" *ngIf="gamePin > 0">
+  <div class="pt-14 absolute pl-10 z-50 cursor-pointer" (click)="quit()">
+    <img src="assets/images/back-white.png" 
+         alt="go back" 
+         class="transition-transform duration-200 transform hover:scale-125 w-10 h-10">
+  </div>
+ 
   <div class="pt-14 mx-40 md:mx-40 lg:mx-52 xl:mx-72">
     <div class="grid grid-cols-12 row-auto col-auto">
       <app-game-infos [gamePin]="gamePin" [environment]="url" class="col-span-8"></app-game-infos>

@@ -33,6 +33,14 @@ export class WaitingroomComponent {
     });
   }
 
+  async quit(){
+    await this.signalRService.connection.send("cancelGame", this.gamePin);
+
+    this.restService.deleteGame(this.gamePin).subscribe(() => {
+      this.router.navigate(['/dashboard']);
+    });
+  }
+
   ngOnInit() {
     this.signalRService.connection.on("registeredUser", (gamePin, name) => {
       if (gamePin == this.gamePin)
