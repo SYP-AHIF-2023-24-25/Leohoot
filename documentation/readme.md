@@ -19,7 +19,16 @@
         - [2.2.5 Api](#225-api)
 - [3 Wichtige Teile](#3-wichtige-teile)
     - [3.1 Game Ablauf](#31-game-ablauf)
+        - [3.1.1 Quizstart durch den Lehrer](#311-quizstart-durch-den-lehrer)
+        - [3.1.2 Kommunikation über SignalR](#312-kommunikation-über-signalr)
+        - [3.1.3 Besondere Merkmale von *Leohoot*](#313-besondere-merkmale-von-leohoot)
+        - [3.1.4 Ablauf während des Quiz](#314-ablauf-während-des-quiz)
+        - [3.1.5 Lehreransicht und Quizende](#315-lehreransicht-und-quizende)
     - [3.2 Quiz Maker](#32-quiz-maker)
+        - [3.2.1 Quiz erstellen](#321-quiz-erstellen)
+        - [3.2.2 Fragen hinzufügen](#322-fragen-hinzufügen)
+        - [3.2.3 Fragenübersicht & Bearbeitung](#323-fragenübersicht--bearbeitung)
+        - [3.2.4 Speichern und Weiterbearbeitung](#324-speichern-und-weiterbearbeitung)
 - [4 Hosting](#4-hosting)
     - [4.1 Github Action](#41-github-action)
     - [4.2 Mit VM verbinden](#42-mit-vm-verbinden)
@@ -112,7 +121,143 @@ Für jeden Pfad gibt es einen Controller. Dorthin werden alle dazugehörigen End
 # 3 Wichtige Teile
 ## 3.1 Game Ablauf
 
+### 3.1.1 Quizstart durch den Lehrer
+Sobald ein Lehrer ein Quiz auswählt und startet, wird er in den **Waitingroom** weitergeleitet. Im Hintergrund wird dabei automatisch ein **Game-PIN** generiert, der auf dem Startzeitpunkt basiert. Schüler können dem Spiel entweder durch Eingabe dieses PINs oder durch Scannen eines QR-Codes beitreten.
+
+<div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px; gap: 20px;">
+  <img src="./images/waitingroom.png" style="max-width: 80%; height: auto;">
+  <img src="./images/waitin-page.png"  style="max-width: 20%; height: auto;">
+</div>
+
+
+### 3.1.2 Kommunikation über SignalR
+Für die Kommunikation zwischen den verschiedenen Rollen (Lehrer und Schüler) wird ein **SignalR-Hub** verwendet. Sobald der Lehrer das Quiz startet, wird ein **SignalR-Event** an alle Teilnehmer gesendet – diese werden daraufhin automatisch zum ersten Fragenscreen weitergeleitet.
+
+<div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px; gap: 20px;">
+  <img src="./images/question-view.png" style="max-width: 80%; height: auto;">
+  <img src="./images/answer-view.png"  style="max-width: 20%; height: auto;">
+</div>
+
+### 3.1.3 Besondere Merkmale von *Leohoot*
+- Die Reihenfolge der **Antwortmöglichkeiten** wird bei jedem Start **zufällig neu gemischt**.
+- Schüler wählen ihre Antworten aus und müssen diese durch Drücken des **Done-Buttons** aktiv abschicken.
+- Diese Maßnahme verhindert vorschnelles oder unüberlegtes Antworten und ermöglicht **Multiple-Choice-Fragen**.
+
+### 3.1.4 Ablauf während des Quiz
+Sobald **eine der folgenden Bedingungen** eintritt:
+- die Zeit ist abgelaufen,  
+- alle Schüler haben geantwortet, oder  
+- der Lehrer überspringt die Frage,  
+
+wird ein weiteres **SignalR-Event** ausgelöst. Die Schüler sehen nun:
+- ob ihre Antwort **richtig oder falsch** war,
+- und wie viele **Punkte** sie erhalten haben.
+
+<div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px; gap: 20px;">
+  <img src="./images/question-finished-view.png" style="max-width: 80%; height: auto;">
+  <img src="./images/interim-result-view.png"  style="max-width: 20%; height: auto;">
+</div>
+
+**Hinweis zur Punktevergabe:**  
+Im Gegensatz zu anderen Systemen basiert die Punktevergabe **nicht auf Zeit**, sondern auf der **Reihenfolge der richtigen Antworten für diese Frage**. Der erste erhält 1000 Punkte, nachfolgende Punkte werden verhältnismäßig mit der Anzahl der richtigen Antworten berechnet.
+
+### 3.1.5 Lehreransicht und Quizende
+- Der Lehrer sieht nach jeder Frage eine **Top-5-Spielerübersicht**.
+- Mit einem Klick führt er zur **nächsten Frage**.
+- Dieser Ablauf wiederholt sich, bis das Quiz beendet ist.
+
+![](./images/ranking.png)
+
+Nach dem letzten Durchgang:
+- wird der **Lehrer zur Statistik-Seite** weitergeleitet,
+- und die **Schüler sehen ihre persönliche Platzierung** in der Result-View.
+
+<div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+  <img src="./images/statistic1.png" alt="Statistik 1" style="max-width: 45%; height: auto;">
+  <img src="./images/statistic2.png" alt="Statistik 2" style="max-width: 45%; height: auto;">
+</div>
+
+<div style="display: flex; padding-left: 20px; padding-top: 20px; gap: 20px;">
+  <img src="./images/result.png" style="width: 30%; ">
+</div>
+
 ## 3.2 Quiz Maker
+
+Mit dem **Quiz Maker** können auf einfache Weise eigene Quizze erstellt werden.  
+Über den Button **New Quiz** unten links auf der Startseite gelangt man zur Quiz-Erstellungsseite.
+<img src="./images/quizmaker.png" alt="Quiz Maker 1">
+
+### 3.2.1 Quiz erstellen
+
+Auf der Quiz-Maker-Seite können folgende Informationen angegeben werden:
+
+- **Quiz Title**  
+- **Description**  
+- **Cover Image** (wird später vom Nginx-Server ausgeliefert)  
+- **Tags**  
+- **Visibility**:  
+  - **Privat**: Nur für den erstellenden Lehrer sichtbar  
+  - **Öffentlich**: Für alle Lehrer sichtbar und durchsuchbar  
+
+<img src="./images/quizmaker-1.png" alt="Quiz Maker 2">
+
+Sobald alle Pflichtfelder (**Title** und **Description**) ausgefüllt sind, wird der Button **New Question** aktiv. Dieser führt zur Fragenübersicht:
+
+<img src="./images/quizmaker-2.png" alt="Fragenübersicht">
+
+
+### 3.2.2 Fragen hinzufügen
+
+In der Fragenübersicht können neue Fragen erstellt werden. Dabei stehen folgende Optionen zur Verfügung:
+
+- **Fragentyp**: Multiple Choice  
+- **Bis zu 4 Antwortmöglichkeiten** (mindestens 2 sind erforderlich)
+- **Vorschauzeit (Preview Time)**  
+- **Antwortzeit (Answer Time)**  
+- **Bild-Upload zur Frage (optional)**  
+
+Die Frage wird erst durch Klicken auf **Add Question** gespeichert. Voraussetzungen dafür:
+
+- Alle Pflichtfelder sind ausgefüllt  
+- Mindestens eine Antwortmöglichkeit ist als korrekt markiert
+
+<img src="./images/quizmaker-3.png" alt="Frage erstellen">
+
+Wird eine ungültige Eingabe gemacht oder ein Pflichtfeld vergessen, erscheint eine **Fehlermeldung**:
+
+<img src="./images/quizmaker-4.png" alt="Fehlermeldung bei falscher Eingabe">
+
+### 3.2.3 Fragenübersicht & Bearbeitung
+
+Nach dem erfolgreichen Hinzufügen wird die Frage in der **Sidebar** angezeigt.  
+Hier können Fragen:
+
+- **Bearbeitet**
+- **Gelöscht**
+- **Per Drag & Drop neu sortiert** werden
+
+<div style="display: flex; gap: 10px;">
+  <img src="./images/quizmaker-5.png" alt="Fragen Sidebar 1" style="width: 49%;">
+  <img src="./images/quizmaker-6.png" alt="Fragen Sidebar 2" style="width: 49%;">
+</div>
+
+Über den **Edit-Button** rechts gelangt man zurück zur Quiz-Übersicht. Auch hier können Fragen gelöscht und neu angeordnet werden:
+
+<img src="./images/quizmaker-7.png" alt="Quizübersicht mit Bearbeitungsoptionen">
+
+### 3.2.4 Speichern und Weiterbearbeitung
+
+Der Quiz Maker speichert Änderungen **automatisch**. Das bedeutet:
+
+- Der Vorgang kann jederzeit unterbrochen werden  
+- Beim Schließen gelangt man direkt zur **Detailseite des gerade erstellten Quiz**
+
+<img src="./images/quizmaker-8.png" alt="Quiz Detailseite">
+
+Über den Button **Edit** kann das Quiz jederzeit bearbeitet werden – jedoch **nur vom Ersteller selbst**.  
+Möchte ein Lehrer ein Quiz eines anderen Lehrers verwenden, muss dieses zuerst **kopiert bzw. dupliziert** werden. Anschließend kann es frei bearbeitet werden.
+
+
 # 4 Hosting
 ## 4.1 Github Action
 Bei jedem Push auf Main wird werden automatisch mithilfe von einer Github Action die Images für Frontend und das Backend gebaut und auf Dockerhub gepusht. Das File dafür liegt in ".github/workflows".
