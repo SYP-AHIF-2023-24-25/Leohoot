@@ -46,4 +46,12 @@ export class AlertComponent {
   closeAlert() {
     this.alert = undefined;
   }
+
+  handleConfirm(result: boolean) {
+    if (this.alert?.confirmCallback) {
+      this.alert.confirmCallback(result);
+    }
+    this.alert = undefined;
+  }
+  
 }

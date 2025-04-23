@@ -84,32 +84,39 @@ export class QuizMakerComponent {
 
   async close(){
     if (this.quiz?.title.length === 0 || this.quiz?.description.length === 0 || this.quiz?.title === undefined || this.quiz?.description === undefined || this.isWhitespaceString(this.quiz?.title) || this.isWhitespaceString(this.quiz?.description)) {
-      if (confirm('Please provide a title and description before leaving. Your changes will not be saved. Do you still want to leave?')) {
-        await this.router.navigate(['/dashboard']);
-      }
+      this.alertService.confirm('Please provide a title and description before leaving. Your changes will not be saved. Do you still want to leave?')
+      .then(async (confirmed) => {
+        if (confirmed) {
+          await this.router.navigate(['/dashboard']);
+        }
+      });
+      
       return;
     }
 
-    if (confirm("Are you sure you want to leave?")) {
-      if (this.quizId === -1){
-        await this.saveQuiz();
-
-        await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
-      }
-      if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
-      || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
-        || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
-        await this.saveQuiz();
-
-        if (this.quizId) {
+    this.alertService.confirm('Are you sure you want to leave?')
+    .then(async (confirmed) => {
+      if (confirmed) {
+        if (this.quizId === -1){
+          await this.saveQuiz();
+  
           await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
-        } else {
-          await this.router.navigate(['/dashboard'])
         }
-      } else {
-        this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
+        if (this.editQuizDetails === false && this.question.questionNumber !== 0 && this.validateQuestion() 
+        || this.editQuizDetails === false && this.question.questionNumber === 0 && this.validateQuestion() && this.question.questionText === '' //keine neue frage angelegt / halbfertige
+          || this.editQuizDetails === true && this.quiz.title !== '' && this.quiz.description !== ''){
+          await this.saveQuiz();
+  
+          if (this.quizId) {
+            await this.router.navigate(['/quizDetails'], {queryParams: {quizId: this.quizId}});
+          } else {
+            await this.router.navigate(['/dashboard'])
+          }
+        } else {
+          this.alertService.show('info', "Please fill in all necessary fields and add the question first.");
+        }
       }
-    }
+    });
   }
 
   updateQuestion(updatedQuestion: QuestionTeacher) {
